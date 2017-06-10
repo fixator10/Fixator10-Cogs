@@ -5,6 +5,7 @@ import datetime
 import os
 from .utils.dataIO import dataIO
 from .utils import chat_formatting as chat
+from .utils import checks
 from discord.ext import commands
 
 
@@ -67,6 +68,7 @@ class Weather:
     
 
     @weahter_set.command()
+    @checks.is_owner()
     async def api(self, *, apikey: str):
         """Set Weather apikey
         https://darksky.net/dev/"""
@@ -75,6 +77,7 @@ class Weather:
         await self.bot.say(chat.info("Apikey Updated"))
 
     @weather_set.command(pass_conetext=True)
+    @checks.is_owner()
     async def sethometown(self, ctx, place: str):
         """Set default town for commands"""
         self.config["hometown"] = place
