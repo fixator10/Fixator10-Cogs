@@ -65,9 +65,8 @@ class Weather:
         """Set weather cog settings"""
         if ctx.invoked_subcommand is None:
             await self.bot.send_cmd_help(ctx)
-    
 
-    @weahter_set.command()
+    @weather_set.command()
     @checks.is_owner()
     async def api(self, *, apikey: str):
         """Set Weather apikey
