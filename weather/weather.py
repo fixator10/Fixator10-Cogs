@@ -59,7 +59,7 @@ class Weather:
         else:
             await self.bot.say(content)
             
-    @commands.group()
+    @commands.group(pass_context=True)
     @checks.is_owner()
     async def weather_set(self, ctx):
         """Set weather cog settings"""
