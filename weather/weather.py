@@ -71,7 +71,8 @@ class Weather:
     async def api(self, *, apikey: str):
         """Set Weather apikey
         https://darksky.net/dev/"""
-        self.config["yandex_translate_API_key"] = apikey
+        self.config["dark_sky_api_key"] = apikey
+        self.apikey = self.config["dark_sky_api_key"]
         dataIO.save_json(self.config_file, self.config)
         await self.bot.say(chat.info("Apikey Updated"))
 
