@@ -36,7 +36,7 @@ class Weather:
         self.config = dataIO.load_json(self.config_file)
         self.apikey = self.config["dark_sky_api_key"]
 
-    @commands.group(pass_context=True)
+    @commands.command(pass_context=True)
     async def weather(self, ctx, place: str = None):
         """Shows weather in provided place"""
         if place is None:
@@ -57,16 +57,24 @@ class Weather:
             await self.bot.say(embed=em)
         else:
             await self.bot.say(content)
+            
+    @commands.group()
+    @checks.is_owner()
+    async def weather_set(self, ctx):
+        """Set weather cog settings"""
+        if ctx.invoked_subcommand is None:
+            await self.bot.send_cmd_help(ctx)
+    
 
-    @commands.command()
-    async def weather_api(self, *, apikey: str):
+    @weahter_set.command()
+    async def api(self, *, apikey: str):
         """Set Weather apikey
         https://darksky.net/dev/"""
         self.config["yandex_translate_API_key"] = apikey
         dataIO.save_json(self.config_file, self.config)
         await self.bot.say(chat.info("Apikey Updated"))
 
-    @weather.command(pass_conetext=True)
+    @weather_set.command(pass_conetext=True)
     async def sethometown(self, ctx, place: str):
         """Set default town for commands"""
         self.config["hometown"] = place
@@ -94,7 +102,7 @@ class Weather:
     #
     #     await self.bot.say("Time in " + place + " " + by_hour.time.timetz().isoformat())
 
-    @weather.command(pass_context=True)
+    @commands.command(pass_context=True)
     async def forecast(self, ctx, place: str = None):
         """Shows 7 days forecast for provided place"""
         if place is None:
