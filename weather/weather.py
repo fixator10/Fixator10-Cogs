@@ -76,9 +76,9 @@ class Weather:
         dataIO.save_json(self.config_file, self.config)
         await self.bot.say(chat.info("Apikey Updated"))
 
-    @weather_set.command(pass_conetext=True)
+    @weather_set.command()
     @checks.is_owner()
-    async def hometown(self, ctx, place: str):
+    async def hometown(self, place: str):
         """Set default town for commands"""
         self.config["hometown"] = place
         dataIO.save_json(self.config_file, self.config)
