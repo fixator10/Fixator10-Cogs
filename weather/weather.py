@@ -78,7 +78,7 @@ class Weather:
 
     @weather_set.command(pass_conetext=True)
     @checks.is_owner()
-    async def sethometown(self, ctx, place: str):
+    async def hometown(self, ctx, place: str):
         """Set default town for commands"""
         self.config["hometown"] = place
         dataIO.save_json(self.config_file, self.config)
@@ -87,7 +87,7 @@ class Weather:
     @weather.error
     async def error(self, exception, ctx):
         await self.bot.say(chat.error("An error has been occured. Check your apikey, "
-                                      "and set new with {}weather setapikey").format(ctx.prefix))
+                                      "and set new with {}weather_set api").format(ctx.prefix))
 
     # @commands.command(pass_context=True)
     # async def time(self, ctx, place: str = None):
