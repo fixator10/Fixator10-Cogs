@@ -1,0 +1,9 @@
+{
+    "AUTHOR" : "Fixator10",
+    "INSTALL_MSG" : "Thanks for install.",
+    "NAME" : "Translators",
+    "SHORT" : "Useful (and not) translators",
+    "DESCRIPTION" : "Useful (and not) translators",
+    "TAGS" : [],
+	"REQUIREMENTS" : ["yandex.translate"]
+}

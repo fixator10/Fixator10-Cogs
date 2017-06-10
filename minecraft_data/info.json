@@ -1,0 +1,9 @@
+{
+    "AUTHOR" : "Fixator10",
+    "INSTALL_MSG" : "Thanks for install.",
+    "NAME" : "Holidays",
+    "SHORT" : "This cog show minecraft-related data",
+    "DESCRIPTION" : "This cog show minecraft-related data\nIncluding:\n  Server info\n  Player's nicks history\n  Get skin by nickname  \n  Get status of minecraft data-servers",
+    "TAGS" : ["minecraft", "game"],
+	"REQUIREMENTS" : ["tabulate"]
+}

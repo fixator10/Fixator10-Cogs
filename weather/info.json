@@ -1,0 +1,9 @@
+{
+    "AUTHOR" : "Romashkoo, Fixator10",
+    "INSTALL_MSG" : "Thanks for install.",
+    "NAME" : "Weather",
+    "SHORT" : "Weather forecast",
+    "DESCRIPTION" : "Weather forecast",
+    "TAGS" : [],
+	"REQUIREMENTS": ["python-forecastio", "geocoder"]
+}

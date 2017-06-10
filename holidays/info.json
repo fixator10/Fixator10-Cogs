@@ -1,0 +1,9 @@
+{
+    "AUTHOR" : "Fixator10",
+    "INSTALL_MSG" : "Thanks for install.",
+    "NAME" : "Holidays",
+    "SHORT" : "Check holidays for current month",
+    "DESCRIPTION" : "Check holidays for current month",
+    "TAGS" : [],
+	"REQUIREMENTS" : ["tabulate"]
+}
