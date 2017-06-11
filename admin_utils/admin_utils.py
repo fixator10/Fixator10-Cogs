@@ -8,7 +8,7 @@ import urllib.parse as up
 import json
 
 
-class admin_utils:
+class Admin_utils:
     def __init__(self, bot: discord.Client):
         self.bot = bot
         self.base_api_url = "https://discordapp.com/api/oauth2/authorize?"
@@ -156,4 +156,4 @@ class admin_utils:
 
 
 def setup(bot):
-    bot.add_cog(admin_utils(bot))
+    bot.add_cog(Admin_utils(bot))

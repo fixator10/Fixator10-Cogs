@@ -1,7 +1,7 @@
 {
     "AUTHOR" : "Fixator10, DiNitride",
     "INSTALL_MSG" : "Thanks for install.\nThis cog contains some useful commands for server administrators.\nSome commands selfbot-only",
-    "NAME" : "admin_utils",
+    "NAME" : "Admin_utils",
     "SHORT" : "Useful commands for server administrators.",
     "DESCRIPTION" : "Useful commands for server administrators.\nSome commands selfbot-only",
     "TAGS" : ["admin", "selfbot"],
