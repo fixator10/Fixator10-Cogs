@@ -295,4 +295,4 @@ class mod_utils:
 
 
 def setup(bot):
-    bot.add_cog(F10_moderation_utils(bot))
+    bot.add_cog(mod_utils(bot))

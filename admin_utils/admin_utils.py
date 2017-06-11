@@ -156,4 +156,4 @@ class admin_utils:
 
 
 def setup(bot):
-    bot.add_cog(F10_admin_utils(bot))
+    bot.add_cog(admin_utils(bot))

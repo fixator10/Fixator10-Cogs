@@ -285,4 +285,4 @@ def check_files():
 def setup(bot):
     check_folders()
     check_files()
-    bot.add_cog(F10_utils(bot))
+    bot.add_cog(utils(bot))
