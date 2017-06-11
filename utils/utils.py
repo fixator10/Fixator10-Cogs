@@ -274,7 +274,7 @@ def check_files():
               "signature_desc": "From Selfbot",
               "signature_url": "http://google.com",
               "signature_colour": 0,
-              "signature_field_name": "«Sometimes, i dream about cheese»",
+              "signature_field_name": "\"Sometimes, i dream about cheese\"",
               "signature_field_content": "Some text about cheese"}
 
     f = "data/fix10_utils/config.json"
