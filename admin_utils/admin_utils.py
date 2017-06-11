@@ -8,7 +8,7 @@ import urllib.parse as up
 import json
 
 
-class F10_admin_utils:
+class admin_utils:
     def __init__(self, bot: discord.Client):
         self.bot = bot
         self.base_api_url = "https://discordapp.com/api/oauth2/authorize?"

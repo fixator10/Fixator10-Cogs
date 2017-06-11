@@ -18,7 +18,7 @@ def get_rgb_from_int(rgb_int):
     return red, green, blue
 
 
-class F10_moderation_utils:
+class mod_utils:
     def __init__(self, bot: discord.Client):
         self.bot = bot
 

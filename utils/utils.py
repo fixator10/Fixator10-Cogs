@@ -51,7 +51,7 @@ def rgb_to_cmyk(r, g, b):
     return c * cmyk_scale, m * cmyk_scale, y * cmyk_scale, k * cmyk_scale
 
 
-class F10_utils:
+class utils:
     def __init__(self, bot: discord.Client):
         self.bot = bot
         self.config_file = "data/fix10_utils/config.json"
