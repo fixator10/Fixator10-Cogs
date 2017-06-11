@@ -24,7 +24,7 @@ class F10_moderation_utils:
 
     @commands.command(pass_context=True, no_pm=True, aliases=['memberinfo', 'meminfo', 'membinfo',
                                                               'member', 'user'])
-    async def userinfo(self, ctx, member: discord.Member = None):
+    async def uinfo(self, ctx, member: discord.Member = None):
         """Information on a user"""
         if member is None:
             member = ctx.message.author
@@ -65,7 +65,7 @@ class F10_moderation_utils:
                                member.avatar_url)
 
     @commands.command(pass_context=True, no_pm=True, aliases=['server', 'servinfo', 'serv', 'sv'])
-    async def serverinfo(self, ctx, server: str = None):
+    async def sinfo(self, ctx, server: str = None):
         """Shows server information"""
         if server is None:
             server = ctx.message.server
@@ -128,8 +128,8 @@ class F10_moderation_utils:
                                "```\n" +
                                server.icon_url)
 
-    @commands.command(pass_context=True, no_pm=True, aliases=['channel', 'chaninfo', 'chan'])
-    async def channelinfo(self, ctx, *, channel: discord.Channel):
+    @commands.command(pass_context=True, no_pm=True, aliases=['channel', 'chaninfo', 'chan', 'channelinfo'])
+    async def cinfo(self, ctx, *, channel: discord.Channel):
         """Get info about channel"""
         changed_roles = []
         for elem in channel.changed_roles:
@@ -187,8 +187,8 @@ class F10_moderation_utils:
                                " | Text Channels: " + str(len(tchans)) +
                                " | Voice Channels: " + str(len(vchans)))
 
-    @commands.command(pass_context=True, no_pm=True, aliases=['role'])
-    async def roleinfo(self, ctx, *, role: discord.Role):
+    @commands.command(pass_context=True, no_pm=True, aliases=['role', 'roleinfo'])
+    async def rinfo(self, ctx, *, role: discord.Role):
         """Get info about role"""
         em = discord.Embed(title=role.name, colour=role.colour)
         em.add_field(name="ID", value=role.id)
@@ -295,6 +295,4 @@ class F10_moderation_utils:
 
 
 def setup(bot):
-    bot.remove_command("userinfo")
-    bot.remove_command("serverinfo")
     bot.add_cog(F10_moderation_utils(bot))
