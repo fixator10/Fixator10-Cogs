@@ -4,5 +4,6 @@
     "NAME" : "F10_admin_utils",
     "SHORT" : "Useful commands for server administrators.",
     "DESCRIPTION" : "Useful commands for server administrators.\nSome commands selfbot-only",
-    "TAGS" : ["admin", "selfbot"]
+    "TAGS" : ["admin", "selfbot"],
+    "REQUIREMENTS" : []
 }
