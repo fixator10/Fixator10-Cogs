@@ -68,6 +68,12 @@ Available country codes:
                                         '?action=getPublicHolidaysForMonth'
                                         '&month={}&year={}&country={}'.format(month, year, country_code)) as data:
                 data = await data.json()
+                if "error" in data:
+                    await self.bot.say(chat.error("An error occurred: `{}`".format(data["error"])))
+                    return
+                if not data:
+                    await self.bot.say(chat.info("Holidays in `{}` for current month not found".format(country_code)))
+                    return
                 try:
                     data[0]["date"] = "{}.{}.{}"\
                         .format(data[0]["date"]["day"], data[0]["date"]["month"], data[0]["date"]["year"])
