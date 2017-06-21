@@ -5,5 +5,5 @@
     "SHORT" : "Useful (and not) translators",
     "DESCRIPTION" : "Useful (and not) translators",
     "TAGS" : [],
-	"REQUIREMENTS" : ["yandex.translate"]
+	"REQUIREMENTS" : []
 }
