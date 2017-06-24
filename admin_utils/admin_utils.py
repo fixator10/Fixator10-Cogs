@@ -83,9 +83,12 @@ class Admin_utils:
     @commands.command(no_pm=True, pass_context=True)
     @commands.has_permissions(manage_emojis=True)
     async def add_emoji(self, ctx, emoji_name: str, emoji_url: str):
-        """[SELFBOT ONLY} Adds an emoji to server
+        """[SELFBOT ONLY] Adds an emoji to server
         Requires proper permissions
         PNG/JPG only"""
+        if self.bot.user.bot:
+            await self.bot.say(chat.error("This command is only for SelfBots"))
+            return
         try:
             async with self.session.get(emoji_url) as r:  # from Red's owner.py
                 data = await r.read()
@@ -131,6 +134,12 @@ class Admin_utils:
 
         Based on autoapprove cog from Squid-Plugins
         https://github.com/tekulvw/Squid-Plugins"""
+        if self.bot.user.bot:
+            await self.bot.say(chat.error("This command is only for SelfBots") +
+                               chat.box("For bot accounts use autoapprove cog from Squid-Plugins repo:\n"
+                                        "{0}cog repo add Squid-Plugins https://github.com/tekulvw/Squid-Plugins\n"
+                                        "{0}cog install Squid-Plugins autoapprove").format(ctx.prefix))
+            return
         server = ctx.message.server
 
         key = self.bot.settings.token
