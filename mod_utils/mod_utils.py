@@ -1,5 +1,6 @@
 import random
 import re
+import tabulate
 
 import discord
 from discord.ext import commands
@@ -232,16 +233,27 @@ class Mod_utils:
             await self.bot.say("Failed to get server with provided ID")
             return
         roles = []
-        for elem in server.role_hierarchy:
-            roles.append(elem.name)
-        em = discord.Embed(title="List of roles", description="\n".join([str(x) for x in roles]),
-                           colour=random.randint(0, 16777215))
-        em.set_footer(text="Total count of roles: " + str(len(server.roles)))
+        for role in server.role_hierarchy:
+            dic = {
+                "Name": role.name,
+                "ID": role.id
+            }
+            roles.append(dic)
+        embeds = []
+        randcolor = random.randint(0, 16777215)
+        for page in chat.pagify(tabulate.tabulate(roles, tablefmt="orgtbl"), page_length=1900):
+            em = discord.Embed(# description="\n".join([str(x) for x in roles]),
+                               description=chat.box(page),
+                               colour=randcolor)
+            embeds.append(em)
+        embeds[0].title = "Table of roles"
+        embeds[-1].set_footer(text="Total count of roles: " + str(len(server.roles)))
         if ctx.message.channel.permissions_for(ctx.message.author).embed_links:
-            await self.bot.say(embed=em)
+            for em in embeds:
+                await self.bot.say(embed=em)
         else:
-            await self.bot.say("**List of roles:**\n```" + "\n".join([str(x) for x in roles]) +
-                               "```\nTotal count: " + str(len(server.roles)))
+            for page in chat.pagify(tabulate.tabulate(roles, tablefmt="orgtbl")):
+                await self.bot.say("**List of roles:**\n{}".format(chat.box(page)))
 
     @commands.command(pass_context=True, no_pm=True, aliases=["perms", "permissions"])
     async def chan_perms(self, ctx, member: discord.Member, channel: discord.Channel = None):
