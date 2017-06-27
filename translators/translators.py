@@ -101,6 +101,27 @@ class Translators:
         text = text.translate(table)
         await self.bot.say(text)
 
+    @commands.command(pass_context=True)
+    async def fliptext(self, ctx, *, text: str):
+        """Flips text upside-down
+        Based on https://unicode-table.com/en/tools/flip/"""
+        up = "abcdefghijklmnopqrstuvwxyzабвгдежзиклмнопрстуфхцчшщъьэя.,!?()"
+        down = "ɐqɔpǝɟƃɥıɾʞlɯuodᕹɹsʇnʌʍxʎzɐƍʚɹɓǝжεиʞvwноudɔɯʎȸхǹҺmmqqєʁ˙‘¡¿)("
+        text = text.lower()
+        char = up+down
+        tran = down+up
+        table = str.maketrans(char, tran)
+        text = text.translate(table)[::-1]
+        dic = {
+            "ю": "oı",
+            "ы": "ıq",
+            "ё": "ǝ̤",
+            "й": "n̯"
+        }
+        pattern = re.compile('|'.join(dic.keys()))
+        result = pattern.sub(lambda x: dic[x.group()], text)
+        await self.bot.say(result)
+
     @commands.group(pass_context=True)
     async def leet(self, ctx):
         """Leet (1337) translation commands"""

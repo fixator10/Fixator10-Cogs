@@ -154,7 +154,7 @@ class Mod_utils:
                                "\nHas existed since: " + channel.created_at.strftime('%d.%m.%Y %H:%M:%S %Z') +
                                "\nPosition: " + str(channel.position) +
                                "\nChanged roles permissions: " + "\n".join([str(x) for x in changed_roles]) +
-                               "\nMention: " + channel.mention +
+                               "\nMention: " + str(channel.mention) +
                                "```")
 
     @commands.command(pass_context=True, no_pm=True, aliases=['channellist', 'listchannels'])
