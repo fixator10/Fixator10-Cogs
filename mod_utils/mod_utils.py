@@ -132,16 +132,17 @@ class Mod_utils:
     @commands.command(pass_context=True, no_pm=True, aliases=['channel', 'chaninfo', 'chan', 'channelinfo'])
     async def cinfo(self, ctx, *, channel: discord.Channel):
         """Get info about channel"""
-        changed_roles = []
-        for elem in channel.changed_roles:
-            changed_roles.append(elem.name)
+        changed_roles = sorted(channel.changed_roles,
+                               key=lambda chan: chan.position,
+                               reverse=True)
         em = discord.Embed(title=channel.name, description=channel.topic, colour=random.randint(0, 16777215))
         em.add_field(name="ID", value=channel.id)
         em.add_field(name="Type", value=str(channel.type).replace("voice", "🔈").replace("text", "📰"))
         em.add_field(name="Has existed since", value=channel.created_at.strftime('%d.%m.%Y %H:%M:%S %Z'))
         em.add_field(name="Position", value=channel.position)
         em.add_field(name="Changed roles permissions",
-                     value="\n".join([str(x) for x in changed_roles]) or "`Not set`")
+                     value="\n".join([str(x) for x in changed_roles])
+                           or "`Not set`")
         em.add_field(name="Mention", value=channel.mention + "\n`" + channel.mention + "`")
         if ctx.message.channel.permissions_for(ctx.message.author).embed_links:
             await self.bot.say(embed=em)
@@ -171,9 +172,11 @@ class Mod_utils:
         tchans = []
         for elem in server.channels:
             if str(elem.type) == "voice":
-                vchans.append(elem.name)
+                vchans.append(elem)
             elif str(elem.type) == "text":
-                tchans.append(elem.name)
+                tchans.append(elem)
+        vchans = sorted(vchans, key=lambda chan: chan.position)
+        tchans = sorted(tchans, key=lambda chan: chan.position)
         em = discord.Embed(title="Channels list", colour=random.randint(0, 16777215))
         em.add_field(name="Text channels:", value="\n".join([str(x) for x in tchans]), inline=False)
         em.add_field(name="Voice channels:", value="\n".join([str(x) for x in vchans]), inline=False)
