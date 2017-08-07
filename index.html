@@ -17,14 +17,27 @@
 
         <base href="/permissions-calculator/" />
     </head>
-    <body class="grey-text text-lighten-4">
+    <body theme theme-dark="grey-text text-lighten-4 theme-dark" theme-light="grey-text text-darken-2 theme-light">
         <header>
             <nav class="indigo lighten-2">
                 <div class="nav-wrapper container">
                     <a href="#" class="brand-logo hide-on-small-only">Discord Permissions Calculator</a>
-                    <a href="#" class="brand-logo hide-on-med-and-up"></a>
+                    <a href="#" class="brand-logo hide-on-med-and-up">Discord Permissions</a>
+                    <a data-activates="nav-small" class="button-collapse"><i class="material-icons">menu</i></a>
+                    <ul id="nav-large" class="right hide-on-med-and-down">
+                        <li><a class="dropdown-button" data-activates="theme-large">Theme<i class="material-icons right">arrow_drop_down</i></a></li>
+                    </ul>
+                    <ul class="side-nav" id="nav-small">
+                        <li><a class="subheader">Theme</a></li>
+                        <li><a class="waves-effect" theme-set="Light">Light</a></li>
+                        <li><a class="waves-effect" theme-set="Dark">Dark</a></li>
+                    </ul>
                 </div>
             </nav>
+            <ul id="theme-large" class="dropdown-content">
+                <li><a class="waves-effect grey-text text-darken-3" theme-set="Light">Light</a></li>
+                <li><a class="waves-effect grey-text text-darken-3" theme-set="Dark">Dark</a></li>
+            </ul>
         </header>
         <main>
             <section class="container" ng-controller="calc">
@@ -99,6 +112,7 @@
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
         <!-- apparently I should use react instead of angular? hell no, react is ugly. -->
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+        <script type="text/javascript" src="assets/js/themes.js"></script>
         <script type="text/javascript" src="assets/js/permissions.js"></script>
         <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

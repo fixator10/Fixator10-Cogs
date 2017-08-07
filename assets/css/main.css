@@ -2,6 +2,8 @@ body{
     display:flex;
     min-height:100vh;
     flex-direction:column;
+}
+body.theme-dark{
     background: #2c2f33 url(https://discordapp.com/assets/530280c4e76a27a6dd43c0ecabb96e7d.png) fixed;
 }
 main{
@@ -11,7 +13,7 @@ main{
     border-color:#66bb6a !important;
     background-color:#66bb6a !important;
 }
-.row.centered {
+.row.centered{
     /* TODO: edge support */
     width: fit-content;
     width: -moz-fit-content;
