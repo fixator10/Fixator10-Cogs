@@ -1,0 +1,21 @@
+body{
+    display:flex;
+    min-height:100vh;
+    flex-direction:column;
+    background: #2c2f33 url(https://discordapp.com/assets/530280c4e76a27a6dd43c0ecabb96e7d.png) fixed;
+}
+main{
+    flex:1 0 auto;
+}
+.filled-in[type="checkbox"]:checked + label::after{
+    border-color:#66bb6a !important;
+    background-color:#66bb6a !important;
+}
+.row.centered {
+    /* TODO: edge support */
+    width: fit-content;
+    width: -moz-fit-content;
+    width: -webkit-fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
