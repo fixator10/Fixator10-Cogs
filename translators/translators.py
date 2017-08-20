@@ -51,7 +51,7 @@ class Translators:
                 await self.bot.say("An error has been occurred: Service Unavailable. Try again later")
             else:
                 await self.bot.say("An error has been occurred: " + str(e))
-                return
+            return
         input_lang = None
         output_lang = None
         if len(language) == 2:
