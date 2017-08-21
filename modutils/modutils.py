@@ -5,6 +5,7 @@ import tabulate
 import discord
 from discord.ext import commands
 from .utils import chat_formatting as chat
+from .utils import checks
 import matplotlib.colors as colors
 
 
@@ -19,7 +20,7 @@ def get_rgb_from_int(rgb_int):
     return red, green, blue
 
 
-class ModUtils:
+class DataUtils:
     def __init__(self, bot: discord.Client):
         self.bot = bot
 
@@ -66,6 +67,7 @@ class ModUtils:
                                member.avatar_url)
 
     @commands.command(pass_context=True, no_pm=True, aliases=['server', 'servinfo', 'serv', 'sv'])
+    @checks.is_owner()
     async def sinfo(self, ctx, server: str = None):
         """Shows server information"""
         if server is None:
@@ -310,4 +312,7 @@ class ModUtils:
 
 
 def setup(bot):
-    bot.add_cog(ModUtils(bot))
+    if bot.user.bot:
+        RuntimeError("This cog is only for selfbots\n\nUse\n[p]cog uninstall Fixator10-Cogs modutils\nto uninstall this cog.")
+    else:
+        bot.add_cog(DataUtils(bot))

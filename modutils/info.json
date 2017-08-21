@@ -1,9 +1,9 @@
 {
     "AUTHOR" : "Fixator10, DiNitride",
     "INSTALL_MSG" : "Thanks for install.",
-    "NAME" : "ModUtils",
+    "NAME" : "DataUtils",
     "SHORT" : "Commands for getting information about users or servers.",
-    "DESCRIPTION" : "Commands for getting information about users or servers.",
+    "DESCRIPTION" : "Commands for getting information about users or servers.\nSelfbot only",
     "TAGS" : [],
-	"REQUIREMENTS": ["matplotlib", "tabulate", "wcwidth"]
+    "REQUIREMENTS": ["matplotlib", "tabulate", "wcwidth"]
 }
