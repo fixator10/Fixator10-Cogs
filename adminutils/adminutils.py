@@ -63,7 +63,7 @@ class AdminUtils:
     @commands.command(no_pm=True, pass_context=True)
     @CustomChecks.selfbot()
     @commands.has_permissions(manage_emojis=True)
-    async def add_emoji(self, ctx, emoji_name: str, emoji_url: str):
+    async def addemoji(self, ctx, emoji_name: str, emoji_url: str):
         """[SELFBOT ONLY] Adds an emoji to server
         Requires proper permissions
         PNG/JPG only"""
