@@ -19,7 +19,7 @@ def get_rgb_from_int(rgb_int):
     return red, green, blue
 
 
-class Mod_utils:
+class ModUtils:
     def __init__(self, bot: discord.Client):
         self.bot = bot
 
@@ -29,7 +29,7 @@ class Mod_utils:
         """Information on a user"""
         if member is None:
             member = ctx.message.author
-        roles = [x.name for x in member.roles if x.name != "@everyone"] # from Red-DiscordBot by TwentySix
+        roles = [x.name for x in member.roles if x.name != "@everyone"]  # from Red-DiscordBot by TwentySix
         if roles:
             roles = sorted(roles, key=[x.name for x in ctx.message.server.role_hierarchy
                                        if x.name != "@everyone"].index)
@@ -245,9 +245,9 @@ class Mod_utils:
         embeds = []
         randcolor = random.randint(0, 16777215)
         for page in chat.pagify(tabulate.tabulate(roles, tablefmt="orgtbl"), page_length=1900):
-            em = discord.Embed(# description="\n".join([str(x) for x in roles]),
-                               description=chat.box(page),
-                               colour=randcolor)
+            em = discord.Embed(  # description="\n".join([str(x) for x in roles]),
+                description=chat.box(page),
+                colour=randcolor)
             embeds.append(em)
         embeds[0].title = "Table of roles"
         embeds[-1].set_footer(text="Total count of roles: " + str(len(server.roles)))
@@ -310,4 +310,4 @@ class Mod_utils:
 
 
 def setup(bot):
-    bot.add_cog(Mod_utils(bot))
+    bot.add_cog(ModUtils(bot))

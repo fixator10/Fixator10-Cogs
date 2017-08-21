@@ -1,7 +1,7 @@
 {
     "AUTHOR" : "Fixator10, DiNitride",
     "INSTALL_MSG" : "Thanks for install.",
-    "NAME" : "Utils",
+    "NAME" : "MoreUtils",
     "SHORT" : "Some useful utils for selfbots and not.",
     "DESCRIPTION" : "Some useful utils for selfbots and not.\nIncluding:\n  Colors\n  Current time\n  Emoji\n  Quotes",
     "TAGS" : [],

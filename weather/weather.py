@@ -58,7 +58,7 @@ class Weather:
             await self.bot.say(embed=em)
         else:
             await self.bot.say(content)
-            
+
     @commands.group(pass_context=True)
     @checks.is_owner()
     async def weather_set(self, ctx):

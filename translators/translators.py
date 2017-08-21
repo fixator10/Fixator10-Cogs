@@ -13,6 +13,7 @@ from .utils import chat_formatting as chat
 
 try:
     from yandex_translate import YandexTranslate
+
     Yandex = True
 except:
     Yandex = False
@@ -108,8 +109,8 @@ class Translators:
         up = "abcdefghijklmnopqrstuvwxyzабвгдежзиклмнопрстуфхцчшщъьэя.,!?()"
         down = "ɐqɔpǝɟƃɥıɾʞlɯuodᕹɹsʇnʌʍxʎzɐƍʚɹɓǝжεиʞvwноudɔɯʎȸхǹҺmmqqєʁ˙‘¡¿)("
         text = text.lower()
-        char = up+down
-        tran = down+up
+        char = up + down
+        tran = down + up
         table = str.maketrans(char, tran)
         text = text.translate(table)[::-1]
         dic = {

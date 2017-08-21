@@ -51,28 +51,38 @@ def rgb_to_cmyk(r, g, b):
     return c * cmyk_scale, m * cmyk_scale, y * cmyk_scale, k * cmyk_scale
 
 
-class Utils:
+class CustomChecks:
+    # noinspection PyMethodParameters
+    def selfbot():
+        def predicate(ctx):
+            if ctx.bot.user.bot:  # if bot.user.bot is True - bot is not selfbot
+                return False
+            else:
+                return True
+
+        return commands.check(predicate)
+
+
+class MoreUtils:
     def __init__(self, bot: discord.Client):
         self.bot = bot
         self.config_file = "data/fix10_utils/config.json"
         self.config = dataIO.load_json(self.config_file)
 
     @commands.group(pass_context=True)
-    @checks.is_owner()
+    @CustomChecks.selfbot()
     async def utilsset(self, ctx):
-        """fix10_utils settings"""
+        """More utils settings"""
         if ctx.invoked_subcommand is None:
             await self.bot.send_cmd_help(ctx)
 
     @utilsset.group(pass_context=True)
-    @checks.is_owner()
     async def signature(self, ctx):
         """Signature settings"""
         if ctx.invoked_subcommand is None:
             await self.bot.send_cmd_help(ctx)
 
     @signature.command()
-    @checks.is_owner()
     async def title(self, *, title: str):
         """Set signature title"""
         self.config["signature_title"] = title
@@ -80,7 +90,6 @@ class Utils:
         await self.bot.say(chat.info("Signature title changed to {}".format(title)))
 
     @signature.command(aliases=["desc"])
-    @checks.is_owner()
     async def description(self, *, description: str):
         """Set signature description"""
         self.config["signature_desc"] = description
@@ -88,7 +97,6 @@ class Utils:
         await self.bot.say(chat.info("Signature description changed to {}".format(description)))
 
     @signature.command()
-    @checks.is_owner()
     async def url(self, *, url: str):
         """Set signature title"""
         self.config["signature_url"] = url
@@ -96,7 +104,6 @@ class Utils:
         await self.bot.say(chat.info("Signature url changed to {}".format(url)))
 
     @signature.command()
-    @checks.is_owner()
     async def field_name(self, *, field_name: str):
         """Set signature field name"""
         self.config["signature_field_name"] = field_name
@@ -104,7 +111,6 @@ class Utils:
         await self.bot.say(chat.info("Signature field name changed to {}".format(field_name)))
 
     @signature.command()
-    @checks.is_owner()
     async def field_content(self, *, field_content: str):
         """Set signature field content"""
         self.config["signature_field_content"] = field_content
@@ -112,7 +118,6 @@ class Utils:
         await self.bot.say(chat.info("Signature field content changed to {}".format(field_content)))
 
     @signature.command(name="color")
-    @checks.is_owner()
     async def _color(self, *, hex_color: str = None):
         """Set signature color
 
@@ -135,6 +140,7 @@ class Utils:
         await self.bot.say(chat.info("Signature color changed to {} ({})".format(hex_color, chat.inline(color))))
 
     @commands.command(pass_context=True)
+    @CustomChecks.selfbot()
     @commands.has_permissions(embed_links=True)
     async def signed(self, ctx, *, message: str = None):
         """Says something with embedded signature
@@ -265,8 +271,8 @@ class Utils:
 
 
 def check_folders():
-    if not os.path.exists("data/fix10_utils"):
-        os.makedirs("data/fix10_utils")
+    if not os.path.exists("data/moreutils"):
+        os.makedirs("data/moreutils")
 
 
 def check_files():
@@ -277,7 +283,7 @@ def check_files():
               "signature_field_name": "\"Sometimes, i dream about cheese\"",
               "signature_field_content": "Some text about cheese"}
 
-    f = "data/fix10_utils/config.json"
+    f = "data/moreutils/config.json"
     if not dataIO.is_valid_json(f):
         dataIO.save_json(f, system)
 
@@ -285,4 +291,4 @@ def check_files():
 def setup(bot):
     check_folders()
     check_files()
-    bot.add_cog(Utils(bot))
+    bot.add_cog(MoreUtils(bot))

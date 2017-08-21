@@ -8,7 +8,19 @@ import urllib.parse as up
 import json
 
 
-class Admin_utils:
+class CustomChecks:
+    # noinspection PyMethodParameters
+    def selfbot():
+        def predicate(ctx):
+            if ctx.bot.user.bot:  # if bot.user.bot is True - bot is not selfbot
+                return False
+            else:
+                return True
+
+        return commands.check(predicate)
+
+
+class AdminUtils:
     def __init__(self, bot: discord.Client):
         self.bot = bot
         self.base_api_url = "https://discordapp.com/api/oauth2/authorize?"
@@ -16,38 +28,6 @@ class Admin_utils:
 
     def __unload(self):
         self.session.close()
-
-    # @commands.command(no_pm=True, pass_context=True)
-    # @commands.has_permissions(ban_members=True)
-    # async def ban(self, ctx, member: discord.Member, delete_messages: int = 1):
-    #     """Bans a member"""
-    #     await self.bot.ban(member, delete_message_days=delete_messages)
-    #     await self.bot.say(
-    #         "User `" + member.name + "` banned\n" + str(delete_messages) + " days of user's messages removed")
-
-    # @commands.command(no_pm=True, pass_context=True, aliases=["hackban"])
-    # @commands.has_permissions(ban_members=True)
-    # async def xban(self, ctx, member_id: str, days: int = 1):
-    #     """Bans member by id"""
-    #     member = discord.utils.get(set(self.bot.get_all_members()), id=member_id)
-    #     try:
-    #         await self.bot.http.ban(member_id, ctx.message.server.id, days)
-    #     except discord.Forbidden:
-    #         await self.bot.say(chat.error("Can't ban `{}`. Insufficient permissions.".format(member_id)))
-    #     except discord.NotFound:
-    #         await self.bot.say(chat.error("User with id `{}` not found").format(member_id))
-    #     else:
-    #         if member:
-    #             await self.bot.say("User {} now is banned on this server".format(member.name))
-    #         else:
-    #             await self.bot.say("User with id `{}` successfully banned".format(member_id))
-
-    # @commands.command(no_pm=True, pass_context=True)
-    # @commands.has_permissions(kick_members=True)
-    # async def kick(self, ctx, member: discord.Member):
-    #     """Kicks a member"""
-    #     await self.bot.kick(member)
-    #     await self.bot.say("User `" + member.name + "` kicked")
 
     @commands.command(no_pm=True, pass_context=True, aliases=["prune"])
     @checks.admin_or_permissions(kick_members=True)
@@ -73,7 +53,7 @@ class Admin_utils:
             await self.bot.say(chat.error("Inactive members cleanup canceled."))
 
     @commands.command(no_pm=True, pass_context=True)
-    @commands.has_permissions(create_instant_invite=True)
+    @checks.admin_or_permissions(manage_nicknames=True)
     async def invite(self, ctx):
         """Creates a server invite"""
         server = ctx.message.server
@@ -81,6 +61,7 @@ class Admin_utils:
         await self.bot.say(invite.url)
 
     @commands.command(no_pm=True, pass_context=True)
+    @CustomChecks.selfbot()
     @commands.has_permissions(manage_emojis=True)
     async def add_emoji(self, ctx, emoji_name: str, emoji_url: str):
         """[SELFBOT ONLY] Adds an emoji to server
@@ -98,7 +79,7 @@ class Admin_utils:
             await self.bot.say("Failed: " + chat.inline(e))
 
     @commands.command(no_pm=True, pass_context=True)
-    @commands.has_permissions(manage_nicknames=True)
+    @checks.admin_or_permissions(manage_nicknames=True)
     async def massnick(self, ctx, nickname: str):
         """Mass nicknames everyone on the server"""
         server = ctx.message.server
@@ -118,6 +99,7 @@ class Admin_utils:
     @commands.command(no_pm=True, pass_context=True)
     @checks.admin_or_permissions(manage_nicknames=True)
     async def resetnicks(self, ctx):
+        """Resets nicknames on the server"""
         server = ctx.message.server
         for user in server.members:
             try:
@@ -127,6 +109,7 @@ class Admin_utils:
         await self.bot.say("Finished resetting server nicknames")
 
     @commands.command(no_pm=True, pass_context=True)
+    @CustomChecks.selfbot()
     @checks.admin_or_permissions(manage_server=True)
     async def addbot(self, ctx, oauth_url):  # From Squid-Plugins for Red-DiscordBot:
         # https://github.com/tekulvw/Squid-Plugins
@@ -165,4 +148,4 @@ class Admin_utils:
 
 
 def setup(bot):
-    bot.add_cog(Admin_utils(bot))
+    bot.add_cog(AdminUtils(bot))

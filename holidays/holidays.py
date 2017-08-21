@@ -75,7 +75,7 @@ Available country codes:
                     await self.bot.say(chat.info("Holidays in `{}` for current month not found".format(country_code)))
                     return
                 try:
-                    data[0]["date"] = "{}.{}.{}"\
+                    data[0]["date"] = "{}.{}.{}" \
                         .format(data[0]["date"]["day"], data[0]["date"]["month"], data[0]["date"]["year"])
                 except:
                     pass
@@ -84,7 +84,8 @@ Available country codes:
                                                                              "englishName": "Name (ENG)"},
                                                               tablefmt="fancy_grid")))
         except Exception as e:
-            await self.bot.say(chat.error("Unable to find any holidays.\nAn error has been occurred: "+chat.inline(e)))
+            await self.bot.say(
+                chat.error("Unable to find any holidays.\nAn error has been occurred: " + chat.inline(e)))
 
 
 def setup(bot):
