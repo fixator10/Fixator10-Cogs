@@ -258,7 +258,7 @@ class ModUtils:
             for page in chat.pagify(tabulate.tabulate(roles, tablefmt="orgtbl")):
                 await self.bot.say("**List of roles:**\n{}".format(chat.box(page)))
 
-    @commands.command(pass_context=True, no_pm=True, aliases=["perms", "permissions"])
+    @commands.command(pass_context=True, no_pm=True, aliases=["cperms", "permissions"])
     async def chan_perms(self, ctx, member: discord.Member, channel: discord.Channel = None):
         """Check user's permission for current or provided channel"""
         # From Dusty-Cogs for Red-DiscordBot: https://github.com/Lunar-Dust/Dusty-Cogs
