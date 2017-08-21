@@ -5,5 +5,5 @@
     "SHORT" : "Selfroles",
     "DESCRIPTION" : "Make selfassignable roles for members",
     "TAGS" : ["selfrole", "role"],
-	"REQUIREMENTS": ["tabulate"]
+    "REQUIREMENTS": ["tabulate", "wcwidth"]
 }

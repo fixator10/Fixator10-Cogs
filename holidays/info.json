@@ -5,5 +5,5 @@
     "SHORT" : "Check holidays for current month",
     "DESCRIPTION" : "Check holidays for current month",
     "TAGS" : [],
-	"REQUIREMENTS" : ["tabulate"]
+	"REQUIREMENTS" : ["tabulate", "wcwidth"]
 }

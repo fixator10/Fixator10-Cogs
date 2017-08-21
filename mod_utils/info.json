@@ -5,5 +5,5 @@
     "SHORT" : "Commands for getting information about users or servers.",
     "DESCRIPTION" : "Commands for getting information about users or servers.",
     "TAGS" : [],
-	"REQUIREMENTS": ["matplotlib"]
+	"REQUIREMENTS": ["matplotlib", "tabulate", "wcwidth"]
 }
