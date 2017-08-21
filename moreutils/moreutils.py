@@ -66,7 +66,7 @@ class CustomChecks:
 class MoreUtils:
     def __init__(self, bot: discord.Client):
         self.bot = bot
-        self.config_file = "data/fix10_utils/config.json"
+        self.config_file = "data/moreutils/config.json"
         self.config = dataIO.load_json(self.config_file)
 
     @commands.group(pass_context=True)
