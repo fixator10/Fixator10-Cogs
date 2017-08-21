@@ -51,18 +51,6 @@ def rgb_to_cmyk(r, g, b):
     return c * cmyk_scale, m * cmyk_scale, y * cmyk_scale, k * cmyk_scale
 
 
-class CustomChecks:
-    # noinspection PyMethodParameters
-    def selfbot():
-        def predicate(ctx):
-            if ctx.bot.user.bot:  # if bot.user.bot is True - bot is not selfbot
-                return False
-            else:
-                return True
-
-        return commands.check(predicate)
-
-
 class MoreUtils:
     def __init__(self, bot: discord.Client):
         self.bot = bot
@@ -70,7 +58,6 @@ class MoreUtils:
         self.config = dataIO.load_json(self.config_file)
 
     @commands.group(pass_context=True)
-    @CustomChecks.selfbot()
     async def utilsset(self, ctx):
         """More utils settings"""
         if ctx.invoked_subcommand is None:
@@ -140,7 +127,6 @@ class MoreUtils:
         await self.bot.say(chat.info("Signature color changed to {} ({})".format(hex_color, chat.inline(color))))
 
     @commands.command(pass_context=True)
-    @CustomChecks.selfbot()
     @commands.has_permissions(embed_links=True)
     async def signed(self, ctx, *, message: str = None):
         """Says something with embedded signature
@@ -289,6 +275,9 @@ def check_files():
 
 
 def setup(bot):
+    if bot.user.bot:
+        raise RuntimeError("This cog is only for selfbots\n\nUse\n[p]cog uninstall Fixator10-Cogs moreutils\nto uninstall this cog.")
+    else:
     check_folders()
     check_files()
     bot.add_cog(MoreUtils(bot))

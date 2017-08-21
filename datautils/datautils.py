@@ -313,6 +313,6 @@ class DataUtils:
 
 def setup(bot):
     if bot.user.bot:
-        RuntimeError("This cog is only for selfbots\n\nUse\n[p]cog uninstall Fixator10-Cogs modutils\nto uninstall this cog.")
+        raise RuntimeError("This cog is only for selfbots\n\nUse\n[p]cog uninstall Fixator10-Cogs modutils\nto uninstall this cog.")
     else:
         bot.add_cog(DataUtils(bot))
