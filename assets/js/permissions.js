@@ -136,14 +136,14 @@ angular.module('permissionsCalc', ['themes'])
                     {active: false, id: 'change_nickname',  name: 'Change Nickname',       value: 0x4000000,  auto: true },
                     {active: false, id: 'manage_webhooks',  name: 'Manage Webhooks',       value: 0x20000000, auto: false},
                     {active: false, id: 'manage_emojis',    name: 'Manage Emojis',         value: 0x40000000, auto: true },
-                    {active: false, id: 'view_audit_log',   name: 'View Audit Log',        value: 0x80,       auto: true }
+                    {active: false, id: 'view_audit_log',   name: 'View Audit Log',        value: 0x80,       auto: true },
+                    {active: false, id: 'view_channel',     name: 'View Channel',          value: 0x400,      auto: true }
                 ]
             },
             {
                 name: 'Text',
                 active: false,
                 permissions: [
-                    {active: false, id: 'read_messages',        name: 'Read Messages',        value: 0x400,   auto: true },
                     {active: false, id: 'send_tts_messages',    name: 'Send TTS Messages',    value: 0x1000,  auto: true },
                     {active: false, id: 'embed_links',          name: 'Embed Links',          value: 0x4000,  auto: true },
                     {active: false, id: 'read_message_history', name: 'Read Message History', value: 0x10000, auto: true },
