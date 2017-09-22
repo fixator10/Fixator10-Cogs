@@ -275,9 +275,6 @@ def check_files():
 
 
 def setup(bot):
-    if bot.user.bot:
-        raise RuntimeError("This cog is only for selfbots\n\nUse\n[p]cog uninstall Fixator10-Cogs moreutils\nto uninstall this cog.")
-    else:
-        check_folders()
-        check_files()
-        bot.add_cog(MoreUtils(bot))
+    check_folders()
+    check_files()
+    bot.add_cog(MoreUtils(bot))

@@ -24,7 +24,7 @@ class DataUtils:
     def __init__(self, bot: discord.Client):
         self.bot = bot
 
-    @commands.command(pass_context=True, no_pm=True, aliases=['memberinfo', 'meminfo', 'membinfo',
+    @commands.command(pass_context=True, no_pm=True, aliases=['memberinfo', 'membinfo',
                                                               'member', 'user'])
     async def uinfo(self, ctx, member: discord.Member = None):
         """Information on a user"""
@@ -312,7 +312,4 @@ class DataUtils:
 
 
 def setup(bot):
-    if bot.user.bot:
-        raise RuntimeError("This cog is only for selfbots\n\nUse\n[p]cog uninstall Fixator10-Cogs datautils\nto uninstall this cog.")
-    else:
-        bot.add_cog(DataUtils(bot))
+    bot.add_cog(DataUtils(bot))
