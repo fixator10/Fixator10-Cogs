@@ -4,6 +4,7 @@ import aiohttp
 from datetime import datetime
 from .utils import chat_formatting as chat
 import tabulate
+from random import choice
 
 
 class MinecraftData:
@@ -43,6 +44,7 @@ class MinecraftData:
     @minecraft.command(pass_context=True)
     async def server(self, ctx, IP_or_domain: str):
         """Get info about server"""
+        banner_style = choise("", "sunset", "night", "nether")
         try:
             async with self.session.get('https://use.gameapis.net/mc/query/info/{}'.format(IP_or_domain)) as data:
                 data = await data.json()
@@ -51,7 +53,7 @@ class MinecraftData:
             em.set_footer(text="Provided by GameAPIs.net")
             em.add_field(name="Status", value=str(data["status"]).replace("True", "OK").replace("False", "Not OK"))
             em.set_thumbnail(url="https://use.gameapis.net/mc/query/icon/{}".format(IP_or_domain))
-            em.set_image(url="https://use.gameapis.net/mc/query/banner/{}".format(IP_or_domain))
+            em.set_image(url="https://use.gameapis.net/mc/query/banner/{}/{}".format(IP_or_domain, banner_style))
             if data["status"]:
                 em.add_field(name="Ping", value=data["ping"] or chat.inline("N/A"))
                 em.add_field(name="Version", value="{} (Protocol: {})".format(data["version"], data["protocol"]))
