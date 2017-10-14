@@ -23,34 +23,35 @@ class MinecraftData:
     async def skin(self, ctx, nickname: str, helm_layer: bool = True):
         """Get minecraft skin by nickname"""
         helm_layer = str(helm_layer).lower()
-        em = discord.Embed(timestamp=ctx.message.timestamp, url="https://mcapi.ca/rawskin/" + nickname)
-        em.set_footer(text="Provided by MCAPI", icon_url="https://mcapi.ca/img/icon.png")
-        em.set_author(name=nickname, icon_url="https://mcapi.ca/avatar/" + nickname + "/" + helm_layer)
-        em.set_thumbnail(url="https://mcapi.ca/rawskin/" + nickname)
-        em.set_image(url="https://mcapi.ca/skin/" + nickname + "/" + helm_layer)
+        em = discord.Embed(timestamp=ctx.message.timestamp, url="https://use.gameapis.net/mc/images/rawskin/" + nickname)
+        em.set_footer(text="Provided by GameAPIs.net")
+        em.set_author(name=nickname, icon_url="https://use.gameapis.net/mc/images/avatar/" + nickname + "/" + helm_layer)
+        em.set_thumbnail(url="https://use.gameapis.net/mc/images/rawskin/" + nickname)
+        em.set_image(url="https://use.gameapis.net/mc/images/skin/" + nickname + "/" + helm_layer)
         await self.bot.say(embed=em)
 
-    @minecraft.command(pass_context=True)
-    async def isup(self, ctx, IP_or_domain: str):
-        """Is minecraft server up or down?"""
-        try:
-            async with self.session.get('https://mcapi.ca/isup/' + IP_or_domain) as data:
-                data = await data.json()
-            await self.bot.say(data["message"])
-        except Exception as e:
-            await self.bot.say(chat.error("Unable to check. An error has been occurred: " + chat.inline(e)))
+    # @minecraft.command(pass_context=True)
+    # async def isup(self, ctx, IP_or_domain: str):
+    #     """Is minecraft server up or down?"""
+    #     try:
+    #         async with self.session.get('https://use.gameapis.net/mc/isup/' + IP_or_domain) as data:
+    #             data = await data.json()
+    #         await self.bot.say(data["message"])
+    #     except Exception as e:
+    #         await self.bot.say(chat.error("Unable to check. An error has been occurred: " + chat.inline(e)))
 
     @minecraft.command(pass_context=True)
     async def server(self, ctx, IP_or_domain: str):
         """Get info about server"""
         try:
-            async with self.session.get('https://mcapi.ca/query/{}/info'.format(IP_or_domain)) as data:
+            async with self.session.get('https://use.gameapis.net/mc/query/info/{}'.format(IP_or_domain)) as data:
                 data = await data.json()
-            em = discord.Embed(title="Server data: " + IP_or_domain, description="Provided by MCAPI",
+            em = discord.Embed(title="Server data: " + IP_or_domain, description="Provided by GameAPIs.net",
                                timestamp=ctx.message.timestamp)
-            em.set_footer(text="Provided by MCAPI", icon_url="https://mcapi.ca/img/icon.png")
+            em.set_footer(text="Provided by GameAPIs.net")
             em.add_field(name="Status", value=str(data["status"]).replace("True", "OK").replace("False", "Not OK"))
-            em.set_thumbnail(url="https://mcapi.ca/query/{}/icon".format(IP_or_domain))
+            em.set_thumbnail(url="https://use.gameapis.net/mc/query/icon/{}".format(IP_or_domain))
+            em.set_image(url="https://use.gameapis.net/mc/query/banner/{}".format(IP_or_domain))
             if data["status"]:
                 em.add_field(name="Ping", value=data["ping"] or chat.inline("N/A"))
                 em.add_field(name="Version", value="{} (Protocol: {})".format(data["version"], data["protocol"]))
@@ -65,11 +66,11 @@ class MinecraftData:
     async def status(self, ctx):
         """Get status of minecraft services"""
         try:
-            async with self.session.get('https://mcapi.ca/mcstatus') as data:
+            async with self.session.get('https://use.gameapis.net/mc/extra/status') as data:
                 data = await data.json()
-            em = discord.Embed(title="Status of minecraft services", description="Provided by MCAPI",
+            em = discord.Embed(title="Status of minecraft services", description="Provided by GameAPIs.net",
                                timestamp=ctx.message.timestamp)
-            em.set_footer(text="Provided by MCAPI", icon_url="https://mcapi.ca/img/icon.png")
+            em.set_footer(text="Provided by GameAPIs.net")
             for entry, status in data.items():
                 status = status["status"]
                 em.add_field(name=entry, value=status)
