@@ -48,7 +48,7 @@ class MinecraftData:
         try:
             async with self.session.get('https://use.gameapis.net/mc/query/info/{}'.format(IP_or_domain)) as data:
                 data = await data.json()
-            em = discord.Embed(title="Server data: " + IP_or_domain, description="Provided by GameAPIs.net",
+            em = discord.Embed(title="Server data: " + IP_or_domain, description="**MOTD**: {}".format(data["motds"]["clean"]),
                                timestamp=ctx.message.timestamp)
             em.set_footer(text="Provided by GameAPIs.net")
             em.add_field(name="Status", value=str(data["status"]).replace("True", "OK").replace("False", "Not OK"))
