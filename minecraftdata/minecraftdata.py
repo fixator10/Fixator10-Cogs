@@ -44,7 +44,7 @@ class MinecraftData:
     @minecraft.command(pass_context=True)
     async def server(self, ctx, IP_or_domain: str):
         """Get info about server"""
-        banner_style = choice("", "sunset", "night", "nether")
+        banner_style = choice(["", "sunset", "night", "nether"])
         try:
             async with self.session.get('https://use.gameapis.net/mc/query/info/{}'.format(IP_or_domain)) as data:
                 data = await data.json()
