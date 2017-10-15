@@ -74,7 +74,9 @@ class MinecraftData:
             em.set_footer(text="Provided by GameAPIs.net")
             for service in data:
                 for entry, status in service.items():
-                    em.add_field(name=entry, value=status)
+                    em.add_field(name=entry, value=status.replace("red", "💔 **UNAVAILABLE**")\
+                                                         .replace("yellow", "💛 **SOME ISSUES**")\
+                                                         .replace("green", "💚 **OK**"))
             await self.bot.say(embed=em)
         except Exception as e:
             await self.bot.say(chat.error("Unable to check. An error has been occurred: {}".format(chat.inline(e))))
