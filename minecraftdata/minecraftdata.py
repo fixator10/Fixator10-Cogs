@@ -68,14 +68,13 @@ class MinecraftData:
     async def status(self, ctx):
         """Get status of minecraft services"""
         try:
-            async with self.session.get('https://use.gameapis.net/mc/extra/status') as data:
+            async with self.session.get('https://status.mojang.com/check') as data:
                 data = await data.json()
-            em = discord.Embed(title="Status of minecraft services", description="Provided by GameAPIs.net",
-                               timestamp=ctx.message.timestamp)
+            em = discord.Embed(title="Status of minecraft services", timestamp=ctx.message.timestamp)
             em.set_footer(text="Provided by GameAPIs.net")
-            for entry, status in data.items():
-                status = status["status"]
-                em.add_field(name=entry, value=status)
+            for service in data:
+                for entry, status in data.items():
+                    em.add_field(name=entry, value=status)
             await self.bot.say(embed=em)
         except Exception as e:
             await self.bot.say(chat.error("Unable to check. An error has been occurred: {}".format(chat.inline(e))))
