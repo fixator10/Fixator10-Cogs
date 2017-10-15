@@ -24,11 +24,11 @@ class MinecraftData:
     async def skin(self, ctx, nickname: str, helm_layer: bool = True):
         """Get minecraft skin by nickname"""
         helm_layer = str(helm_layer).lower()
-        em = discord.Embed(timestamp=ctx.message.timestamp, url="https://use.gameapis.net/mc/images/rawskin/" + nickname)
+        em = discord.Embed(timestamp=ctx.message.timestamp, url="https://use.gameapis.net/mc/images/rawskin/{}".format(nickname))
         em.set_footer(text="Provided by GameAPIs.net")
-        em.set_author(name=nickname, icon_url="https://use.gameapis.net/mc/images/avatar/" + nickname + "/" + helm_layer)
-        em.set_thumbnail(url="https://use.gameapis.net/mc/images/rawskin/" + nickname)
-        em.set_image(url="https://use.gameapis.net/mc/images/skin/" + nickname + "/" + helm_layer)
+        em.set_author(name=nickname, icon_url="https://use.gameapis.net/mc/images/avatar/{}/{}".format(nickname, helm_layer))
+        em.set_thumbnail(url="https://use.gameapis.net/mc/images/rawskin/{}".format(nickname))
+        em.set_image(url="https://use.gameapis.net/mc/images/skin/{}/{}".format(nickname, helm_layer))
         await self.bot.say(embed=em)
 
     # @minecraft.command(pass_context=True)
@@ -78,7 +78,7 @@ class MinecraftData:
                 em.add_field(name=entry, value=status)
             await self.bot.say(embed=em)
         except Exception as e:
-            await self.bot.say(chat.error("Unable to check. An error has been occurred: " + chat.inline(e)))
+            await self.bot.say(chat.error("Unable to check. An error has been occurred: {}".format(chat.inline(e))))
 
     @minecraft.command(pass_context=True, aliases=["nicknames", "nickhistory"])
     async def nicks(self, ctx, current_nick: str):
@@ -89,7 +89,7 @@ class MinecraftData:
             return
         try:
             async with self.session.get('https://api.mojang.com/user/'
-                                        'profiles/' + userid + '/names') as data:
+                                        'profiles/{}/names'.format(userid)) as data:
                 data_history = await data.json()
             for nick in data_history:
                 try:
