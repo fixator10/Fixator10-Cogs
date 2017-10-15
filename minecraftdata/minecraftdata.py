@@ -73,7 +73,7 @@ class MinecraftData:
             em = discord.Embed(title="Status of minecraft services", timestamp=ctx.message.timestamp)
             em.set_footer(text="Provided by GameAPIs.net")
             for service in data:
-                for entry, status in data.items():
+                for entry, status in service.items():
                     em.add_field(name=entry, value=status)
             await self.bot.say(embed=em)
         except Exception as e:
