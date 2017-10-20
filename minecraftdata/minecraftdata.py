@@ -106,8 +106,11 @@ class MinecraftData:
                                           chat.inline(e)))
 
     async def getuserid(self, nickname: str):
+        try:
         async with self.session.get('https://api.mojang.com/users/profiles/minecraft/' + nickname) as data:
             response_data = await data.json()
+        except:
+            return None
         if response_data is None:
             return None
         else:
