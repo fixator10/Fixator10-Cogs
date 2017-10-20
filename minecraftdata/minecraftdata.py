@@ -71,7 +71,6 @@ class MinecraftData:
             async with self.session.get('https://status.mojang.com/check') as data:
                 data = await data.json()
             em = discord.Embed(title="Status of minecraft services", timestamp=ctx.message.timestamp)
-            em.set_footer(text="Provided by GameAPIs.net")
             for service in data:
                 for entry, status in service.items():
                     em.add_field(name=entry, value=status.replace("red", "💔 **UNAVAILABLE**")\
