@@ -74,14 +74,16 @@ Available country codes:
                 if not data:
                     await self.bot.say(chat.info("Holidays in `{}` for current month not found".format(country_code)))
                     return
-                try:
-                    data[0]["date"] = "{}.{}.{}" \
-                        .format(data[0]["date"]["day"], data[0]["date"]["month"], data[0]["date"]["year"])
-                except:
-                    pass
+                for hol in data:
+                    try:
+                        hol["date"] = "{}.{}.{}" \
+                        .format(hol["date"]["day"], hol["date"]["month"], hol["date"]["year"])
+                    except:
+                        pass
                 await self.bot.say(chat.box(tabulate.tabulate(data, headers={"date": "Date",
                                                                              "localName": "Name",
-                                                                             "englishName": "Name (ENG)"},
+                                                                             "englishName": "Name (ENG)",
+                                                                             "note": "Note"},
                                                               tablefmt="fancy_grid")))
         except Exception as e:
             await self.bot.say(
