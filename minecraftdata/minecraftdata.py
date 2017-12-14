@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 import aiohttp
 from datetime import datetime
-from .utils import chat_formatting as chat
+from cogs.utils import chat_formatting as chat
 import tabulate
 from random import choice
 
@@ -24,9 +24,11 @@ class MinecraftData:
     async def skin(self, ctx, nickname: str, helm_layer: bool = True):
         """Get minecraft skin by nickname"""
         helm_layer = str(helm_layer).lower()
-        em = discord.Embed(timestamp=ctx.message.timestamp, url="https://use.gameapis.net/mc/images/rawskin/{}".format(nickname))
+        em = discord.Embed(timestamp=ctx.message.timestamp,
+                           url="https://use.gameapis.net/mc/images/rawskin/{}".format(nickname))
         em.set_footer(text="Provided by GameAPIs.net")
-        em.set_author(name=nickname, icon_url="https://use.gameapis.net/mc/images/avatar/{}/{}".format(nickname, helm_layer))
+        em.set_author(name=nickname,
+                      icon_url="https://use.gameapis.net/mc/images/avatar/{}/{}".format(nickname, helm_layer))
         em.set_thumbnail(url="https://use.gameapis.net/mc/images/rawskin/{}".format(nickname))
         em.set_image(url="https://use.gameapis.net/mc/images/skin/{}/{}".format(nickname, helm_layer))
         await self.bot.say(embed=em)
@@ -54,7 +56,7 @@ class MinecraftData:
             em.set_thumbnail(url="https://use.gameapis.net/mc/query/icon/{}".format(IP_or_domain))
             em.set_image(url="https://use.gameapis.net/mc/query/banner/{}/{}".format(IP_or_domain, banner_style))
             if data["status"]:
-                em.description="**MOTD:**{}".format(chat.box(data["motds"]["clean"]))
+                em.description = "**MOTD:**{}".format(chat.box(data["motds"]["clean"]))
                 em.add_field(name="Ping", value=data["ping"] or chat.inline("N/A"))
                 em.add_field(name="Version", value="{} (Protocol: {})".format(data["version"], data["protocol"]))
                 em.add_field(name="Players", value="{}/{}".format(data["players"]["online"], data["players"]["max"]))
@@ -73,9 +75,9 @@ class MinecraftData:
             em = discord.Embed(title="Status of minecraft services", timestamp=ctx.message.timestamp)
             for service in data:
                 for entry, status in service.items():
-                    em.add_field(name=entry, value=status.replace("red", "💔 **UNAVAILABLE**")\
-                                                         .replace("yellow", "💛 **SOME ISSUES**")\
-                                                         .replace("green", "💚 **OK**"))
+                    em.add_field(name=entry, value=status.replace("red", "💔 **UNAVAILABLE**") \
+                                 .replace("yellow", "💛 **SOME ISSUES**") \
+                                 .replace("green", "💚 **OK**"))
             await self.bot.say(embed=em)
         except Exception as e:
             await self.bot.say(chat.error("Unable to check. An error has been occurred: {}".format(chat.inline(e))))
@@ -94,7 +96,7 @@ class MinecraftData:
             for nick in data_history:
                 try:
                     nick["changedToAt"] = \
-                        datetime.fromtimestamp(nick["changedToAt"] / 1000).strftime('%d.%m.%Y %H:%M:%S')
+                        datetime.utcfromtimestamp(nick["changedToAt"] / 1000).strftime('%d.%m.%Y %H:%M:%S')
                 except:
                     pass
             await self.bot.say(chat.box(tabulate.tabulate(data_history,
