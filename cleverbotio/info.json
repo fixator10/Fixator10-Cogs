@@ -4,5 +4,6 @@
     "NAME" : "CleverBotIO",
     "SHORT" : "CleverBot.io cog",
     "DESCRIPTION" : "CleverBot.io cog",
-    "TAGS" : []
+    "TAGS" : [],
+    "HIDDEN" : "true"
 }

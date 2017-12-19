@@ -90,6 +90,7 @@ class CleverBotIO():
             else:
                 await self.bot.send_message(channel, response)
 
+
 def check_folders():
     if not os.path.exists("data/cleverbotio"):
         print("Creating data/cleverbotio folder...")
