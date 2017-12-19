@@ -1,10 +1,15 @@
 import discord
 import os
-import cleverbot
 from cogs.utils import checks
 from discord.ext import commands
 from cogs.utils.dataIO import dataIO
 from cogs.utils.chat_formatting import error
+try:
+    import cleverbot
+
+    cbio_lib = True
+except:
+    cbio_lib = False
 
 class CleverBotIO():
     """CleverBot.IO"""
@@ -97,4 +102,7 @@ def check_files():
 def setup(bot:discord.Client):
     check_folders()
     check_files()
-    bot.add_cog(CleverBotIO(bot))
+    if cbio_lib:
+        bot.add_cog(CleverBotIO(bot))
+    else:
+        raise RuntimeError("You need to run `pip3 install --upgrade git+git://github.com/Eternity71529/cleverbot.git`")

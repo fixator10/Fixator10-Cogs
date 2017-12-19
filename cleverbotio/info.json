@@ -5,5 +5,5 @@
     "SHORT" : "CleverBot.io cog",
     "DESCRIPTION" : "CleverBot.io cog",
     "TAGS" : [],
-    "REQUIREMENTS" : ["git+git://github.com/Eternity71529/cleverbot.git"]
+    "REQUIREMENTS" : [""]
 }
