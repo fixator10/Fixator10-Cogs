@@ -62,7 +62,7 @@ class CleverBotIO():
         if self.cleverbot is not None:
             return await self.cleverbot.ask(text)
         else:
-            return error("Credentials not set. Use `[p]cleverbotio apikey user key`")
+            return str(error("Credentials not set. Use `[p]cleverbotio apikey user key`"))
 
     async def on_message(self, message: discord.Message):
         if not self.settings["TOGGLE"] or message.server is None:
