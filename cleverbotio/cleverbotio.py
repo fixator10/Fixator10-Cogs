@@ -32,7 +32,7 @@ class CleverBotIO():
         except Exception as e:
             await self.bot.say(error("An exception occurred: {}".format(e)))
         else:
-            self.bot.say(result)
+            await self.bot.say(result)
 
     @cleverbotio.command()
     @checks.is_owner()
