@@ -54,6 +54,8 @@ class CleverBotIO():
         self.settings["key"] = key
         self.settings["user"] = user
         dataIO.save_json("data/cleverbotio/settings.json", self.settings)
+        self.cleverbot = cleverbot.AsyncClient(api_key=self.settings["key"], user_id=self.settings["user"],
+                                               nick=self.bot.user.name)
         await self.bot.say("Credentials set.")
 
     async def get_response(self, text):
