@@ -98,7 +98,7 @@ class MinecraftData:
                     nick["changedToAt"] = \
                         datetime.utcfromtimestamp(nick["changedToAt"] / 1000).strftime('%d.%m.%Y %H:%M:%S')
                 except:
-                    pass
+                    nick["changedToAt"] = "Initial"
             await self.bot.say(chat.box(tabulate.tabulate(data_history,
                                                           headers={"name": "Nickname",
                                                                    "changedToAt": "Changed to at..."},
