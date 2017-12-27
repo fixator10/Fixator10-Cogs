@@ -1,10 +1,12 @@
-import discord
-from discord.ext import commands
-import aiohttp
 from datetime import datetime
-from cogs.utils import chat_formatting as chat
-import tabulate
 from random import choice
+
+import aiohttp
+import discord
+import tabulate
+from discord.ext import commands
+
+from cogs.utils import chat_formatting as chat
 
 
 class MinecraftData:
@@ -99,10 +101,10 @@ class MinecraftData:
                         datetime.utcfromtimestamp(nick["changedToAt"] / 1000).strftime('%d.%m.%Y %H:%M:%S')
                 except:
                     nick["changedToAt"] = "Initial"
-            await self.bot.say(chat.box(tabulate.tabulate(data_history,
-                                                          headers={"name": "Nickname",
-                                                                   "changedToAt": "Changed to at..."},
-                                                          tablefmt="fancy_grid")))
+            table = tabulate.tabulate(data_history, headers={"name": "Nickname", "changedToAt": "Changed to at..."},
+                                      tablefmt="fancy_grid")
+            for page in chat.pagify(table):
+                await self.bot.say(chat.box(page))
         except Exception as e:
             await self.bot.say(chat.error("Unable to check name history.\nAn error has been occurred: " +
                                           chat.inline(e)))
