@@ -98,7 +98,7 @@ class MinecraftData:
             for nick in data_history:
                 try:
                     nick["changedToAt"] = \
-                        datetime.utcfromtimestamp(nick["changedToAt"] / 1000).strftime('%d.%m.%Y %H:%M:%S')
+                        datetime.utcfromtimestamp(nick["changedToAt"] / 1000).strftime('%d.%m.%Y %H:%M:%S %Z')
                 except:
                     nick["changedToAt"] = "Initial"
             table = tabulate.tabulate(data_history, headers={"name": "Nickname", "changedToAt": "Changed to at..."},
