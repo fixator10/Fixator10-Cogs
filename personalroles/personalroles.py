@@ -136,7 +136,7 @@ class PersonalRoles:
                                " Contact admin/mod for assign your personal role to you.")
         else:
             await self.bot.edit_role(ctx.message.server,
-                                     discord.utils.get(ctx.message.server.roles, id=self.config[sv][authorid]),
+                                     discord.utils.get(ctx.message.server.roles, id=self.config[sv]["users"][authorid]),
                                      colour=colour)
             await self.bot.say("Changed color of {}'s personal role to {}".format(ctx.message.author.name, colour))
 
