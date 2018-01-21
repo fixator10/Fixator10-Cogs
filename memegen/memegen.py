@@ -3,7 +3,7 @@ from urllib.parse import quote
 import discord
 import aiohttp
 from validators import url
-from .utils.chat_formatting import *
+from cogs.utils.chat_formatting import *
 
 
 class MemeGen:
@@ -21,7 +21,11 @@ class MemeGen:
 
     @meme.command()
     async def embed(self, template: str, upper_text: str = "", down_text: str = "", font: str = "impact"):
+        """Show meme via embed"""
         link = await self.get_meme(template, upper_text, down_text, font)
+        if not link:
+            await self.bot.say("This template not found")
+            return
         embed = discord.Embed()
         embed.set_image(url=link)
         embed.set_footer(text="https://memegen.link/", icon_url="https://memegen.link/images/favicon-16x16.png")
@@ -29,7 +33,11 @@ class MemeGen:
 
     @meme.command()
     async def link(self, template: str, upper_text: str = "", down_text: str = "", font: str = "impact"):
+        """Show meme via link"""
         link = await self.get_meme(template, upper_text, down_text, font)
+        if not link:
+            await self.bot.say("This template not found")
+            return
         await self.bot.say(link)
 
     @meme.command()
@@ -61,7 +69,6 @@ class MemeGen:
             template_url = template
         template = await self.get_template(template)
         if template is None:
-            await self.bot.say("This template not found")
             return
         link = "https://memegen.link/{}/{}/{}.jpg?font={}".format(template, upper_text, down_text, font)
         if template == "custom":
