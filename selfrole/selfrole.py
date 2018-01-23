@@ -2,9 +2,9 @@ import discord
 import os
 from tabulate import tabulate
 from discord.ext import commands
-from .utils import checks
-from .utils import chat_formatting as chat
-from .utils.dataIO import dataIO
+from cogs.utils import checks
+from cogs.utils import chat_formatting as chat
+from cogs.utils.dataIO import dataIO
 
 
 class SelfRole:
@@ -37,7 +37,7 @@ class SelfRole:
                                                    "This incident will be reported.")))
 
     @selfrole.command(pass_context=True)
-    @checks.admin()
+    @checks.admin_or_permissions(manage_roles=True)
     async def add(self, ctx: commands.Context, *, role: discord.Role):
         """Add an role to accessible roles for selfrole command"""
         sv = ctx.message.server.id
@@ -52,7 +52,7 @@ class SelfRole:
                                          "for selfrole command".format(role.name, role.id)))
 
     @selfrole.command(pass_context=True)
-    @checks.admin()
+    @checks.admin_or_permissions(manage_roles=True)
     async def remove(self, ctx: commands.Context, *, role: discord.Role):
         """Remove role to accessible roles for selfrole command"""
         sv = ctx.message.server.id
@@ -67,7 +67,7 @@ class SelfRole:
                                          "for selfrole command".format(role.name, role.id)))
 
     @selfrole.command(pass_context=True, hidden=True)
-    @checks.admin()
+    @checks.admin_or_permissions(manage_roles=True)
     async def removeid(self, ctx: commands.Context, *, id: str):
         """Remove role to accessible roles for selfrole command by id"""
         sv = ctx.message.server.id
