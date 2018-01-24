@@ -12,6 +12,9 @@ class Holidays:
         self.bot = bot
         self.session = aiohttp.ClientSession(loop=self.bot.loop)
 
+    def __unload(self):
+        self.session.close()
+
     @commands.command(pass_context=True)
     async def holidays(self, ctx, country_code: str):
         """Check holidays for this month

@@ -16,6 +16,9 @@ class MinecraftData:
         self.bot = bot
         self.session = aiohttp.ClientSession(loop=self.bot.loop)
 
+    def __unload(self):
+        self.session.close()
+
     @commands.group(name="minecraft", aliases=["mc"], pass_context=True)
     async def minecraft(self, ctx):
         """Get Minecraft-Related data"""

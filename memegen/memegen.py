@@ -13,6 +13,9 @@ class MemeGen:
         self.bot = bot
         self.session = aiohttp.ClientSession(loop=self.bot.loop)
 
+    def __unload(self):
+        self.session.close()
+
     @commands.group(pass_context=True)
     async def meme(self, ctx):
         """Make memes with bot!"""
