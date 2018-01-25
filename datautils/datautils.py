@@ -181,13 +181,13 @@ class DataUtils:
         vchans = sorted(vchans, key=lambda chan: chan.position)
         tchans = sorted(tchans, key=lambda chan: chan.position)
         em = discord.Embed(title="Channels list", colour=random.randint(0, 16777215))
-        em.add_field(name="Text channels:", 
+        em.add_field(name="Text channels:",
                      value="\n".join([str(x) for x in tchans]) or "No text channels",
                      inline=False)
         em.add_field(name="Voice channels:",
                      value="\n".join([str(x) for x in vchans]) or "No voice channels",
                      inline=False)
-        em.set_footer(text="Total count of channels: " + str(len(server.channels)) +
+        em.set_footer(text="Total count of channels: " + str(len(tchans)+len(vchans)) +
                            " | Text Channels: " + str(len(tchans)) + " | Voice Channels: " + str(len(vchans)))
         if ctx.message.channel.permissions_for(ctx.message.author).embed_links:
             await self.bot.say(embed=em)
