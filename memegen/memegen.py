@@ -1,8 +1,10 @@
-from discord.ext import commands
 from urllib.parse import quote
-import discord
+
 import aiohttp
+import discord
+from discord.ext import commands
 from validators import url
+
 from cogs.utils.chat_formatting import *
 
 

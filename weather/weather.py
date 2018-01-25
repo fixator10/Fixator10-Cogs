@@ -1,12 +1,14 @@
-import forecastio
-import geocoder
-import discord
 import datetime
 import os
-from .utils.dataIO import dataIO
-from .utils import chat_formatting as chat
-from .utils import checks
+
+import discord
+import forecastio
+import geocoder
 from discord.ext import commands
+
+from cogs.utils import chat_formatting as chat
+from cogs.utils import checks
+from cogs.utils.dataIO import dataIO
 
 
 def xstr(s):

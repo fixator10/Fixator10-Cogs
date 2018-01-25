@@ -1,18 +1,16 @@
 ﻿# -*- coding: utf-8 -*-
 import colorsys
 import datetime
+import os
 import random
 import re
-import os
 
 import discord
+import matplotlib.colors as colors
 from discord.ext import commands
 
-from .utils.dataIO import dataIO
-from .utils import checks
-from .utils import chat_formatting as chat
-
-import matplotlib.colors as colors
+from cogs.utils import chat_formatting as chat
+from cogs.utils.dataIO import dataIO
 
 
 def hex_to_rgb(hex_string):

@@ -1,9 +1,12 @@
-import discord
 import os
-from cogs.utils import checks
+
+import discord
 from discord.ext import commands
-from cogs.utils.dataIO import dataIO
+
+from cogs.utils import checks
 from cogs.utils.chat_formatting import error
+from cogs.utils.dataIO import dataIO
+
 try:
     import cleverbot
 

@@ -1,15 +1,15 @@
+import base64
 import itertools
+import os
 import random
 import re
-import base64
-import os
 from urllib import parse
 
 import discord
 from discord.ext import commands
 
-from .utils.dataIO import dataIO
-from .utils import chat_formatting as chat
+from cogs.utils import chat_formatting as chat
+from cogs.utils.dataIO import dataIO
 
 try:
     from yandex_translate import YandexTranslate

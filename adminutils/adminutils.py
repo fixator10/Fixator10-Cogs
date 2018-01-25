@@ -1,11 +1,13 @@
+import json
+import urllib.parse as up
+from asyncio import sleep
+
 import aiohttp
 import discord
 from discord.ext import commands
-from asyncio import sleep
-from .utils import chat_formatting as chat
-from .utils import checks
-import urllib.parse as up
-import json
+
+from cogs.utils import chat_formatting as chat
+from cogs.utils import checks
 
 
 class CustomChecks:

@@ -1,12 +1,13 @@
 import random
 import re
-import tabulate
 
 import discord
-from discord.ext import commands
-from .utils import chat_formatting as chat
-from .utils import checks
 import matplotlib.colors as colors
+import tabulate
+from discord.ext import commands
+
+from cogs.utils import chat_formatting as chat
+from cogs.utils import checks
 
 
 def rgb_to_hex(rgb_tuple):

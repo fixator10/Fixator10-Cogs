@@ -1,11 +1,13 @@
-import discord
-from discord.ext import commands
-from cogs.utils import checks
-from cogs.utils import chat_formatting as chat
-from cogs.utils.dataIO import dataIO
 import os
-from tabulate import tabulate
+
+import discord
 from __main__ import settings
+from discord.ext import commands
+from tabulate import tabulate
+
+from cogs.utils import chat_formatting as chat
+from cogs.utils import checks
+from cogs.utils.dataIO import dataIO
 
 
 class PersonalRoles:
