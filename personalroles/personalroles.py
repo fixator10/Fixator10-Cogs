@@ -11,7 +11,8 @@ from cogs.utils.dataIO import dataIO
 
 
 class PRCustomCheck:
-    def assigned_role(self):
+    # noinspection PyMethodParameters
+    def assigned_role():
         def predicate(ctx: commands.Context):
             config_file = "data/personalroles/config.json"
             config = dataIO.load_json(config_file)
