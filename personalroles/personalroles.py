@@ -10,6 +10,21 @@ from cogs.utils import checks
 from cogs.utils.dataIO import dataIO
 
 
+class PRCustomCheck:
+    def assigned_role(self):
+        def predicate(ctx: commands.Context):
+            config_file = "data/personalroles/config.json"
+            config = dataIO.load_json(config_file)
+            author = ctx.message.author
+            server = ctx.message.server
+            if author.id in config[server.id]["users"]:
+                return True
+            else:
+                return False
+
+        return commands.check(predicate)
+
+
 class PersonalRoles:
     """Assign and edit personal roles"""
 
@@ -129,6 +144,7 @@ class PersonalRoles:
 
     @commands.cooldown(1, 30, commands.BucketType.user)
     @myrole.command(pass_context=True, aliases=["color"], no_pm=True)
+    @PRCustomCheck.assigned_role()
     async def colour(self, ctx, *, colour: discord.Colour):
         """Change color of personal role"""
         sv = ctx.message.server.id
@@ -144,6 +160,7 @@ class PersonalRoles:
 
     @commands.cooldown(1, 30, commands.BucketType.user)
     @myrole.command(pass_context=True, no_pm=True)
+    @PRCustomCheck.assigned_role()
     async def name(self, ctx, *, name: str):
         """Change name of personal role
         You cant use blacklisted names or control role names"""
