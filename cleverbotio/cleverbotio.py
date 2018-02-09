@@ -14,10 +14,11 @@ try:
 except:
     cbio_lib = False
 
+
 class CleverBotIO():
     """CleverBot.IO"""
 
-    def __init__(self, bot:discord.Client):
+    def __init__(self, bot: discord.Client):
         self.bot = bot
         self.settings = dataIO.load_json("data/cleverbotio/settings.json")
         self.loop = self.bot.loop
@@ -107,7 +108,7 @@ def check_files():
         dataIO.save_json(f, data)
 
 
-def setup(bot:discord.Client):
+def setup(bot: discord.Client):
     check_folders()
     check_files()
     if cbio_lib:

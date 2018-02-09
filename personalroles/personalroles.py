@@ -170,6 +170,8 @@ class PersonalRoles:
         if sv not in self.config or authorid not in self.config[sv]["users"]:
             await self.bot.say("Looks like you are not in server's roles list."
                                " Contact admin/mod for assign your personal role to you.")
+        if len(name) > 100:
+            name = name[:100]
         else:
             if name.casefold() in self.config[sv]["blacklist"] \
                     or settings.get_server_mod(ctx.message.server).lower() == name.lower() \
