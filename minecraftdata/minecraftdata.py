@@ -28,14 +28,19 @@ class MinecraftData:
     @minecraft.command(pass_context=True)
     async def skin(self, ctx, nickname: str, helm_layer: bool = True):
         """Get minecraft skin by nickname"""
-        helm_layer = str(helm_layer).lower()
+        if helm_layer:
+            helm_layer = "?overlay"
+        uuid = await self.getuserid(nickname)
+        if uuid is None:
+            await self.bot.say(chat.error("This player not found"))
+            return
         em = discord.Embed(timestamp=ctx.message.timestamp,
-                           url="https://use.gameapis.net/mc/images/rawskin/{}".format(nickname))
-        em.set_footer(text="Provided by GameAPIs.net")
+                           url="https://crafatar.com/skins/{}".format(uuid))
+        em.set_footer(text="Provided by Crafatar")
         em.set_author(name=nickname,
-                      icon_url="https://use.gameapis.net/mc/images/avatar/{}/{}".format(nickname, helm_layer))
-        em.set_thumbnail(url="https://use.gameapis.net/mc/images/rawskin/{}".format(nickname))
-        em.set_image(url="https://use.gameapis.net/mc/images/skin/{}/{}".format(nickname, helm_layer))
+                      icon_url="https://crafatar.com/avatars/{}{}".format(uuid, helm_layer))
+        em.set_thumbnail(url="https://crafatar.com/skins/{}".format(uuid))
+        em.set_image(url="https://crafatar.com/renders/body/{}{}".format(uuid, helm_layer))
         await self.bot.say(embed=em)
 
     # @minecraft.command(pass_context=True)
@@ -90,13 +95,13 @@ class MinecraftData:
     @minecraft.command(pass_context=True, aliases=["nicknames", "nickhistory"])
     async def nicks(self, ctx, current_nick: str):
         """Check history of user's nicks history"""
-        userid = await self.getuserid(current_nick)
-        if userid is None:
-            await self.bot.say(chat.error("This user not found"))
+        uuid = await self.getuserid(current_nick)
+        if uuid is None:
+            await self.bot.say(chat.error("This player not found"))
             return
         try:
             async with self.session.get('https://api.mojang.com/user/'
-                                        'profiles/{}/names'.format(userid)) as data:
+                                        'profiles/{}/names'.format(uuid)) as data:
                 data_history = await data.json()
             for nick in data_history:
                 try:
