@@ -28,8 +28,6 @@ class MinecraftData:
     @minecraft.command(pass_context=True)
     async def skin(self, ctx, nickname: str, helm_layer: bool = True):
         """Get minecraft skin by nickname"""
-        if helm_layer:
-            helm_layer = "?overlay"
         uuid = await self.getuserid(nickname)
         if uuid is None:
             await self.bot.say(chat.error("This player not found"))
@@ -38,9 +36,9 @@ class MinecraftData:
                            url="https://crafatar.com/skins/{}".format(uuid))
         em.set_footer(text="Provided by Crafatar")
         em.set_author(name=nickname,
-                      icon_url="https://crafatar.com/avatars/{}{}".format(uuid, helm_layer))
+                      icon_url="https://crafatar.com/avatars/{}{}".format(uuid, "?overlay" if helm_layer else ""))
         em.set_thumbnail(url="https://crafatar.com/skins/{}".format(uuid))
-        em.set_image(url="https://crafatar.com/renders/body/{}{}".format(uuid, helm_layer))
+        em.set_image(url="https://crafatar.com/renders/body/{}{}".format(uuid, "?overlay" if helm_layer else ""))
         await self.bot.say(embed=em)
 
     # @minecraft.command(pass_context=True)
