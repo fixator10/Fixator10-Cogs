@@ -36,20 +36,10 @@ class MinecraftData:
                            url="https://crafatar.com/skins/{}".format(uuid))
         em.set_footer(text="Provided by Crafatar")
         em.set_author(name=nickname,
-                      icon_url="https://crafatar.com/avatars/{}{}".format(uuid, "?overlay" if helm_layer else ""))
+                      icon_url="https://crafatar.com/renders/head/{}{}".format(uuid, "?overlay" if helm_layer else ""))
         em.set_thumbnail(url="https://crafatar.com/skins/{}".format(uuid))
         em.set_image(url="https://crafatar.com/renders/body/{}{}".format(uuid, "?overlay" if helm_layer else ""))
         await self.bot.say(embed=em)
-
-    # @minecraft.command(pass_context=True)
-    # async def isup(self, ctx, IP_or_domain: str):
-    #     """Is minecraft server up or down?"""
-    #     try:
-    #         async with self.session.get('https://use.gameapis.net/mc/isup/' + IP_or_domain) as data:
-    #             data = await data.json()
-    #         await self.bot.say(data["message"])
-    #     except Exception as e:
-    #         await self.bot.say(chat.error("Unable to check. An error has been occurred: " + chat.inline(e)))
 
     @minecraft.command(pass_context=True)
     async def server(self, ctx, IP_or_domain: str):
