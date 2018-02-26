@@ -28,7 +28,7 @@ class MinecraftData:
     @minecraft.command(pass_context=True)
     async def skin(self, ctx, nickname: str, helm_layer: bool = True):
         """Get minecraft skin by nickname"""
-        uuid = await self.getuserid(nickname)
+        uuid = await self.getuuid(nickname)
         if uuid is None:
             await self.bot.say(chat.error("This player not found"))
             return
@@ -83,7 +83,7 @@ class MinecraftData:
     @minecraft.command(pass_context=True, aliases=["nicknames", "nickhistory"])
     async def nicks(self, ctx, current_nick: str):
         """Check history of user's nicks history"""
-        uuid = await self.getuserid(current_nick)
+        uuid = await self.getuuid(current_nick)
         if uuid is None:
             await self.bot.say(chat.error("This player not found"))
             return
@@ -105,7 +105,10 @@ class MinecraftData:
             await self.bot.say(chat.error("Unable to check name history.\nAn error has been occurred: " +
                                           chat.inline(e)))
 
-    async def getuserid(self, nickname: str):
+    async def getuuid(self, nickname: str):
+        """Get UUID by player's nickname
+
+        Return None if player not found"""
         try:
             async with self.session.get('https://api.mojang.com/users/profiles/minecraft/' + nickname) as data:
                 response_data = await data.json()
@@ -114,8 +117,8 @@ class MinecraftData:
         if response_data is None:
             return None
         else:
-            userid = str(response_data["id"])
-            return userid
+            uuid = str(response_data["id"])
+            return uuid
 
 
 def setup(bot):
