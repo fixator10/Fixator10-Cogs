@@ -12,7 +12,7 @@ from cogs.utils import chat_formatting as chat
 class MinecraftData:
     """Minecraft-Related data"""
 
-    def __init__(self, bot):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.session = aiohttp.ClientSession(loop=self.bot.loop)
 
@@ -39,6 +39,48 @@ class MinecraftData:
                       icon_url="https://crafatar.com/renders/head/{}{}".format(uuid, "?overlay" if helm_layer else ""))
         em.set_thumbnail(url="https://crafatar.com/skins/{}".format(uuid))
         em.set_image(url="https://crafatar.com/renders/body/{}{}".format(uuid, "?overlay" if helm_layer else ""))
+        await self.bot.say(embed=em)
+
+    @minecraft.group(pass_context=True)
+    async def cape(self, ctx):
+        """Get minecraft cape by nickname"""
+        if ctx.invoked_subcommand is None:
+            await self.bot.send_cmd_help(ctx)
+
+    @cape.command(pass_context=True, aliases=["of"])
+    async def optifine(self, ctx, nickname: str):
+        """Get optifine cape by nickname"""
+        em = discord.Embed(timestamp=ctx.message.timestamp,
+                           url="http://s.optifine.net/capes/{}".format(nickname))
+        em.set_author(name=nickname)
+        em.set_image(url="http://s.optifine.net/capes/{}".format(nickname))
+        await self.bot.say(embed=em)
+
+    # @cape.command(pass_context=True)
+    # async def labymod(self, ctx, nickname: str):
+    #     """Get LabyMod cape by nickname"""
+    # TODO
+
+    @cape.command(pass_context=True, aliases=["minecraftcapes", "couk"])
+    async def mccapes(self, ctx, nickname: str):
+        """Get MinecraftCapes.co.uk cape by nickname"""
+        em = discord.Embed(timestamp=ctx.message.timestamp,
+                           url="https://www.minecraftcapes.co.uk/getCape.php?u={}".format(nickname))
+        em.set_author(name=nickname)
+        em.set_image(url="https://www.minecraftcapes.co.uk/getCape.php?u={}".format(nickname))
+        await self.bot.say(embed=em)
+
+    @cape.command(name="5zig", pass_context=True, aliases=["fivezig"])
+    async def _5zig(self, ctx, nickname: str):
+        """Get 5zig cape by nickname"""
+        uuid = await self.getuuid(nickname)
+        if uuid is None:
+            await self.bot.say(chat.error("This player not found"))
+            return
+        em = discord.Embed(timestamp=ctx.message.timestamp,
+                           url="http://textures.5zig.net/textures/2/{}".format(uuid))
+        em.set_author(name=nickname)
+        em.set_image(url="http://textures.5zig.net/textures/2/{}".format(uuid))
         await self.bot.say(embed=em)
 
     @minecraft.command(pass_context=True)
