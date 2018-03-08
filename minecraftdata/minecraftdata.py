@@ -51,9 +51,9 @@ class MinecraftData:
     async def optifine(self, ctx, nickname: str):
         """Get optifine cape by nickname"""
         em = discord.Embed(timestamp=ctx.message.timestamp,
-                           url="http://s.optifine.net/capes/{}".format(nickname))
+                           url="http://s.optifine.net/capes/{}.png".format(nickname))
         em.set_author(name=nickname)
-        em.set_image(url="http://s.optifine.net/capes/{}".format(nickname))
+        em.set_image(url="http://s.optifine.net/capes/{}.png".format(nickname))
         await self.bot.say(embed=em)
 
     # @cape.command(pass_context=True)
