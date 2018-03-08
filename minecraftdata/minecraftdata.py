@@ -58,7 +58,7 @@ class MinecraftData:
     # @cape.command(pass_context=True)
     # async def labymod(self, ctx, nickname: str):
     #     """Get LabyMod cape by nickname"""
-    # TODO
+    # TODO: http://capes.labymod.net/capes/ dashed UUID
 
     @cape.command(pass_context=True, aliases=["minecraftcapes", "couk"])
     async def mccapes(self, ctx, nickname: str):
@@ -72,17 +72,18 @@ class MinecraftData:
         em.set_image(url="https://www.minecraftcapes.co.uk/getCape.php?uuid={}".format(uuid))
         await self.bot.say(embed=em)
 
-    @cape.command(name="5zig", pass_context=True, aliases=["fivezig"])
-    async def _5zig(self, ctx, nickname: str):
-        """Get 5zig cape by nickname"""
-        uuid = await self.getuuid(nickname)
-        if uuid is None:
-            await self.bot.say(chat.error("This player not found"))
-            return
-        em = discord.Embed(timestamp=ctx.message.timestamp)
-        em.set_author(name=nickname, url="http://textures.5zig.net/textures/2/{}".format(uuid))
-        em.set_image(url="http://textures.5zig.net/textures/2/{}".format(uuid))
-        await self.bot.say(embed=em)
+    # TODO: BASE64 PNG decryption
+    # @cape.command(name="5zig", pass_context=True, aliases=["fivezig"])
+    # async def _5zig(self, ctx, nickname: str):
+    #     """Get 5zig cape by nickname"""
+    #     uuid = await self.getuuid(nickname)
+    #     if uuid is None:
+    #         await self.bot.say(chat.error("This player not found"))
+    #         return
+    #     em = discord.Embed(timestamp=ctx.message.timestamp)
+    #     em.set_author(name=nickname, url="http://textures.5zig.net/textures/2/{}".format(uuid))
+    #     em.set_image(url="http://textures.5zig.net/textures/2/{}".format(uuid))
+    #     await self.bot.say(embed=em)
 
     @minecraft.command(pass_context=True)
     async def server(self, ctx, IP_or_domain: str):
