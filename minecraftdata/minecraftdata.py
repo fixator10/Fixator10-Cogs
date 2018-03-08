@@ -41,7 +41,7 @@ class MinecraftData:
         em.set_image(url="https://crafatar.com/renders/body/{}{}".format(uuid, "?overlay" if helm_layer else ""))
         await self.bot.say(embed=em)
 
-    @minecraft.group(pass_context=True)
+    @minecraft.group(pass_context=True, invoke_without_command=True)
     async def cape(self, ctx):
         """Get minecraft cape by nickname"""
         if ctx.invoked_subcommand is None:
