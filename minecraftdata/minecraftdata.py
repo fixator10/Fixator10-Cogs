@@ -32,11 +32,11 @@ class MinecraftData:
         if uuid is None:
             await self.bot.say(chat.error("This player not found"))
             return
-        em = discord.Embed(timestamp=ctx.message.timestamp,
-                           url="https://crafatar.com/skins/{}".format(uuid))
+        em = discord.Embed(timestamp=ctx.message.timestamp)
         em.set_footer(text="Provided by Crafatar")
         em.set_author(name=nickname,
-                      icon_url="https://crafatar.com/renders/head/{}{}".format(uuid, "?overlay" if helm_layer else ""))
+                      icon_url="https://crafatar.com/renders/head/{}{}".format(uuid, "?overlay" if helm_layer else ""),
+                      url="https://crafatar.com/skins/{}".format(uuid))
         em.set_thumbnail(url="https://crafatar.com/skins/{}".format(uuid))
         em.set_image(url="https://crafatar.com/renders/body/{}{}".format(uuid, "?overlay" if helm_layer else ""))
         await self.bot.say(embed=em)
@@ -50,9 +50,8 @@ class MinecraftData:
     @cape.command(pass_context=True, aliases=["of"])
     async def optifine(self, ctx, nickname: str):
         """Get optifine cape by nickname"""
-        em = discord.Embed(timestamp=ctx.message.timestamp,
-                           url="http://s.optifine.net/capes/{}.png".format(nickname))
-        em.set_author(name=nickname)
+        em = discord.Embed(timestamp=ctx.message.timestamp)
+        em.set_author(name=nickname, url="http://s.optifine.net/capes/{}.png".format(nickname))
         em.set_image(url="http://s.optifine.net/capes/{}.png".format(nickname))
         await self.bot.say(embed=em)
 
@@ -68,9 +67,8 @@ class MinecraftData:
         if uuid is None:
             await self.bot.say(chat.error("This player not found"))
             return
-        em = discord.Embed(timestamp=ctx.message.timestamp,
-                           url="https://www.minecraftcapes.co.uk/getCape.php?u={}".format(uuid))
-        em.set_author(name=nickname)
+        em = discord.Embed(timestamp=ctx.message.timestamp)
+        em.set_author(name=nickname, url="https://www.minecraftcapes.co.uk/getCape.php?u={}".format(uuid))
         em.set_image(url="https://www.minecraftcapes.co.uk/getCape.php?u={}".format(uuid))
         await self.bot.say(embed=em)
 
@@ -81,9 +79,8 @@ class MinecraftData:
         if uuid is None:
             await self.bot.say(chat.error("This player not found"))
             return
-        em = discord.Embed(timestamp=ctx.message.timestamp,
-                           url="http://textures.5zig.net/textures/2/{}".format(uuid))
-        em.set_author(name=nickname)
+        em = discord.Embed(timestamp=ctx.message.timestamp)
+        em.set_author(name=nickname, url="http://textures.5zig.net/textures/2/{}".format(uuid))
         em.set_image(url="http://textures.5zig.net/textures/2/{}".format(uuid))
         await self.bot.say(embed=em)
 
