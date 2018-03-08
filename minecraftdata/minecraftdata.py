@@ -64,10 +64,14 @@ class MinecraftData:
     @cape.command(pass_context=True, aliases=["minecraftcapes", "couk"])
     async def mccapes(self, ctx, nickname: str):
         """Get MinecraftCapes.co.uk cape by nickname"""
+        uuid = await self.getuuid(nickname)
+        if uuid is None:
+            await self.bot.say(chat.error("This player not found"))
+            return
         em = discord.Embed(timestamp=ctx.message.timestamp,
-                           url="https://www.minecraftcapes.co.uk/getCape.php?u={}".format(nickname))
+                           url="https://www.minecraftcapes.co.uk/getCape.php?u={}".format(uuid))
         em.set_author(name=nickname)
-        em.set_image(url="https://www.minecraftcapes.co.uk/getCape.php?u={}".format(nickname))
+        em.set_image(url="https://www.minecraftcapes.co.uk/getCape.php?u={}".format(uuid))
         await self.bot.say(embed=em)
 
     @cape.command(name="5zig", pass_context=True, aliases=["fivezig"])
