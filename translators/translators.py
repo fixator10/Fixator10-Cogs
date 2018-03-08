@@ -226,7 +226,7 @@ class Translators:
 
     @_base64.command(pass_context=True, name="decode")
     async def _frombase64(self, ctx, *, encoded: str):
-        """Encode text to base64"""
+        """Decode text from base64"""
         encoded = encoded.encode()
         decoded = base64.standard_b64decode(encoded)
         result = decoded.decode()
