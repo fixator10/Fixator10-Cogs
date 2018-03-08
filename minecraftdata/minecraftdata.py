@@ -68,8 +68,8 @@ class MinecraftData:
             await self.bot.say(chat.error("This player not found"))
             return
         em = discord.Embed(timestamp=ctx.message.timestamp)
-        em.set_author(name=nickname, url="https://www.minecraftcapes.co.uk/getCape.php?u={}".format(uuid))
-        em.set_image(url="https://www.minecraftcapes.co.uk/getCape.php?u={}".format(uuid))
+        em.set_author(name=nickname, url="https://www.minecraftcapes.co.uk/getCape.php?uuid={}".format(uuid))
+        em.set_image(url="https://www.minecraftcapes.co.uk/getCape.php?uuid={}".format(uuid))
         await self.bot.say(embed=em)
 
     @cape.command(name="5zig", pass_context=True, aliases=["fivezig"])
