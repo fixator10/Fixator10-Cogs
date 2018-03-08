@@ -126,7 +126,7 @@ class MinecraftData:
 
     @minecraft.command(pass_context=True, aliases=["nicknames", "nickhistory"])
     async def nicks(self, ctx, current_nick: str):
-        """Check history of user's nicks history"""
+        """Check history of user's nicks"""
         uuid = await self.getuuid(current_nick)
         if uuid is None:
             await self.bot.say(chat.error("This player not found"))
