@@ -56,10 +56,17 @@ class MinecraftData:
         em.set_image(url="http://s.optifine.net/capes/{}.png".format(nickname))
         await self.bot.say(embed=em)
 
-    # @cape.command(pass_context=True)
-    # async def labymod(self, ctx, nickname: str):
-    #     """Get LabyMod cape by nickname"""
-    # TODO: http://capes.labymod.net/capes/ dashed UUID
+    @cape.command(pass_context=True)
+    async def labymod(self, ctx, nickname: str):
+        """Get LabyMod cape by nickname"""
+        uuid = await self.getuuid(nickname, dashed=True)
+        if uuid is None:
+            await self.bot.say(chat.error("This player not found"))
+            return
+        em = discord.Embed(timestamp=ctx.message.timestamp)
+        em.set_author(name=nickname, url="https:/capes.labymod.net/capes/{}".format(uuid))
+        em.set_image(url="https://capes.labymod.net/capes/{}".format(uuid))
+        await self.bot.say(embed=em)
 
     @cape.command(pass_context=True, aliases=["minecraftcapes", "couk"])
     async def mccapes(self, ctx, nickname: str):
@@ -154,7 +161,7 @@ class MinecraftData:
             await self.bot.say(chat.error("Unable to check name history.\nAn error has been occurred: " +
                                           chat.inline(e)))
 
-    async def getuuid(self, nickname: str, dashed: bool = False):
+    async def getuuid(self, nickname: str, *, dashed: bool = False):
         """Get UUID by player's nickname
 
         Return None if player not found"""
