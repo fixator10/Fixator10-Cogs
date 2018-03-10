@@ -64,7 +64,7 @@ class MinecraftData:
             await self.bot.say(chat.error("This player not found"))
             return
         em = discord.Embed(timestamp=ctx.message.timestamp)
-        em.set_author(name=nickname, url="https:/capes.labymod.net/capes/{}".format(uuid))
+        em.set_author(name=nickname, url="https://capes.labymod.net/capes/{}".format(uuid))
         em.set_image(url="https://capes.labymod.net/capes/{}".format(uuid))
         await self.bot.say(embed=em)
 
