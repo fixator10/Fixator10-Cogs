@@ -83,11 +83,10 @@ class MinecraftData:
         em.set_image(url="https://www.minecraftcapes.co.uk/getCape.php?uuid={}".format(uuid))
         await self.bot.say(embed=em)
 
-    # TODO: BASE64 PNG decryption
-    @cape.group(name="5zig", pass_context=True, aliases=["fivezig"])
+    @cape.group(name="5zig", pass_context=True, aliases=["fivezig"], invoke_without_command=True)
     async def fivezig(self, ctx, nickname: str):
         """Get 5zig cape by nickname"""
-        await ctx.invoke(self.cape, nickname=nickname)
+        await ctx.invoke(self._fivezig_cape, nickname=nickname)
 
     @fivezig.command(name="cape", pass_context=True)
     async def _fivezig_cape(self, ctx, nickname: str):
