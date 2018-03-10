@@ -162,7 +162,7 @@ class MinecraftData:
                 response_data = await data.json()
         except:
             return None
-        if response_data is None:
+        if response_data is None or "id" not in response_data:
             return None
         else:
             uuid = str(response_data["id"])
