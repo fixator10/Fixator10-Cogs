@@ -102,7 +102,7 @@ class MinecraftData:
         except:
             await self.bot.say(chat.error("Player is not found. (Or 5zig texture server is down)"))
             return
-        file = io.BytesIO(base64.decodebytes(bytes(cape)))
+        file = io.BytesIO(base64.decodebytes(cape.encode()))
         await self.bot.send_file(ctx.message.channel, file, filename="{}.png".format(nickname))
 
     @minecraft.command(pass_context=True)
