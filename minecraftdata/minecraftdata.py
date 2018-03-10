@@ -1,5 +1,6 @@
 from datetime import datetime
 from random import choice
+from uuid import UUID
 
 import aiohttp
 import discord
@@ -153,7 +154,7 @@ class MinecraftData:
             await self.bot.say(chat.error("Unable to check name history.\nAn error has been occurred: " +
                                           chat.inline(e)))
 
-    async def getuuid(self, nickname: str):
+    async def getuuid(self, nickname: str, dashed: bool = False):
         """Get UUID by player's nickname
 
         Return None if player not found"""
@@ -166,6 +167,8 @@ class MinecraftData:
             return None
         else:
             uuid = str(response_data["id"])
+            if dashed:
+                uuid = str(UUID(hex=uuid))
             return uuid
 
 
