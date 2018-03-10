@@ -85,11 +85,11 @@ class MinecraftData:
 
     # TODO: BASE64 PNG decryption
     @cape.group(name="5zig", pass_context=True, aliases=["fivezig"])
-    async def _5zig(self, ctx, nickname: str):
+    async def fivezig(self, ctx, nickname: str):
         """Get 5zig cape by nickname"""
         await ctx.invoke(self.cape, nickname=nickname)
 
-    @cape.command(name="cape", pass_context=True)
+    @fivezig.command(name="cape", pass_context=True)
     async def _fivezig_cape(self, ctx, nickname: str):
         """Get 5zig cape by nickname"""
         uuid = await self.getuuid(nickname)
@@ -106,7 +106,7 @@ class MinecraftData:
         file = io.BytesIO(base64.decodebytes(cape.encode()))
         await self.bot.send_file(ctx.message.channel, file, filename="{}.png".format(nickname))
 
-    @cape.command(name="animated", pass_context=True)
+    @fivezig.command(name="animated", pass_context=True)
     async def _fivezig_animated(self, ctx, nickname: str):
         """Get 5zig animated cape by nickname"""
         uuid = await self.getuuid(nickname)
