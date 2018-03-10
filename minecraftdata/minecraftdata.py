@@ -56,17 +56,18 @@ class MinecraftData:
         em.set_image(url="http://s.optifine.net/capes/{}.png".format(nickname))
         await self.bot.say(embed=em)
 
-    @cape.command(pass_context=True)
-    async def labymod(self, ctx, nickname: str):
-        """Get LabyMod cape by nickname"""
-        uuid = await self.getuuid(nickname, dashed=True)
-        if uuid is None:
-            await self.bot.say(chat.error("This player not found"))
-            return
-        em = discord.Embed(timestamp=ctx.message.timestamp)
-        em.set_author(name=nickname, url="http://capes.labymod.net/capes/{}".format(uuid))
-        em.set_image(url="http://capes.labymod.net/capes/{}".format(uuid))
-        await self.bot.say(embed=em)
+    # TODO: Rework images loading [?]
+    # @cape.command(pass_context=True)
+    # async def labymod(self, ctx, nickname: str):
+    #     """Get LabyMod cape by nickname"""
+    #     uuid = await self.getuuid(nickname, dashed=True)
+    #     if uuid is None:
+    #         await self.bot.say(chat.error("This player not found"))
+    #         return
+    #     em = discord.Embed(timestamp=ctx.message.timestamp)
+    #     em.set_author(name=nickname, url="http://capes.labymod.net/capes/{}".format(uuid))
+    #     em.set_image(url="http://capes.labymod.net/capes/{}".format(uuid))
+    #     await self.bot.say(embed=em)
 
     @cape.command(pass_context=True, aliases=["minecraftcapes", "couk"])
     async def mccapes(self, ctx, nickname: str):
