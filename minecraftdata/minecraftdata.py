@@ -96,7 +96,7 @@ class MinecraftData:
         # em.set_image(url="http://textures.5zig.net/textures/2/{}".format(uuid))
         # await self.bot.say(embed=em)
         try:
-            async with self.session.get('https://api.mojang.com/users/profiles/minecraft/' + nickname) as data:
+            async with self.session.get('http://textures.5zig.net/textures/2/' + nickname) as data:
                 response_data = await data.json()
             cape = response_data["cape"]
         except:
