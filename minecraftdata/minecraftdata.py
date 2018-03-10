@@ -67,7 +67,11 @@ class MinecraftData:
             return
         try:
             async with self.session.get('http://capes.labymod.net/capes/' + uuid) as data:
-                cape = await data.read()
+                if data.status == 404:
+                    await self.bot.say(chat.error("404. Player not found"))
+                    return
+                else:
+                    cape = await data.read()
         except:
             await self.bot.say(chat.error("Data is not found. (Or LabyMod capes server is down)"))
             return
