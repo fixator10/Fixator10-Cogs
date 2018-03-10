@@ -97,7 +97,7 @@ class MinecraftData:
         # await self.bot.say(embed=em)
         try:
             async with self.session.get('http://textures.5zig.net/textures/2/' + uuid) as data:
-                response_data = await data.json()
+                response_data = await data.json(content_type='text/plain')
             cape = response_data["cape"]
         except:
             await self.bot.say(chat.error("Player is not found. (Or 5zig texture server is down)"))
