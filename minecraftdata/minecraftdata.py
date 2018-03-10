@@ -1,3 +1,5 @@
+import base64
+import io
 from datetime import datetime
 from random import choice
 from uuid import UUID
@@ -82,17 +84,26 @@ class MinecraftData:
         await self.bot.say(embed=em)
 
     # TODO: BASE64 PNG decryption
-    # @cape.command(name="5zig", pass_context=True, aliases=["fivezig"])
-    # async def _5zig(self, ctx, nickname: str):
-    #     """Get 5zig cape by nickname"""
-    #     uuid = await self.getuuid(nickname)
-    #     if uuid is None:
-    #         await self.bot.say(chat.error("This player not found"))
-    #         return
-    #     em = discord.Embed(timestamp=ctx.message.timestamp)
-    #     em.set_author(name=nickname, url="http://textures.5zig.net/textures/2/{}".format(uuid))
-    #     em.set_image(url="http://textures.5zig.net/textures/2/{}".format(uuid))
-    #     await self.bot.say(embed=em)
+    @cape.command(name="5zig", pass_context=True, aliases=["fivezig"])
+    async def _5zig(self, ctx, nickname: str):
+        """Get 5zig cape by nickname"""
+        uuid = await self.getuuid(nickname)
+        if uuid is None:
+            await self.bot.say(chat.error("This player not found"))
+            return
+        # em = discord.Embed(timestamp=ctx.message.timestamp)
+        # em.set_author(name=nickname, url="http://textures.5zig.net/textures/2/{}".format(uuid))
+        # em.set_image(url="http://textures.5zig.net/textures/2/{}".format(uuid))
+        # await self.bot.say(embed=em)
+        try:
+            async with self.session.get('https://api.mojang.com/users/profiles/minecraft/' + nickname) as data:
+                response_data = await data.json()
+            cape = response_data["cape"]
+        except:
+            await self.bot.say(chat.error("Player is not found. (Or 5zig texture server is down)"))
+            return
+        file = io.BytesIO(base64.decodebytes(bytes(cape)))
+        await self.bot.send_file(ctx.message.channel, file, filename="{}.png".format(nickname))
 
     @minecraft.command(pass_context=True)
     async def server(self, ctx, IP_or_domain: str):
