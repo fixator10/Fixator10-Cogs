@@ -179,15 +179,12 @@ class MinecraftData:
             async with self.session.get('https://api.mojang.com/user/'
                                         'profiles/{}/names'.format(uuid)) as data:
                 data_history = await data.json()
-            async with self.session.get('https://api.mojang.com/users/profiles/minecraft/' + current_nick) as data:
-                response = await data.json()
-                createdAt = response["createdAt"]
             for nick in data_history:
                 try:
                     nick["changedToAt"] = \
                         datetime.utcfromtimestamp(nick["changedToAt"] / 1000).strftime('%d.%m.%Y %H:%M:%S')
                 except:
-                    nick["changedToAt"] = datetime.utcfromtimestamp(createdAt / 1000).strftime('%d.%m.%Y %H:%M:%S')
+                    nick["changedToAt"] = "Initial"
             table = tabulate.tabulate(data_history, headers={"name": "Nickname",
                                                              "changedToAt": "Changed to at... (UTC)"},
                                       tablefmt="fancy_grid")
