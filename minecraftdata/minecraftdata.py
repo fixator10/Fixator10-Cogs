@@ -75,8 +75,9 @@ class MinecraftData:
         except:
             await self.bot.say(chat.error("Data is not found. (Or LabyMod capes server is down)"))
             return
-        file = io.BytesIO(cape)
-        await self.bot.send_file(ctx.message.channel, file, filename="{}.png".format(nickname))
+        capefile = io.BytesIO(cape)
+        await self.bot.send_file(ctx.message.channel, capefile, filename="{}.png".format(nickname))
+        capefile.close()
 
     @cape.command(pass_context=True, aliases=["minecraftcapes", "couk"])
     async def mccapes(self, ctx, nickname: str):
@@ -109,8 +110,9 @@ class MinecraftData:
         except:
             await self.bot.say(chat.error("Data is not found. (Or 5zig texture server is down)"))
             return
-        file = io.BytesIO(base64.decodebytes(cape.encode()))
-        await self.bot.send_file(ctx.message.channel, file, filename="{}.png".format(nickname))
+        capefile = io.BytesIO(base64.decodebytes(cape.encode()))
+        await self.bot.send_file(ctx.message.channel, capefile, filename="{}.png".format(nickname))
+        capefile.close()
 
     @fivezig.command(name="animated", pass_context=True)
     async def _fivezig_animated(self, ctx, nickname: str):
@@ -126,8 +128,9 @@ class MinecraftData:
         except:
             await self.bot.say(chat.error("Data is not found. (Or 5zig texture server is down)"))
             return
-        file = io.BytesIO(base64.decodebytes(cape.encode()))
-        await self.bot.send_file(ctx.message.channel, file, filename="{}.png".format(nickname))
+        capefile = io.BytesIO(base64.decodebytes(cape.encode()))
+        await self.bot.send_file(ctx.message.channel, capefile, filename="{}.png".format(nickname))
+        capefile.close()
 
     @minecraft.command(pass_context=True)
     async def server(self, ctx, IP_or_domain: str):
