@@ -96,7 +96,7 @@ class PersonalRoles:
                                          tablefmt="orgtbl")):
             await self.bot.say(chat.box(page))
 
-    @myrole.group(pass_context=True, no_pm=True)
+    @myrole.group(pass_context=True, no_pm=True, invoke_without_command=True)
     @checks.admin_or_permissions(manage_roles=True)
     async def blacklist(self, ctx):
         """Manage blacklisted names"""
