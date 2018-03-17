@@ -172,16 +172,15 @@ class PersonalRoles:
                                " Contact admin/mod for assign your personal role to you.")
         if len(name) > 100:
             name = name[:100]
-        else:
-            if name.casefold() in self.config[sv]["blacklist"] \
-                    or settings.get_server_mod(ctx.message.server).lower() == name.lower() \
-                    or settings.get_server_admin(ctx.message.server).lower() == name.lower():
-                await self.bot.say(chat.error("NONONO!!! This rolename is blacklisted."))
-                return
-            await self.bot.edit_role(ctx.message.server,
-                                     discord.utils.get(ctx.message.server.roles, id=self.config[sv]["users"][authorid]),
-                                     name=name)
-            await self.bot.say("Changed name of {}'s personal role to {}".format(ctx.message.author.name, name))
+        if name.casefold() in self.config[sv]["blacklist"] \
+                or settings.get_server_mod(ctx.message.server).lower() == name.lower() \
+                or settings.get_server_admin(ctx.message.server).lower() == name.lower():
+            await self.bot.say(chat.error("NONONO!!! This rolename is blacklisted."))
+            return
+        await self.bot.edit_role(ctx.message.server,
+                                 discord.utils.get(ctx.message.server.roles, id=self.config[sv]["users"][authorid]),
+                                 name=name)
+        await self.bot.say("Changed name of {}'s personal role to {}".format(ctx.message.author.name, name))
 
 
 def check_folders():
