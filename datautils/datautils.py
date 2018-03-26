@@ -1,6 +1,6 @@
-import operator
 import random
 import re
+from collections import OrderedDict
 
 import discord
 import matplotlib.colors as colors
@@ -189,7 +189,7 @@ class DataUtils:
             elif elem.type == discord.ChannelType.voice:
                 channels[(chat.escape(elem.name))] = elem
                 tcc += 1
-        channels = sorted(channels.items(), key=operator.itemgetter(1).position)
+        channels = OrderedDict(sorted(channels.items(), key=lambda t: t[1].position))
         em = discord.Embed(title="Channels list", colour=random.randint(0, 16777215))
         em.add_field(name="Channels:",
                      value="\n".join([x for x in channels]) or "No channels",
