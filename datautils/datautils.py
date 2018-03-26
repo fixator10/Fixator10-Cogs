@@ -182,7 +182,7 @@ class DataUtils:
             channels.append(elem)
         channels = sorted(channels, key=lambda chan: chan.position)
         channels_str = []
-        for elem in server.channels:
+        for elem in channels:
             if elem.type == discord.ChannelType.category:
                 channels_str.append(chat.bold(chat.escape(elem.name)))
                 cc += 1
