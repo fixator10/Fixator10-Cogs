@@ -194,7 +194,7 @@ class DataUtils:
                 tcc += 1
         em = discord.Embed(title="Channels list", colour=random.randint(0, 16777215))
         em.add_field(name="Channels:",
-                     value="\n".join([x for x in channels]) or "No channels",
+                     value="\n".join([x for x in channels_str]) or "No channels",
                      inline=False)
         em.set_footer(text="Total count of channels: {} | "
                            "Categories: {} | "
@@ -203,7 +203,7 @@ class DataUtils:
         if ctx.message.channel.permissions_for(ctx.message.author).embed_links:
             await self.bot.say(embed=em)
         else:
-            await self.bot.say("\n".join([x for x in channels]) +
+            await self.bot.say("\n".join([x for x in channels_str]) +
                                chat.box("""🔢 Total count: {}
 📂 Categories: {}
 📄 Text Channels: {}
