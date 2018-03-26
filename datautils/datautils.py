@@ -203,7 +203,7 @@ class DataUtils:
                                chat.box("""🔢 Total count: {}
 📂 Categories: {}
 📄 Text Channels: {}
-🔊 Voice Channels: {}""".format("\n".join([x for x in channels]), acc, cc, tcc, vcc)))
+🔊 Voice Channels: {}""".format(acc, cc, tcc, vcc)))
 
     @commands.command(pass_context=True, no_pm=True, aliases=['role', 'roleinfo'])
     async def rinfo(self, ctx, *, role: discord.Role):
