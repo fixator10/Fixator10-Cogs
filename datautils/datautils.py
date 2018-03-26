@@ -179,14 +179,18 @@ class DataUtils:
         # TCC = Text Chat Count
         acc = len(server.channels)
         for elem in server.channels:
+            channels.append(elem)
+        channels = sorted(channels, key=lambda chan: chan.position)
+        channels_str = []
+        for elem in server.channels:
             if elem.type == discord.ChannelType.category:
-                channels.append(chat.bold(chat.escape(elem.name)))
+                channels_str.append(chat.bold(chat.escape(elem.name)))
                 cc += 1
             elif elem.type == discord.ChannelType.text:
-                channels.append(chat.escape(elem.mention))
+                channels_str.append(chat.escape(elem.mention))
                 vcc += 1
             elif elem.type == discord.ChannelType.voice:
-                channels.append(chat.escape(elem.name))
+                channels_str.append(chat.escape(elem.name))
                 tcc += 1
         em = discord.Embed(title="Channels list", colour=random.randint(0, 16777215))
         em.add_field(name="Channels:",
