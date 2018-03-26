@@ -183,7 +183,7 @@ class DataUtils:
                 voice_channels.append(elem)
         categories = sorted(categories, key=lambda chan: chan.position)
         voice_channels = sorted(voice_channels, key=lambda chan: chan.position)
-        text_channels = sorted(voice_channels, key=lambda chan: chan.position)
+        text_channels = sorted(text_channels, key=lambda chan: chan.position)
         # ACC = All channels count
         # CC = Category Count
         # VCC = Voice Chat Count
@@ -192,9 +192,9 @@ class DataUtils:
         cc = len(categories)
         vcc = len(voice_channels)
         tcc = len(text_channels)
-        categories = "\n⚫".join([chat.escape(str(x)) for x in categories]) or "No categories"
-        text_channels = "\n⚫".join([chat.escape(str(x)) for x in text_channels]) or "No text channels"
-        voice_channels = "\n⚫".join([chat.escape(str(x)) for x in voice_channels]) or "No voice channels"
+        categories = "\n".join([chat.escape(str(x)) for x in categories]) or "No categories"
+        text_channels = "\n".join([chat.escape(str(x)) for x in text_channels]) or "No text channels"
+        voice_channels = "\n".join([chat.escape(str(x)) for x in voice_channels]) or "No voice channels"
         em = discord.Embed(title="Channels list", colour=random.randint(0, 16777215))
         em.add_field(name="Categories:",
                      value=categories,
