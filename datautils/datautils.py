@@ -199,9 +199,8 @@ class DataUtils:
         if ctx.message.channel.permissions_for(ctx.message.author).embed_links:
             await self.bot.say(embed=em)
         else:
-            await self.bot.say(chat.box("""Channels:
-{}
-🔢 Total count: {}
+            await self.bot.say("\n".join([x for x in channels]) +
+                               chat.box("""🔢 Total count: {}
 📂 Categories: {}
 📄 Text Channels: {}
 🔊 Voice Channels: {}""".format("\n".join([x for x in channels]), acc, cc, tcc, vcc)))
