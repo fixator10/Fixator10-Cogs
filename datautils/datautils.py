@@ -1,4 +1,3 @@
-import operator
 import random
 import re
 
@@ -172,27 +171,39 @@ class DataUtils:
         if server is None:
             await self.bot.say("Failed to get server with provided ID")
             return
-        channels = {}
-        acc, cc, vcc, tcc = 0, 0, 0, 0
+        categories = []
+        voice_channels = []
+        text_channels = []
+        for elem in server.channels:
+            if elem.type == discord.ChannelType.category:
+                categories.append(elem)
+            elif elem.type == discord.ChannelType.text:
+                text_channels.append(elem)
+            elif elem.type == discord.ChannelType.voice:
+                voice_channels.append(elem)
+        categories = sorted(categories, key=lambda chan: chan.position)
+        voice_channels = sorted(voice_channels, key=lambda chan: chan.position)
+        text_channels = sorted(voice_channels, key=lambda chan: chan.position)
         # ACC = All channels count
         # CC = Category Count
         # VCC = Voice Chat Count
         # TCC = Text Chat Count
         acc = len(server.channels)
-        for elem in server.channels:
-            if elem.type == discord.ChannelType.category:
-                channels[(chat.bold(chat.escape(elem.name)))] = elem.position
-                cc += 1
-            elif elem.type == discord.ChannelType.text:
-                channels[(chat.escape(elem.mention))] = elem.position
-                vcc += 1
-            elif elem.type == discord.ChannelType.voice:
-                channels[(chat.escape(elem.name))] = elem.position
-                tcc += 1
-        channels = dict(sorted(channels.items(), key=operator.itemgetter(1)))
+        cc = len(categories)
+        vcc = len(voice_channels)
+        tcc = len(text_channels)
+        categories = "\n⚫".join([x for x in categories]) or "No categories"
+        text_channels = "\n⚫".join([str(x) for x in text_channels]) or "No text channels"
+        voice_channels = "\n⚫".join([str(x) for x in voice_channels]) or "No voice channels"
         em = discord.Embed(title="Channels list", colour=random.randint(0, 16777215))
-        em.add_field(name="Channels:",
-                     value="\n".join([x for x in channels]) or "No channels",
+        em.add_field(name="Categories:",
+                     value=categories,
+                     inline=False)
+        em.add_field(name="Text channels:",
+                     value=text_channels,
+                     inline=False)
+        em.add_field(name="Voice channels:",
+                     value=voice_channels,
                      inline=False)
         em.set_footer(text="Total count of channels: {} | "
                            "Categories: {} | "
@@ -201,11 +212,20 @@ class DataUtils:
         if ctx.message.channel.permissions_for(ctx.message.author).embed_links:
             await self.bot.say(embed=em)
         else:
-            await self.bot.say("\n".join([x for x in channels]) +
-                               chat.box("""🔢 Total count: {}
+            await self.bot.say(chat.box("""📂 Categories:
+{}
+📄 Text Channels:
+{}
+🔊 Voice Channels:
+{}
+🔢 Total count: {}
 📂 Categories: {}
 📄 Text Channels: {}
-🔊 Voice Channels: {}""".format(acc, cc, tcc, vcc)))
+🔊 Voice Channels: {}""".format(
+                categories,
+                text_channels,
+                voice_channels,
+                acc, cc, tcc, vcc)))
 
     @commands.command(pass_context=True, no_pm=True, aliases=['role', 'roleinfo'])
     async def rinfo(self, ctx, *, role: discord.Role):
