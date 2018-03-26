@@ -1,5 +1,4 @@
 import json
-import urllib.parse as up
 from asyncio import sleep
 
 import aiohttp
@@ -110,35 +109,35 @@ class AdminUtils:
                 continue
         await self.bot.say("Finished resetting server nicknames")
 
-    @commands.command(no_pm=True, pass_context=True)
-    @CustomChecks.selfbot()
-    @checks.admin_or_permissions(manage_server=True)
-    async def addbot(self, ctx, oauth_url):  # From Squid-Plugins for Red-DiscordBot:
-        # https://github.com/tekulvw/Squid-Plugins
-        """[SELFBOT ONLY] Adds bot to current server
-
-        Based on autoapprove cog from Squid-Plugins
-        https://github.com/tekulvw/Squid-Plugins"""
-        if self.bot.user.bot:
-            await self.bot.say(chat.error("This command is only for SelfBots") +
-                               chat.box("For bot accounts use autoapprove cog from Squid-Plugins repo:\n"
-                                        "{0}cog repo add Squid-Plugins https://github.com/tekulvw/Squid-Plugins\n"
-                                        "{0}cog install Squid-Plugins autoapprove").format(ctx.prefix))
-            return
-        server = ctx.message.server
-
-        key = self.bot.settings.token
-        parsed = up.urlparse(oauth_url)
-        queryattrs = up.parse_qs(parsed.query)
-        queryattrs['client_id'] = int(queryattrs['client_id'][0])
-        queryattrs['scope'] = queryattrs['scope'][0]
-        queryattrs.pop('permissions', None)
-        full_url = self.base_api_url + up.urlencode(queryattrs)
-        status = await self.get_bot_api_response(full_url, key, server.id)
-        if status < 400:
-            await self.bot.say("Succeeded!")
-        else:
-            await self.bot.say("Failed, error code {}. ".format(status))
+    # @commands.command(no_pm=True, pass_context=True)
+    # @CustomChecks.selfbot()
+    # @checks.admin_or_permissions(manage_server=True)
+    # async def addbot(self, ctx, oauth_url):  # From Squid-Plugins for Red-DiscordBot:
+    #     # https://github.com/tekulvw/Squid-Plugins
+    #     """[SELFBOT ONLY] Adds bot to current server
+    #
+    #     Based on autoapprove cog from Squid-Plugins
+    #     https://github.com/tekulvw/Squid-Plugins"""
+    #     if self.bot.user.bot:
+    #         await self.bot.say(chat.error("This command is only for SelfBots") +
+    #                            chat.box("For bot accounts use autoapprove cog from Squid-Plugins repo:\n"
+    #                                     "{0}cog repo add Squid-Plugins https://github.com/tekulvw/Squid-Plugins\n"
+    #                                     "{0}cog install Squid-Plugins autoapprove").format(ctx.prefix))
+    #         return
+    #     server = ctx.message.server
+    #
+    #     key = self.bot.settings.token
+    #     parsed = up.urlparse(oauth_url)
+    #     queryattrs = up.parse_qs(parsed.query)
+    #     queryattrs['client_id'] = int(queryattrs['client_id'][0])
+    #     queryattrs['scope'] = queryattrs['scope'][0]
+    #     queryattrs.pop('permissions', None)
+    #     full_url = self.base_api_url + up.urlencode(queryattrs)
+    #     status = await self.get_bot_api_response(full_url, key, server.id)
+    #     if status < 400:
+    #         await self.bot.say("Succeeded!")
+    #     else:
+    #         await self.bot.say("Failed, error code {}. ".format(status))
 
     async def get_bot_api_response(self, url, key, serverid):
         data = {"guild_id": serverid, "permissions": 1024, "authorize": True}
