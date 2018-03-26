@@ -212,11 +212,11 @@ class DataUtils:
         if ctx.message.channel.permissions_for(ctx.message.author).embed_links:
             await self.bot.say(embed=em)
         else:
-            await self.bot.say("""📂 Categories:
+            await self.bot.say("""\📂 Categories:
 {}
-📄 Text Channels:
+\📄 Text Channels:
 {}
-🔊 Voice Channels:
+\🔊 Voice Channels:
 {}""".format(categories, text_channels, voice_channels))
             await self.bot.say(chat.box("""
 🔢 Total count: {}
