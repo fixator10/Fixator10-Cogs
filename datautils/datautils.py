@@ -192,9 +192,9 @@ class DataUtils:
         cc = len(categories)
         vcc = len(voice_channels)
         tcc = len(text_channels)
-        categories = "\n⚫".join([x for x in categories]) or "No categories"
-        text_channels = "\n⚫".join([str(x) for x in text_channels]) or "No text channels"
-        voice_channels = "\n⚫".join([str(x) for x in voice_channels]) or "No voice channels"
+        categories = "\n⚫".join([chat.escape(str(x)) for x in categories]) or "No categories"
+        text_channels = "\n⚫".join([chat.escape(str(x)) for x in text_channels]) or "No text channels"
+        voice_channels = "\n⚫".join([chat.escape(str(x)) for x in voice_channels]) or "No voice channels"
         em = discord.Embed(title="Channels list", colour=random.randint(0, 16777215))
         em.add_field(name="Categories:",
                      value=categories,
