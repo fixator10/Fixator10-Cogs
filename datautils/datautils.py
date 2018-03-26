@@ -171,32 +171,40 @@ class DataUtils:
         if server is None:
             await self.bot.say("Failed to get server with provided ID")
             return
-        vchans = []
-        tchans = []
+        channels = []
+        acc, cc, vcc, tcc = 0, 0, 0, 0
+        # ↑ ACC = All channels count
+        # CC = Category Count
+        # VCC = Voice Chat Count
+        # TCC = Text Chat Count
+        acc = len(server.channels)
         for elem in server.channels:
-            if str(elem.type) == "voice":
-                vchans.append(elem)
-            elif str(elem.type) == "text":
-                tchans.append(elem)
-        vchans = sorted(vchans, key=lambda chan: chan.position)
-        tchans = sorted(tchans, key=lambda chan: chan.position)
+            if elem.type == discord.ChannelType.category:
+                channels.append(chat.bold(chat.escape(elem.name)))
+                cc += 1
+            elif elem.type == discord.ChannelType.text:
+                channels.append(chat.escape(elem.mention))
+                vcc += 1
+            elif elem.type == discord.ChannelType.voice:
+                channels.append(chat.escape(elem.name))
+                tcc += 1
         em = discord.Embed(title="Channels list", colour=random.randint(0, 16777215))
-        em.add_field(name="Text channels:",
-                     value="\n".join([str(x) for x in tchans]) or "No text channels",
+        em.add_field(name="Channels:",
+                     value="\n".join([x for x in channels]) or "No channels",
                      inline=False)
-        em.add_field(name="Voice channels:",
-                     value="\n".join([str(x) for x in vchans]) or "No voice channels",
-                     inline=False)
-        em.set_footer(text="Total count of channels: " + str(len(tchans)+len(vchans)) +
-                           " | Text Channels: " + str(len(tchans)) + " | Voice Channels: " + str(len(vchans)))
+        em.set_footer(text="Total count of channels: {} | "
+                           "Categories: {} | "
+                           "Text Channels: {} | "
+                           "Voice Channels: {}".format(acc, cc, tcc, vcc))
         if ctx.message.channel.permissions_for(ctx.message.author).embed_links:
             await self.bot.say(embed=em)
         else:
-            await self.bot.say("**Text channels:**\n```" + "\n".join([str(x) for x in tchans]) +
-                               "```**Voice channels:**\n```" + "\n".join([str(x) for x in vchans]) +
-                               "```\nTotal count: " + str(len(server.channels)) +
-                               " | Text Channels: " + str(len(tchans)) +
-                               " | Voice Channels: " + str(len(vchans)))
+            await self.bot.say(chat.box("""Channels:
+{}
+🔢 Total count: {}
+📂 Categories: {}
+📄 Text Channels: {}
+🔊 Voice Channels: {}""".format("\n".join([x for x in channels]), acc, cc, tcc, vcc)))
 
     @commands.command(pass_context=True, no_pm=True, aliases=['role', 'roleinfo'])
     async def rinfo(self, ctx, *, role: discord.Role):
