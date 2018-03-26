@@ -179,7 +179,7 @@ class DataUtils:
         # VCC = Voice Chat Count
         # TCC = Text Chat Count
         acc = len(server.channels)
-        for elem in channels:
+        for elem in server.channels:
             if elem.type == discord.ChannelType.category:
                 channels[(chat.bold(chat.escape(elem.name)))] = elem
                 cc += 1
