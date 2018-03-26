@@ -1,3 +1,4 @@
+import operator
 import random
 import re
 
@@ -171,30 +172,27 @@ class DataUtils:
         if server is None:
             await self.bot.say("Failed to get server with provided ID")
             return
-        channels = []
+        channels = {}
         acc, cc, vcc, tcc = 0, 0, 0, 0
-        # ↑ ACC = All channels count
+        # ACC = All channels count
         # CC = Category Count
         # VCC = Voice Chat Count
         # TCC = Text Chat Count
         acc = len(server.channels)
-        for elem in server.channels:
-            channels.append(elem)
-        channels = sorted(channels, key=lambda chan: chan.position)
-        channels_str = []
         for elem in channels:
             if elem.type == discord.ChannelType.category:
-                channels_str.append(chat.bold(chat.escape(elem.name)))
+                channels[(chat.bold(chat.escape(elem.name)))] = elem
                 cc += 1
             elif elem.type == discord.ChannelType.text:
-                channels_str.append(chat.escape(elem.mention))
+                channels[(chat.escape(elem.mention))] = elem
                 vcc += 1
             elif elem.type == discord.ChannelType.voice:
-                channels_str.append(chat.escape(elem.name))
+                channels[(chat.escape(elem.name))] = elem
                 tcc += 1
+        channels = sorted(channels.items(), key=operator.itemgetter(1).position)
         em = discord.Embed(title="Channels list", colour=random.randint(0, 16777215))
         em.add_field(name="Channels:",
-                     value="\n".join([x for x in channels_str]) or "No channels",
+                     value="\n".join([x for x in channels]) or "No channels",
                      inline=False)
         em.set_footer(text="Total count of channels: {} | "
                            "Categories: {} | "
@@ -203,7 +201,7 @@ class DataUtils:
         if ctx.message.channel.permissions_for(ctx.message.author).embed_links:
             await self.bot.say(embed=em)
         else:
-            await self.bot.say("\n".join([x for x in channels_str]) +
+            await self.bot.say("\n".join([x for x in channels]) +
                                chat.box("""🔢 Total count: {}
 📂 Categories: {}
 📄 Text Channels: {}
