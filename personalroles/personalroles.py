@@ -18,7 +18,12 @@ class PRCustomCheck:
             config = dataIO.load_json(config_file)
             author = ctx.message.author
             server = ctx.message.server
-            if author.id in config[server.id]["users"]:
+            role = discord.utils.get(server.roles, id=config[server.id]["users"][author.id])
+            if server.id not in config:
+                return False
+            elif role is None:
+                return False
+            elif author.id in config[server.id]["users"]:
                 return True
             else:
                 return False
@@ -150,14 +155,9 @@ class PersonalRoles:
         """Change color of personal role"""
         sv = ctx.message.server.id
         authorid = ctx.message.author.id
-        if sv not in self.config or authorid not in self.config[sv]["users"]:
-            await self.bot.say("Looks like you are not in server's roles list."
-                               " Contact admin/mod for assign your personal role to you.")
-        else:
-            await self.bot.edit_role(ctx.message.server,
-                                     discord.utils.get(ctx.message.server.roles, id=self.config[sv]["users"][authorid]),
-                                     colour=colour)
-            await self.bot.say("Changed color of {}'s personal role to {}".format(ctx.message.author.name, colour))
+        role = discord.utils.get(ctx.message.server.roles, id=self.config[sv]["users"][authorid])
+        await self.bot.edit_role(ctx.message.server, role, colour=colour)
+        await self.bot.say("Changed color of {}'s personal role to {}".format(ctx.message.author.name, colour))
 
     @commands.cooldown(1, 30, commands.BucketType.user)
     @myrole.command(pass_context=True, no_pm=True)
@@ -167,9 +167,7 @@ class PersonalRoles:
         You cant use blacklisted names or control role names"""
         sv = ctx.message.server.id
         authorid = ctx.message.author.id
-        if sv not in self.config or authorid not in self.config[sv]["users"]:
-            await self.bot.say("Looks like you are not in server's roles list."
-                               " Contact admin/mod for assign your personal role to you.")
+        role = discord.utils.get(ctx.message.server.roles, id=self.config[sv]["users"][authorid])
         if len(name) > 100:
             name = name[:100]
         if name.casefold() in self.config[sv]["blacklist"] \
@@ -177,9 +175,7 @@ class PersonalRoles:
                 or settings.get_server_admin(ctx.message.server).lower() == name.lower():
             await self.bot.say(chat.error("NONONO!!! This rolename is blacklisted."))
             return
-        await self.bot.edit_role(ctx.message.server,
-                                 discord.utils.get(ctx.message.server.roles, id=self.config[sv]["users"][authorid]),
-                                 name=name)
+        await self.bot.edit_role(ctx.message.server, role, name=name)
         await self.bot.say("Changed name of {}'s personal role to {}".format(ctx.message.author.name, name))
 
 
