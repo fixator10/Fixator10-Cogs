@@ -93,7 +93,7 @@ class PersonalRoles:
         for key, value in self.config[sv]["users"].items():
             dic = {
                 "User": discord.utils.get(ctx.message.server.members, id=key) or key,
-                "Role": discord.utils.get(ctx.message.server.roles, id=value) or value
+                "Role": await self.smart_truncate(discord.utils.get(ctx.message.server.roles, id=value)) or value
             }
             assigned_roles.append(dic)
         for page in chat.pagify(tabulate(assigned_roles,
@@ -177,6 +177,13 @@ class PersonalRoles:
             return
         await self.bot.edit_role(ctx.message.server, role, name=name)
         await self.bot.say("Changed name of {}'s personal role to {}".format(ctx.message.author.name, name))
+
+    async def smart_truncate(self, content, length=32, suffix='…'):
+        """https://stackoverflow.com/questions/250357/truncate-a-string-without-ending-in-the-middle-of-a-word"""
+        if len(content) <= length:
+            return content
+        else:
+            return ' '.join(content[:length + 1].split(' ')[0:-1]) + suffix
 
 
 def check_folders():
