@@ -18,10 +18,10 @@ class PRCustomCheck:
             config = dataIO.load_json(config_file)
             author = ctx.message.author
             server = ctx.message.server
-            role = discord.utils.get(server.roles, id=config[server.id]["users"][author.id])
             if server.id not in config:
                 return False
-            elif role is None:
+            role = discord.utils.get(server.roles, id=config[server.id]["users"][author.id])
+            if role is None:
                 return False
             elif author.id in config[server.id]["users"]:
                 return True
