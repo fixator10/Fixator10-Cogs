@@ -180,7 +180,7 @@ class PersonalRoles:
 
     async def smart_truncate(self, content, length=32, suffix='…'):
         """https://stackoverflow.com/questions/250357/truncate-a-string-without-ending-in-the-middle-of-a-word"""
-        if len(content) <= length:
+        if len(str(content)) <= length:
             return content
         else:
             return ' '.join(content[:length + 1].split(' ')[0:-1]) + suffix
