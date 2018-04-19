@@ -4,7 +4,7 @@ from discord.ext import commands
 from cogs.utils import chat_formatting as chat
 
 
-class Godville:
+class GodvilleData:
     """Get data about Godville profiles"""
 
     def __init__(self, bot: commands.Bot):
