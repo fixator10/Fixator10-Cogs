@@ -76,4 +76,4 @@ class GodvilleData:
 
 
 def setup(bot):
-    bot.add_cog(Godville(bot))
+    bot.add_cog(GodvilleData(bot))
