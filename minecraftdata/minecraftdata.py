@@ -41,7 +41,7 @@ class MinecraftData:
                       icon_url="https://crafatar.com/renders/head/{}{}".format(uuid, "?overlay" if helm_layer else ""),
                       url="https://crafatar.com/skins/{}".format(uuid))
         em.set_thumbnail(url="https://crafatar.com/skins/{}".format(uuid))
-        em.set_image(url="https://crafatar.com/renders/body/{}{}".format(uuid, "?overlay" if helm_layer else ""))
+        em.set_image(url="https://crafatar.com/renders/body/{}.png{}".format(uuid, "?overlay" if helm_layer else ""))
         await self.bot.say(embed=em)
 
     @minecraft.group(pass_context=True, invoke_without_command=True)
