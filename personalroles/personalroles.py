@@ -23,9 +23,7 @@ class PRCustomCheck:
             if author.id not in config[server.id]["users"]:
                 return False
             role = discord.utils.get(server.roles, id=config[server.id]["users"][author.id])
-            if role is None:
-                return False
-            elif author.id in config[server.id]["users"]:
+            if role is not None:
                 return True
             else:
                 return False
