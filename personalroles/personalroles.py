@@ -20,6 +20,8 @@ class PRCustomCheck:
             server = ctx.message.server
             if server.id not in config:
                 return False
+            if author.id not in config[server.id]["users"]:
+                return False
             role = discord.utils.get(server.roles, id=config[server.id]["users"][author.id])
             if role is None:
                 return False
