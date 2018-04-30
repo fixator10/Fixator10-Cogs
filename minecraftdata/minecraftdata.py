@@ -36,12 +36,13 @@ class MinecraftData:
             await self.bot.say(chat.error("This player not found"))
             return
         em = discord.Embed(timestamp=ctx.message.timestamp)
-        em.set_footer(text="Provided by Crafatar", icon_url="https://crafatar.com/logo.png")
+        em.add_field(name="NameMC profile", value="[{}](https://namemc.com/profile/{})".format(nickname, uuid))
         em.set_author(name=nickname,
                       icon_url="https://crafatar.com/renders/head/{}{}".format(uuid, "?overlay" if helm_layer else ""),
                       url="https://crafatar.com/skins/{}".format(uuid))
         em.set_thumbnail(url="https://crafatar.com/skins/{}".format(uuid))
         em.set_image(url="https://crafatar.com/renders/body/{}.png{}".format(uuid, "?overlay" if helm_layer else ""))
+        em.set_footer(text="Provided by Crafatar", icon_url="https://crafatar.com/logo.png")
         await self.bot.say(embed=em)
 
     @minecraft.group(pass_context=True, invoke_without_command=True)
