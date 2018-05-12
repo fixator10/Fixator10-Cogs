@@ -56,7 +56,7 @@ class Weather:
                   + ":\n" + by_hour.summary + "\n" + str(by_hour.temperature) + \
                   "˚C" + "\n" + dictionary.get(xstr(by_hour.icon))
         em = discord.Embed(description=content, colour=0xff0000, timestamp=by_hour.time)
-        if ctx.message.channel.permissions_for(ctx.message.author).embed_links:
+        if ctx.message.channel.permissions_for(ctx.message.server.me).embed_links:
             await self.bot.say(embed=em)
         else:
             await self.bot.say(content)
@@ -128,7 +128,7 @@ class Weather:
                       xstr(by_hour.data[i].temperatureMax) + "˚C       " \
                       + dictionary.get(xstr(by_hour.data[i].icon)) + "\n"
         em = discord.Embed(description=content, colour=0xff0000, timestamp=datetime.datetime.now())
-        if ctx.message.channel.permissions_for(ctx.message.author).embed_links:
+        if ctx.message.channel.permissions_for(ctx.message.server.me).embed_links:
             await self.bot.say(embed=em)
         else:
             await self.bot.say(content)
