@@ -34,7 +34,12 @@ class DataUtils:
                         .replace("False", "<:X_normal:422974457406291969>")
                         .replace("True", "<:check_normal:422974382114209803>"))
         embed.add_field(name="Mention", value=user.mention)
-        embed.set_image(url=user.avatar_url)
+        embed.add_field(name="Default avatar", value="[{}]({})".format(user.avatar, user.avatar_url))
+        if user.avatar:
+            embed.add_field(name="Avatar", value="[{}]({})".format(user.default_avatar, user.default_avatar_url))
+            embed.set_image(url=user.avatar_url)
+        else:
+            embed.set_image(url=user.default_avatar_url)
         embed.set_footer(text="Created at")
         await self.bot.say(embed=embed)
 
