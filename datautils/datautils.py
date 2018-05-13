@@ -25,8 +25,20 @@ class DataUtils:
     def __init__(self, bot: discord.Client):
         self.bot = bot
 
-    @commands.command(pass_context=True, no_pm=True, aliases=['memberinfo', 'membinfo',
-                                                              'member', 'user'])
+    @commands.command(pass_context=True)
+    async def getuserinfo(self, ctx, user_id: str):
+        """Get info about any discord's user by ID"""
+        user = await self.bot.get_user_info(user_id)
+        embed = discord.Embed(title=str(user), timestamp=user.created_at)
+        embed.add_field(name="Bot?", value=str(user.bot)
+                        .replace("False", "<:X_normal:422974457406291969>"
+                                 .replace("True", "<:check_normal:422974382114209803>")))
+        embed.add_field(name="Mention", value=user.mention)
+        embed.set_image(url=user.avatar_url)
+        embed.set_footer(text="Created at")
+        await self.bot.say(embed=embed)
+
+    @commands.command(pass_context=True, no_pm=True, aliases=['memberinfo', 'membinfo', 'member'])
     async def uinfo(self, ctx, member: discord.Member = None):
         """Information on a user"""
         if member is None:
@@ -52,7 +64,7 @@ class DataUtils:
         em.set_image(url=member.avatar_url)
         em.set_thumbnail(url="https://xenforo.com/community/rgba.php?r=" + str(member.colour.r) + "&g=" + str(
             member.colour.g) + "&b=" + str(member.colour.b) + "&a=255")
-        if ctx.message.channel.permissions_for(ctx.message.author).embed_links:
+        if ctx.message.channel.permissions_for(ctx.message.server.me).embed_links:
             await self.bot.say(embed=em)
         else:
             await self.bot.say("```\n" +
@@ -108,7 +120,7 @@ class DataUtils:
         else:
             em.add_field(name="Invite Splash", value="✔ [🔗](" + server.splash_url + ")")
         em.set_image(url=server.icon_url)
-        if ctx.message.channel.permissions_for(ctx.message.author).embed_links:
+        if ctx.message.channel.permissions_for(ctx.message.server.me).embed_links:
             await self.bot.say(embed=em)
         else:
             await self.bot.say("```\n" +
@@ -147,7 +159,7 @@ class DataUtils:
                      value="\n".join([str(x) for x in changed_roles])
                            or "`Not set`")
         em.add_field(name="Mention", value=channel.mention + "\n`" + channel.mention + "`")
-        if ctx.message.channel.permissions_for(ctx.message.author).embed_links:
+        if ctx.message.channel.permissions_for(ctx.message.server.me).embed_links:
             await self.bot.say(embed=em)
         else:
             await self.bot.say("```\n" +
@@ -162,6 +174,7 @@ class DataUtils:
                                "```")
 
     @commands.command(pass_context=True, no_pm=True, aliases=['channellist', 'listchannels'])
+    @checks.admin()
     async def channels(self, ctx, server: str = None):
         """Get all channels on server"""
         if server is None:
@@ -209,7 +222,7 @@ class DataUtils:
                            "Categories: {} | "
                            "Text Channels: {} | "
                            "Voice Channels: {}".format(acc, cc, tcc, vcc))
-        if ctx.message.channel.permissions_for(ctx.message.author).embed_links:
+        if ctx.message.channel.permissions_for(ctx.message.server.me).embed_links:
             await self.bot.say(embed=em)
         else:
             await self.bot.say("""\📂 Categories:
@@ -243,7 +256,7 @@ class DataUtils:
         em.add_field(name="Mention", value=role.mention + "\n`" + role.mention + "`")
         em.set_thumbnail(url="https://xenforo.com/community/rgba.php?r=" + str(role.colour.r) + "&g=" + str(
             role.colour.g) + "&b=" + str(role.colour.b) + "&a=255")
-        if ctx.message.channel.permissions_for(ctx.message.author).embed_links:
+        if ctx.message.channel.permissions_for(ctx.message.server.me).embed_links:
             await self.bot.say(embed=em)
         else:
             await self.bot.say("```\n" +
@@ -259,6 +272,7 @@ class DataUtils:
                                "```")
 
     @commands.command(pass_context=True, no_pm=True, aliases=['listroles', 'rolelist'])
+    @checks.admin()
     async def roles(self, ctx, server: str = None):
         """Get all roles on server"""
         if server is None:
@@ -284,7 +298,7 @@ class DataUtils:
             embeds.append(em)
         embeds[0].title = "Table of roles"
         embeds[-1].set_footer(text="Total count of roles: " + str(len(server.roles)))
-        if ctx.message.channel.permissions_for(ctx.message.author).embed_links:
+        if ctx.message.channel.permissions_for(ctx.message.server.me).embed_links:
             for em in embeds:
                 await self.bot.say(embed=em)
         else:
@@ -292,6 +306,7 @@ class DataUtils:
                 await self.bot.say("**List of roles:**\n{}".format(chat.box(page)))
 
     @commands.command(pass_context=True, no_pm=True, aliases=["cperms", "permissions"])
+    @checks.admin()
     async def chan_perms(self, ctx, member: discord.Member, channel: discord.Channel = None):
         """Check user's permission for current or provided channel"""
         # From Dusty-Cogs for Red-DiscordBot: https://github.com/Lunar-Dust/Dusty-Cogs
