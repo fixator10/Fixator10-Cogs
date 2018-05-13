@@ -49,6 +49,18 @@ def rgb_to_cmyk(r, g, b):
     return c * cmyk_scale, m * cmyk_scale, y * cmyk_scale, k * cmyk_scale
 
 
+class CustomChecks:
+    # noinspection PyMethodParameters
+    def selfbot():
+        def predicate(ctx):
+            if ctx.bot.user.bot:  # if bot.user.bot is True - bot is not selfbot
+                return False
+            else:
+                return True
+
+        return commands.check(predicate)
+
+
 class MoreUtils:
     def __init__(self, bot: discord.Client):
         self.bot = bot
@@ -56,18 +68,21 @@ class MoreUtils:
         self.config = dataIO.load_json(self.config_file)
 
     @commands.group(pass_context=True)
+    @CustomChecks.selfbot()
     async def utilsset(self, ctx):
         """More utils settings"""
         if ctx.invoked_subcommand is None:
             await self.bot.send_cmd_help(ctx)
 
     @utilsset.group(pass_context=True)
+    @CustomChecks.selfbot()
     async def signature(self, ctx):
         """Signature settings"""
         if ctx.invoked_subcommand is None:
             await self.bot.send_cmd_help(ctx)
 
     @signature.command()
+    @CustomChecks.selfbot()
     async def title(self, *, title: str):
         """Set signature title"""
         self.config["signature_title"] = title
@@ -75,6 +90,7 @@ class MoreUtils:
         await self.bot.say(chat.info("Signature title changed to {}".format(title)))
 
     @signature.command(aliases=["desc"])
+    @CustomChecks.selfbot()
     async def description(self, *, description: str):
         """Set signature description"""
         self.config["signature_desc"] = description
@@ -82,6 +98,7 @@ class MoreUtils:
         await self.bot.say(chat.info("Signature description changed to {}".format(description)))
 
     @signature.command()
+    @CustomChecks.selfbot()
     async def url(self, *, url: str):
         """Set signature title"""
         self.config["signature_url"] = url
@@ -89,6 +106,7 @@ class MoreUtils:
         await self.bot.say(chat.info("Signature url changed to {}".format(url)))
 
     @signature.command()
+    @CustomChecks.selfbot()
     async def field_name(self, *, field_name: str):
         """Set signature field name"""
         self.config["signature_field_name"] = field_name
@@ -96,6 +114,7 @@ class MoreUtils:
         await self.bot.say(chat.info("Signature field name changed to {}".format(field_name)))
 
     @signature.command()
+    @CustomChecks.selfbot()
     async def field_content(self, *, field_content: str):
         """Set signature field content"""
         self.config["signature_field_content"] = field_content
@@ -103,6 +122,7 @@ class MoreUtils:
         await self.bot.say(chat.info("Signature field content changed to {}".format(field_content)))
 
     @signature.command(name="color")
+    @CustomChecks.selfbot()
     async def _color(self, *, hex_color: str = None):
         """Set signature color
 
@@ -126,6 +146,7 @@ class MoreUtils:
 
     @commands.command(pass_context=True)
     @commands.has_permissions(embed_links=True)
+    @CustomChecks.selfbot()
     async def signed(self, ctx, *, message: str = None):
         """Says something with embedded signature
 
@@ -175,7 +196,7 @@ class MoreUtils:
             if attachment is not None:
                 attachment = dict(attachment)
                 em.set_image(url=attachment['url'])
-            if ctx.message.channel.permissions_for(ctx.message.author).embed_links:
+            if ctx.message.channel.permissions_for(ctx.message.server.me).embed_links:
                 await self.bot.say(response, embed=em)
             else:
                 await self.bot.say((response or "") + "\n\n**Quote from " + message.author.name + "#" +
@@ -212,34 +233,33 @@ class MoreUtils:
                                "```" +
                                emoji.url)
 
-    @commands.command(pass_context=True, name='thetime')
-    async def _thetime(self, ctx):
+    @commands.command(name='thetime')
+    async def _thetime(self):
         """Send bot's current time"""
         await self.bot.say(datetime.datetime.now().strftime('%d.%m.%Y %H:%M:%S %Z'))
 
     @commands.command(pass_context=True, aliases=['HEX', 'hex'])
-    async def color(self, ctx, color: str):
-        """Shows some info about provided HEX color"""
-        pattern = re.compile("^#([A-Fa-f0-9]{6})$")
-        if pattern.match(color):
-            colorrgb = hex_to_rgb(color)
-            colorint = get_int_from_rgb(colorrgb)
-            colorhsv = colorsys.rgb_to_hsv(colorrgb[0], colorrgb[1], colorrgb[2])
-            colorhls = colorsys.rgb_to_hls(colorrgb[0], colorrgb[1], colorrgb[2])
-            coloryiq = colorsys.rgb_to_yiq(colorrgb[0], colorrgb[1], colorrgb[2])
-            colorcmyk = rgb_to_cmyk(colorrgb[0], colorrgb[1], colorrgb[2])
-            em = discord.Embed(title=str(color),
-                               description="Provided HEX: " + color + "\nRGB: " + str(colorrgb) + "\nCMYK: " + str(
-                                   colorcmyk) + "\nHSV: " + str(colorhsv) + "\nHLS: " + str(colorhls) + "\nYIQ: " + str(
-                                   coloryiq) + "\nint: " + str(colorint),
-                               url='http://www.colorpicker.com/' + str(color.lstrip('#')), colour=colorint,
-                               timestamp=ctx.message.timestamp)
-            em.set_thumbnail(url="https://xenforo.com/community/rgba.php?r=" + str(colorrgb[0]) + "&g=" + str(
-                colorrgb[1]) + "&b=" + str(colorrgb[2]) + "&a=255")
-            if ctx.message.channel.permissions_for(ctx.message.author).embed_links:
-                await self.bot.say(embed=em)
-            else:
-                await self.bot.say("```\n" +
+    async def color(self, ctx, color: discord.Color):
+        """Shows some info about provided color"""
+        color = str(color)
+        colorrgb = hex_to_rgb(color)
+        colorint = get_int_from_rgb(colorrgb)
+        colorhsv = colorsys.rgb_to_hsv(colorrgb[0], colorrgb[1], colorrgb[2])
+        colorhls = colorsys.rgb_to_hls(colorrgb[0], colorrgb[1], colorrgb[2])
+        coloryiq = colorsys.rgb_to_yiq(colorrgb[0], colorrgb[1], colorrgb[2])
+        colorcmyk = rgb_to_cmyk(colorrgb[0], colorrgb[1], colorrgb[2])
+        em = discord.Embed(title=str(color),
+                           description="Provided HEX: " + color + "\nRGB: " + str(colorrgb) + "\nCMYK: " + str(
+                               colorcmyk) + "\nHSV: " + str(colorhsv) + "\nHLS: " + str(colorhls) + "\nYIQ: " + str(
+                               coloryiq) + "\nint: " + str(colorint),
+                           url='http://www.colorpicker.com/' + str(color.lstrip('#')), colour=colorint,
+                           timestamp=ctx.message.timestamp)
+        em.set_thumbnail(url="https://xenforo.com/community/rgba.php?r=" + str(colorrgb[0]) + "&g=" + str(
+            colorrgb[1]) + "&b=" + str(colorrgb[2]) + "&a=255")
+        if ctx.message.channel.permissions_for(ctx.message.author).embed_links:
+            await self.bot.say(embed=em)
+        else:
+            await self.bot.say("```\n" +
                                    "Provided HEX: " + color +
                                    "\nRGB: " + str(colorrgb) +
                                    "\nCMYK: " + str(colorcmyk) +
@@ -248,10 +268,6 @@ class MoreUtils:
                                    "\nYIQ: " + str(coloryiq) +
                                    "\nint: " + str(colorint) +
                                    "```")
-        else:
-            await self.bot.say(
-                "Looks like the `{}`, that you provided is not color HEX\nOr it is too small/too big.\nExample of "
-                "acceptable color HEX: `#1A2B3C`".format(color))
 
 
 def check_folders():
