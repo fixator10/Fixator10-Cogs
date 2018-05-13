@@ -38,7 +38,7 @@ class DataUtils:
         embed.set_footer(text="Created at")
         await self.bot.say(embed=embed)
 
-    @commands.command(pass_context=True, no_pm=True, aliases=['memberinfo', 'membinfo', 'member'])
+    @commands.command(pass_context=True, no_pm=True, aliases=['memberinfo', 'membinfo'])
     async def uinfo(self, ctx, member: discord.Member = None):
         """Information on a user"""
         if member is None:
@@ -79,7 +79,7 @@ class DataUtils:
                                "```\n" +
                                member.avatar_url)
 
-    @commands.command(pass_context=True, no_pm=True, aliases=['server', 'servinfo', 'serv', 'sv'])
+    @commands.command(pass_context=True, no_pm=True, aliases=['servinfo', 'serv', 'sv'])
     @checks.is_owner()
     async def sinfo(self, ctx, server: str = None):
         """Shows server information"""
@@ -144,7 +144,7 @@ class DataUtils:
                                "```\n" +
                                server.icon_url)
 
-    @commands.command(pass_context=True, no_pm=True, aliases=['channel', 'chaninfo', 'chan', 'channelinfo'])
+    @commands.command(pass_context=True, no_pm=True, aliases=['chaninfo', 'channelinfo'])
     async def cinfo(self, ctx, *, channel: discord.Channel):
         """Get info about channel"""
         changed_roles = sorted(channel.changed_roles,
@@ -237,7 +237,7 @@ class DataUtils:
 📄 Text Channels: {}
 🔊 Voice Channels: {}""".format(acc, cc, tcc, vcc)))
 
-    @commands.command(pass_context=True, no_pm=True, aliases=['role', 'roleinfo'])
+    @commands.command(pass_context=True, no_pm=True, aliases=['roleinfo'])
     async def rinfo(self, ctx, *, role: discord.Role):
         """Get info about role"""
         em = discord.Embed(title=role.name, colour=role.colour)
@@ -305,7 +305,7 @@ class DataUtils:
             for page in chat.pagify(tabulate.tabulate(roles, tablefmt="orgtbl")):
                 await self.bot.say("**List of roles:**\n{}".format(chat.box(page)))
 
-    @commands.command(pass_context=True, no_pm=True, aliases=["cperms", "permissions"])
+    @commands.command(pass_context=True, no_pm=True, aliases=["cperms"])
     @checks.admin()
     async def chan_perms(self, ctx, member: discord.Member, channel: discord.Channel = None):
         """Check user's permission for current or provided channel"""
