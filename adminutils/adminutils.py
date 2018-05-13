@@ -67,9 +67,6 @@ class AdminUtils:
         """Adds an emoji to server
         Requires proper permissions
         PNG/JPG only"""
-        if self.bot.user.bot:
-            await self.bot.say(chat.error("This command is only for SelfBots"))
-            return
         try:
             async with self.session.get(emoji_url) as r:  # from Red's owner.py
                 data = await r.read()
