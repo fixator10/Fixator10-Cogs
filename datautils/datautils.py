@@ -36,7 +36,7 @@ class DataUtils:
         embed.add_field(name="Mention", value=user.mention)
         embed.add_field(name="Default avatar", value="[{}]({})".format(user.default_avatar, user.default_avatar_url))
         if user.avatar:
-            embed.add_field(name="Avatar", value="[{}]({})".format(user.avatar, user.avatar_url))
+            embed.add_field(name="Avatar", value="[`{}`]({})".format(user.avatar, user.avatar_url))
             embed.set_image(url=user.avatar_url)
         else:
             embed.set_image(url=user.default_avatar_url)
