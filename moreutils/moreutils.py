@@ -176,31 +176,31 @@ class MoreUtils:
     #     em = discord.Embed(description=message, colour=em_color)
     #     await self.bot.say(embed=em)
 
-    @commands.command(pass_context=True)
-    async def quote(self, ctx, messageid: str, *, response: str = None):
-        """Quote an message by id"""
-        message = discord.utils.get(self.bot.messages, id=messageid)
-        if message is None:
-            await self.bot.say("Failed to get message with id `" + messageid + "`")
-        else:
-            if message.channel.is_private:
-                colour = discord.Colour.default()
-                name = message.author.name
-            else:
-                colour = message.author.colour
-                name = message.author.nick or message.author.name
-            em = discord.Embed(description=message.content, colour=colour, timestamp=message.timestamp)
-            em.set_author(name=name, icon_url=message.author.avatar_url)
-            em.set_footer(text=message.author.name + "#" + message.author.discriminator)
-            attachment = discord.utils.get(message.attachments)
-            if attachment is not None:
-                attachment = dict(attachment)
-                em.set_image(url=attachment['url'])
-            if ctx.message.channel.permissions_for(ctx.message.server.me).embed_links:
-                await self.bot.say(response, embed=em)
-            else:
-                await self.bot.say((response or "") + "\n\n**Quote from " + message.author.name + "#" +
-                                   message.author.discriminator + ":**\n```\n" + message.content + "```")
+    # @commands.command(pass_context=True)
+    # async def quote(self, ctx, messageid: str, *, response: str = None):
+    #     """Quote an message by id"""
+    #     message = discord.utils.get(self.bot.messages, id=messageid)
+    #     if message is None:
+    #         await self.bot.say("Failed to get message with id `" + messageid + "`")
+    #     else:
+    #         if message.channel.is_private:
+    #             colour = discord.Colour.default()
+    #             name = message.author.name
+    #         else:
+    #             colour = message.author.colour
+    #             name = message.author.nick or message.author.name
+    #         em = discord.Embed(description=message.content, colour=colour, timestamp=message.timestamp)
+    #         em.set_author(name=name, icon_url=message.author.avatar_url)
+    #         em.set_footer(text=message.author.name + "#" + message.author.discriminator)
+    #         attachment = discord.utils.get(message.attachments)
+    #         if attachment is not None:
+    #             attachment = dict(attachment)
+    #             em.set_image(url=attachment['url'])
+    #         if ctx.message.channel.permissions_for(ctx.message.server.me).embed_links:
+    #             await self.bot.say(response, embed=em)
+    #         else:
+    #             await self.bot.say((response or "") + "\n\n**Quote from " + message.author.name + "#" +
+    #                                message.author.discriminator + ":**\n```\n" + message.content + "```")
 
     @commands.command(pass_context=True, no_pm=True, aliases=['emojiinfo', 'emojinfo'])
     async def emoji(self, ctx, *, emoji: discord.Emoji):
