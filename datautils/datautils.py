@@ -31,8 +31,8 @@ class DataUtils:
         user = await self.bot.get_user_info(user_id)
         embed = discord.Embed(title=str(user), timestamp=user.created_at)
         embed.add_field(name="Bot?", value=str(user.bot)
-                        .replace("False", "<:X_normal:422974457406291969>"
-                                 .replace("True", "<:check_normal:422974382114209803>")))
+                        .replace("False", "<:X_normal:422974457406291969>")
+                        .replace("True", "<:check_normal:422974382114209803>"))
         embed.add_field(name="Mention", value=user.mention)
         embed.set_image(url=user.avatar_url)
         embed.set_footer(text="Created at")
