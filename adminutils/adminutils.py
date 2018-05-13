@@ -9,16 +9,16 @@ from cogs.utils import chat_formatting as chat
 from cogs.utils import checks
 
 
-class CustomChecks:
-    # noinspection PyMethodParameters
-    def selfbot():
-        def predicate(ctx):
-            if ctx.bot.user.bot:  # if bot.user.bot is True - bot is not selfbot
-                return False
-            else:
-                return True
-
-        return commands.check(predicate)
+# class CustomChecks:
+#     # noinspection PyMethodParameters
+#     def selfbot():
+#         def predicate(ctx):
+#             if ctx.bot.user.bot:  # if bot.user.bot is True - bot is not selfbot
+#                 return False
+#             else:
+#                 return True
+#
+#         return commands.check(predicate)
 
 
 class AdminUtils:
@@ -53,19 +53,18 @@ class AdminUtils:
         else:
             await self.bot.say(chat.error("Inactive members cleanup canceled."))
 
-    @commands.command(no_pm=True, pass_context=True)
-    @checks.admin_or_permissions(manage_nicknames=True)
-    async def invite(self, ctx):
-        """Creates a server invite"""
-        server = ctx.message.server
-        invite = await self.bot.create_invite(server)
-        await self.bot.say(invite.url)
+    # @commands.command(no_pm=True, pass_context=True)
+    # @checks.admin_or_permissions(manage_nicknames=True)
+    # async def invite(self, ctx):
+    #     """Creates a server invite"""
+    #     server = ctx.message.server
+    #     invite = await self.bot.create_invite(server)
+    #     await self.bot.say(invite.url)
 
     @commands.command(no_pm=True, pass_context=True)
-    @CustomChecks.selfbot()
     @commands.has_permissions(manage_emojis=True)
     async def addemoji(self, ctx, emoji_name: str, emoji_url: str):
-        """[SELFBOT ONLY] Adds an emoji to server
+        """Adds an emoji to server
         Requires proper permissions
         PNG/JPG only"""
         if self.bot.user.bot:
