@@ -40,6 +40,7 @@ class DataUtils:
             embed.set_image(url=user.avatar_url)
         else:
             embed.set_image(url=user.default_avatar_url)
+        embed.set_thumbnail(url=user.default_avatar_url)
         embed.set_footer(text="Created at")
         await self.bot.say(embed=embed)
 
