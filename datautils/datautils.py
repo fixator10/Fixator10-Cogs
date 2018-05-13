@@ -31,8 +31,8 @@ class DataUtils:
         user = await self.bot.get_user_info(user_id)
         embed = discord.Embed(title=str(user), timestamp=user.created_at)
         embed.add_field(name="Bot?", value=str(user.bot)
-                        .replace("False", "<:X_normal:422974457406291969>")
-                        .replace("True", "<:check_normal:422974382114209803>"))
+                        .replace("False", "❌")
+                        .replace("True", "✔"))
         embed.add_field(name="Mention", value=user.mention)
         embed.add_field(name="Default avatar", value="[{}]({})".format(user.avatar, user.avatar_url))
         if user.avatar:
