@@ -254,8 +254,8 @@ class MoreUtils:
                                coloryiq) + "\nint: " + str(colorint),
                            url='http://www.colorpicker.com/' + str(color.lstrip('#')), colour=colorint,
                            timestamp=ctx.message.timestamp)
-        em.set_thumbnail(url="https://xenforo.com/community/rgba.php?r=" + str(colorrgb[0]) + "&g=" + str(
-            colorrgb[1]) + "&b=" + str(colorrgb[2]) + "&a=255")
+        em.set_thumbnail(url="https://xenforo.com/rgba.php?r={}&g={}&b={}&a=255"
+                         .format(colorrgb[0], colorrgb[1], colorrgb[2]))
         if ctx.message.channel.permissions_for(ctx.message.author).embed_links:
             await self.bot.say(embed=em)
         else:
