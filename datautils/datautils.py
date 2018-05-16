@@ -29,6 +29,8 @@ class DataUtils:
     async def getuserinfo(self, ctx, user_id: str):
         """Get info about any discord's user by ID"""
         user = await self.bot.get_user_info(user_id)
+        if user is None:
+            await self.bot.say(chat.error("Discord user with ID `{}` not found".format(user_id)))
         embed = discord.Embed(title=str(user), timestamp=user.created_at)
         embed.add_field(name="Bot?", value=str(user.bot)
                         .replace("False", "❌")
