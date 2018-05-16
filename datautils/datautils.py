@@ -28,9 +28,15 @@ class DataUtils:
     @commands.command(pass_context=True)
     async def getuserinfo(self, ctx, user_id: str):
         """Get info about any discord's user by ID"""
-        user = await self.bot.get_user_info(user_id)
-        if user is None:
-            await self.bot.say(chat.error("Discord user with ID `{}` not found".format(user_id)))
+        try:
+            user = await self.bot.get_user_info(user_id)
+        except discord.errors.NotFound:
+            await self.bot.say(chat.error("Discord user with ID `{}` not found").format(user_id))
+            return
+        except discord.errors.HTTPException:
+            await self.bot.say(chat.warning("Bot was unable to get data about user with ID `{}`. "
+                                            "Try again later".format(user_id)))
+            return
         embed = discord.Embed(title=str(user), timestamp=user.created_at)
         embed.add_field(name="Bot?", value=str(user.bot)
                         .replace("False", "❌")
