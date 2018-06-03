@@ -219,7 +219,7 @@ class MoreUtils:
         if len(allowed_roles) > 0:
             em.add_field(name="Roles", value="\n".join([str(x) for x in allowed_roles]))
         em.set_image(url=emoji.url)
-        if ctx.message.channel.permissions_for(ctx.message.author).embed_links:
+        if ctx.message.channel.permissions_for(ctx.message.server.me).embed_links:
             await self.bot.say(embed=em)
         else:
             await self.bot.say("```\n" +
@@ -252,11 +252,11 @@ class MoreUtils:
                            description="Provided HEX: " + color + "\nRGB: " + str(colorrgb) + "\nCMYK: " + str(
                                colorcmyk) + "\nHSV: " + str(colorhsv) + "\nHLS: " + str(colorhls) + "\nYIQ: " + str(
                                coloryiq) + "\nint: " + str(colorint),
-                           url='http://www.colorpicker.com/' + str(color.lstrip('#')), colour=colorint,
+                           url='http://www.color-hex.com/color/' + str(color.lstrip('#')), colour=colorint,
                            timestamp=ctx.message.timestamp)
         em.set_thumbnail(url="https://xenforo.com/rgba.php?r={}&g={}&b={}&a=255"
                          .format(colorrgb[0], colorrgb[1], colorrgb[2]))
-        if ctx.message.channel.permissions_for(ctx.message.author).embed_links:
+        if ctx.message.channel.permissions_for(ctx.message.server.me).embed_links:
             await self.bot.say(embed=em)
         else:
             await self.bot.say("```\n" +
