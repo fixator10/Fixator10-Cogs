@@ -127,9 +127,9 @@ class Translators:
     async def fullwidth(self, ctx, *, text: str):
         """Switches text to Ｆｕｌｌ－ｗｉｄｔｈ　ｃｈａｒａｃｔｅｒｓ"""
         halfwidth = "qwertyuiopasdfghjklzxcvbnm1234567890!?" \
-                    "@#$%^&*()_+-=<>.,/;:'\"[]{}|\\`~"
+                    "@#$%^&*()_+-=<>.,/;:'\"[]{}|\\`~ "
         fullwidth = "ｑｗｅｒｔｙｕｉｏｐａｓｄｆｇｈｊｋｌｚｘｃｖｂｎｍ１２３４５６７８９０！？" \
-                    "＠＃＄％＾＆＊（）＿＋－＝＜＞．，／；：＇＂［］｛｝｜＼｀～"
+                    "＠＃＄％＾＆＊（）＿＋－＝＜＞．，／；：＇＂［］｛｝｜＼｀～　"
         table = str.maketrans(halfwidth, fullwidth)
         text = text.translate(table)
         halfwidth = halfwidth.upper()
