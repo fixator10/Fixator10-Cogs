@@ -123,6 +123,21 @@ class Translators:
         result = pattern.sub(lambda x: dic[x.group()], text)
         await self.bot.say(result)
 
+    @commands.command(pass_context=True)
+    async def fullwidth(self, ctx, *, text: str):
+        """Switches text to Ｆｕｌｌ－ｗｉｄｔｈ　ｃｈａｒａｃｔｅｒｓ"""
+        halfwidth = "qwertyuiopasdfghjklzxcvbnm1234567890!?" \
+                    "@#$%^&*()_+-=<>.,/;:'\"[]{}|\\`~"
+        fullwidth = "ｑｗｅｒｔｙｕｉｏｐａｓｄｆｇｈｊｋｌｚｘｃｖｂｎｍ１２３４５６７８９０！？" \
+                    "＠＃＄％＾＆＊（）＿＋－＝＜＞．，／；：＇＂［］｛｝｜＼｀～"
+        table = str.maketrans(halfwidth, fullwidth)
+        text = text.translate(table)
+        halfwidth = halfwidth.upper()
+        fullwidth = fullwidth.upper()
+        table = str.maketrans(halfwidth, fullwidth)
+        text = text.translate(table)
+        await self.bot.say(text)
+
     @commands.group(pass_context=True)
     async def leet(self, ctx):
         """Leet (1337) translation commands"""
