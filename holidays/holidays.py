@@ -1,3 +1,4 @@
+import os
 from datetime import datetime
 
 import aiohttp
@@ -5,6 +6,8 @@ import tabulate
 from discord.ext import commands
 
 from cogs.utils import chat_formatting as chat
+from cogs.utils import checks
+from cogs.utils.dataIO import dataIO
 
 
 class Holidays:
@@ -13,87 +16,103 @@ class Holidays:
     def __init__(self, bot):
         self.bot = bot
         self.session = aiohttp.ClientSession(loop=self.bot.loop)
+        self.config_file = "data/holidays/config.json"
+        self.config = dataIO.load_json(self.config_file)
 
     def __unload(self):
         self.session.close()
 
-    @commands.command(pass_context=True)
-    async def holidays(self, ctx, country_code: str):
-        """Check holidays for this month
-Available country codes:
-1.    Angola    ago
-2.    Australia    aus
-3.    Austria    aut
-4.    Belgium    bel
-5.    Brazil    bra
-6.    Canada    can
-7.    China    chn
-8.    Colombia    col
-9.    Croatia    hrv
-10.    Czech Republic    cze
-11.    Denmark    dnk
-12.    England    eng
-13.    Estonia    est
-14.    Finland    fin
-15.    France    fra
-16.    Germany    deu
-17.    Greece            grc
-18.    Hong Kong    hkg
-19.    Hungary     hun
-20.    Iceland    isl
-21.    Ireland    irl
-22.    Isle of Man    imn
-23.    Israel    isr
-24.    Italy             ita
-25.    Japan    jpn
-26.    Latvia    lva
-27.    Lithuania    ltu
-28.    Luxembourg    lux
-29.    Mexico    mex
-30.    Netherlands    nld
-31.    New Zealand    nzl
-34.    Poland    pol
-35.    Portugal     prt
-36.    Romania    rou
-37.    Russia    rus
-38.    Serbia    srb
-39.    Slovakia    svk
-40.    Slovenia    svn
-41.    South Africa    zaf
-42.    South Korea    kor
-43.    Scotland      sct
-44.    Sweden    swe
-45.    Ukraine    ukr
-46.    United States of America    usa
-47.    Wales    wls"""
-        month = datetime.now().strftime('%m')
-        year = datetime.now().strftime('%Y')
-        try:
-            async with self.session.get('http://kayaposoft.com/enrico/json/v1.0/'
-                                        '?action=getPublicHolidaysForMonth'
-                                        '&month={}&year={}&country={}'.format(month, year, country_code)) as data:
-                data = await data.json()
-                if "error" in data:
-                    await self.bot.say(chat.error("An error occurred: `{}`".format(data["error"])))
-                    return
-                if not data:
-                    await self.bot.say(chat.info("Holidays in `{}` for current month not found".format(country_code)))
-                    return
-                for hol in data:
-                    try:
-                        hol["date"] = "{}.{}.{}" \
-                        .format(hol["date"]["day"], hol["date"]["month"], hol["date"]["year"])
-                    except:
-                        pass
-                await self.bot.say(chat.box(tabulate.tabulate(data, headers={"date": "Date",
-                                                                             "localName": "Name",
-                                                                             "englishName": "Name (ENG)",
-                                                                             "note": "Note"},
-                                                              tablefmt="fancy_grid")))
-        except Exception as e:
-            await self.bot.say(
-                chat.error("Unable to find any holidays.\nAn error has been occurred: " + chat.inline(e)))
+    @commands.group(pass_context=True, invoke_without_command=True)
+    @commands.cooldown(1, 30, commands.BucketType.channel)
+    async def holidays(self, ctx: commands.Context, country: str,
+                       month: int = int(datetime.now().strftime('%m')),
+                       year: int = int(datetime.now().strftime('%Y'))):
+        """Check holidays
+        Country must be presented in ISO 3166-2 format (example: US; RU)"""
+        if month > 12 or month < 1 or len(str(year)) != 4:
+            await self.bot.send_cmd_help(ctx)
+            return
+        if "APIkey" not in self.config:
+            await self.bot.say(chat.error("API key is not set. "
+                                          "Use {}holidays setkey to set API key.".format(ctx.prefix)))
+            return
+        if not self.config["premiumkey"] \
+                and month == int(datetime.now().strftime('%m')) or year > int(datetime.now().strftime('%Y')):
+            year = int(datetime.now().strftime('%Y')) - 1
+            await self.bot.say(chat.warning("This bot has set non-premium key, "
+                                            "so current and upcoming holiday data is unavailable. "
+                                            "Query year was set to {}".format(year)))
+        async with self.session.get("https://holidayapi.com/v1/holidays", params={"key": self.config["APIkey"],
+                                                                                  "year": year,
+                                                                                  "country": country,
+                                                                                  "month": month}) as data:
+            response = await data.json()
+            if response["status"] == 200:
+                for num, holiday in enumerate(response["holidays"]):
+                    response["holidays"][num]["public"] = \
+                        str(response["holidays"][num]["public"]).replace("False", "❎").replace("True", "✅")
+                for page in chat.pagify(tabulate.tabulate(response["holidays"],
+                                                          headers={"name": "Name",
+                                                                   "date": "Date",
+                                                                   "observed": "Observed",
+                                                                   "public": "Public"},
+                                                          tablefmt="orgtbl")):
+                    await self.bot.say(chat.box(page))
+            elif response["status"] == 400:
+                await self.bot.say(chat.error("Something went wrong... "
+                                              "Server returned client error code {}. "
+                                              "This is possibly cog error.\n"
+                                              "{}").format(response["status"], chat.inline(response["error"])))
+            elif response["status"] < 500:
+                await self.bot.say(chat.error("Something went wrong... "
+                                              "Server returned client error code {}.").format(response["status"]))
+            else:
+                await self.bot.say(chat.error("Something went wrong... Server returned server error code {}. "
+                                              "Try again later.").format(response["status"]))
+
+    @holidays.command(pass_context=True)
+    @checks.is_owner()
+    async def setkey(self, ctx, api_key: str):
+        """Set API key for holidayapi.com"""
+        async with self.session.get("https://holidayapi.com/v1/holidays", params={"key": api_key,
+                                                                                  "year": 2038,
+                                                                                  "country": "US"}) as data:
+            response = await data.json()
+        if response["status"] == 402:
+            self.config["premiumkey"] = False
+        elif response["status"] == 401:
+            await self.bot.say(chat.error("Invalid API key. Get an API key on https://holidayapi.com."))
+            return
+        elif response["status"] == 200:
+            self.config["premiumkey"] = True
+        elif response["status"] < 500:
+            await self.bot.say(chat.error("Something went wrong... "
+                                          "Server returned client error code {}. "
+                                          "This is possibly cog error.\n"
+                                          "{}").format(response["status"], chat.inline(response["error"])))
+            return
+        else:
+            await self.bot.say(chat.error("Something went wrong... Server returned server error code {}. "
+                                          "Try again later.").format(response["status"]))
+            return
+        self.config["APIkey"] = api_key
+        dataIO.save_json(self.config_file, self.config)
+        await self.bot.say(chat.info("New API key for holidayapi.com set"))
+
+
+def check_folders():
+    if not os.path.exists("data/holidays"):
+        os.makedirs("data/holidays")
+
+
+def check_files():
+    system = {}
+    f = "data/holidays/config.json"
+    if not dataIO.is_valid_json(f):
+        dataIO.save_json(f, system)
 
 
 def setup(bot):
+    check_folders()
+    check_files()
     bot.add_cog(Holidays(bot))
