@@ -37,7 +37,9 @@ class Holidays:
                                           "Use {}holidays setkey to set API key.".format(ctx.prefix)))
             return
         if not self.config["premiumkey"] \
-                and month == int(datetime.now().strftime('%m')) or year > int(datetime.now().strftime('%Y')):
+                and month == int(datetime.now().strftime('%m')) or \
+                year > int(datetime.now().strftime('%Y')) or \
+                (year >= int(datetime.now().strftime('%Y')) and month > int(datetime.now().strftime('%m'))):
             year = int(datetime.now().strftime('%Y')) - 1
             await self.bot.say(chat.warning("This bot has set non-premium key, "
                                             "so current and upcoming holiday data is unavailable. "
@@ -58,14 +60,11 @@ class Holidays:
                                                                    "public": "Public"},
                                                           tablefmt="orgtbl")):
                     await self.bot.say(chat.box(page))
-            elif response["status"] == 400:
+            elif response["status"] < 500:
                 await self.bot.say(chat.error("Something went wrong... "
                                               "Server returned client error code {}. "
                                               "This is possibly cog error.\n"
                                               "{}").format(response["status"], chat.inline(response["error"])))
-            elif response["status"] < 500:
-                await self.bot.say(chat.error("Something went wrong... "
-                                              "Server returned client error code {}.").format(response["status"]))
             else:
                 await self.bot.say(chat.error("Something went wrong... Server returned server error code {}. "
                                               "Try again later.").format(response["status"]))
