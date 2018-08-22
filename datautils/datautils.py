@@ -21,6 +21,13 @@ def get_rgb_from_int(rgb_int):
     return red, green, blue
 
 
+def bool_emojify(bool_var: bool) -> str:
+    if bool_var:
+        return "YES"
+    else:
+        return "NOPE"
+
+
 class DataUtils:
     def __init__(self, bot: discord.Client):
         self.bot = bot
@@ -38,9 +45,7 @@ class DataUtils:
                                             "Try again later".format(user_id)))
             return
         embed = discord.Embed(title=str(user), timestamp=user.created_at)
-        embed.add_field(name="Bot?", value=str(user.bot)
-                        .replace("False", "❌")
-                        .replace("True", "✔"))
+        embed.add_field(name="Bot?", value=bool_emojify(user.bot))
         embed.add_field(name="Mention", value=user.mention)
         embed.add_field(name="Default avatar", value="[{}]({})".format(user.default_avatar, user.default_avatar_url))
         if user.avatar:
@@ -70,7 +75,7 @@ class DataUtils:
         em.add_field(name="ID", value=member.id)
         em.add_field(name="Has existed since", value=member.created_at.strftime('%d.%m.%Y %H:%M:%S %Z'))
         em.add_field(name="Color", value=member.colour)
-        em.add_field(name="Bot?", value=str(member.bot).replace("True", "✔").replace("False", "❌"))
+        em.add_field(name="Bot?", value=bool_emojify(member.bot))
         em.add_field(name="Server perms", value="[" + str(
             member.server_permissions.value) + "](https://discordapi.com/permissions.html#" + str(
             member.server_permissions.value) + ")")
@@ -87,7 +92,7 @@ class DataUtils:
                                "\nID: " + member.id +
                                "\nHas existed since: " + member.created_at.strftime('%d.%m.%Y %H:%M:%S %Z') +
                                "\nColor: " + str(member.color) +
-                               "\nBot?: " + str(member.bot).replace("True", "✔").replace("False", "❌") +
+                               "\nBot?: " + bool_emojify(member.bot) +
                                "\nServer perms: " + str(member.server_permissions.value) +
                                "\nRoles: " + roles +
                                "```\n" +
@@ -105,8 +110,8 @@ class DataUtils:
             await self.bot.say("Failed to get server with provided ID")
             return
         afk = server.afk_timeout / 60
-        vip_regs = str("VIP_REGIONS" in server.features).replace("True", "✔").replace("False", "❌")
-        van_url = str("VANITY_URL" in server.features).replace("True", "✔").replace("False", "❌")
+        vip_regs = bool_emojify("VIP_REGIONS" in server.features)
+        van_url = bool_emojify("VANITY_URL" in server.features)
         inv_splash = "INVITE_SPLASH" in server.features
         em = discord.Embed(title="Server info", colour=server.owner.colour)
         em.add_field(name="Name", value=server.name)
@@ -153,7 +158,7 @@ class DataUtils:
                                "\nChannel Count: " + str(len(server.channels)) +
                                "\nVIP Voice Regions: " + vip_regs +
                                "\nVanity URL: " + van_url +
-                               "\nInvite Splash: " + str(inv_splash).replace("True", "✔").replace("False", "❌") +
+                               "\nInvite Splash: " + bool_emojify(inv_splash) +
                                "\nInvite Splash URL: " + server.splash_url +
                                "```\n" +
                                server.icon_url)
@@ -166,7 +171,10 @@ class DataUtils:
                                reverse=True)
         em = discord.Embed(title=channel.name, description=channel.topic, colour=random.randint(0, 16777215))
         em.add_field(name="ID", value=channel.id)
-        em.add_field(name="Type", value=str(channel.type).replace("voice", "🔈").replace("text", "📰"))
+        em.add_field(name="Type",
+                     value=str(channel.type)
+                     .replace("voice", "🔈")
+                     .replace("text", "📰"))
         em.add_field(name="Has existed since", value=channel.created_at.strftime('%d.%m.%Y %H:%M:%S %Z'))
         em.add_field(name="Position", value=channel.position)
         em.add_field(name="Changed roles permissions",
@@ -260,13 +268,11 @@ class DataUtils:
                      value="[" + str(role.permissions.value) + "](https://discordapi.com/permissions.html#" + str(
                          role.permissions.value) + ")")
         em.add_field(name="Has existed since", value=role.created_at.strftime('%d.%m.%Y %H:%M:%S %Z'))
-        em.add_field(name="Hoist", value=str(role.hoist)
-                     .replace("True", "✔")
-                     .replace("False", "❌"))
+        em.add_field(name="Hoist", value=bool_emojify(role.hoist))
         em.add_field(name="Position", value=role.position)
         em.add_field(name="Color", value=role.colour)
-        em.add_field(name="Managed", value=str(role.managed).replace("True", "✔").replace("False", "❌"))
-        em.add_field(name="Mentionable", value=str(role.mentionable).replace("True", "✔").replace("False", "❌"))
+        em.add_field(name="Managed", value=bool_emojify(role.managed))
+        em.add_field(name="Mentionable", value=bool_emojify(role.mentionable))
         em.add_field(name="Mention", value=role.mention + "\n`" + role.mention + "`")
         em.set_thumbnail(url="https://xenforo.com/community/rgba.php?r=" + str(role.colour.r) + "&g=" + str(
             role.colour.g) + "&b=" + str(role.colour.b) + "&a=255")
@@ -277,11 +283,11 @@ class DataUtils:
                                "ID: " + role.id +
                                "\nPerms: " + str(role.permissions.value) +
                                "\nHas existed since: " + role.created_at.strftime('%d.%m.%Y %H:%M:%S %Z') +
-                               "\nHoist: " + str(role.hoist).replace("True", "✔").replace("False", "❌") +
+                               "\nHoist: " + bool_emojify(role.hoist) +
                                "\nPosition: " + str(role.position) +
                                "\nColor: " + str(rgb_to_hex(get_rgb_from_int(role.colour.value))) +
-                               "\nManaged: " + str(role.managed).replace("True", "✔").replace("False", "❌") +
-                               "\nMentionable: " + str(role.mentionable).replace("True", "✔").replace("False", "❌") +
+                               "\nManaged: " + bool_emojify(role.managed) +
+                               "\nMentionable: " + bool_emojify(role.mentionable) +
                                "\nMention: " + str(role.mention) +
                                "```")
 
