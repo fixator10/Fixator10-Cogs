@@ -10,6 +10,13 @@ from cogs.utils import checks
 from cogs.utils.dataIO import dataIO
 
 
+def bool_emojify(bool_var: bool) -> str:
+    if bool_var:
+        return "✅"
+    else:
+        return "❎"
+
+
 class Holidays:
     """Check holidays for this month"""
 
@@ -52,7 +59,7 @@ class Holidays:
             if response["status"] == 200:
                 for num, holiday in enumerate(response["holidays"]):
                     response["holidays"][num]["public"] = \
-                        str(response["holidays"][num]["public"]).replace("False", "❎").replace("True", "✅")
+                        bool_emojify(response["holidays"][num]["public"])
                 for page in chat.pagify(tabulate.tabulate(response["holidays"],
                                                           headers={"name": "Name",
                                                                    "date": "Date",
