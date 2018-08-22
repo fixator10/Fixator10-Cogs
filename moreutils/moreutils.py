@@ -49,6 +49,13 @@ def rgb_to_cmyk(r, g, b):
     return c * cmyk_scale, m * cmyk_scale, y * cmyk_scale, k * cmyk_scale
 
 
+def bool_emojify(bool_var: bool) -> str:
+    if bool_var:
+        return "✔"
+    else:
+        return "❌"
+
+
 class CustomChecks:
     # noinspection PyMethodParameters
     def selfbot():
@@ -213,8 +220,8 @@ class MoreUtils:
         em = discord.Embed(title=emoji.name, colour=random.randint(0, 16777215))
         em.add_field(name="ID", value=emoji.id)
         em.add_field(name="Has existed since", value=emoji.created_at.strftime('%d.%m.%Y %H:%M:%S %Z'))
-        em.add_field(name="\":\" required", value=str(emoji.require_colons).replace("True", "✔").replace("False", "❌"))
-        em.add_field(name="Managed", value=str(emoji.managed).replace("True", "✔").replace("False", "❌"))
+        em.add_field(name="\":\" required", value=bool_emojify(emoji.require_colons))
+        em.add_field(name="Managed", value=bool_emojify(emoji.managed))
         em.add_field(name="Server", value=emoji.server)
         if len(allowed_roles) > 0:
             em.add_field(name="Roles", value="\n".join([str(x) for x in allowed_roles]))
@@ -225,9 +232,8 @@ class MoreUtils:
             await self.bot.say("```\n" +
                                "ID: " + emoji.id +
                                "\nHas existed since: " + emoji.created_at.strftime('%d.%m.%Y %H:%M:%S %Z') +
-                               "\n\":\" required: " + str(emoji.require_colons)
-                               .replace("True", "✔").replace("False", "❌") +
-                               "\nManaged: " + str(emoji.managed).replace("True", "✔").replace("False", "❌") +
+                               "\n\":\" required: " + bool_emojify(emoji.require_colons) +
+                               "\nManaged: " + bool_emojify(emoji.managed) +
                                "\nServer: " + str(emoji.server) +
                                "\nRoles: " + "\n".join([str(x) for x in allowed_roles]) +
                                "```" +
