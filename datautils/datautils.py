@@ -23,10 +23,9 @@ def get_rgb_from_int(rgb_int):
 
 def bool_emojify(bool_var: bool) -> str:
     if bool_var:
-        return "YES"
+        return "✔"
     else:
-        return "NOPE"
-
+        return "❌"
 
 class DataUtils:
     def __init__(self, bot: discord.Client):
