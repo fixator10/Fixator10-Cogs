@@ -125,7 +125,8 @@ class DataUtils:
                      .replace("none", "None")
                      .replace("low", "Low")
                      .replace("medium", "Medium")
-                     .replace("high", "(╯°□°）╯︵ ┻━┻"))
+                     .replace("high", "(╯°□°）╯︵ ┻━┻")
+                     .replace("4", "┻━┻ ﾐヽ(ಠ益ಠ)ノ彡┻━┻"))
         em.add_field(name="2FA admins", value=str(server.mfa_level).replace("0", "❌").replace("1", "✔"))
         em.add_field(name="Member Count", value=server.member_count)
         em.add_field(name="Role Count", value=str(len(server.roles)))
@@ -150,8 +151,12 @@ class DataUtils:
                                "\nOwner: " + str(server.owner) +
                                "\nAFK timeout and Channel: " + str(afk) + " min in " + str(server.afk_channel) +
                                "\nVerification level: " +
-                               str(server.verification_level).replace("none", "None").replace("low", "Low")
-                               .replace("medium", "Medium").replace("high", "(╯°□°）╯︵ ┻━┻") +
+                               str(server.verification_level)
+                               .replace("none", "None")
+                               .replace("low", "Low")
+                               .replace("medium", "Medium")
+                               .replace("high", "(╯°□°）╯︵ ┻━┻")
+                               .replace("4", "┻━┻ ﾐヽ(ಠ益ಠ)ノ彡┻━┻") +
                                "\n2FA admins: " + str(server.mfa_level).replace("0", "❌").replace("1", "✔") +
                                "\nMember Count: " + str(server.member_count) +
                                "\nRole Count: " + str(len(server.roles)) +
@@ -174,7 +179,8 @@ class DataUtils:
         em.add_field(name="Type",
                      value=str(channel.type)
                      .replace("voice", "🔈")
-                     .replace("text", "📰"))
+                     .replace("text", "💬")
+                     .replace("category", "📑"))
         em.add_field(name="Has existed since", value=channel.created_at.strftime('%d.%m.%Y %H:%M:%S %Z'))
         em.add_field(name="Position", value=channel.position)
         em.add_field(name="Changed roles permissions",
