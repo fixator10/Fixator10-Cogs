@@ -27,6 +27,7 @@ def bool_emojify(bool_var: bool) -> str:
     else:
         return "❌"
 
+
 class DataUtils:
     def __init__(self, bot: discord.Client):
         self.bot = bot
