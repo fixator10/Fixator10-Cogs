@@ -36,7 +36,7 @@ class MinecraftData:
             await self.bot.say(chat.error("This player not found"))
             return
         em = discord.Embed(timestamp=ctx.message.timestamp)
-        em.add_field(name="NameMC profile", value="[{}](https://namemc.com/profile/{})".format(nickname, uuid))
+        # em.add_field(name="NameMC profile", value="[{}](https://namemc.com/profile/{})".format(nickname, uuid))
         em.set_author(name=nickname,
                       icon_url="https://crafatar.com/renders/head/{}{}".format(uuid, "?overlay" if helm_layer else ""),
                       url="https://crafatar.com/skins/{}".format(uuid))
