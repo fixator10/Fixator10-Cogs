@@ -234,7 +234,7 @@ class DataUtils:
         vcc = len(voice_channels)
         tcc = len(text_channels)
         categories = "\n".join([chat.escape(x.name) for x in categories]) or "No categories"
-        text_channels = "\n".join([chat.escape(x.mention) for x in text_channels]) or "No text channels"
+        text_channels = "\n".join([chat.escape(x.name) for x in text_channels]) or "No text channels"
         voice_channels = "\n".join([chat.escape(x.name) for x in voice_channels]) or "No voice channels"
         em = discord.Embed(title="Channels list", colour=random.randint(0, 16777215))
         em.add_field(name="Categories:",
