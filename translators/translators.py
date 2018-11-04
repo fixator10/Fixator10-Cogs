@@ -1,10 +1,12 @@
 import base64
+import io
 import itertools
 import os
 import random
 import re
 from urllib import parse
 
+import aiohttp
 import discord
 from discord.ext import commands
 
@@ -24,6 +26,10 @@ class Translators:
         self.bot = bot
         self.config_file = "data/translators/config.json"
         self.config = dataIO.load_json(self.config_file)
+        self.session = aiohttp.ClientSession(loop=self.bot.loop)
+
+    def __unload(self):
+        self.session.close()
 
     @commands.command(pass_context=True)
     async def translate(self, ctx, language: str, *, text: str):
@@ -76,6 +82,20 @@ class Translators:
         self.config["yandex_translate_API_key"] = apikey
         dataIO.save_json(self.config_file, self.config)
         await self.bot.say(chat.info("Apikey Updated"))
+
+    @commands.command(pass_context=True)
+    async def googlesay(self, ctx, lang: str, *, text: str):
+        """Say something via Google Translate"""
+        try:
+            async with self.session.get("http://translate.google.com/translate_tts?ie=utf-8"
+                                        "&q={}&tl={}&client=tw-ob".format(parse.quote(text), lang)) as data:
+                speech = await data.read()
+        except:
+            await self.bot.say("Unable to get data from Google Translate TTS")
+            return
+        speechfile = io.BytesIO(speech)
+        await self.bot.send_file(ctx.message.channel, speechfile, filename="translate_tts.mp3")
+        speechfile.close()
 
     @commands.command(pass_context=True, aliases=["ецихо"])
     async def eciho(self, ctx, *, text: str):
