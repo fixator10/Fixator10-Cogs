@@ -89,6 +89,9 @@ class Translators:
         try:
             async with self.session.get("http://translate.google.com/translate_tts?ie=utf-8"
                                         "&q={}&tl={}&client=tw-ob".format(parse.quote(text), lang)) as data:
+                if data.status != 200:
+                    await self.bot.say(chat.error("Google Translate returned code {}".format(data.status)))
+                    return
                 speech = await data.read()
         except:
             await self.bot.say("Unable to get data from Google Translate TTS")
