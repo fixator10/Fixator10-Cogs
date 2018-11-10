@@ -194,7 +194,7 @@ class PersonalRoles:
         if user in self.config[sv]["users"]:
             role = discord.utils.get(member.server.roles, id=self.config[sv]["users"][user])
             await asyncio.sleep(11)
-            if role & member:
+            if role and member:
                 await self.bot.add_roles(member, role)
 
 
