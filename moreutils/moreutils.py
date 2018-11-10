@@ -275,6 +275,17 @@ class MoreUtils:
                                    "\nint: " + str(colorint) +
                                    "```")
 
+    @commands.command(pass_context=True, no_pm=True)
+    async def someone(self, ctx, text: str = None):
+        """Help I've fallen and I need @someone.
+
+        Discord 2018 April Fools"""
+        smilies = ["¯\\_(ツ)_/¯", "(∩ ͡° ͜ʖ ͡°)⊃━☆ﾟ. o ･ ｡ﾟ", "(∩ ͡° ͜ʖ ͡°)⊃━✿✿✿✿✿✿", "༼ つ ◕_◕ ༽つ", "(◕‿◕✿)",
+                   "(⁄ ⁄•⁄ω⁄•⁄ ⁄)", "(╯°□°）╯︵ ┻━┻", "ಠ_ಠ", "¯\\(°_o)/¯", "（✿ ͡◕ ᴗ◕)つ━━✫・o。", "ヽ༼ ಠ益ಠ ༽ﾉ"]
+        smile = random.choice(smilies)
+        member = random.choice(ctx.message.server.members)
+        await self.bot.say("**@someone** {} ***{}*** {}".format(smile, member.mention, text if text else ""))
+
 
 def check_folders():
     if not os.path.exists("data/moreutils"):
