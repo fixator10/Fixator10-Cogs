@@ -283,8 +283,16 @@ class MoreUtils:
         smilies = ["¯\\_(ツ)_/¯", "(∩ ͡° ͜ʖ ͡°)⊃━☆ﾟ. o ･ ｡ﾟ", "(∩ ͡° ͜ʖ ͡°)⊃━✿✿✿✿✿✿", "༼ つ ◕_◕ ༽つ", "(◕‿◕✿)",
                    "(⁄ ⁄•⁄ω⁄•⁄ ⁄)", "(╯°□°）╯︵ ┻━┻", "ಠ_ಠ", "¯\\(°_o)/¯", "（✿ ͡◕ ᴗ◕)つ━━✫・o。", "ヽ༼ ಠ益ಠ ༽ﾉ"]
         smile = random.choice(smilies)
-        member = random.choice(ctx.message.server.members)
-        await self.bot.say("**@someone** {} ***{}*** {}".format(smile, member.mention, text if text else ""))
+        member = await self.random_channel_member(ctx.message.channel)
+        await self.bot.say("**@someone** {} ***{}*** {}".format(smile, member.display_name, text if text else ""))
+
+    async def random_channel_member(self, channel: discord.Channel):
+        """Returns random member that has access to channel"""
+        randommember = random.choice(channel.server.members)
+        if channel.permissions_for(randommember).read_messages:
+            return randommember
+        else:
+            await self.random_channel_member(channel)
 
 
 def check_folders():
