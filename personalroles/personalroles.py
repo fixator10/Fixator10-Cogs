@@ -1,3 +1,4 @@
+import asyncio
 import os
 
 import discord
@@ -186,6 +187,16 @@ class PersonalRoles:
         else:
             return ' '.join(content_str[:length + 1].split(' ')[0:-1]) + suffix
 
+    async def role_persistance(self, member):
+        """Automatically give already assigned roles on join"""
+        sv = member.server.id
+        user = member.id
+        if user in self.config[sv]["users"]:
+            role = discord.utils.get(member.server.roles, id=self.config[sv]["users"][user])
+            await asyncio.sleep(11)
+            if role & member:
+                await self.bot.add_roles(member, role)
+
 
 def check_folders():
     if not os.path.exists("data/personalroles"):
@@ -202,4 +213,6 @@ def check_files():
 def setup(bot):
     check_folders()
     check_files()
-    bot.add_cog(PersonalRoles(bot))
+    personalroles = PersonalRoles(bot)
+    bot.add_listener(personalroles.role_persistance, "on_member_join")
+    bot.add_cog(personalroles)
