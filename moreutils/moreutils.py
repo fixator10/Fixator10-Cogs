@@ -292,7 +292,7 @@ class MoreUtils:
         if channel.permissions_for(randommember).read_messages:
             return randommember
         else:
-            await self.random_channel_member(channel)
+            return await self.random_channel_member(channel)
 
 
 def check_folders():
