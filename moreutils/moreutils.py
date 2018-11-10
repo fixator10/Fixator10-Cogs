@@ -276,7 +276,7 @@ class MoreUtils:
                                    "```")
 
     @commands.command(pass_context=True, no_pm=True)
-    async def someone(self, ctx, text: str = None):
+    async def someone(self, ctx, *, text: str = None):
         """Help I've fallen and I need @someone.
 
         Discord 2018 April Fools"""
