@@ -288,7 +288,7 @@ class MoreUtils:
 
     async def random_channel_member(self, channel: discord.Channel):
         """Returns random member that has access to channel"""
-        randommember = random.choice(channel.server.members)
+        randommember = random.choice(list(channel.server.members))
         if channel.permissions_for(randommember).read_messages:
             return randommember
         else:
