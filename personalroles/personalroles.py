@@ -191,6 +191,8 @@ class PersonalRoles:
         """Automatically give already assigned roles on join"""
         sv = member.server.id
         user = member.id
+        if sv not in self.config:
+            return
         if user in self.config[sv]["users"]:
             role = discord.utils.get(member.server.roles, id=self.config[sv]["users"][user])
             await asyncio.sleep(11)
