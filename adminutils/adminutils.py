@@ -46,7 +46,7 @@ class AdminUtils:
                                         "Are you sure?\nTo agree, type \"yes\"".format(to_kick, days)))
         await sleep(1)  # otherwise wait_for_message will catch message-warning
         resp = await self.bot.wait_for_message(author=ctx.message.author, channel=ctx.message.channel)
-        if resp.content.lower().strip() == "yes":
+        if resp.content.casefold().strip() == "yes":
             cleanup = await self.bot.prune_members(ctx.message.server, days=days)
             await self.bot.say(chat.info("**{}**/**{}** inactive members removed.\n"
                                          "(They was inactive for **{}** days)".format(cleanup, to_kick, days)))

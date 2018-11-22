@@ -131,7 +131,7 @@ class Translators:
         Based on https://unicode-table.com/en/tools/flip/"""
         up = "abcdefghijklmnopqrstuvwxyzабвгдежзиклмнопрстуфхцчшщъьэя.,!?()"
         down = "ɐqɔpǝɟƃɥıɾʞlɯuodᕹɹsʇnʌʍxʎzɐƍʚɹɓǝжεиʞvwноudɔɯʎȸхǹҺmmqqєʁ˙‘¡¿)("
-        text = text.lower()
+        text = text.casefold()
         char = up + down
         tran = down + up
         table = str.maketrans(char, tran)
