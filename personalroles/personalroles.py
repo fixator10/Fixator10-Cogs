@@ -197,7 +197,10 @@ class PersonalRoles:
             role = discord.utils.get(member.server.roles, id=self.config[sv]["users"][user])
             await asyncio.sleep(11)
             if role and member:
-                await self.bot.add_roles(member, role)
+                try:
+                    await self.bot.add_roles(member, role)
+                except discord.Forbidden:
+                    pass
 
 
 def check_folders():
