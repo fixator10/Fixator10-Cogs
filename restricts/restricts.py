@@ -104,8 +104,6 @@ class Restricts:
         self.cases = dataIO.load_json("data/restricts/modlog.json")
         self.last_case = defaultdict(dict)
         self.temp_cache = TempCache(bot)
-        perms_cache = dataIO.load_json("data/restricts/perms_cache.json")
-        self._perms_cache = defaultdict(dict, perms_cache)
 
     @commands.group(pass_context=True, no_pm=True)
     @checks.serverowner_or_permissions(administrator=True)
@@ -522,7 +520,6 @@ class Restricts:
                                "hierarchy.")
             return
 
-        self._perms_cache[user.id][channel.id] = overwrites.send_messages
         overwrites.send_messages = False
         try:
             await self.bot.edit_channel_permissions(channel, user, overwrites)
@@ -531,7 +528,6 @@ class Restricts:
                                "permission and the user I'm muting must be "
                                "lower than myself in the role hierarchy.")
         else:
-            dataIO.save_json("data/restricts/perms_cache.json", self._perms_cache)
             await self.new_case(server,
                                 action="CMUTE",
                                 channel=channel,
@@ -575,8 +571,6 @@ class Restricts:
         if not register:
             await self.bot.say("That user is already muted in all channels.")
             return
-        self._perms_cache[user.id] = register
-        dataIO.save_json("data/restricts/perms_cache.json", self._perms_cache)
         await self.new_case(server,
                             action="SMUTE",
                             mod=author,
@@ -612,11 +606,7 @@ class Restricts:
                                "hierarchy.")
             return
 
-        if user.id in self._perms_cache:
-            old_value = self._perms_cache[user.id].get(channel.id)
-        else:
-            old_value = None
-        overwrites.send_messages = old_value
+        overwrites.send_messages = None
         is_empty = self.are_overwrites_empty(overwrites)
         try:
             if not is_empty:
@@ -629,13 +619,6 @@ class Restricts:
                                " permission and the user I'm unmuting must be "
                                "lower than myself in the role hierarchy.")
         else:
-            try:
-                del self._perms_cache[user.id][channel.id]
-            except KeyError:
-                pass
-            if user.id in self._perms_cache and not self._perms_cache[user.id]:
-                del self._perms_cache[user.id]  # cleanup
-            dataIO.save_json("data/restricts/perms_cache.json", self._perms_cache)
             await self.bot.say("User has been unmuted in this channel.")
 
     @checks.mod_or_permissions(administrator=True)
@@ -645,12 +628,7 @@ class Restricts:
         server = ctx.message.server
         author = ctx.message.author
 
-        if user.id not in self._perms_cache:
-            await self.bot.say("That user doesn't seem to have been muted with {0}mute commands. "
-                               "Unmute them in the channels you want with `{0}unmute <user>`"
-                               "".format(ctx.prefix))
-            return
-        elif not self.is_allowed_by_hierarchy(server, author, user):
+        if not self.is_allowed_by_hierarchy(server, author, user):
             await self.bot.say("I cannot let you do that. You are "
                                "not higher than the user in the role "
                                "hierarchy.")
@@ -659,30 +637,22 @@ class Restricts:
         for channel in server.channels:
             if channel.type != discord.ChannelType.text:
                 continue
-            if channel.id not in self._perms_cache[user.id]:
-                continue
-            value = self._perms_cache[user.id].get(channel.id)
             overwrites = channel.overwrites_for(user)
-            if overwrites.send_messages is False:
-                overwrites.send_messages = value
-                is_empty = self.are_overwrites_empty(overwrites)
-                try:
-                    if not is_empty:
-                        await self.bot.edit_channel_permissions(channel, user,
+            overwrites.send_messages = None
+            is_empty = self.are_overwrites_empty(overwrites)
+            try:
+                if not is_empty:
+                    await self.bot.edit_channel_permissions(channel, user,
                                                                 overwrites)
-                    else:
-                        await self.bot.delete_channel_permissions(channel, user)
-                except discord.Forbidden:
-                    await self.bot.say("Failed to unmute user. I need the manage roles"
+                else:
+                    await self.bot.delete_channel_permissions(channel, user)
+            except discord.Forbidden:
+                await self.bot.say("Failed to unmute user. I need the manage roles"
                                        " permission and the user I'm unmuting must be "
                                        "lower than myself in the role hierarchy.")
-                    return
-                else:
-                    del self._perms_cache[user.id][channel.id]
-                    await asyncio.sleep(0.1)
-        if user.id in self._perms_cache and not self._perms_cache[user.id]:
-            del self._perms_cache[user.id]  # cleanup
-        dataIO.save_json("data/restricts/perms_cache.json", self._perms_cache)
+                return
+            else:
+                await asyncio.sleep(0.1)
         await self.bot.say("User has been unmuted in this server.")
 
     @commands.group(pass_context=True)
@@ -1705,8 +1675,7 @@ def check_files():
         "past_names.json"     : {},
         "past_nicknames.json" : {},
         "settings.json"       : {},
-        "modlog.json"         : {},
-        "perms_cache.json"    : {}
+        "modlog.json"         : {}
     }
 
     for filename, value in files.items():
