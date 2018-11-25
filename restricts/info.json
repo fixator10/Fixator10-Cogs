@@ -1,0 +1,9 @@
+{
+    "AUTHOR" : "ctin",
+    "INSTALL_MSG" : "installed restricts",
+    "NAME" : "Restricts",
+    "SHORT" : "Restricts to mute, unmute etc.",
+    "DESCRIPTION" : "Restricts to mute, unmute etc.",
+    "TAGS" : [],
+	"REQUIREMENTS" : []
+}
