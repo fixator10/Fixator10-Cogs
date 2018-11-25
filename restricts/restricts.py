@@ -638,6 +638,9 @@ class Restricts:
             if channel.type != discord.ChannelType.text:
                 continue
             overwrites = channel.overwrites_for(user)
+            if overwrites.send_messages:
+                continue
+
             overwrites.send_messages = None
             is_empty = self.are_overwrites_empty(overwrites)
             try:
