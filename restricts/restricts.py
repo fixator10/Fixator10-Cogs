@@ -554,9 +554,9 @@ class Restricts:
             if parsedDuration: 
                 await self.on_muted(UnmuteInfo(ctx, ctx.message.channel, user, parsedDuration))
             else:
-                await self.bot.say("Can not parse duration."
-                    "Will mute without timer."
-                    "To use mute with timer please try again with a correct duration format")
+                await self.bot.say("Can not parse duration. "
+                    "Will mute without timer. "
+                    "To use mute with timer please try again with a correct duration format.")
 
             await self.new_case(server,
                                 action="CMUTE",
@@ -583,9 +583,9 @@ class Restricts:
             return
         parsedDuration = self.duration_from_text(reason)
         if not parsedDuration: 
-            await self.bot.say("Can not parse duration."
-                    "Will mute without timer."
-                    "To use mute with timer please try again with a correct duration format")
+            await self.bot.say("Can not parse duration. "
+                    "Will mute without timer. "
+                    "To use mute with timer please try again with a correct duration format.")
                 
         register = {}
         for channel in server.channels:
