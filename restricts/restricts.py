@@ -19,6 +19,7 @@ ACTIONS_REPR = {
     "KICK"    : ("Kick", "\N{WOMANS BOOTS}"),
     "CMUTE"   : ("Channel mute", "\N{SPEAKER WITH CANCELLATION STROKE}"),
     "SMUTE"   : ("Server mute", "\N{SPEAKER WITH CANCELLATION STROKE}"),
+    "UNMUTE": ("Unmute", "\N{SPEAKER}"),
     "SOFTBAN" : ("Softban", "\N{DASH SYMBOL} \N{HAMMER}"),
     "HACKBAN" : ("Preemptive ban", "\N{BUST IN SILHOUETTE} \N{HAMMER}"),
     "UNBAN"   : ("Unban", "\N{DOVE OF PEACE}")
@@ -29,6 +30,7 @@ ACTIONS_CASES = {
     "KICK"    : True,
     "CMUTE"   : False,
     "SMUTE"   : True,
+    "UNMUTE": True,
     "SOFTBAN" : True,
     "HACKBAN" : True,
     "UNBAN"   : True
@@ -663,6 +665,10 @@ class Restricts:
                                "lower than myself in the role hierarchy.")
         else:
             self.unmuted_list.add(UnmuteInfo(ctx, ctx.message.channel, user))
+            await self.new_case(server,
+                                action="UNMUTE",
+                                mod=author,
+                                user=user)
             await self.bot.say("User has been unmuted in this channel.")
 
     @checks.mod_or_permissions(administrator=True)
@@ -701,6 +707,10 @@ class Restricts:
             else:
                 self.unmuted_list.add(UnmuteInfo(ctx, channel, user))
                 await asyncio.sleep(0.1)
+        await self.new_case(server,
+                    action="UNMUTE",
+                    mod=author,
+                    user=user)
         await self.bot.say("User has been unmuted in this server.")
 
     @commands.group(pass_context=True)
@@ -1686,18 +1696,23 @@ class Restricts:
     
     async def mute_manager(self):
         while self == self.bot.get_cog('Restricts'):
+            await self.bot.say("going to iterate unmute_list. Exists: {}, size, {}".format(self.unmute_list, len(self.unmute_list)))
             if self.unmute_list:
                 #user can be unmuted here on by command
                 #clean µute_list first
                 for info in self.unmuted_list:
+                    await self.bot.say("user {} was unmuted, cleanup".format(info.user.name))
                     self.unmute_list.remove(info)
                 for info in self.unmute_list:
+                    await self.bot.say("processing to unmute user {} {}".format(info.user.name, type(info) is UnmuteInfo))
                     if type(info) is UnmuteInfo:
                         now = time.time()
+                        await self.bot.say("now {}, need to be unmuted: {} {} {}".format(now, info.start_time, info.duration, info.start_time + info.duration))
                         if now > (info.start_time + info.duration):
+                            await self.bot.say("requesting to unmute {}".format(info.user.name))
                             info.ctx.message.channel = info.channel
                             await self.channel_unmute(info.ctx, info.user)
-            await asyncio.sleep(1)
+            await asyncio.sleep(10)
 
     def duration_from_text(self, reason: str):
         duration = 0
