@@ -533,8 +533,8 @@ class Restricts:
         overwrites = channel.overwrites_for(user)
 
         if overwrites.send_messages is False:
-            await self.bot.say("That user can't send messages in this "
-                               "channel.")
+            await self.bot.say("That user can not can't send messages in this "
+                               "channel (already muted?)")
             return
         elif not self.is_allowed_by_hierarchy(server, author, user):
             await self.bot.say("I cannot let you do that. You are "
