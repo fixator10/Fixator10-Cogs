@@ -1689,7 +1689,20 @@ class Restricts:
         original = [p for p in iter(overwrites)]
         empty = [p for p in iter(discord.PermissionOverwrite())]
         return original == empty
-
+    
+    async def mute_manager(self):
+        while self == self.bot.get_cog('Restricts'):
+            if self.unmute_list:
+                #user can be unmuted here on by command
+                #clean µute_list first
+                for info in self.unmuted_list:
+                    self.unmute_list.remove(info)
+                for info in self.unmute_list:
+                    if type(info) is UnmuteInfo:
+                        now = time.time()
+                        if now > (info.start_time + info.duration):
+                            await self.channel_unmute(info.ctx, info.user)
+            await asyncio.sleep(1)
 
 def strfdelta(delta):
     s = []
@@ -1755,20 +1768,6 @@ def check_files():
         if not os.path.isfile("data/restricts/{}".format(filename)):
             print("Creating empty {}".format(filename))
             dataIO.save_json("data/restricts/{}".format(filename), value)
-
-async def mute_manager(self):
-    while self == self.bot.get_cog('Restricts'):
-        if self.unmute_list:
-            #user can be unmuted here on by command
-            #clean µute_list first
-            for info in self.unmuted_list:
-                self.unmute_list.remove(info)
-            for info in self.unmute_list:
-                if type(info) is UnmuteInfo:
-                    now = time.time()
-                    if now > (info.start_time + info.duration):
-                        await self.channel_unmute(info.ctx, info.user)
-        await asyncio.sleep(1)
 
 
 def setup(bot):
