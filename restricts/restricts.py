@@ -97,13 +97,13 @@ class UnmuteInfo:
         self.start_time = time.time()
 
     def __eq__(self, other):
-        return self.user == other.user
-            and self.ctx.message.channel == other.ctx.message.channel
+        return self.user == other.user \
+            and self.ctx.message.channel == other.ctx.message.channel \
             and self.ctx.message.server == other.ctx.message.server
 
     def __hash__(self):
-        return hash(self.user) ^
-            hash(self.ctx.message.channel) ^ 
+        return hash(self.user) ^ \
+            hash(self.ctx.message.channel) ^ \
             hash(self.ctx.message.server)
 
     
