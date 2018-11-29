@@ -1722,10 +1722,14 @@ class Restricts:
         return duration
 
     async def on_muted(self, info: UnmuteInfo):
+        try:
         #remove the last user info and fucking caches
-        self.unmute_list.remove(info)
+            self.unmute_list.remove(info)
+        except:
+            pass
+        finally:
         #add new user info with it fucking caches
-        self.unmute_list.add(info)    
+            self.unmute_list.add(info)    
 
 def strfdelta(delta):
     s = []
