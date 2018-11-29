@@ -884,7 +884,7 @@ class Restricts:
         else:
             await self.slow_deletion(to_delete)
 
-    @cleanup.command(pass_context=True, no_pm=True, name='bot')
+    @cleanup.command(pass_context=Tunmute_listrue, no_pm=True, name='bot')
     async def cleanup_bot(self, ctx, number: int):
         """Cleans up command messages and messages from the bot"""
 
@@ -1723,9 +1723,9 @@ class Restricts:
 
     async def on_muted(self, info: UnmuteInfo):
         #remove the last user info and fucking caches
-        unmute_list.remove(info)
+        self.unmute_list.remove(info)
         #add new user info with it fucking caches
-        unmute_list.add(info)    
+        self.unmute_list.add(info)    
 
 def strfdelta(delta):
     s = []
