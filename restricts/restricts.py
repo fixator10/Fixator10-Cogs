@@ -1725,8 +1725,9 @@ class Restricts:
                             info.ctx.message.channel = info.channel
                             try:
                                 await info.ctx.invoke(self.channel_unmute, user=info.user)
-                            except:
-                                print("got some error while unmuted")
+                            except Exception as e:
+                                print('got some error while unmuted'+ str(e))
+                                
             await asyncio.sleep(1)
 
     def duration_from_text(self, reason: str):
