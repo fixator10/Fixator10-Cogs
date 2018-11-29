@@ -1761,7 +1761,7 @@ async def mute_manager(self):
         if self.unmute_list:
             #user can be unmuted here on by command
             #clean µute_list first
-            for info in self.unmuted_list
+            for info in self.unmuted_list:
                 self.unmute_list.remove(info)
             for info in self.unmute_list:
                 if type(info) is UnmuteInfo:
