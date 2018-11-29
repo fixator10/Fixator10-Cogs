@@ -1855,6 +1855,6 @@ def setup(bot):
             logging.Formatter('%(asctime)s %(message)s', datefmt="[%d/%m/%Y %H:%M]"))
         logger.addHandler(handler)
     n = Restricts(bot)
-    bot.add_listener(n.check_names, "on_member_update")
-    bot.loop.create_task(n.mute_manager())
+    loop = asyncio.get_event_loop()
+    loop.create_task(n.mute_manager())
     bot.add_cog(n)
