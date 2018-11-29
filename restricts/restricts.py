@@ -106,7 +106,7 @@ class UnmuteInfo:
     def __hash__(self):
         return hash(self.user) ^ \
             hash(self.channel) ^ \
-            hash(self.server)
+            hash(self.ctx.message.server)
 
     
 class Restricts:
