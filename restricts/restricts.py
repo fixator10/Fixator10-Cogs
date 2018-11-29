@@ -1721,6 +1721,12 @@ class Restricts:
             duration += int(re.match("([0-9]+)?(seconds|second|secs|sec|s)", text).group(1))
         return duration
 
+    async def on_muted(self, info: UnmuteInfo):
+        #remove the last user info and fucking caches
+        unmute_list.remove(info)
+        #add new user info with it fucking caches
+        unmute_list.add(info)    
+
 def strfdelta(delta):
     s = []
     if delta.days:
@@ -1748,13 +1754,6 @@ def check_folders():
         if not os.path.exists(folder):
             print("Creating " + folder + " folder...")
             os.makedirs(folder)
-
-async def on_muted(self, info: UnmuteInfo):
-    #remove the last user info and fucking caches
-    unmute_list.remove(info)
-    #add new user info with it fucking caches
-    unmute_list.add(info)    
-
 
 def check_files():
     ignore_list = {"SERVERS": [], "CHANNELS": []}
