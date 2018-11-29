@@ -707,6 +707,7 @@ class Restricts:
             else:
                 self.unmuted_list.add(UnmuteInfo(ctx, channel, user))
                 await asyncio.sleep(0.1)
+
         await self.new_case(server,
                     action="UNMUTE",
                     mod=author,
@@ -1703,6 +1704,9 @@ class Restricts:
                 for info in self.unmuted_list:
                     print("user {} was unmuted, cleanup".format(info.user.name))
                     self.unmute_list.remove(info)
+                #all entries used, need to clean-up the list
+                self.unmuted_list.clear()
+
                 for info in self.unmute_list:
                     print("processing to unmute user {} {}".format(info.user.name, type(info) is UnmuteInfo))
                     if type(info) is UnmuteInfo:
@@ -1712,7 +1716,7 @@ class Restricts:
                             print("requesting to unmute {}".format(info.user.name))
                             info.ctx.message.channel = info.channel
                             await ctx.invoke(self.channel_unmute, user=info.user)
-            await asyncio.sleep(10)
+            await asyncio.sleep(1)
 
     def duration_from_text(self, reason: str):
         duration = 0
