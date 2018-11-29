@@ -884,7 +884,7 @@ class Restricts:
         else:
             await self.slow_deletion(to_delete)
 
-    @cleanup.command(pass_context=Tunmute_listrue, no_pm=True, name='bot')
+    @cleanup.command(pass_context=True, no_pm=True, name='bot')
     async def cleanup_bot(self, ctx, number: int):
         """Cleans up command messages and messages from the bot"""
 
