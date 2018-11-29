@@ -19,7 +19,8 @@ ACTIONS_REPR = {
     "KICK"    : ("Kick", "\N{WOMANS BOOTS}"),
     "CMUTE"   : ("Channel mute", "\N{SPEAKER WITH CANCELLATION STROKE}"),
     "SMUTE"   : ("Server mute", "\N{SPEAKER WITH CANCELLATION STROKE}"),
-    "UNMUTE": ("Unmute", "\N{SPEAKER}"),
+    "UNMUTEС" : ("Channel Unmute", "\N{SPEAKER}"),
+    "UNMUTES" : ("Server Unmute", "\N{SPEAKER}"),
     "SOFTBAN" : ("Softban", "\N{DASH SYMBOL} \N{HAMMER}"),
     "HACKBAN" : ("Preemptive ban", "\N{BUST IN SILHOUETTE} \N{HAMMER}"),
     "UNBAN"   : ("Unban", "\N{DOVE OF PEACE}")
@@ -30,7 +31,8 @@ ACTIONS_CASES = {
     "KICK"    : True,
     "CMUTE"   : False,
     "SMUTE"   : True,
-    "UNMUTE": True,
+    "UNMUTEC" : False,
+    "UNMUTES" : True,
     "SOFTBAN" : True,
     "HACKBAN" : True,
     "UNBAN"   : True
@@ -666,7 +668,7 @@ class Restricts:
         else:
             self.unmuted_list.add(UnmuteInfo(ctx, ctx.message.channel, user))
             await self.new_case(server,
-                                action="UNMUTE",
+                                action="UNMUTEC",
                                 mod=author,
                                 user=user)
             await self.bot.say("User has been unmuted in this channel.")
@@ -709,7 +711,7 @@ class Restricts:
                 await asyncio.sleep(0.1)
 
         await self.new_case(server,
-                    action="UNMUTE",
+                    action="UNMUTES",
                     mod=author,
                     user=user)
         await self.bot.say("User has been unmuted in this server.")
