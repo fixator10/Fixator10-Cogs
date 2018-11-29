@@ -1721,7 +1721,7 @@ class Restricts:
                         if now > (info.start_time + info.duration):
                             print("requesting to unmute {}".format(info.user.name))
                             info.ctx.message.channel = info.channel
-                            await ctx.invoke(self.channel_unmute, user=info.user)
+                            await info.ctx.invoke(self.channel_unmute, user=info.user)
             await asyncio.sleep(1)
 
     def duration_from_text(self, reason: str):
