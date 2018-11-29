@@ -13,6 +13,7 @@ import asyncio
 import time
 from itertools import filterfalse
 from threading import Lock
+import traceback
 
 ACTIONS_REPR = {
     "BAN"     : ("Ban", "\N{HAMMER}"),
@@ -649,15 +650,15 @@ class Restricts:
         if error == UnmuteError.not_muted:
             await self.bot.say("That user doesn't seem to be muted "
                                "in this channel.")
-        else if error == UnmuteError.forbidden:
+        elif error == UnmuteError.forbidden:
             await self.bot.say("I cannot let you do that. You are "
                                "not higher than the user in the role "
                                "hierarchy.")
-        else if error = UnmuteError.failed_to_unmute:
+        elif error = UnmuteError.failed_to_unmute:
             await self.bot.say("Failed to unmute user. I need the manage roles"
                     " permission and the user I'm unmuting must be "
                     "lower than myself in the role hierarchy.")
-        else if error == UnmuteError.not_text:
+        elif error == UnmuteError.not_text:
             await self.bot.say("please try to unmute only in text channels")
         else:
             await self.bot.say("User has been unmuted in this channel.")
@@ -1723,6 +1724,10 @@ class Restricts:
                 self.unmuted_list.clear()
 
             if self.to_unmute:
+                if self.mutex.test():
+                    print("wtf, is acquired: ", threading.get_ident())
+                    print(traceback.format_exc())
+
                 self.mutex.acquire()
                 unmuted = set()
                 not_unmuted = set()
@@ -1784,6 +1789,10 @@ class Restricts:
         return duration
 
     async def on_muted(self, info: UnmuteInfo):
+        if self.mutex.test():
+            print("wtf, is acquired: ", threading.get_ident())
+            print(traceback.format_exc())
+
         self.mutex.acquire()
         try:
         #remove the last user info and fucking caches
