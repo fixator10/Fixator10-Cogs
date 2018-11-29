@@ -1742,7 +1742,7 @@ class Restricts:
                             try:
                                 if await self.channel_unmute_impl(info.ctx, info.user):
                                     unmuted.add(into)
-                                else
+                                else:
                                     not_unmuted.add(info)
                             except Exception as e:
                                 print('got some error while unmuted'+ str(e))
