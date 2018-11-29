@@ -1699,6 +1699,28 @@ class Restricts:
                             await self.channel_unmute(info.ctx, info.user)
             await asyncio.sleep(1)
 
+    def duration_from_text(self, reason: str):
+        duration = 0
+        if not reason:
+            return duration
+
+        words = reason.split()
+        if len(words) <= 0:
+            return duration
+
+        text = words[-1]
+        text = text.strip()
+
+        if re.match("([0-9]+)?(day|days|d)", text):
+            duration += int(re.match("([0-9]+)?(day|days|d)", text).group(1)) * 24 * 60 * 60
+        if re.match("([0-9]+)?(hours|hour|h)", text):
+            duration += int(re.match("([0-9]+)?(hours|hour|h)", text).group(1)) * 60 * 60
+        if re.match("([0-9]+)?(minutes|minute|mins|min|m)", text):
+            duration += int(re.match("([0-9]+)?(minutes|minute|mins|min|m)", text).group(1)) * 60
+        if re.match("([0-9]+)?(seconds|second|secs|sec|s)", text):
+            duration += int(re.match("([0-9]+)?(seconds|second|secs|sec|s)", text).group(1))
+        return duration
+
 def strfdelta(delta):
     s = []
     if delta.days:
@@ -1726,28 +1748,6 @@ def check_folders():
         if not os.path.exists(folder):
             print("Creating " + folder + " folder...")
             os.makedirs(folder)
-
-def duration_from_text(self, reason: str):
-    duration = 0
-    if not reason:
-        return duration
-
-    words = reason.split()
-    if len(words) <= 0:
-        return duration
-
-    text = words[-1]
-    text = text.strip()
-
-    if re.match("([0-9]+)?(day|days|d)", text):
-        duration += int(re.match("([0-9]+)?(day|days|d)", text).group(1)) * 24 * 60 * 60
-    if re.match("([0-9]+)?(hours|hour|h)", text):
-        duration += int(re.match("([0-9]+)?(hours|hour|h)", text).group(1)) * 60 * 60
-    if re.match("([0-9]+)?(minutes|minute|mins|min|m)", text):
-        duration += int(re.match("([0-9]+)?(minutes|minute|mins|min|m)", text).group(1)) * 60
-    if re.match("([0-9]+)?(seconds|second|secs|sec|s)", text):
-        duration += int(re.match("([0-9]+)?(seconds|second|secs|sec|s)", text).group(1))
-    return duration
 
 async def on_muted(self, info: UnmuteInfo):
     #remove the last user info and fucking caches
