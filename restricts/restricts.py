@@ -1696,20 +1696,20 @@ class Restricts:
     
     async def mute_manager(self):
         while self == self.bot.get_cog('Restricts'):
-            await logger.info("going to iterate unmute_list. Exists: {}, size, {}".format(self.unmute_list, len(self.unmute_list)))
+            logger.info("going to iterate unmute_list. Exists: {}, size, {}".format(self.unmute_list, len(self.unmute_list)))
             if self.unmute_list:
                 #user can be unmuted here on by command
                 #clean µute_list first
                 for info in self.unmuted_list:
-                    await logger.info("user {} was unmuted, cleanup".format(info.user.name))
+                    logger.info("user {} was unmuted, cleanup".format(info.user.name))
                     self.unmute_list.remove(info)
                 for info in self.unmute_list:
-                    await logger.info("processing to unmute user {} {}".format(info.user.name, type(info) is UnmuteInfo))
+                    logger.info("processing to unmute user {} {}".format(info.user.name, type(info) is UnmuteInfo))
                     if type(info) is UnmuteInfo:
                         now = time.time()
-                        await logger.info("now {}, need to be unmuted: {} {} {}".format(now, info.start_time, info.duration, info.start_time + info.duration))
+                        logger.info("now {}, need to be unmuted: {} {} {}".format(now, info.start_time, info.duration, info.start_time + info.duration))
                         if now > (info.start_time + info.duration):
-                            await logger.info("requesting to unmute {}".format(info.user.name))
+                            logger.info("requesting to unmute {}".format(info.user.name))
                             info.ctx.message.channel = info.channel
                             await self.channel_unmute(info.ctx, info.user)
             await asyncio.sleep(10)
