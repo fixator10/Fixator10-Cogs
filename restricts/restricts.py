@@ -1703,7 +1703,11 @@ class Restricts:
                 #clean µute_list first
                 for info in self.unmuted_list:
                     print("user {} was unmuted, cleanup".format(info.user.name))
-                    self.unmute_list.remove(info)
+                    try:
+                        self.unmute_list.remove(info)
+                    except KeyError:
+                        pass
+                        
                 #all entries used, need to clean-up the list
                 self.unmuted_list.clear()
 
@@ -1744,7 +1748,7 @@ class Restricts:
         try:
         #remove the last user info and fucking caches
             self.unmute_list.remove(info)
-        except:
+        except KeyError:
             pass
         finally:
         #add new user info with it fucking caches
