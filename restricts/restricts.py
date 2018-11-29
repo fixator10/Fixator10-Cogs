@@ -565,7 +565,7 @@ class Restricts:
                                 user=user,
                                 reason=reason)
             if parsedDuration:
-                await self.bot.say("User has been muted in this channel for {0} ({1})".format(duration, parsedDuration))
+                await self.bot.say("User has been muted in this channel for {0}s".format(parsedDuration))
             else:
                 await self.bot.say("User has been muted in this channel without timeout.")
 
@@ -617,7 +617,7 @@ class Restricts:
                             user=user,
                             reason=reason)
         if parsedDuration:
-            await self.bot.say("User has been muted in this server for {0} ({1})".format(duration, parsedDuration))
+            await self.bot.say("User has been muted in this server for {0}s".format(parsedDuration))
         else:
             await self.bot.say("User has been muted in this server.")
 
