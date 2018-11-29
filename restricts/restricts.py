@@ -114,14 +114,14 @@ class Restricts:
 
     def __init__(self, bot):
         self.bot = bot
-        self.ignore_list = dataIO.load_json("data/restricts/ignorelist.json")
-        self.filter = dataIO.load_json("data/restricts/filter.json")
-        self.past_names = dataIO.load_json("data/restricts/past_names.json")
-        self.past_nicknames = dataIO.load_json("data/restricts/past_nicknames.json")
-        settings = dataIO.load_json("data/restricts/settings.json")
+        self.ignore_list = dataIO.load_json("data/mod/ignorelist.json")
+        self.filter = dataIO.load_json("data/mod/filter.json")
+        self.past_names = dataIO.load_json("data/mod/past_names.json")
+        self.past_nicknames = dataIO.load_json("data/mod/past_nicknames.json")
+        settings = dataIO.load_json("data/mod/settings.json")
         self.settings = defaultdict(lambda: default_settings.copy(), settings)
         self.cache = OrderedDict()
-        self.cases = dataIO.load_json("data/restricts/modlog.json")
+        self.cases = dataIO.load_json("data/mod/modlog.json")
         self.last_case = defaultdict(dict)
         self.temp_cache = TempCache(bot)
         self.unmute_list = set()
@@ -179,7 +179,7 @@ class Restricts:
                 return
             self.settings[server.id]["mod-log"] = None
             await self.bot.say("Mod log deactivated.")
-        dataIO.save_json("data/restricts/settings.json", self.settings)
+        dataIO.save_json("data/mod/settings.json", self.settings)
 
     @modset.command(pass_context=True, no_pm=True)
     async def banmentionspam(self, ctx, max_mentions : int=False):
@@ -201,7 +201,7 @@ class Restricts:
                 return
             self.settings[server.id]["ban_mention_spam"] = False
             await self.bot.say("Autoban for mention spam disabled.")
-        dataIO.save_json("data/restricts/settings.json", self.settings)
+        dataIO.save_json("data/mod/settings.json", self.settings)
 
     @modset.command(pass_context=True, no_pm=True)
     async def deleterepeats(self, ctx):
@@ -214,14 +214,14 @@ class Restricts:
         else:
             self.settings[server.id]["delete_repeats"] = False
             await self.bot.say("Repeated messages will be ignored.")
-        dataIO.save_json("data/restricts/settings.json", self.settings)
+        dataIO.save_json("data/mod/settings.json", self.settings)
 
     @modset.command(pass_context=True, no_pm=True)
     async def resetcases(self, ctx):
         """Resets modlog's cases"""
         server = ctx.message.server
         self.cases[server.id] = {}
-        dataIO.save_json("data/restricts/modlog.json", self.cases)
+        dataIO.save_json("data/mod/modlog.json", self.cases)
         await self.bot.say("Cases have been reset.")
 
     @modset.command(pass_context=True, no_pm=True)
@@ -239,7 +239,7 @@ class Restricts:
             else:
                 await self.bot.say("Delete delay set to {}"
                                    " seconds.".format(time))
-            dataIO.save_json("data/restricts/settings.json", self.settings)
+            dataIO.save_json("data/mod/settings.json", self.settings)
         else:
             try:
                 delay = self.settings[server.id]["delete_delay"]
@@ -293,7 +293,7 @@ class Restricts:
                                                  default_settings[action])
             if value != enabled:
                 self.settings[server.id][action] = enabled
-                dataIO.save_json("data/restricts/settings.json", self.settings)
+                dataIO.save_json("data/mod/settings.json", self.settings)
             msg = ('Case creation for %s actions %s %s.' %
                    (name.lower(),
                     'was already' if enabled == value else 'is now',
@@ -316,7 +316,7 @@ class Restricts:
             self.settings[server.id]["respect_hierarchy"] = False
             await self.bot.say("Role hierarchy will be ignored when "
                                "moderation commands are issued.")
-        dataIO.save_json("data/restricts/settings.json", self.settings)
+        dataIO.save_json("data/mod/settings.json", self.settings)
 
     @commands.command(no_pm=True, pass_context=True)
     @checks.admin_or_permissions(kick_members=True)
@@ -1077,14 +1077,14 @@ class Restricts:
         if not channel:
             if current_ch.id not in self.ignore_list["CHANNELS"]:
                 self.ignore_list["CHANNELS"].append(current_ch.id)
-                dataIO.save_json("data/restricts/ignorelist.json", self.ignore_list)
+                dataIO.save_json("data/mod/ignorelist.json", self.ignore_list)
                 await self.bot.say("Channel added to ignore list.")
             else:
                 await self.bot.say("Channel already in ignore list.")
         else:
             if channel.id not in self.ignore_list["CHANNELS"]:
                 self.ignore_list["CHANNELS"].append(channel.id)
-                dataIO.save_json("data/restricts/ignorelist.json", self.ignore_list)
+                dataIO.save_json("data/mod/ignorelist.json", self.ignore_list)
                 await self.bot.say("Channel added to ignore list.")
             else:
                 await self.bot.say("Channel already in ignore list.")
@@ -1095,7 +1095,7 @@ class Restricts:
         server = ctx.message.server
         if server.id not in self.ignore_list["SERVERS"]:
             self.ignore_list["SERVERS"].append(server.id)
-            dataIO.save_json("data/restricts/ignorelist.json", self.ignore_list)
+            dataIO.save_json("data/mod/ignorelist.json", self.ignore_list)
             await self.bot.say("This server has been added to the ignore list.")
         else:
             await self.bot.say("This server is already being ignored.")
@@ -1117,14 +1117,14 @@ class Restricts:
         if not channel:
             if current_ch.id in self.ignore_list["CHANNELS"]:
                 self.ignore_list["CHANNELS"].remove(current_ch.id)
-                dataIO.save_json("data/restricts/ignorelist.json", self.ignore_list)
+                dataIO.save_json("data/mod/ignorelist.json", self.ignore_list)
                 await self.bot.say("This channel has been removed from the ignore list.")
             else:
                 await self.bot.say("This channel is not in the ignore list.")
         else:
             if channel.id in self.ignore_list["CHANNELS"]:
                 self.ignore_list["CHANNELS"].remove(channel.id)
-                dataIO.save_json("data/restricts/ignorelist.json", self.ignore_list)
+                dataIO.save_json("data/mod/ignorelist.json", self.ignore_list)
                 await self.bot.say("Channel removed from ignore list.")
             else:
                 await self.bot.say("That channel is not in the ignore list.")
@@ -1135,7 +1135,7 @@ class Restricts:
         server = ctx.message.server
         if server.id in self.ignore_list["SERVERS"]:
             self.ignore_list["SERVERS"].remove(server.id)
-            dataIO.save_json("data/restricts/ignorelist.json", self.ignore_list)
+            dataIO.save_json("data/mod/ignorelist.json", self.ignore_list)
             await self.bot.say("This server has been removed from the ignore list.")
         else:
             await self.bot.say("This server is not in the ignore list.")
@@ -1188,7 +1188,7 @@ class Restricts:
                 self.filter[server.id].append(w.lower())
                 added += 1
         if added:
-            dataIO.save_json("data/restricts/filter.json", self.filter)
+            dataIO.save_json("data/mod/filter.json", self.filter)
             await self.bot.say("Words added to filter.")
         else:
             await self.bot.say("Words already in the filter.")
@@ -1214,7 +1214,7 @@ class Restricts:
                 self.filter[server.id].remove(w.lower())
                 removed += 1
         if removed:
-            dataIO.save_json("data/restricts/filter.json", self.filter)
+            dataIO.save_json("data/mod/filter.json", self.filter)
             await self.bot.say("Words removed from filter.")
         else:
             await self.bot.say("Those words weren't in the filter.")
@@ -1420,7 +1420,7 @@ class Restricts:
         if mod:
             self.last_case[server.id][mod.id] = case_n
 
-        dataIO.save_json("data/restricts/modlog.json", self.cases)
+        dataIO.save_json("data/mod/modlog.json", self.cases)
 
         return case_n
 
@@ -1453,7 +1453,7 @@ class Restricts:
 
         case_msg = self.format_case_msg(case)
 
-        dataIO.save_json("data/restricts/modlog.json", self.cases)
+        dataIO.save_json("data/mod/modlog.json", self.cases)
 
         if case["message"] is None:  # The case's message was never sent
             raise CaseMessageNotFound()
@@ -1660,7 +1660,7 @@ class Restricts:
                     names = deque(self.past_names[before.id], maxlen=20)
                     names.append(after.name)
                     self.past_names[before.id] = list(names)
-            dataIO.save_json("data/restricts/past_names.json", self.past_names)
+            dataIO.save_json("data/mod/past_names.json", self.past_names)
 
         if before.nick != after.nick and after.nick is not None:
             server = before.server
@@ -1674,7 +1674,7 @@ class Restricts:
             if after.nick not in nicks:
                 nicks.append(after.nick)
                 self.past_nicknames[server.id][before.id] = list(nicks)
-                dataIO.save_json("data/restricts/past_nicknames.json",
+                dataIO.save_json("data/mod/past_nicknames.json",
                                  self.past_nicknames)
 
     def are_overwrites_empty(self, overwrites):
@@ -1743,7 +1743,7 @@ def strfdelta(delta):
 
 
 def check_folders():
-    folders = ("data", "data/restricts/")
+    folders = ("data", "data/mod/")
     for folder in folders:
         if not os.path.exists(folder):
             print("Creating " + folder + " folder...")
@@ -1769,9 +1769,9 @@ def check_files():
     }
 
     for filename, value in files.items():
-        if not os.path.isfile("data/restricts/{}".format(filename)):
+        if not os.path.isfile("data/mod/{}".format(filename)):
             print("Creating empty {}".format(filename))
-            dataIO.save_json("data/restricts/{}".format(filename), value)
+            dataIO.save_json("data/mod/{}".format(filename), value)
 
 
 def setup(bot):
@@ -1783,7 +1783,7 @@ def setup(bot):
     if logger.level == 0:
         logger.setLevel(logging.INFO)
         handler = logging.FileHandler(
-            filename='data/restricts/mod.log', encoding='utf-8', mode='a')
+            filename='data/mod/mod.log', encoding='utf-8', mode='a')
         handler.setFormatter(
             logging.Formatter('%(asctime)s %(message)s', datefmt="[%d/%m/%Y %H:%M]"))
         logger.addHandler(handler)
