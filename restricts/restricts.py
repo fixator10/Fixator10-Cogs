@@ -1698,9 +1698,10 @@ class Restricts:
     async def mute_manager(self):
         while self == self.bot.get_cog('Restricts'):
             print("going to iterate unmute_list. Exists: {}, size, {}\n unmuted_list size: {}".format(self.unmute_list, len(self.unmute_list), len(self.unmuted_list)))
-            if self.unmute_list:
-                #user can be unmuted here on by command
-                #clean µute_list first
+            
+            #user can be unmuted here on by command
+            #clean µute_list first
+            if self.unmuted_list:
                 for info in self.unmuted_list:
                     print("user {} was unmuted, cleanup".format(info.user.name))
                     try:
@@ -1711,6 +1712,7 @@ class Restricts:
                 #all entries used, need to clean-up the list
                 self.unmuted_list.clear()
 
+            if self.unmute_list:
                 for info in self.unmute_list:
                     print("processing to unmute user {} {}".format(info.user.name, type(info) is UnmuteInfo))
                     if type(info) is UnmuteInfo:
