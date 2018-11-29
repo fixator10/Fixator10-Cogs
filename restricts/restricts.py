@@ -10,6 +10,7 @@ import os
 import re
 import logging
 import asyncio
+from itertools import filterfalse
 
 
 ACTIONS_REPR = {
@@ -88,7 +89,24 @@ class TempCache:
     def check(self, user, server, action):
         return (user.id, server.id, action) in self._cache
 
+class UnmuteInfo:
+    def __init__(self, ctx, user: discord.Member, duration):
+        self.ctx = ctx
+        self.user = user
+        self.duration = duration
+        self.start_time = time.time()
 
+    def __eq__(self, other):
+        return self.user == other.user
+            and self.ctx.message.channel == other.ctx.message.channel
+            and self.ctx.message.server == other.ctx.message.server
+
+    def __hash__(self):
+        return hash(self.user) ^
+            hash(self.ctx.message.channel) ^ 
+            hash(self.ctx.message.server)
+
+    
 class Restricts:
     """Moderation tools."""
 
@@ -104,6 +122,8 @@ class Restricts:
         self.cases = dataIO.load_json("data/restricts/modlog.json")
         self.last_case = defaultdict(dict)
         self.temp_cache = TempCache(bot)
+        self.unmute_list = set()
+        self.unmuted_list = set()
 
     @commands.group(pass_context=True, no_pm=True)
     @checks.serverowner_or_permissions(administrator=True)
@@ -494,7 +514,7 @@ class Restricts:
 
     @commands.group(pass_context=True, no_pm=True, invoke_without_command=True)
     @checks.mod_or_permissions(administrator=True)
-    async def mute(self, ctx, user : discord.Member, *, reason: str = None):
+    async def mute(self, ctx, user : discord.Member, *, reason: str = None, duration: str = None):
         """Mutes user in the channel/server
 
         Defaults to channel"""
@@ -503,7 +523,7 @@ class Restricts:
 
     @checks.mod_or_permissions(administrator=True)
     @mute.command(name="channel", pass_context=True, no_pm=True)
-    async def channel_mute(self, ctx, user : discord.Member, *, reason: str = None):
+    async def channel_mute(self, ctx, user : discord.Member, *, reason: str = None, duration: str = None):
         """Mutes user in the current channel"""
         author = ctx.message.author
         channel = ctx.message.channel
@@ -528,17 +548,30 @@ class Restricts:
                                "permission and the user I'm muting must be "
                                "lower than myself in the role hierarchy.")
         else:
+            parsedDuration = 0
+            if duration:
+                parsedDuration = self.duration_from_text(duration)
+                if parsedDuration: 
+                    await self.on_muted(UnmuteInfo(ctx, user, parsedDuration))
+                else:
+                    await self.bot.say("Can not parse duration."
+                        "Will mute without timer."
+                        "To use mute with timer please try again with a correct duration format")
+
             await self.new_case(server,
                                 action="CMUTE",
                                 channel=channel,
                                 mod=author,
                                 user=user,
                                 reason=reason)
-            await self.bot.say("User has been muted in this channel.")
+            if parsedDuration:
+                await self.bot.say("User has been muted in this channel for {0} ({1})".format(duration, parsedDuration))
+            else:
+                await self.bot.say("User has been muted in this channel without timeout.")
 
     @checks.mod_or_permissions(administrator=True)
     @mute.command(name="server", pass_context=True, no_pm=True)
-    async def server_mute(self, ctx, user : discord.Member, *, reason: str = None):
+    async def server_mute(self, ctx, user : discord.Member, *, reason: str = None, duration: str = None):
         """Mutes user in the server"""
         author = ctx.message.author
         server = ctx.message.server
@@ -548,7 +581,14 @@ class Restricts:
                                "not higher than the user in the role "
                                "hierarchy.")
             return
-
+        parsedDuration = 0
+        if duration:
+            parsedDuration = self.duration_from_text(duration)
+            if not parsedDuration: 
+                await self.bot.say("Can not parse duration."
+                        "Will mute without timer."
+                        "To use mute with timer please try again with a correct duration format")
+                
         register = {}
         for channel in server.channels:
             if channel.type != discord.ChannelType.text:
@@ -567,6 +607,10 @@ class Restricts:
                                    "lower than myself in the role hierarchy.")
                 return
             else:
+                if parsedDuration: 
+                    channelCtx = ctx
+                    channelCtx.message.channel = channel
+                    await self.on_muted(UnmuteInfo(channelCtx, user, parsedDuration))
                 await asyncio.sleep(0.1)
         if not register:
             await self.bot.say("That user is already muted in all channels.")
@@ -576,7 +620,10 @@ class Restricts:
                             mod=author,
                             user=user,
                             reason=reason)
-        await self.bot.say("User has been muted in this server.")
+        if parsedDuration:
+            await self.bot.say("User has been muted in this server for {0} ({1})".format(duration, parsedDuration))
+        else:
+            await self.bot.say("User has been muted in this server.")
 
     @commands.group(pass_context=True, no_pm=True, invoke_without_command=True)
     @checks.mod_or_permissions(administrator=True)
@@ -619,6 +666,7 @@ class Restricts:
                                " permission and the user I'm unmuting must be "
                                "lower than myself in the role hierarchy.")
         else:
+            unmuted_list.add(UnmuteInfo(ctx, user, 0))
             await self.bot.say("User has been unmuted in this channel.")
 
     @checks.mod_or_permissions(administrator=True)
@@ -655,6 +703,9 @@ class Restricts:
                                        "lower than myself in the role hierarchy.")
                 return
             else:
+                channelCtx = ctx
+                channelCtx.message.channel = channel
+                unmuted_list.add(UnmuteInfo(channelCtx, user, 0))
                 await asyncio.sleep(0.1)
         await self.bot.say("User has been unmuted in this server.")
 
@@ -1668,6 +1719,25 @@ def check_folders():
             print("Creating " + folder + " folder...")
             os.makedirs(folder)
 
+def duration_from_text(self, text: str):
+    duration = 0
+    text = text.strip()
+    if re.match("([0-9]+)?(day|days|d)", text):
+        duration += int(re.match("([0-9]+)?(day|days|d)", text).group(1)) * 24 * 60 * 60
+    if re.match("([0-9]+)?(hours|hour|h)", text):
+        duration += int(re.match("([0-9]+)?(hours|hour|h)", text).group(1)) * 60 * 60
+    if re.match("([0-9]+)?(minutes|minute|mins|min|m)", text):
+        duration += int(re.match("([0-9]+)?(minutes|minute|mins|min|m)", text).group(1)) * 60
+    if re.match("([0-9]+)?(seconds|second|secs|sec|s)", text):
+        duration += int(re.match("([0-9]+)?(seconds|second|secs|sec|s)", text).group(1))
+    return duration
+
+async def on_muted(self, info: UnmuteInfo):
+    #remove the last user info and fucking caches
+    unmute_list.remove(info)
+    #add new user info with it fucking caches
+    unmute_list.add(info)    
+
 
 def check_files():
     ignore_list = {"SERVERS": [], "CHANNELS": []}
@@ -1686,6 +1756,20 @@ def check_files():
             print("Creating empty {}".format(filename))
             dataIO.save_json("data/restricts/{}".format(filename), value)
 
+async def mute_manager(self):
+    while self == self.bot.get_cog('Restricts'):
+        if self.unmute_list:
+            #user can be unmuted here on by command
+            #clean µute_list first
+            for info in self.unmuted_list
+                self.unmute_list.remove(info)
+            for info in self.unmute_list:
+                if type(info) is UnmuteInfo:
+                    now = time.time()
+                    if now > (info.start_time + info.duration):
+                        await self.channel_unmute(info.ctx, info.user)
+        await asyncio.sleep(1)
+
 
 def setup(bot):
     global logger
@@ -1702,4 +1786,5 @@ def setup(bot):
         logger.addHandler(handler)
     n = Restricts(bot)
     bot.add_listener(n.check_names, "on_member_update")
+    bot.loop.create_task(n.mute_manager())
     bot.add_cog(n)
