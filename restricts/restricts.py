@@ -12,7 +12,7 @@ import logging
 import asyncio
 import time
 from itertools import filterfalse
-
+from threading import Lock
 
 ACTIONS_REPR = {
     "BAN"     : ("Ban", "\N{HAMMER}"),
@@ -128,8 +128,9 @@ class Restricts:
         self.cases = dataIO.load_json("data/mod/modlog.json")
         self.last_case = defaultdict(dict)
         self.temp_cache = TempCache(bot)
-        self.unmute_list = set()
+        self.to_unmute = set()
         self.unmuted_list = set()
+        self.mutex = Lock()
 
     @commands.group(pass_context=True, no_pm=True)
     @checks.serverowner_or_permissions(administrator=True)
@@ -1699,7 +1700,7 @@ class Restricts:
     
     async def mute_manager(self):
         while self == self.bot.get_cog('Restricts'):
-            print("going to iterate unmute_list. Exists: {}, size, {}\n unmuted_list size: {}".format(self.unmute_list, len(self.unmute_list), len(self.unmuted_list)))
+            print("going to iterate to_unmute. Exists: {}, size, {}\n unmuted_list size: {}".format(self.to_unmute, len(self.to_unmute), len(self.unmuted_list)))
             
             #user can be unmuted here on by command
             #clean µute_list first
@@ -1707,15 +1708,16 @@ class Restricts:
                 for info in self.unmuted_list:
                     print("user {} was unmuted, cleanup".format(info.user.name))
                     try:
-                        self.unmute_list.remove(info)
+                        self.to_unmute.remove(info)
                     except KeyError:
                         pass
 
                 #all entries used, need to clean-up the list
                 self.unmuted_list.clear()
 
-            if self.unmute_list:
-                for info in self.unmute_list:
+            if self.to_unmute:
+                self.mutex.acquire()
+                for info in self.to_unmute:
                     print("processing to unmute user {} {}".format(info.user.name, type(info) is UnmuteInfo))
                     if type(info) is UnmuteInfo:
                         now = time.time()
@@ -1727,6 +1729,7 @@ class Restricts:
                                 await info.ctx.invoke(self.channel_unmute, user=info.user)
                             except Exception as e:
                                 print('got some error while unmuted'+ str(e))
+                self.mutex.release()
                                 
             await asyncio.sleep(1)
 
@@ -1753,14 +1756,16 @@ class Restricts:
         return duration
 
     async def on_muted(self, info: UnmuteInfo):
+        self.mutex.acquire()
         try:
         #remove the last user info and fucking caches
-            self.unmute_list.remove(info)
+            self.to_unmute.remove(info)
         except KeyError:
             pass
         finally:
         #add new user info with it fucking caches
-            self.unmute_list.add(info)    
+            self.to_unmute.add(info)    
+        self.mutex.release()
 
 def strfdelta(delta):
     s = []
