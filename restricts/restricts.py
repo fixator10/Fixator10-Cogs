@@ -19,7 +19,7 @@ ACTIONS_REPR = {
     "KICK"    : ("Kick", "\N{WOMANS BOOTS}"),
     "CMUTE"   : ("Channel mute", "\N{SPEAKER WITH CANCELLATION STROKE}"),
     "SMUTE"   : ("Server mute", "\N{SPEAKER WITH CANCELLATION STROKE}"),
-    "UNMUTEС" : ("Channel Unmute", "\N{SPEAKER}"),
+    "UNMUTEC" : ("Channel Unmute", "\N{SPEAKER}"),
     "UNMUTES" : ("Server Unmute", "\N{SPEAKER}"),
     "SOFTBAN" : ("Softban", "\N{DASH SYMBOL} \N{HAMMER}"),
     "HACKBAN" : ("Preemptive ban", "\N{BUST IN SILHOUETTE} \N{HAMMER}"),
