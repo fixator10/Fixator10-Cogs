@@ -1699,13 +1699,13 @@ class Restricts:
     
     async def mute_manager(self):
         while self == self.bot.get_cog('Restricts'):
-            #print("going to iterate unmute_list. Exists: {}, size, {}\n unmuted_list size: {}".format(self.unmute_list, len(self.unmute_list), len(self.unmuted_list)))
+            print("going to iterate unmute_list. Exists: {}, size, {}\n unmuted_list size: {}".format(self.unmute_list, len(self.unmute_list), len(self.unmuted_list)))
             
             #user can be unmuted here on by command
             #clean µute_list first
             if self.unmuted_list:
                 for info in self.unmuted_list:
-                    #print("user {} was unmuted, cleanup".format(info.user.name))
+                    print("user {} was unmuted, cleanup".format(info.user.name))
                     try:
                         self.unmute_list.remove(info)
                     except KeyError:
@@ -1716,12 +1716,12 @@ class Restricts:
 
             if self.unmute_list:
                 for info in self.unmute_list:
-                    #print("processing to unmute user {} {}".format(info.user.name, type(info) is UnmuteInfo))
+                    print("processing to unmute user {} {}".format(info.user.name, type(info) is UnmuteInfo))
                     if type(info) is UnmuteInfo:
                         now = time.time()
-                        #print("now {}, need to be unmuted: {} {} {}".format(now, info.start_time, info.duration, info.start_time + info.duration))
+                        print("now {}, need to be unmuted: {} {} {}".format(now, info.start_time, info.duration, info.start_time + info.duration))
                         if now > (info.start_time + info.duration):
-                            #print("requesting to unmute {}".format(info.user.name))
+                            print("requesting to unmute {}".format(info.user.name))
                             info.ctx.message.channel = info.channel
                             try:
                                 await info.ctx.invoke(self.channel_unmute, user=info.user)
