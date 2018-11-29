@@ -514,7 +514,7 @@ class Restricts:
 
     @commands.group(pass_context=True, no_pm=True, invoke_without_command=True)
     @checks.mod_or_permissions(administrator=True)
-    async def mute(self, ctx, user : discord.Member, *, reason: str = None, duration: str = None):
+    async def mute(self, ctx, user : discord.Member, *, reason: str = None):
         """Mutes user in the channel/server
 
         Defaults to channel"""
@@ -523,7 +523,7 @@ class Restricts:
 
     @checks.mod_or_permissions(administrator=True)
     @mute.command(name="channel", pass_context=True, no_pm=True)
-    async def channel_mute(self, ctx, user : discord.Member, *, reason: str = None, duration: str = None):
+    async def channel_mute(self, ctx, user : discord.Member, *, reason: str = None):
         """Mutes user in the current channel"""
         author = ctx.message.author
         channel = ctx.message.channel
@@ -548,15 +548,13 @@ class Restricts:
                                "permission and the user I'm muting must be "
                                "lower than myself in the role hierarchy.")
         else:
-            parsedDuration = 0
-            if duration:
-                parsedDuration = self.duration_from_text(duration)
-                if parsedDuration: 
-                    await self.on_muted(UnmuteInfo(ctx, user, parsedDuration))
-                else:
-                    await self.bot.say("Can not parse duration."
-                        "Will mute without timer."
-                        "To use mute with timer please try again with a correct duration format")
+            parsedDuration = self.duration_from_text(reason)
+            if parsedDuration: 
+                await self.on_muted(UnmuteInfo(ctx, user, parsedDuration))
+            else:
+                await self.bot.say("Can not parse duration."
+                    "Will mute without timer."
+                    "To use mute with timer please try again with a correct duration format")
 
             await self.new_case(server,
                                 action="CMUTE",
@@ -571,7 +569,7 @@ class Restricts:
 
     @checks.mod_or_permissions(administrator=True)
     @mute.command(name="server", pass_context=True, no_pm=True)
-    async def server_mute(self, ctx, user : discord.Member, *, reason: str = None, duration: str = None):
+    async def server_mute(self, ctx, user : discord.Member, *, reason: str = None):
         """Mutes user in the server"""
         author = ctx.message.author
         server = ctx.message.server
@@ -581,13 +579,11 @@ class Restricts:
                                "not higher than the user in the role "
                                "hierarchy.")
             return
-        parsedDuration = 0
-        if duration:
-            parsedDuration = self.duration_from_text(duration)
-            if not parsedDuration: 
-                await self.bot.say("Can not parse duration."
-                        "Will mute without timer."
-                        "To use mute with timer please try again with a correct duration format")
+        parsedDuration = self.duration_from_text(reason)
+        if not parsedDuration: 
+            await self.bot.say("Can not parse duration."
+                    "Will mute without timer."
+                    "To use mute with timer please try again with a correct duration format")
                 
         register = {}
         for channel in server.channels:
@@ -1732,9 +1728,18 @@ def check_folders():
             print("Creating " + folder + " folder...")
             os.makedirs(folder)
 
-def duration_from_text(self, text: str):
+def duration_from_text(self, reason: str):
     duration = 0
+    if not reason:
+        return duration
+
+    words = reason.split()
+    if len(words) <= 0:
+        return duration
+
+    text = words[-1]
     text = text.strip()
+    
     if re.match("([0-9]+)?(day|days|d)", text):
         duration += int(re.match("([0-9]+)?(day|days|d)", text).group(1)) * 24 * 60 * 60
     if re.match("([0-9]+)?(hours|hour|h)", text):
