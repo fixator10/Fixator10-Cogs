@@ -666,7 +666,7 @@ class Restricts:
                                " permission and the user I'm unmuting must be "
                                "lower than myself in the role hierarchy.")
         else:
-            unmuted_list.add(UnmuteInfo(ctx, user, 0))
+            self.unmuted_list.add(UnmuteInfo(ctx, user, 0))
             await self.bot.say("User has been unmuted in this channel.")
 
     @checks.mod_or_permissions(administrator=True)
@@ -705,7 +705,7 @@ class Restricts:
             else:
                 channelCtx = ctx
                 channelCtx.message.channel = channel
-                unmuted_list.add(UnmuteInfo(channelCtx, user, 0))
+                self.unmuted_list.add(UnmuteInfo(channelCtx, user, 0))
                 await asyncio.sleep(0.1)
         await self.bot.say("User has been unmuted in this server.")
 
