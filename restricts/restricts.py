@@ -654,7 +654,7 @@ class Restricts:
             await self.bot.say("I cannot let you do that. You are "
                                "not higher than the user in the role "
                                "hierarchy.")
-        elif error = UnmuteError.failed_to_unmute:
+        elif error == UnmuteError.failed_to_unmute:
             await self.bot.say("Failed to unmute user. I need the manage roles"
                     " permission and the user I'm unmuting must be "
                     "lower than myself in the role hierarchy.")
@@ -1760,7 +1760,7 @@ class Restricts:
                             author = list(unmuted)[0].ctx.message.author)
                         await self.bot.say(str)
                     except Exception as e:
-                                print('got some error while saying about unmute'+ str(e))
+                        print('got some error while saying about unmute'+ str(e))
 
                 self.mutex.release()
                                 
