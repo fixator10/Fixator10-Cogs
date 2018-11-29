@@ -21,6 +21,7 @@ ACTIONS_REPR = {
     "SMUTE"   : ("Server mute", "\N{SPEAKER WITH CANCELLATION STROKE}"),
     "UNMUTEC" : ("Channel Unmute", "\N{SPEAKER}"),
     "UNMUTES" : ("Server Unmute", "\N{SPEAKER}"),
+    "UNMUTEB" : ("Bot Unmute", "\N{SPEAKER}"),
     "SOFTBAN" : ("Softban", "\N{DASH SYMBOL} \N{HAMMER}"),
     "HACKBAN" : ("Preemptive ban", "\N{BUST IN SILHOUETTE} \N{HAMMER}"),
     "UNBAN"   : ("Unban", "\N{DOVE OF PEACE}")
@@ -33,6 +34,7 @@ ACTIONS_CASES = {
     "SMUTE"   : True,
     "UNMUTEC" : False,
     "UNMUTES" : True,
+    "UNMUTEB" : True,
     "SOFTBAN" : True,
     "HACKBAN" : True,
     "UNBAN"   : True
@@ -112,6 +114,11 @@ class UnmuteInfo:
             hash(self.channel) ^ \
             hash(self.ctx.message.server)
 
+class UnmuteError:
+    forbidden = "forbidden"
+    failed_to_unmute = "failed to unmute"
+    not_text = "not text"
+    not_muted = "not muted"
     
 class Restricts:
     """Moderation tools."""
@@ -638,21 +645,41 @@ class Restricts:
     @checks.mod_or_permissions(administrator=True)
     @unmute.command(name="channel", pass_context=True, no_pm=True)
     async def channel_unmute(self, ctx, user : discord.Member):
-        """Unmutes user in the current channel"""
-        channel = ctx.message.channel
-        author = ctx.message.author
-        server = ctx.message.server
-        overwrites = channel.overwrites_for(user)
-
-        if overwrites.send_messages:
+        error = await channel_unmute_impl(self, ctx, ctx.message.channel, user)
+        if error == UnmuteError.not_muted:
             await self.bot.say("That user doesn't seem to be muted "
                                "in this channel.")
-            return
-        elif not self.is_allowed_by_hierarchy(server, author, user):
+        else if error == UnmuteError.forbidden:
             await self.bot.say("I cannot let you do that. You are "
                                "not higher than the user in the role "
                                "hierarchy.")
-            return
+        else if error = UnmuteError.failed_to_unmute:
+            await self.bot.say("Failed to unmute user. I need the manage roles"
+                    " permission and the user I'm unmuting must be "
+                    "lower than myself in the role hierarchy.")
+        else if error == UnmuteError.not_text:
+            await self.bot.say("please try to unmute only in text channels")
+        else:
+            await self.bot.say("User has been unmuted in this channel.")
+            await self.new_case(server,
+                    action="UNMUTEC",
+                    mod=author,
+                    user=user)
+
+    async def channel_unmute_impl(self, ctx, channel, user : discord.Member):
+        """Unmutes user in the current channel"""
+        author = ctx.message.author
+        server = ctx.message.server
+        overwrites = channel.overwrites_for(user)
+        error = ""
+        if channel.type != discord.ChannelType.text:
+            return UnmuteError.not_text
+
+        if overwrites.send_messages:
+            return UnmuteError.not_muted
+
+        elif not self.is_allowed_by_hierarchy(server, author, user):
+            return UnmuteError.forbidden
 
         overwrites.send_messages = None
         is_empty = self.are_overwrites_empty(overwrites)
@@ -663,16 +690,10 @@ class Restricts:
             else:
                 await self.bot.delete_channel_permissions(channel, user)
         except discord.Forbidden:
-            await self.bot.say("Failed to unmute user. I need the manage roles"
-                               " permission and the user I'm unmuting must be "
-                               "lower than myself in the role hierarchy.")
+            return error.failed_to_unmute
         else:
             self.unmuted_list.add(UnmuteInfo(ctx, ctx.message.channel, user))
-            await self.new_case(server,
-                                action="UNMUTEC",
-                                mod=author,
-                                user=user)
-            await self.bot.say("User has been unmuted in this channel.")
+            return error
 
     @checks.mod_or_permissions(administrator=True)
     @unmute.command(name="server", pass_context=True, no_pm=True)
@@ -688,27 +709,13 @@ class Restricts:
             return
 
         for channel in server.channels:
-            if channel.type != discord.ChannelType.text:
-                continue
-            overwrites = channel.overwrites_for(user)
-            if overwrites.send_messages:
-                continue
-
-            overwrites.send_messages = None
-            is_empty = self.are_overwrites_empty(overwrites)
-            try:
-                if not is_empty:
-                    await self.bot.edit_channel_permissions(channel, user,
-                                                                overwrites)
-                else:
-                    await self.bot.delete_channel_permissions(channel, user)
-            except discord.Forbidden:
+            error = self.channel_unmute_impl(ctx, channel, user)
+            if error == UnmuteError.forbidden:
                 await self.bot.say("Failed to unmute user. I need the manage roles"
                                        " permission and the user I'm unmuting must be "
                                        "lower than myself in the role hierarchy.")
                 return
             else:
-                self.unmuted_list.add(UnmuteInfo(ctx, channel, user))
                 await asyncio.sleep(0.1)
 
         await self.new_case(server,
@@ -1717,6 +1724,8 @@ class Restricts:
 
             if self.to_unmute:
                 self.mutex.acquire()
+                unmuted = set()
+                not_unmuted = set()
                 for info in self.to_unmute:
                     print("processing to unmute user {} {}".format(info.user.name, type(info) is UnmuteInfo))
                     if type(info) is UnmuteInfo:
@@ -1726,9 +1735,28 @@ class Restricts:
                             print("requesting to unmute {}".format(info.user.name))
                             info.ctx.message.channel = info.channel
                             try:
-                                await info.ctx.invoke(self.channel_unmute, user=info.user)
+                                if await self.channel_unmute_impl(info.ctx, info.user):
+                                    unmuted.add(into)
+                                else
+                                    not_unmuted.add(info)
                             except Exception as e:
                                 print('got some error while unmuted'+ str(e))
+                str = "unmuted in channels: " 
+                for info in unmuted:
+                    str += info.channel.name + " "
+                str += "\nand not unmeted in channels: "
+                for info in not_unmuted:
+                    str += info.channel.name + " "
+                if len(unmuted):
+                    try:
+                        await self.new_case(server,
+                            action="UNMUTEB",
+                            user = list(unmuted)[0].user,
+                            author = list(unmuted)[0].ctx.message.author)
+                        await self.bot.say(str)
+                    except Exception as e:
+                                print('got some error while saying about unmute'+ str(e))
+
                 self.mutex.release()
                                 
             await asyncio.sleep(1)
