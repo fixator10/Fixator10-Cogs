@@ -13,10 +13,10 @@ from cogs.utils import chat_formatting as chat
 from cogs.utils.dataIO import dataIO
 
 try:
-    from yandex_translate import YandexTranslate
+    from yandex_translate import YandexTranslate, YandexTranslateException
 
     Yandex = True
-except:
+except ModuleNotFoundError:
     Yandex = False
 
 
@@ -40,28 +40,36 @@ class Translators:
         try:
             translate = YandexTranslate(self.config["yandex_translate_API_key"])
             response = translate.translate(text, language)
-        except Exception as e:
+        except YandexTranslateException as e:
             if str(e) == "ERR_LANG_NOT_SUPPORTED":
-                await self.bot.say("An error has been occurred: Language `" + language + "` is not supported")
+                await self.bot.say(chat.error("An error has been occurred: Language {} is not supported"
+                                              .format(chat.inline(language))))
             elif str(e) == "ERR_TEXT_TOO_LONG":
                 # Discord will return BAD REQUEST (400) sooner than this happen, but whatever...
-                await self.bot.say("An error has been occurred: Text that you provided is too big to translate")
+                await self.bot.say(chat.error("An error has been occurred: Text that you provided is too big to "
+                                              "translate"))
             elif str(e) == "ERR_KEY_INVALID":
-                await self.bot.say("<https://translate.yandex.ru/developers/keys>\n"
-                                   "Setup your API key with {}translate setapikey".format(ctx.prefix))
+                await self.bot.say(chat.error("<https://translate.yandex.ru/developers/keys>\n"
+                                              "Setup your API key with {}translate setapikey".format(ctx.prefix)))
             elif str(e) == "ERR_UNPROCESSABLE_TEXT":
-                await self.bot.say(
-                    "An error has been occurred: Provided text \n```\n" + text + "``` is unprocessable by "
-                                                                                 "translation server")
+                await self.bot.say(chat.error("An error has been occurred: Text provided (below) is unprocessable by "
+                                              "translation server {}".format(chat.box(text))))
             elif str(e) == "ERR_SERVICE_NOT_AVAIBLE":
-                await self.bot.say("An error has been occurred: Service Unavailable. Try again later")
+                await self.bot.say(chat.error("An error has been occurred: Service Unavailable. Try again later"))
             else:
-                await self.bot.say("An error has been occurred: " + str(e))
+                await self.bot.say(chat.error("An error has been occurred: {}".format(e)))
             return
         input_lang = None
         output_lang = None
         if len(language) == 2:
-            input_lang = translate.detect(text=text)
+            try:
+                input_lang = translate.detect(text=text)
+            except YandexTranslateException as e:
+                if str(e) == "ERR_LANG_NOT_SUPPORTED":
+                    await self.bot.say(chat.error("This language is not supported"))
+                else:
+                    await self.bot.say(chat.error("Unable to detect language: {}".format(e)))
+                return
             output_lang = language
         elif len(language) == 5:
             input_lang = language[:2]
@@ -71,8 +79,8 @@ class Translators:
             await self.bot.say("**[{}] Translation:** {}".format(output_lang.upper(), chat.box(response["text"][0])))
         else:
             # According to yandex.translate source code this cannot happen too, but whatever...
-            await self.bot.say(
-                "An error has been occurred. Translation server returned code `" + response["code"] + "`")
+            await self.bot.say("An error has been occurred. Translation server returned code {}"
+                               .format(chat.inline(response["code"])))
 
     @commands.command()
     async def translate_api(self, *, apikey: str):
