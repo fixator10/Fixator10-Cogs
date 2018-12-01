@@ -1,19 +1,20 @@
-import discord
-from discord.ext import commands
-from .utils.dataIO import dataIO
-from .utils import checks
-from __main__ import send_cmd_help, settings
-from datetime import datetime
-from collections import deque, defaultdict, OrderedDict
-from cogs.utils.chat_formatting import escape_mass_mentions, box, pagify
+import asyncio
+import logging
 import os
 import re
-import logging
-import asyncio
 import time
-from itertools import filterfalse
-from threading import Lock
 import traceback
+from collections import deque, defaultdict, OrderedDict
+from datetime import datetime
+from threading import Lock
+
+import discord
+from __main__ import send_cmd_help, settings
+from discord.ext import commands
+
+from cogs.utils.chat_formatting import escape_mass_mentions, box, pagify
+from .utils import checks
+from .utils.dataIO import dataIO
 
 ACTIONS_REPR = {
     "BAN"     : ("Ban", "\N{HAMMER}"),
@@ -293,7 +294,7 @@ class Restricts:
             msg += ', '.join(sorted(map(str.lower, ACTIONS_CASES)))
             await self.bot.say(msg)
 
-        elif enabled == None:
+        elif enabled is None:
             action = action.lower() + '_cases'
             value = self.settings[server.id].get(action,
                                                  default_settings[action])
@@ -1741,7 +1742,7 @@ class Restricts:
                             info.ctx.message.channel = info.channel
                             try:
                                 if await self.channel_unmute_impl(info.ctx, info.user):
-                                    unmuted.add(into)
+                                    unmuted.add(info)
                                 else:
                                     not_unmuted.add(info)
                             except Exception as e:

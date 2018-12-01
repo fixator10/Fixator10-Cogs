@@ -266,14 +266,14 @@ class MoreUtils:
             await self.bot.say(embed=em)
         else:
             await self.bot.say("```\n" +
-                                   "Provided HEX: " + color +
-                                   "\nRGB: " + str(colorrgb) +
-                                   "\nCMYK: " + str(colorcmyk) +
-                                   "\nHSV: " + str(colorhsv) +
-                                   "\nHLS: " + str(colorhls) +
-                                   "\nYIQ: " + str(coloryiq) +
-                                   "\nint: " + str(colorint) +
-                                   "```")
+                               "Provided HEX: " + color +
+                               "\nRGB: " + str(colorrgb) +
+                               "\nCMYK: " + str(colorcmyk) +
+                               "\nHSV: " + str(colorhsv) +
+                               "\nHLS: " + str(colorhls) +
+                               "\nYIQ: " + str(coloryiq) +
+                               "\nint: " + str(colorint) +
+                               "```")
 
     @commands.command(pass_context=True, no_pm=True)
     async def someone(self, ctx, *, text: str = None):
