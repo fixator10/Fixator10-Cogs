@@ -17,38 +17,37 @@ from .utils import checks
 from .utils.dataIO import dataIO
 
 ACTIONS_REPR = {
-    "BAN"     : ("Ban", "\N{HAMMER}"),
-    "KICK"    : ("Kick", "\N{WOMANS BOOTS}"),
-    "CMUTE"   : ("Channel mute", "\N{SPEAKER WITH CANCELLATION STROKE}"),
-    "SMUTE"   : ("Server mute", "\N{SPEAKER WITH CANCELLATION STROKE}"),
-    "UNMUTEC" : ("Channel Unmute", "\N{SPEAKER}"),
-    "UNMUTES" : ("Server Unmute", "\N{SPEAKER}"),
-    "UNMUTEB" : ("Bot Unmute", "\N{SPEAKER}"),
-    "SOFTBAN" : ("Softban", "\N{DASH SYMBOL} \N{HAMMER}"),
-    "HACKBAN" : ("Preemptive ban", "\N{BUST IN SILHOUETTE} \N{HAMMER}"),
-    "UNBAN"   : ("Unban", "\N{DOVE OF PEACE}")
+    "BAN": ("Ban", "\N{HAMMER}"),
+    "KICK": ("Kick", "\N{WOMANS BOOTS}"),
+    "CMUTE": ("Channel mute", "\N{SPEAKER WITH CANCELLATION STROKE}"),
+    "SMUTE": ("Server mute", "\N{SPEAKER WITH CANCELLATION STROKE}"),
+    "UNMUTEC": ("Channel Unmute", "\N{SPEAKER}"),
+    "UNMUTES": ("Server Unmute", "\N{SPEAKER}"),
+    "UNMUTEB": ("Bot Unmute", "\N{SPEAKER}"),
+    "SOFTBAN": ("Softban", "\N{DASH SYMBOL} \N{HAMMER}"),
+    "HACKBAN": ("Preemptive ban", "\N{BUST IN SILHOUETTE} \N{HAMMER}"),
+    "UNBAN": ("Unban", "\N{DOVE OF PEACE}")
 }
 
 ACTIONS_CASES = {
-    "BAN"     : True,
-    "KICK"    : True,
-    "CMUTE"   : False,
-    "SMUTE"   : True,
-    "UNMUTEC" : False,
-    "UNMUTES" : True,
-    "UNMUTEB" : True,
-    "SOFTBAN" : True,
-    "HACKBAN" : True,
-    "UNBAN"   : True
+    "BAN": True,
+    "KICK": True,
+    "CMUTE": False,
+    "SMUTE": True,
+    "UNMUTEC": False,
+    "UNMUTES": True,
+    "UNMUTEB": True,
+    "SOFTBAN": True,
+    "HACKBAN": True,
+    "UNBAN": True
 }
 
 default_settings = {
-    "ban_mention_spam"  : False,
-    "delete_repeats"    : False,
-    "mod-log"           : None,
-    "respect_hierarchy" : False
+    "ban_mention_spam": False,
+    "delete_repeats": False,
+    "mod-log": None,
+    "respect_hierarchy": False
 }
-
 
 for act, enabled in ACTIONS_CASES.items():
     act = act.lower() + '_cases'
@@ -81,6 +80,7 @@ class TempCache:
     from triggering twice in the mod-log.
     Kinda hacky but functioning
     """
+
     def __init__(self, bot):
         self.bot = bot
         self._cache = []
@@ -98,8 +98,9 @@ class TempCache:
     def check(self, user, server, action):
         return (user.id, server.id, action) in self._cache
 
+
 class UnmuteInfo:
-    def __init__(self, ctx, channel, user: discord.Member, duration = 0):
+    def __init__(self, ctx, channel, user: discord.Member, duration=0):
         self.ctx = ctx
         self.channel = channel
         self.user = user
@@ -108,20 +109,22 @@ class UnmuteInfo:
 
     def __eq__(self, other):
         return self.user == other.user \
-            and self.channel == other.channel \
-            and self.ctx.message.server == other.ctx.message.server
+               and self.channel == other.channel \
+               and self.ctx.message.server == other.ctx.message.server
 
     def __hash__(self):
         return hash(self.user) ^ \
-            hash(self.channel) ^ \
-            hash(self.ctx.message.server)
+               hash(self.channel) ^ \
+               hash(self.ctx.message.server)
+
 
 class UnmuteError:
     forbidden = "forbidden"
     failed_to_unmute = "failed to unmute"
     not_text = "not text"
     not_muted = "not muted"
-    
+
+
 class Restricts:
     """Moderation tools."""
 
@@ -178,7 +181,7 @@ class Restricts:
                            "`{}set modrole`".format(ctx.prefix))
 
     @modset.command(pass_context=True, no_pm=True)
-    async def modlog(self, ctx, channel : discord.Channel=None):
+    async def modlog(self, ctx, channel: discord.Channel = None):
         """Sets a channel as mod log
 
         Leaving the channel parameter empty will deactivate it"""
@@ -196,7 +199,7 @@ class Restricts:
         dataIO.save_json("data/mod/settings.json", self.settings)
 
     @modset.command(pass_context=True, no_pm=True)
-    async def banmentionspam(self, ctx, max_mentions : int=False):
+    async def banmentionspam(self, ctx, max_mentions: int = False):
         """Enables auto ban for messages mentioning X different people
 
         Accepted values: 5 or superior"""
@@ -239,7 +242,7 @@ class Restricts:
         await self.bot.say("Cases have been reset.")
 
     @modset.command(pass_context=True, no_pm=True)
-    async def deletedelay(self, ctx, time: int=None):
+    async def deletedelay(self, ctx, time: int = None):
         """Sets the delay until the bot removes the command message.
             Must be between -1 and 60.
 
@@ -479,7 +482,7 @@ class Restricts:
             return
 
         try:
-            invite = await self.bot.create_invite(server, max_age=3600*24)
+            invite = await self.bot.create_invite(server, max_age=3600 * 24)
             invite = "\nInvite: " + invite
         except:
             invite = ""
@@ -487,15 +490,15 @@ class Restricts:
             try:
                 try:  # We don't want blocked DMs preventing us from banning
                     msg = await self.bot.send_message(user, "You have been banned and "
-                              "then unbanned as a quick way to delete your messages.\n"
-                              "You can now join the server again.{}".format(invite))
+                                                            "then unbanned as a quick way to delete your messages.\n"
+                                                            "You can now join the server again.{}".format(invite))
                 except:
                     pass
                 self.temp_cache.add(user, server, "BAN")
                 await self.bot.ban(user, 1)
                 logger.info("{}({}) softbanned {}({}), deleting 1 day worth "
-                    "of messages".format(author.name, author.id, user.name,
-                     user.id))
+                            "of messages".format(author.name, author.id, user.name,
+                                                 user.id))
                 await self.new_case(server,
                                     action="SOFTBAN",
                                     mod=author,
@@ -514,7 +517,7 @@ class Restricts:
 
     @commands.command(no_pm=True, pass_context=True)
     @checks.admin_or_permissions(manage_nicknames=True)
-    async def rename(self, ctx, user : discord.Member, *, nickname=""):
+    async def rename(self, ctx, user: discord.Member, *, nickname=""):
         """Changes user's nickname
 
         Leaving the nickname empty will remove it."""
@@ -530,7 +533,7 @@ class Restricts:
 
     @commands.group(pass_context=True, no_pm=True, invoke_without_command=True)
     @checks.mod_or_permissions(administrator=True)
-    async def mute(self, ctx, user : discord.Member, *, reason: str = None):
+    async def mute(self, ctx, user: discord.Member, *, reason: str = None):
         """Mutes user in the channel/server
 
         Defaults to channel"""
@@ -539,7 +542,7 @@ class Restricts:
 
     @checks.mod_or_permissions(administrator=True)
     @mute.command(name="channel", pass_context=True, no_pm=True)
-    async def channel_mute(self, ctx, user : discord.Member, *, reason: str = None):
+    async def channel_mute(self, ctx, user: discord.Member, *, reason: str = None):
         """Mutes user in the current channel"""
         author = ctx.message.author
         channel = ctx.message.channel
@@ -565,12 +568,12 @@ class Restricts:
                                "lower than myself in the role hierarchy.")
         else:
             parsedDuration = self.duration_from_text(reason)
-            if parsedDuration: 
+            if parsedDuration:
                 await self.on_muted(UnmuteInfo(ctx, ctx.message.channel, user, parsedDuration))
             else:
                 await self.bot.say("Can not parse duration. "
-                    "Will mute without timer. "
-                    "To use mute with timer please try again with a correct duration format.")
+                                   "Will mute without timer. "
+                                   "To use mute with timer please try again with a correct duration format.")
 
             await self.new_case(server,
                                 action="CMUTE",
@@ -585,7 +588,7 @@ class Restricts:
 
     @checks.mod_or_permissions(administrator=True)
     @mute.command(name="server", pass_context=True, no_pm=True)
-    async def server_mute(self, ctx, user : discord.Member, *, reason: str = None):
+    async def server_mute(self, ctx, user: discord.Member, *, reason: str = None):
         """Mutes user in the server"""
         author = ctx.message.author
         server = ctx.message.server
@@ -596,11 +599,11 @@ class Restricts:
                                "hierarchy.")
             return
         parsedDuration = self.duration_from_text(reason)
-        if not parsedDuration: 
+        if not parsedDuration:
             await self.bot.say("Can not parse duration. "
-                    "Will mute without timer. "
-                    "To use mute with timer please try again with a correct duration format.")
-                
+                               "Will mute without timer. "
+                               "To use mute with timer please try again with a correct duration format.")
+
         register = {}
         for channel in server.channels:
             if channel.type != discord.ChannelType.text:
@@ -619,7 +622,7 @@ class Restricts:
                                    "lower than myself in the role hierarchy.")
                 return
             else:
-                if parsedDuration: 
+                if parsedDuration:
                     await self.on_muted(UnmuteInfo(ctx, channel, user, parsedDuration))
                 await asyncio.sleep(0.1)
         if not register:
@@ -637,7 +640,7 @@ class Restricts:
 
     @commands.group(pass_context=True, no_pm=True, invoke_without_command=True)
     @checks.mod_or_permissions(administrator=True)
-    async def unmute(self, ctx, user : discord.Member):
+    async def unmute(self, ctx, user: discord.Member):
         """Unmutes user in the channel/server
 
         Defaults to channel"""
@@ -646,7 +649,7 @@ class Restricts:
 
     @checks.mod_or_permissions(administrator=True)
     @unmute.command(name="channel", pass_context=True, no_pm=True)
-    async def channel_unmute(self, ctx, user : discord.Member):
+    async def channel_unmute(self, ctx, user: discord.Member):
         error = await channel_unmute_impl(self, ctx, ctx.message.channel, user)
         if error == UnmuteError.not_muted:
             await self.bot.say("That user doesn't seem to be muted "
@@ -657,18 +660,18 @@ class Restricts:
                                "hierarchy.")
         elif error == UnmuteError.failed_to_unmute:
             await self.bot.say("Failed to unmute user. I need the manage roles"
-                    " permission and the user I'm unmuting must be "
-                    "lower than myself in the role hierarchy.")
+                               " permission and the user I'm unmuting must be "
+                               "lower than myself in the role hierarchy.")
         elif error == UnmuteError.not_text:
             await self.bot.say("please try to unmute only in text channels")
         else:
             await self.bot.say("User has been unmuted in this channel.")
             await self.new_case(server,
-                    action="UNMUTEC",
-                    mod=author,
-                    user=user)
+                                action="UNMUTEC",
+                                mod=author,
+                                user=user)
 
-    async def channel_unmute_impl(self, ctx, channel, user : discord.Member):
+    async def channel_unmute_impl(self, ctx, channel, user: discord.Member):
         """Unmutes user in the current channel"""
         author = ctx.message.author
         server = ctx.message.server
@@ -699,7 +702,7 @@ class Restricts:
 
     @checks.mod_or_permissions(administrator=True)
     @unmute.command(name="server", pass_context=True, no_pm=True)
-    async def server_unmute(self, ctx, user : discord.Member):
+    async def server_unmute(self, ctx, user: discord.Member):
         """Unmutes user in the server"""
         server = ctx.message.server
         author = ctx.message.author
@@ -714,16 +717,16 @@ class Restricts:
             error = self.channel_unmute_impl(ctx, channel, user)
             if error == UnmuteError.forbidden:
                 await self.bot.say("Failed to unmute user. I need the manage roles"
-                                       " permission and the user I'm unmuting must be "
-                                       "lower than myself in the role hierarchy.")
+                                   " permission and the user I'm unmuting must be "
+                                   "lower than myself in the role hierarchy.")
                 return
             else:
                 await asyncio.sleep(0.1)
 
         await self.new_case(server,
-                    action="UNMUTES",
-                    mod=author,
-                    user=user)
+                            action="UNMUTES",
+                            mod=author,
+                            user=user)
         await self.bot.say("User has been unmuted in this server.")
 
     @commands.group(pass_context=True)
@@ -775,7 +778,7 @@ class Restricts:
 
         logger.info("{}({}) deleted {} messages "
                     " containing '{}' in channel {}".format(author.name,
-                    author.id, len(to_delete), text, channel.id))
+                                                            author.id, len(to_delete), text, channel.id))
 
         if is_bot:
             await self.mass_purge(to_delete)
@@ -834,7 +837,7 @@ class Restricts:
             await self.slow_deletion(to_delete)
 
     @cleanup.command(pass_context=True, no_pm=True)
-    async def after(self, ctx, message_id : int):
+    async def after(self, ctx, message_id: int):
         """Deletes all messages after specified message
 
         To get a message id, enable developer mode in Discord's
@@ -895,7 +898,7 @@ class Restricts:
             await self.bot.say("I'm not allowed to delete messages.")
             return
 
-        async for message in self.bot.logs_from(channel, limit=number+1):
+        async for message in self.bot.logs_from(channel, limit=number + 1):
             to_delete.append(message)
 
         logger.info("{}({}) deleted {} messages in channel {}"
@@ -1046,7 +1049,7 @@ class Restricts:
 
     @commands.command(pass_context=True)
     @checks.mod_or_permissions(manage_messages=True)
-    async def reason(self, ctx, case, *, reason : str=""):
+    async def reason(self, ctx, case, *, reason: str = ""):
         """Lets you specify a reason for mod-log's cases
 
         Defaults to last case assigned to yourself, if available."""
@@ -1092,7 +1095,7 @@ class Restricts:
             await self.bot.say(self.count_ignored())
 
     @ignore.command(name="channel", pass_context=True)
-    async def ignore_channel(self, ctx, channel: discord.Channel=None):
+    async def ignore_channel(self, ctx, channel: discord.Channel = None):
         """Ignores channel
 
         Defaults to current one"""
@@ -1132,7 +1135,7 @@ class Restricts:
             await self.bot.say(self.count_ignored())
 
     @unignore.command(name="channel", pass_context=True)
-    async def unignore_channel(self, ctx, channel: discord.Channel=None):
+    async def unignore_channel(self, ctx, channel: discord.Channel = None):
         """Removes channel from ignore list
 
         Defaults to current one"""
@@ -1296,7 +1299,7 @@ class Restricts:
             await self.bot.say("Something went wrong.")
 
     @commands.command()
-    async def names(self, user : discord.Member):
+    async def names(self, user: discord.Member):
         """Show previous names/nicknames of a user"""
         server = user.server
         names = self.past_names[user.id] if user.id in self.past_names else None
@@ -1397,9 +1400,10 @@ class Restricts:
         else:
             return mod.top_role.position > user.top_role.position or is_special
 
-    async def new_case(self, server, *, action, mod=None, user, reason=None, until=None, channel=None, force_create=False):
+    async def new_case(self, server, *, action, mod=None, user, reason=None, until=None, channel=None,
+                       force_create=False):
         action_type = action.lower() + "_cases"
-        
+
         enabled_case = self.settings.get(server.id, {}).get(action_type, default_settings.get(action_type))
         if not force_create and not enabled_case:
             return False
@@ -1414,20 +1418,20 @@ class Restricts:
         case_n = len(self.cases[server.id]) + 1
 
         case = {
-            "case"         : case_n,
-            "created"      : datetime.utcnow().timestamp(),
-            "modified"     : None,
-            "action"       : action,
-            "channel"      : channel.id if channel else None,
-            "user"         : str(user),
-            "user_id"      : user.id,
-            "reason"       : reason,
-            "moderator"    : str(mod) if mod is not None else None,
-            "moderator_id" : mod.id if mod is not None else None,
-            "amended_by"   : None,
-            "amended_id"   : None,
-            "message"      : None,
-            "until"        : until.timestamp() if until else None,
+            "case": case_n,
+            "created": datetime.utcnow().timestamp(),
+            "modified": None,
+            "action": action,
+            "channel": channel.id if channel else None,
+            "user": str(user),
+            "user_id": user.id,
+            "reason": reason,
+            "moderator": str(mod) if mod is not None else None,
+            "moderator_id": mod.id if mod is not None else None,
+            "amended_by": None,
+            "amended_id": None,
+            "message": None,
+            "until": until.timestamp() if until else None,
         }
 
         case_msg = self.format_case_msg(case)
@@ -1490,7 +1494,6 @@ class Restricts:
         else:
             await self.bot.edit_message(msg, case_msg)
 
-
     def format_case_msg(self, case):
         tmp = case.copy()
         if case["reason"] is None:
@@ -1506,11 +1509,11 @@ class Restricts:
             channel = self.bot.get_channel(channel)
             tmp["action"] += ' in ' + channel.mention
 
-        contains_invite = any(("discord.gg/"     in tmp["user"].lower(),
+        contains_invite = any(("discord.gg/" in tmp["user"].lower(),
                                "discordapp.com/" in tmp["user"].lower()))
         if contains_invite:
             tmp["user"] = tmp["user"].replace(".", "\u200b.")
-        
+
         case_msg = (
             "**Case #{case}** | {action}\n"
             "**User:** {user} ({user_id})\n"
@@ -1570,7 +1573,7 @@ class Restricts:
                 self.cache[author.id] = deque(maxlen=3)
             self.cache.move_to_end(author.id)
             while len(self.cache) > 100000:
-                self.cache.popitem(last=False) # the oldest gets discarded
+                self.cache.popitem(last=False)  # the oldest gets discarded
             self.cache[author.id].append(message.content)
             msgs = self.cache[author.id]
             if len(msgs) == 3 and msgs[0] == msgs[1] == msgs[2]:
@@ -1706,13 +1709,16 @@ class Restricts:
         original = [p for p in iter(overwrites)]
         empty = [p for p in iter(discord.PermissionOverwrite())]
         return original == empty
-    
+
     async def mute_manager(self):
         while self == self.bot.get_cog('Restricts'):
-            print("going to iterate to_unmute. Exists: {}, size, {}\n unmuted_list size: {}".format(self.to_unmute, len(self.to_unmute), len(self.unmuted_list)))
-            
-            #user can be unmuted here on by command
-            #clean µute_list first
+            print("going to iterate to_unmute. Exists: {}, size, {}\n unmuted_list size: {}".format(self.to_unmute,
+                                                                                                    len(self.to_unmute),
+                                                                                                    len(
+                                                                                                        self.unmuted_list)))
+
+            # user can be unmuted here on by command
+            # clean µute_list first
             if self.unmuted_list:
                 for info in self.unmuted_list:
                     print("user {} was unmuted, cleanup".format(info.user.name))
@@ -1721,7 +1727,7 @@ class Restricts:
                     except KeyError:
                         pass
 
-                #all entries used, need to clean-up the list
+                # all entries used, need to clean-up the list
                 self.unmuted_list.clear()
 
             if self.to_unmute:
@@ -1736,7 +1742,8 @@ class Restricts:
                     print("processing to unmute user {} {}".format(info.user.name, type(info) is UnmuteInfo))
                     if type(info) is UnmuteInfo:
                         now = time.time()
-                        print("now {}, need to be unmuted: {} {} {}".format(now, info.start_time, info.duration, info.start_time + info.duration))
+                        print("now {}, need to be unmuted: {} {} {}".format(now, info.start_time, info.duration,
+                                                                            info.start_time + info.duration))
                         if now > (info.start_time + info.duration):
                             print("requesting to unmute {}".format(info.user.name))
                             info.ctx.message.channel = info.channel
@@ -1746,8 +1753,8 @@ class Restricts:
                                 else:
                                     not_unmuted.add(info)
                             except Exception as e:
-                                print('got some error while unmuted'+ str(e))
-                str = "unmuted in channels: " 
+                                print('got some error while unmuted' + str(e))
+                str = "unmuted in channels: "
                 for info in unmuted:
                     str += info.channel.name + " "
                 str += "\nand not unmeted in channels: "
@@ -1756,15 +1763,15 @@ class Restricts:
                 if len(unmuted):
                     try:
                         await self.new_case(server,
-                            action="UNMUTEB",
-                            user = list(unmuted)[0].user,
-                            author = list(unmuted)[0].ctx.message.author)
+                                            action="UNMUTEB",
+                                            user=list(unmuted)[0].user,
+                                            author=list(unmuted)[0].ctx.message.author)
                         await self.bot.say(str)
                     except Exception as e:
-                        print('got some error while saying about unmute'+ str(e))
+                        print('got some error while saying about unmute' + str(e))
 
                 self.mutex.release()
-                                
+
             await asyncio.sleep(1)
 
     def duration_from_text(self, reason: str):
@@ -1796,14 +1803,15 @@ class Restricts:
 
         self.mutex.acquire()
         try:
-        #remove the last user info and fucking caches
+            # remove the last user info and fucking caches
             self.to_unmute.remove(info)
         except KeyError:
             pass
         finally:
-        #add new user info with it fucking caches
-            self.to_unmute.add(info)    
+            # add new user info with it fucking caches
+            self.to_unmute.add(info)
         self.mutex.release()
+
 
 def strfdelta(delta):
     s = []
@@ -1812,7 +1820,7 @@ def strfdelta(delta):
         if delta.days > 1:
             ds += 's'
         s.append(ds)
-    hrs, rem = divmod(delta.seconds, 60*60)
+    hrs, rem = divmod(delta.seconds, 60 * 60)
     if hrs:
         hs = '%i hr' % hrs
         if hrs > 1:
@@ -1833,16 +1841,17 @@ def check_folders():
             print("Creating " + folder + " folder...")
             os.makedirs(folder)
 
+
 def check_files():
     ignore_list = {"SERVERS": [], "CHANNELS": []}
 
     files = {
-        "ignorelist.json"     : ignore_list,
-        "filter.json"         : {},
-        "past_names.json"     : {},
-        "past_nicknames.json" : {},
-        "settings.json"       : {},
-        "modlog.json"         : {}
+        "ignorelist.json": ignore_list,
+        "filter.json": {},
+        "past_names.json": {},
+        "past_nicknames.json": {},
+        "settings.json": {},
+        "modlog.json": {}
     }
 
     for filename, value in files.items():
