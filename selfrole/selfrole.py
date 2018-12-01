@@ -12,7 +12,7 @@ from cogs.utils.dataIO import dataIO
 class SelfRole:
     """Let users assign roles without asking to mods"""
 
-    def __init__(self, bot: discord.Client):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.config_file = "data/selfrole/config.json"
         self.config = dataIO.load_json(self.config_file)

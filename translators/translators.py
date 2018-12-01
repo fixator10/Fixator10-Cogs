@@ -7,7 +7,6 @@ import re
 from urllib import parse
 
 import aiohttp
-import discord
 from discord.ext import commands
 
 from cogs.utils import chat_formatting as chat
@@ -22,7 +21,7 @@ except:
 
 
 class Translators:
-    def __init__(self, bot: discord.Client):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.config_file = "data/translators/config.json"
         self.config = dataIO.load_json(self.config_file)

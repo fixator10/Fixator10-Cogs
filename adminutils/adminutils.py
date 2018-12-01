@@ -22,7 +22,7 @@ from cogs.utils import checks
 
 
 class AdminUtils:
-    def __init__(self, bot: discord.Client):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.base_api_url = "https://discordapp.com/api/oauth2/authorize?"
         self.session = aiohttp.ClientSession(loop=self.bot.loop)

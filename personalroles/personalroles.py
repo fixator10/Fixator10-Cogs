@@ -35,7 +35,7 @@ class PRCustomCheck:
 class PersonalRoles:
     """Assign and edit personal roles"""
 
-    def __init__(self, bot: discord.Client):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.config_file = "data/personalroles/config.json"
         self.config = dataIO.load_json(self.config_file)

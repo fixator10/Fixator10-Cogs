@@ -29,7 +29,7 @@ def bool_emojify(bool_var: bool) -> str:
 
 
 class DataUtils:
-    def __init__(self, bot: discord.Client):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     @commands.command(pass_context=True)
