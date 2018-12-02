@@ -1726,7 +1726,7 @@ class Restricts:
         while self == self.bot.get_cog('Restricts'):
             to_unmute = set()
 
-            if self.mutex.text():
+            if self.mutex.locked():
                 print("mutex already locked: mute_manager")
                 traceback.print_exc()
             self.mutex.acquire()
@@ -1812,7 +1812,7 @@ class Restricts:
         return duration
 
     async def on_muted(self, info: UnmuteInfo):
-        if self.mutex.text():
+        if self.mutex.locked():
             print("mutex already locked: on_muted")
             traceback.print_exc()
 
@@ -1828,7 +1828,7 @@ class Restricts:
             self.mutex.release() 
 
     async def on_unmueted(self, info: UnmuteInfo):
-        if self.mutex.text():
+        if self.mutex.locked():
             print("mutex already locked: on_unmueted")
             traceback.print_exc()
 
