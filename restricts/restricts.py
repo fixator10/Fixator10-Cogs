@@ -1711,6 +1711,14 @@ class Restricts:
         empty = [p for p in iter(discord.PermissionOverwrite())]
         return original == empty
 
+    @commands.command(no_pm=True, pass_context=True)
+    async def say_and_case_unmute(self, ctx, info: UnmuteInfo, str ):
+        await self.new_case(ctx.message.server,
+            action="UNMUTEB",
+            user=info.user,
+            author=ctx.message.author)
+        await self.bot.say(str)
+
     async def mute_manager(self):
         while self == self.bot.get_cog('Restricts'):
             to_unmute = set()
@@ -1745,13 +1753,12 @@ class Restricts:
                 str += "\nand not unmeted in channels: "
                 for info in failed_to_unmute:
                     str += info.channel.name + " "
+                print(str)
+                print("going to say it with a bot")
                 if len(unmuted):
                     try:
-                        await self.new_case(server,
-                                            action="UNMUTEB",
-                                            user=list(unmuted)[0].user,
-                                            author=list(unmuted)[0].ctx.message.author)
-                        await self.bot.say(str)
+                        info = list(unmuted)[0]
+                        await info.ctx.invoke(self.say_and_case_unmute, info, str)
                     except Exception as e:
                         print('got some error while saying about unmute' + str(e))
                         traceback.print_exc()
