@@ -6,6 +6,7 @@ from discord.ext import commands
 from valve.steam.api import interface
 
 from cogs.utils import chat_formatting as chat
+from cogs.utils import checks
 from cogs.utils.dataIO import dataIO
 
 
@@ -36,6 +37,7 @@ class SteamCommunity:
             await self.bot.send_cmd_help(ctx)
 
     @steamcommunity.command(pass_context=True)
+    @checks.is_owner()
     async def apikey(self, ctx, apikey: str):
         """Set API key for Steam web API
         You can get it here: https://steamcommunity.com/dev/apikey"""
