@@ -1,3 +1,5 @@
+[![CodeFactor](https://www.codefactor.io/repository/github/fixator10/fixator10-cogs/badge?style=for-the-badge)](https://www.codefactor.io/repository/github/fixator10/fixator10-cogs)
+
 # Fixator10-Cogs
 Cogs from my edition of DiNitride's selfbot and moar
 
