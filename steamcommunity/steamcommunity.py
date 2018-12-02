@@ -58,7 +58,7 @@ class SteamCommunity:
                 return
         profile = SteamUser(self.config["apikey"], user)
         em = discord.Embed(title=profile.personaname,
-                           description=profile.personastate,
+                           description=profile.personastate(),
                            url=profile.profileurl,
                            timestamp=datetime.fromtimestamp(profile.lastlogoff),
                            color=profile.personastatecolor)
