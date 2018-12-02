@@ -1811,14 +1811,14 @@ class Restricts:
         text = words[-1]
         text = text.strip()
         
-        if re.match("[0-9]+(day|days|d)", text):
-            duration += int(re.match("[0-9]+(day|days|d)", text).group(1)) * 24 * 60 * 60
-        if re.match("[0-9]+(hours|hour|h)", text):
-            duration += int(re.match("[0-9]+(hours|hour|h)", text).group(1)) * 60 * 60
-        if re.match("[0-9]+(minutes|minute|mins|min|m)", text):
+        if re.match("([0-9]+){1}(day|days|d)", text):
+            duration += int(re.match("([0-9]+){1}(day|days|d)", text).group(1)) * 24 * 60 * 60
+        if re.match("([0-9]+){1}(hours|hour|h)", text):
+            duration += int(re.match("([0-9]+){1}(hours|hour|h)", text).group(1)) * 60 * 60
+        if re.match("([0-9]+){1}(minutes|minute|mins|min|m)", text):
             duration += int(re.match("([0-9]+){1}(minutes|minute|mins|min|m)", text).group(1)) * 60
-        if re.match("[0-9]+(seconds|second|secs|sec|s)", text):
-            duration += int(re.match("[0-9]+(seconds|second|secs|sec|s)", text).group(1))
+        if re.match("([0-9]+){1}(seconds|second|secs|sec|s)", text):
+            duration += int(re.match("([0-9]+){1}(seconds|second|secs|sec|s)", text).group(1))
         return duration
 
     async def on_muted(self, info: UnmuteInfo):
