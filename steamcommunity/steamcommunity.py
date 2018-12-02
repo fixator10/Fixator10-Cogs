@@ -18,6 +18,11 @@ class SteamCommunity:
         self.config = dataIO.load_json(self.config_file)
         self.steam = interface.API(key=self.config["apikey"])
 
+    def check_api(self):
+        if "ISteamUser" in list(self.steam._interfaces.keys()):
+            return True
+        return False
+
     async def resolve_vanity_url(self, vanity_url: str):
         """Resolve vanity URL"""
         userapi = self.steam['ISteamUser']
@@ -35,16 +40,21 @@ class SteamCommunity:
         """Set API key for Steam web API
         You can get it here: https://steamcommunity.com/dev/apikey"""
         self.config["apikey"] = apikey
+        self.steam = interface.API(key=self.config["apikey"])
         dataIO.save_json(self.config_file, self.config)
         await self.bot.say(chat.info("API key Updated"))
 
     @steamcommunity.command(name="profile", pass_context=True, aliases=["p"])
     async def steamprofile(self, ctx, user: str):
         """Get steam user's steamcommunity profile"""
+        if not self.check_api:
+            await self.bot.say(chat.error("Steam web API key not set or it is incorrect."
+                                          "Use `{}sc apikey` to setup API key".format(ctx.prefix)))
+            return
         if not user.isdigit():
             user, message = await self.resolve_vanity_url(user)
             if user is None:
-                chat.error("Unable to resolve vanity ID: {}".format(message))
+                await self.bot.say(chat.error("Unable to resolve vanity ID: {}".format(message)))
                 return
         profile = SteamUser(self.config["apikey"], user)
         em = discord.Embed(title=profile.personaname,
