@@ -114,7 +114,7 @@ class SteamUser:
         self.state = self._userdata.get("locstatecode")
         self.cityid = self._userdata.get("loccityid")
 
-        self.level = self._player.GetSteamLevel(player_id)["response"].get("playerlevel", 0)
+        self.level = self._player.GetSteamLevel(player_id)["response"].get("player_level", 0)
 
     def personastate(self, string: bool = True):
         """Get persona state
