@@ -108,7 +108,7 @@ class UnmuteInfo:
         self.duration = duration
         self.start_time = time.time()
 
-    def unmute_time():
+    def unmute_time(self):
         return self.start_time + self.duration
 
     def __eq__(self, other):
