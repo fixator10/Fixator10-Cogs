@@ -1719,9 +1719,9 @@ class Restricts:
             mod=info.ctx.message.author)
     
     @commands.command(no_pm=True, pass_context=True)
-    async def bot_say(self, ctx, text ):
+    async def bot_say(self, ctx, channel, text ):
         print("requested to say: {}".format(text))
-        await self.bot.say(text)
+        await self.bot.send_message(channel, text)
 
     async def mute_manager(self):
         while self == self.bot.get_cog('Restricts'):
@@ -1762,7 +1762,7 @@ class Restricts:
                         text += info.channel.name + " "
                 else:
                     text += "none"
-                text += "\nand not unmeted in channels: "
+                text += "\nand not unmuted in channels: "
                 if failed_to_unmute:
                     for info in failed_to_unmute:
                         text += info.channel.name + " "
@@ -1780,7 +1780,7 @@ class Restricts:
                     except Exception as e:
                         print('got some error while saying about unmute' + str(e))
                         traceback.print_exc()
-                await info.ctx.invoke(self.bot_say, text)
+                await info.ctx.invoke(self.bot_say, info.channel, text)
 
             print("tick...")
             await asyncio.sleep(1)
