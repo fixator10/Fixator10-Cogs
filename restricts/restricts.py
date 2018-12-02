@@ -718,6 +718,8 @@ class Restricts:
         server = ctx.message.server
         author = ctx.message.author
 
+        await self.bot.say("Starting server unmute, please wait")
+
         if not self.is_allowed_by_hierarchy(server, author, user):
             await self.bot.say("I cannot let you do that. You are "
                                "not higher than the user in the role "
