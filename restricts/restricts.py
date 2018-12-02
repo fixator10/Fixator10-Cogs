@@ -698,7 +698,7 @@ class Restricts:
         except discord.Forbidden:
             return error.failed_to_unmute
         else:
-            self.on_unmueted(UnmuteInfo(ctx, ctx.message.channel, user))
+            await self.on_unmueted(UnmuteInfo(ctx, ctx.message.channel, user))
             return error
 
     @checks.mod_or_permissions(administrator=True)
