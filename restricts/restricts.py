@@ -1714,12 +1714,9 @@ class Restricts:
     async def mute_manager(self):
         while self == self.bot.get_cog('Restricts'):
             to_unmute = set()
-                                                                                                   
-                                                                                                   
-                                                                                              
 
             self.mutex.acquire()
-            print("going to iterate to_unmute. Exists: {}, size, {}\n to_remove_from_unmute size: {}".format(self.to_unmute, len(self.to_unmute), len(self.to_remove_from_unmute)))
+            print("going to iterate to_unmute. Exists: {}, size, {}\n ".format(self.to_unmute, len(self.to_unmute)))
             for info in self.to_unmute:
                 to_unmute.add(info)
             self.mutex.release()
