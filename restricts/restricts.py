@@ -669,7 +669,7 @@ class Restricts:
             await self.bot.say("User has been unmuted in this channel.")
             await self.new_case(ctx.message.server,
                                 action="UNMUTEC",
-                                mod=author,
+                                mod=ctx.message.author,
                                 user=user)
 
     async def channel_unmute_impl(self, ctx, channel, user: discord.Member):
