@@ -60,45 +60,66 @@ class SteamCommunity:
         em = discord.Embed(title=profile.personaname,
                            description=profile.personastate,
                            url=profile.profileurl,
-                           timestamp=datetime.fromtimestamp(profile.lastlogoff))
+                           timestamp=datetime.fromtimestamp(profile.lastlogoff),
+                           color=profile.personastatecolor)
         if profile.gameid is not None:
             em.description = "In game: [{}](http://store.steampowered.com/app/{})" \
                 .format(profile.gameextrainfo or "Unknown", profile.gameid)
         if profile.realname is not None:
-            em.add_field(name="Real name", value=profile.realname or chat.inline("None"), inline=False)
+            em.add_field(name="Real name", value=profile.realname, inline=False)
         em.add_field(name="Level", value=profile.level or "0")
         if profile.country is not None:
-            em.add_field(name="Country", value=":flag_" + profile.country.lower() + ":"
-                                               or chat.inline("Unknown"))
+            em.add_field(name="Country", value=":flag_{}:".format(profile.country.lower()))
         em.add_field(name="Visibility", value=profile.visibility)
-        em.add_field(name="SteamID", value=str(await self.convert_community_id_to_steam_id(profile.steamid)))
-        em.add_field(name="SteamID64", value=profile.steamid)
-        em.set_image(url=profile.avatar184)
+        em.add_field(name="SteamID", value=profile.steamid)
+        em.add_field(name="SteamID64", value=profile.steamid64)
+        em.set_thumbnail(url=profile.avatar184)
         em.set_footer(text="Powered by Steam | Last seen on",
                       icon_url='https://steamstore-a.akamaihd.net/public/shared/images/responsive/share_steam_logo.png')
         await self.bot.say(embed=em)
-
-    async def convert_community_id_to_steam_id(self, communityID):
-        # https://raw.githubusercontent.com/Moshferatu/Steam-ID-Converter/master/SteamIDConverter.py
-        steamid = ["STEAM_0:"]
-        steamid_last_part = int(communityID) - 76561197960265728
-        if steamid_last_part % 2 == 0:
-            steamid.append("0:")
-        else:
-            steamid.append("1:")
-        steamid.append(str(steamid_last_part // 2))
-        return "".join(steamid)
 
 
 class SteamUser:
     """SteamCommunity profile"""
 
     def __init__(self, apikey: str, player_id: str):
-        steam = interface.API(key=apikey)
-        user = steam['ISteamUser']
-        player = steam['IPlayerService']
-        userdata = user.GetPlayerSummaries(player_id)["response"]["players"][0]
-        personastates = {
+        self._steam = interface.API(key=apikey)
+        self._user = self._steam['ISteamUser']
+        self._player = self._steam['IPlayerService']
+        self._userdata = self._user.GetPlayerSummaries(player_id)["response"]["players"][0]
+        self._personastate = self._userdata.get("personastate", 0)
+        visibilites = {
+            1: "Private",
+            3: "Public"
+        }
+
+        self.steamid64 = self._userdata.get("steamid")
+        self.personaname = self._userdata.get("personaname")
+        self.profileurl = self._userdata.get("profileurl")
+        self.avatar32 = self._userdata.get("avatar")
+        self.avatar64 = self._userdata.get("avatarmedium")
+        self.avatar184 = self._userdata.get("avatarfull")
+        self.visibility = visibilites[self._userdata.get("communityvisibiltystate", "Private")]
+        self.hasprofile = True if self._userdata.get("profilestate") else False
+        self.lastlogoff = self._userdata.get("lastlogoff")
+        self.comments = self._userdata.get("commentpermission")
+
+        self.realname = self._userdata.get("realname")
+        self.clanid = self._userdata.get("primaryclanid")
+        self.gameid = self._userdata.get("gameid")
+        gameserver = self._userdata.get("gameserverip")
+        self.gameserver = gameserver if gameserver != any(["0.0.0.0:0", None]) else None
+        self.gameextrainfo = self._userdata.get("gameextrainfo")
+        self.country = self._userdata.get("loccountrycode")
+        self.state = self._userdata.get("locstatecode")
+        self.cityid = self._userdata.get("loccityid")
+
+        self.level = self._player.GetSteamLevel(player_id)["response"].get("playerlevel", 0)
+
+    def personastate(self, string: bool = True):
+        """Get persona state
+        :param string: Return string of state or id?"""
+        stringnames = {
             0: "Offline",
             1: "Online",
             2: "Busy",
@@ -107,34 +128,30 @@ class SteamUser:
             5: "Looking to trade",
             6: "Looking to play"
         }
-        visibilites = {
-            1: "Private",
-            3: "Public"
-        }
+        if string:
+            return stringnames[self._personastate]
+        return self._personastate
 
-        self.steamid = userdata.get("steamid")
-        self.personaname = userdata.get("personaname")
-        self.profileurl = userdata.get("profileurl")
-        self.avatar32 = userdata.get("avatar")
-        self.avatar64 = userdata.get("avatarmedium")
-        self.avatar184 = userdata.get("avatarfull")
-        self.personastate = personastates[userdata.get("personastate", 0)]
-        self.visibility = visibilites[userdata.get("communityvisibiltystate", 1)]
-        self.hasprofile = True if userdata.get("profilestate") else False
-        self.lastlogoff = userdata.get("lastlogoff")
-        self.comments = userdata.get("commentpermission")
+    @property
+    def personastatecolor(self):
+        if self.gameextrainfo is not None:
+            return 0x90ba3c
+        elif self._personastate > 0:
+            return 0x57cbde
+        else:
+            return 0x898989
 
-        self.realname = userdata.get("realname")
-        self.clanid = userdata.get("primaryclanid")
-        self.gameid = userdata.get("gameid")
-        gameserver = userdata.get("gameserverip")
-        self.gameserver = gameserver if gameserver != any(["0.0.0.0:0", None]) else None
-        self.gameextrainfo = userdata.get("gameextrainfo")
-        self.country = userdata.get("loccountrycode")
-        self.state = userdata.get("locstatecode")
-        self.cityid = userdata.get("loccityid")
-
-        self.level = player.GetSteamLevel(player_id)["response"].get("playerlevel", 0)
+    @property
+    def steamid(self):
+        # https://raw.githubusercontent.com/Moshferatu/Steam-ID-Converter/master/SteamIDConverter.py
+        steamid = "STEAM_0:"
+        steamid_last_part = int(self.steamid64) - 76561197960265728
+        if steamid_last_part % 2 == 0:
+            steamid += "0:"
+        else:
+            steamid += "1:"
+        steamid += (str(steamid_last_part // 2))
+        return steamid
 
 
 def check_folders():
