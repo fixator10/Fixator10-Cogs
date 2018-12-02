@@ -1756,20 +1756,18 @@ class Restricts:
                             traceback.print_exc()
         
             if unmuted or failed_to_unmute:
-                text = "unmuted in channels: "
+                text = ""
                 if unmuted:
+                    text = "unmuted in channels: "
                     for info in unmuted:
                         text += info.channel.name + " "
-                else:
-                    text += "none"
-                text += "\nand not unmuted in channels: "
+                if unmuted and failed_to_unmute:
+                    text += "\n"
                 if failed_to_unmute:
+                    text += "not unmuted in channels: "
                     for info in failed_to_unmute:
                         text += info.channel.name + " "
-                else:
-                    text += "none"
-                print(text)
-                print("going to say it with a bot")
+
                 if unmuted:
                     info = list(unmuted)[0]
                 else:
