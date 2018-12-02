@@ -1716,7 +1716,7 @@ class Restricts:
         await self.new_case(info.ctx.message.server,
             action="UNMUTEB",
             user=info.user,
-            author=info.ctx.message.author)
+            mod=info.ctx.message.author)
     
     @commands.command(no_pm=True, pass_context=True)
     async def bot_say(self, ctx, text ):
