@@ -1724,38 +1724,50 @@ class Restricts:
             to_unmute = set()
 
             self.mutex.acquire()
-            print("going to iterate to_unmute. Exists: {}, size, {}\n ".format(self.to_unmute, len(self.to_unmute)))
+            print("tick...")
+            print("going to iterate to_unmute. Exists: {}, size, {}".format(self.to_unmute, len(self.to_unmute)))
             for info in self.to_unmute:
                 to_unmute.add(info)
             self.mutex.release()
 
             unmuted = set()
             failed_to_unmute = set()
+            if not to_unmute:
+                continue
+
             for info in to_unmute:
-                print("processing to unmute user {} {}".format(info.user.name, type(info) is UnmuteInfo))
                 if type(info) is UnmuteInfo:
                     now = time.time()
-                    print("now {}, need to be unmuted: {} {} {}".format(now, info.start_time, info.duration, info.start_time + info.duration))
                     if now > info.unmute_time:
-                        print("requesting to unmute {}".format(info.user.name))
+                        print("trying to unmute {}".format(info.user.name))
                         try:
-                            if await self.channel_unmute_impl(info.ctx, info.channel, info.user):
+                            error = await self.channel_unmute_impl(info.ctx, info.channel, info.user)
+                            if error:
                                 unmuted.add(info)
+                                print("success")
                             else:
+                                print("failed: {}".format(error))
                                 failed_to_unmute.add(info)
                         except Exception as e:
                             print('got some error while unmuted'+ str(e))
                             traceback.print_exc()
     
+            if unmuted or failed_to_unmute:
                 str = "unmuted in channels: "
-                for info in unmuted:
-                    str += info.channel.name + " "
+                if unmuted:
+                    for info in unmuted:
+                        str += info.channel.name + " "
+                else:
+                    str += "none"
                 str += "\nand not unmeted in channels: "
-                for info in failed_to_unmute:
-                    str += info.channel.name + " "
+                if failed_to_unmute:
+                    for info in failed_to_unmute:
+                        str += info.channel.name + " ":
+                else:
+                    str += "none"
                 print(str)
                 print("going to say it with a bot")
-                if len(unmuted):
+                if unmuted:
                     try:
                         info = list(unmuted)[0]
                         await info.ctx.invoke(self.say_and_case_unmute, info, str)
