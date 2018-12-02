@@ -1726,6 +1726,9 @@ class Restricts:
         while self == self.bot.get_cog('Restricts'):
             to_unmute = set()
 
+            if self.mutex.text():
+                print("mutex already locked: mute_manager")
+                traceback.print_exc()
             self.mutex.acquire()
             print("going to iterate to_unmute. Exists: {}, size, {}".format(self.to_unmute, len(self.to_unmute)))
             for info in self.to_unmute:
@@ -1809,6 +1812,10 @@ class Restricts:
         return duration
 
     async def on_muted(self, info: UnmuteInfo):
+        if self.mutex.text():
+            print("mutex already locked: on_muted")
+            traceback.print_exc()
+
         self.mutex.acquire()
         try:
             #remove the last user info with it fucking caches
@@ -1821,6 +1828,10 @@ class Restricts:
             self.mutex.release() 
 
     async def on_unmueted(self, info: UnmuteInfo):
+        if self.mutex.text():
+            print("mutex already locked: on_unmueted")
+            traceback.print_exc()
+
         self.mutex.acquire()
         try:                
             self.to_unmute.remove(info)
