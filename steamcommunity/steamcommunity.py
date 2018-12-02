@@ -54,7 +54,8 @@ class SteamCommunity:
                                           "Ask admins of server to enable embeds for me in this channel and try again"))
         if not self.check_api():
             await self.bot.say(chat.error("Steam web API key not set or it is incorrect.\n"
-                                          "Use `{}sc apikey` to setup API key".format(ctx.prefix)))
+                                          "Ask owner of the bot to use "
+                                          "`{}sc apikey` to setup API key".format(ctx.prefix)))
             return
         if not user.isdigit():
             user, message = await self.resolve_vanity_url(user)
