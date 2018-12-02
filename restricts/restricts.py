@@ -1737,9 +1737,6 @@ class Restricts:
 
             unmuted = set()
             failed_to_unmute = set()
-            if not to_unmute:
-                continue
-
             for info in to_unmute:
                 if type(info) is UnmuteInfo:
                     now = time.time()
@@ -1756,7 +1753,7 @@ class Restricts:
                         except Exception as e:
                             print('got some error while unmuted'+ str(e))
                             traceback.print_exc()
-    
+        
             if unmuted or failed_to_unmute:
                 str = "unmuted in channels: "
                 if unmuted:
