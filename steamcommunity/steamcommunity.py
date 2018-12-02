@@ -32,7 +32,7 @@ class SteamCommunity:
 
     @commands.group(pass_context=True, aliases=["sc"])
     async def steamcommunity(self, ctx):
-        """Show user profile info"""
+        """Steamcommunity commands"""
         if ctx.invoked_subcommand is None:
             await self.bot.send_cmd_help(ctx)
 
