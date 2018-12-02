@@ -651,7 +651,7 @@ class Restricts:
     @checks.mod_or_permissions(administrator=True)
     @unmute.command(name="channel", pass_context=True, no_pm=True)
     async def channel_unmute(self, ctx, user: discord.Member):
-        error = await channel_unmute_impl(self, ctx, ctx.message.channel, user)
+        error = await self.channel_unmute_impl(self, ctx, ctx.message.channel, user)
         if error == UnmuteError.not_muted:
             await self.bot.say("That user doesn't seem to be muted "
                                "in this channel.")
