@@ -1738,7 +1738,10 @@ class Restricts:
     
     @commands.command(no_pm=True, pass_context=True)
     async def send_message(self, ctx, channel, text ):
-        await self.bot.send_message(channel, text)
+        try:
+            await self.bot.send_message(channel, text)
+        except Exception as e:
+            print('failed to send_message: ' + str(text) + '; because of: ' + str(e))
 
     async def mute_manager(self):
         while self == self.bot.get_cog('Restricts'):
