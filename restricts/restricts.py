@@ -100,9 +100,8 @@ class TempCache:
 
 
 class UnmuteInfo:
-    def __init__(self, restricts: Restricts, ctx, channel, user: discord.Member, duration = 0):
+    def __init__(self, ctx, channel, user: discord.Member, duration = 0):
         self.ctx = ctx
-        self.restricts = restricts
         self.channel = channel
         self.user = user
         self.duration = duration
