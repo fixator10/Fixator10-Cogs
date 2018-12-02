@@ -102,7 +102,10 @@ class SteamUser:
         self._personastate = self._userdata.get("personastate", 0)
         visibilites = {
             1: "Private",
-            3: "Public"
+            2: "Friends only",
+            3: "Public",  # Friends of friends
+            4: "Users only",
+            5: "Public"
         }
 
         self.steamid64 = self._userdata.get("steamid")
