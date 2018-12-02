@@ -107,7 +107,9 @@ class UnmuteInfo:
         self.user = user
         self.duration = duration
         self.start_time = time.time()
-        self.unmute_time = self.start_time + self.duration
+
+    def unmute_time():
+        return self.start_time + self.duration
 
     def __eq__(self, other):
         return self.user == other.user \
@@ -595,6 +597,8 @@ class Restricts:
         author = ctx.message.author
         server = ctx.message.server
 
+        await self.bot.say("Starting server mute, please wait")
+
         if not self.is_allowed_by_hierarchy(server, author, user):
             await self.bot.say("I cannot let you do that. You are "
                                "not higher than the user in the role "
@@ -629,6 +633,7 @@ class Restricts:
                     muted.add(UnmuteInfo(ctx, channel, user, parsedDuration))
                 await asyncio.sleep(0.1)
         for info in muted:
+            info.start_time = time.time()
             await self.on_muted(info)
 
         if not register:
@@ -1744,7 +1749,7 @@ class Restricts:
             for info in to_unmute:
                 if type(info) is UnmuteInfo:
                     now = time.time()
-                    if now > info.unmute_time:
+                    if now > info.unmute_time():
                         print("trying to unmute {}".format(info.user.name))
                         try:
                             error = await self.channel_unmute_impl(info.ctx, info.channel, info.user)
