@@ -4,6 +4,7 @@ from datetime import datetime
 import discord
 from discord.ext import commands
 from valve.steam.api import interface
+from valve.steam.id import SteamID
 
 from cogs.utils import chat_formatting as chat
 from cogs.utils import checks
@@ -63,6 +64,8 @@ class SteamCommunity:
             if user is None:
                 await self.bot.say(chat.error("Unable to resolve vanity ID: {}".format(message)))
                 return
+        if user.startswith("STEAM_0:"):
+            user = SteamID.from_text(user).as_64()
         try:
             profile = SteamUser(self.config["apikey"], user)
         except IndexError:
@@ -74,13 +77,15 @@ class SteamCommunity:
                            url=profile.profileurl,
                            timestamp=datetime.fromtimestamp(profile.lastlogoff),
                            color=profile.personastatecolor)
-        if profile.gameid is not None:
+        if profile.gameid:
             em.description = "In game: [{}](http://store.steampowered.com/app/{})" \
                 .format(profile.gameextrainfo or "Unknown", profile.gameid)
-        if profile.realname is not None:
+        if profile.gameserver:
+            em.description += " on server {}".format(profile.gameserver)
+        if profile.realname:
             em.add_field(name="Real name", value=profile.realname, inline=False)
         em.add_field(name="Level", value=profile.level or "0")
-        if profile.country is not None:
+        if profile.country:
             em.add_field(name="Country", value=":flag_{}:".format(profile.country.lower()))
         em.add_field(name="Visibility", value=profile.visibility)
         em.add_field(name="SteamID", value=profile.steamid)
@@ -158,7 +163,6 @@ class SteamUser:
 
     @property
     def steamid(self):
-        # https://raw.githubusercontent.com/Moshferatu/Steam-ID-Converter/master/SteamIDConverter.py
         steamid = "STEAM_0:"
         steamid_last_part = int(self.steamid64) - 76561197960265728
         if steamid_last_part % 2 == 0:
