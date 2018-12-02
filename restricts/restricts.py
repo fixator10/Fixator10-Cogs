@@ -1726,9 +1726,11 @@ class Restricts:
         while self == self.bot.get_cog('Restricts'):
             to_unmute = set()
 
+            self.mutex.acquire()
             print("going to iterate to_unmute. Exists: {}, size, {}".format(self.to_unmute, len(self.to_unmute)))
             for info in self.to_unmute:
                 to_unmute.add(info)
+            self.mutex.release()
 
             unmuted = set()
             failed_to_unmute = set()
@@ -1805,7 +1807,8 @@ class Restricts:
             duration += int(re.match("([0-9]+)?(seconds|second|secs|sec|s)", text).group(1))
         return duration
 
-    def on_muted(self, info: UnmuteInfo):
+    async def on_muted(self, info: UnmuteInfo):
+        self.mutex.acquire()
         try:
             #remove the last user info with it fucking caches
             self.to_unmute.remove(info)
@@ -1814,13 +1817,16 @@ class Restricts:
         finally:
             # add new user info with it fucking caches
             self.to_unmute.add(info)
+            self.mutex.release() 
 
-    def on_unmueted(self, info: UnmuteInfo):
+    async def on_unmueted(self, info: UnmuteInfo):
+        self.mutex.acquire()
         try:                
             self.to_unmute.remove(info)
         except KeyError:
             pass
         finally:
+            self.mutex.release()
 
 def strfdelta(delta):
     s = []
