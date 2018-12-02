@@ -60,12 +60,13 @@ class SteamCommunity:
                                           "`{}sc apikey` to setup API key".format(ctx.prefix)))
             return
         if not user.isdigit():
-            user, message = await self.resolve_vanity_url(user)
-            if user is None:
-                await self.bot.say(chat.error("Unable to resolve vanity ID: {}".format(message)))
-                return
-        if user.startswith("STEAM_0:"):
-            user = SteamID.from_text(user).as_64()
+            if user.startswith("STEAM_0:"):
+                user = SteamID.from_text(user).as_64()
+            else:
+                user, message = await self.resolve_vanity_url(user)
+                if user is None:
+                    await self.bot.say(chat.error("Unable to resolve vanity ID: {}".format(message)))
+                    return
         try:
             profile = SteamUser(self.config["apikey"], user)
         except IndexError:
