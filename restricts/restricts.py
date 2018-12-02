@@ -629,7 +629,7 @@ class Restricts:
                     muted.add(UnmuteInfo(ctx, channel, user, parsedDuration))
                 await asyncio.sleep(0.1)
         for info in muted:
-            self.on_muted(info)
+            await self.on_muted(info)
 
         if not register:
             await self.bot.say("That user is already muted in all channels.")
