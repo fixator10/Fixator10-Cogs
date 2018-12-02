@@ -715,7 +715,7 @@ class Restricts:
             return
 
         for channel in server.channels:
-            error = self.channel_unmute_impl(ctx, channel, user)
+            error = await self.channel_unmute_impl(ctx, channel, user)
             if error == UnmuteError.forbidden:
                 await self.bot.say("Failed to unmute user. I need the manage roles"
                                    " permission and the user I'm unmuting must be "
@@ -1756,7 +1756,7 @@ class Restricts:
                             traceback.print_exc()
         
             if unmuted or failed_to_unmute:
-                text = ""
+                text = "bot timer: "
                 if unmuted:
                     text = "unmuted in channels: "
                     for info in unmuted:
