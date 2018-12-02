@@ -84,7 +84,7 @@ class SteamCommunity:
                 .format(profile.gameextrainfo or "Unknown", profile.gameid)
         if profile.gameserver:
             server = profile.gameserver.split(":")
-            server = (server[0], int(server))
+            server = (server[0], int(server[1]))
             server = ServerQuerier(server)
             servername = server.info().get("server_name").strip()
             em.description += " on server {} IP: {}".format(servername, profile.gameserver)
