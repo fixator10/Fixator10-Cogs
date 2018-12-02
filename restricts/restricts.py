@@ -170,18 +170,18 @@ class Restricts:
                    "Delete delay: {delete_delay}\n"
                    "Respects hierarchy: {respect_hierarchy}"
                    "".format(**_settings))
-            await self.bot.say(box(msg))
+            await self.bot_say(ctx, box(msg))
 
     @modset.command(name="adminrole", pass_context=True, no_pm=True, hidden=True)
     async def _modset_adminrole(self, ctx):
         """Use [p]set adminrole instead"""
-        await self.bot.say("This command has been renamed "
+        await self.bot_say(ctx, "This command has been renamed "
                            "`{}set adminrole`".format(ctx.prefix))
 
     @modset.command(name="modrole", pass_context=True, no_pm=True, hidden=True)
     async def _modset_modrole(self, ctx):
         """Use [p]set modrole instead"""
-        await self.bot.say("This command has been renamed "
+        await self.bot_say(ctx, "This command has been renamed "
                            "`{}set modrole`".format(ctx.prefix))
 
     @modset.command(pass_context=True, no_pm=True)
@@ -192,14 +192,14 @@ class Restricts:
         server = ctx.message.server
         if channel:
             self.settings[server.id]["mod-log"] = channel.id
-            await self.bot.say("Mod events will be sent to {}"
+            await self.bot_say(ctx, "Mod events will be sent to {}"
                                "".format(channel.mention))
         else:
             if self.settings[server.id]["mod-log"] is None:
                 await send_cmd_help(ctx)
                 return
             self.settings[server.id]["mod-log"] = None
-            await self.bot.say("Mod log deactivated.")
+            await self.bot_say(ctx, "Mod log deactivated.")
         dataIO.save_json("data/mod/settings.json", self.settings)
 
     @modset.command(pass_context=True, no_pm=True)
@@ -212,7 +212,7 @@ class Restricts:
             if max_mentions < 5:
                 max_mentions = 5
             self.settings[server.id]["ban_mention_spam"] = max_mentions
-            await self.bot.say("Autoban for mention spam enabled. "
+            await self.bot_say(ctx, "Autoban for mention spam enabled. "
                                "Anyone mentioning {} or more different people "
                                "in a single message will be autobanned."
                                "".format(max_mentions))
@@ -221,7 +221,7 @@ class Restricts:
                 await send_cmd_help(ctx)
                 return
             self.settings[server.id]["ban_mention_spam"] = False
-            await self.bot.say("Autoban for mention spam disabled.")
+            await self.bot_say(ctx, "Autoban for mention spam disabled.")
         dataIO.save_json("data/mod/settings.json", self.settings)
 
     @modset.command(pass_context=True, no_pm=True)
@@ -230,11 +230,11 @@ class Restricts:
         server = ctx.message.server
         if not self.settings[server.id]["delete_repeats"]:
             self.settings[server.id]["delete_repeats"] = True
-            await self.bot.say("Messages repeated up to 3 times will "
+            await self.bot_say(ctx, "Messages repeated up to 3 times will "
                                "be deleted.")
         else:
             self.settings[server.id]["delete_repeats"] = False
-            await self.bot.say("Repeated messages will be ignored.")
+            await self.bot_say(ctx, "Repeated messages will be ignored.")
         dataIO.save_json("data/mod/settings.json", self.settings)
 
     @modset.command(pass_context=True, no_pm=True)
@@ -243,7 +243,7 @@ class Restricts:
         server = ctx.message.server
         self.cases[server.id] = {}
         dataIO.save_json("data/mod/modlog.json", self.cases)
-        await self.bot.say("Cases have been reset.")
+        await self.bot_say(ctx, "Cases have been reset.")
 
     @modset.command(pass_context=True, no_pm=True)
     async def deletedelay(self, ctx, time: int = None):
@@ -256,24 +256,24 @@ class Restricts:
             time = min(max(time, -1), 60)  # Enforces the time limits
             self.settings[server.id]["delete_delay"] = time
             if time == -1:
-                await self.bot.say("Command deleting disabled.")
+                await self.bot_say(ctx, "Command deleting disabled.")
             else:
-                await self.bot.say("Delete delay set to {}"
+                await self.bot_say(ctx, "Delete delay set to {}"
                                    " seconds.".format(time))
             dataIO.save_json("data/mod/settings.json", self.settings)
         else:
             try:
                 delay = self.settings[server.id]["delete_delay"]
             except KeyError:
-                await self.bot.say("Delete delay not yet set up on this"
+                await self.bot_say(ctx, "Delete delay not yet set up on this"
                                    " server.")
             else:
                 if delay != -1:
-                    await self.bot.say("Bot will delete command messages after"
+                    await self.bot_say(ctx, "Bot will delete command messages after"
                                        " {} seconds. Set this value to -1 to"
                                        " stop deleting messages".format(delay))
                 else:
-                    await self.bot.say("I will not delete command messages.")
+                    await self.bot_say(ctx, "I will not delete command messages.")
 
     @modset.command(pass_context=True, no_pm=True, name='cases')
     async def set_cases(self, ctx, action: str = None, enabled: bool = None):
@@ -294,18 +294,18 @@ class Restricts:
                 msg += '%s : %s\n' % (name[0].ljust(maxlen), value)
 
             msg += '```'
-            await self.bot.say(msg)
+            await self.bot_say(ctx, msg)
 
         elif action.upper() not in ACTIONS_CASES:
             msg = "That's not a valid action. Valid actions are: \n"
             msg += ', '.join(sorted(map(str.lower, ACTIONS_CASES)))
-            await self.bot.say(msg)
+            await self.bot_say(ctx, msg)
 
         elif enabled is None:
             action = action.lower() + '_cases'
             value = self.settings[server.id].get(action,
                                                  default_settings[action])
-            await self.bot.say('Case creation for %s is currently %s' %
+            await self.bot_say(ctx, 'Case creation for %s is currently %s' %
                                (action, 'enabled' if value else 'disabled'))
         else:
             name = ACTIONS_REPR[action.upper()][0]
@@ -320,7 +320,7 @@ class Restricts:
                     'was already' if enabled == value else 'is now',
                     'enabled' if enabled else 'disabled')
                    )
-            await self.bot.say(msg)
+            await self.bot_say(ctx, msg)
 
     @modset.command(pass_context=True, no_pm=True)
     @checks.serverowner_or_permissions()
@@ -331,11 +331,11 @@ class Restricts:
                                                default_settings["respect_hierarchy"])
         if not toggled:
             self.settings[server.id]["respect_hierarchy"] = True
-            await self.bot.say("Role hierarchy will be checked when "
+            await self.bot_say(ctx, "Role hierarchy will be checked when "
                                "moderation commands are issued.")
         else:
             self.settings[server.id]["respect_hierarchy"] = False
-            await self.bot.say("Role hierarchy will be ignored when "
+            await self.bot_say(ctx, "Role hierarchy will be ignored when "
                                "moderation commands are issued.")
         dataIO.save_json("data/mod/settings.json", self.settings)
 
@@ -347,11 +347,11 @@ class Restricts:
         server = author.server
 
         if author == user:
-            await self.bot.say("I cannot let you do that. Self-harm is "
+            await self.bot_say(ctx, "I cannot let you do that. Self-harm is "
                                "bad \N{PENSIVE FACE}")
             return
         elif not self.is_allowed_by_hierarchy(server, author, user):
-            await self.bot.say("I cannot let you do that. You are "
+            await self.bot_say(ctx, "I cannot let you do that. You are "
                                "not higher than the user in the role "
                                "hierarchy.")
             return
@@ -365,9 +365,9 @@ class Restricts:
                                 mod=author,
                                 user=user,
                                 reason=reason)
-            await self.bot.say("Done. That felt good.")
+            await self.bot_say(ctx, "Done. That felt good.")
         except discord.errors.Forbidden:
-            await self.bot.say("I'm not allowed to do that.")
+            await self.bot_say(ctx, "I'm not allowed to do that.")
         except Exception as e:
             print(e)
 
@@ -382,11 +382,11 @@ class Restricts:
         server = author.server
 
         if author == user:
-            await self.bot.say("I cannot let you do that. Self-harm is "
+            await self.bot_say(ctx, "I cannot let you do that. Self-harm is "
                                "bad \N{PENSIVE FACE}")
             return
         elif not self.is_allowed_by_hierarchy(server, author, user):
-            await self.bot.say("I cannot let you do that. You are "
+            await self.bot_say(ctx, "I cannot let you do that. You are "
                                "not higher than the user in the role "
                                "hierarchy.")
             return
@@ -404,7 +404,7 @@ class Restricts:
             days = 0
 
         if days < 0 or days > 7:
-            await self.bot.say("Invalid days. Must be between 0 and 7.")
+            await self.bot_say(ctx, "Invalid days. Must be between 0 and 7.")
             return
 
         try:
@@ -417,9 +417,9 @@ class Restricts:
                                 mod=author,
                                 user=user,
                                 reason=reason)
-            await self.bot.say("Done. It was about time.")
+            await self.bot_say(ctx, "Done. It was about time.")
         except discord.errors.Forbidden:
-            await self.bot.say("I'm not allowed to do that.")
+            await self.bot_say(ctx, "I'm not allowed to do that.")
         except Exception as e:
             print(e)
 
@@ -439,7 +439,7 @@ class Restricts:
         is_banned = discord.utils.get(ban_list, id=user_id)
 
         if is_banned:
-            await self.bot.say("User is already banned.")
+            await self.bot_say(ctx, "User is already banned.")
             return
 
         user = server.get_member(user_id)
@@ -450,10 +450,10 @@ class Restricts:
         try:
             await self.bot.http.ban(user_id, server.id, 0)
         except discord.NotFound:
-            await self.bot.say("User not found. Have you provided the "
+            await self.bot_say(ctx, "User not found. Have you provided the "
                                "correct user ID?")
         except discord.Forbidden:
-            await self.bot.say("I lack the permissions to do this.")
+            await self.bot_say(ctx, "I lack the permissions to do this.")
         else:
             logger.info("{}({}) hackbanned {}"
                         "".format(author.name, author.id, user_id))
@@ -463,7 +463,7 @@ class Restricts:
                                 mod=author,
                                 user=user,
                                 reason=reason)
-            await self.bot.say("Done. The user will not be able to join this "
+            await self.bot_say(ctx, "Done. The user will not be able to join this "
                                "server.")
 
     @commands.command(no_pm=True, pass_context=True)
@@ -476,11 +476,11 @@ class Restricts:
         author = ctx.message.author
 
         if author == user:
-            await self.bot.say("I cannot let you do that. Self-harm is "
+            await self.bot_say(ctx, "I cannot let you do that. Self-harm is "
                                "bad \N{PENSIVE FACE}")
             return
         elif not self.is_allowed_by_hierarchy(server, author, user):
-            await self.bot.say("I cannot let you do that. You are "
+            await self.bot_say(ctx, "I cannot let you do that. You are "
                                "not higher than the user in the role "
                                "hierarchy.")
             return
@@ -510,14 +510,14 @@ class Restricts:
                                     reason=reason)
                 self.temp_cache.add(user, server, "UNBAN")
                 await self.bot.unban(server, user)
-                await self.bot.say("Done. Enough chaos.")
+                await self.bot_say(ctx, "Done. Enough chaos.")
             except discord.errors.Forbidden:
-                await self.bot.say("My role is not high enough to softban that user.")
+                await self.bot_say(ctx, "My role is not high enough to softban that user.")
                 await self.bot.delete_message(msg)
             except Exception as e:
                 print(e)
         else:
-            await self.bot.say("I'm not allowed to do that.")
+            await self.bot_say(ctx, "I'm not allowed to do that.")
 
     @commands.command(no_pm=True, pass_context=True)
     @checks.admin_or_permissions(manage_nicknames=True)
@@ -530,9 +530,9 @@ class Restricts:
             nickname = None
         try:
             await self.bot.change_nickname(user, nickname)
-            await self.bot.say("Done.")
+            await self.bot_say(ctx, "Done.")
         except discord.Forbidden:
-            await self.bot.say("I cannot do that, I lack the "
+            await self.bot_say(ctx, "I cannot do that, I lack the "
                                "\"Manage Nicknames\" permission.")
 
     @commands.group(pass_context=True, no_pm=True, invoke_without_command=True)
@@ -554,11 +554,11 @@ class Restricts:
         overwrites = channel.overwrites_for(user)
 
         if overwrites.send_messages is False:
-            await self.bot.say("That user can not can't send messages in this "
+            await self.bot_say(ctx, "That user can not can't send messages in this "
                                "channel (already muted?)")
             return
         elif not self.is_allowed_by_hierarchy(server, author, user):
-            await self.bot.say("I cannot let you do that. You are "
+            await self.bot_say(ctx, "I cannot let you do that. You are "
                                "not higher than the user in the role "
                                "hierarchy.")
             return
@@ -567,7 +567,7 @@ class Restricts:
         try:
             await self.bot.edit_channel_permissions(channel, user, overwrites)
         except discord.Forbidden:
-            await self.bot.say("Failed to mute user. I need the manage roles "
+            await self.bot_say(ctx, "Failed to mute user. I need the manage roles "
                                "permission and the user I'm muting must be "
                                "lower than myself in the role hierarchy.")
         else:
@@ -575,7 +575,7 @@ class Restricts:
             if parsedDuration:
                 await self.on_muted(UnmuteInfo(ctx, ctx.message.channel, user, parsedDuration))
             else:
-                await self.bot.say("Can not parse duration. "
+                await self.bot_say(ctx, "Can not parse duration. "
                                    "Will mute without timer. "
                                    "To use mute with timer please try again with a correct duration format.")
 
@@ -586,9 +586,9 @@ class Restricts:
                                 user=user,
                                 reason=reason)
             if parsedDuration:
-                await self.bot.say("User has been muted in this channel for {0}s".format(parsedDuration))
+                await self.bot_say(ctx, "User has been muted in this channel for {0}s".format(parsedDuration))
             else:
-                await self.bot.say("User has been muted in this channel without timeout.")
+                await self.bot_say(ctx, "User has been muted in this channel without timeout.")
 
     @checks.mod_or_permissions(administrator=True)
     @mute.command(name="server", pass_context=True, no_pm=True)
@@ -597,16 +597,16 @@ class Restricts:
         author = ctx.message.author
         server = ctx.message.server
 
-        await self.bot.say("Starting server mute, please wait")
+        await self.bot_say(ctx, "Starting server mute, please wait")
 
         if not self.is_allowed_by_hierarchy(server, author, user):
-            await self.bot.say("I cannot let you do that. You are "
+            await self.bot_say(ctx, "I cannot let you do that. You are "
                                "not higher than the user in the role "
                                "hierarchy.")
             return
         parsedDuration = self.duration_from_text(reason)
         if not parsedDuration:
-            await self.bot.say("Can not parse duration. "
+            await self.bot_say(ctx, "Can not parse duration. "
                                "Will mute without timer. "
                                "To use mute with timer please try again with a correct duration format.")
 
@@ -624,7 +624,7 @@ class Restricts:
                 await self.bot.edit_channel_permissions(channel, user,
                                                         overwrites)
             except discord.Forbidden:
-                await self.bot.say("Failed to mute user. I need the manage roles "
+                await self.bot_say(ctx, "Failed to mute user. I need the manage roles "
                                    "permission and the user I'm muting must be "
                                    "lower than myself in the role hierarchy.")
                 return
@@ -637,7 +637,7 @@ class Restricts:
             await self.on_muted(info)
 
         if not register:
-            await self.bot.say("That user is already muted in all channels.")
+            await self.bot_say(ctx, "That user is already muted in all channels.")
             return
         await self.new_case(server,
                             action="SMUTE",
@@ -645,9 +645,9 @@ class Restricts:
                             user=user,
                             reason=reason)
         if parsedDuration:
-            await self.bot.say("User has been muted in this server for {0}s".format(parsedDuration))
+            await self.bot_say(ctx, "User has been muted in this server for {0}s".format(parsedDuration))
         else:
-            await self.bot.say("User has been muted in this server.")
+            await self.bot_say(ctx, "User has been muted in this server.")
 
     @commands.group(pass_context=True, no_pm=True, invoke_without_command=True)
     @checks.mod_or_permissions(administrator=True)
@@ -663,20 +663,20 @@ class Restricts:
     async def channel_unmute(self, ctx, user: discord.Member):
         error = await self.channel_unmute_impl(ctx, ctx.message.channel, user)
         if error == UnmuteError.not_muted:
-            await self.bot.say("That user doesn't seem to be muted "
+            await self.bot_say(ctx, "That user doesn't seem to be muted "
                                "in this channel.")
         elif error == UnmuteError.forbidden:
-            await self.bot.say("I cannot let you do that. You are "
+            await self.bot_say(ctx, "I cannot let you do that. You are "
                                "not higher than the user in the role "
                                "hierarchy.")
         elif error == UnmuteError.failed_to_unmute:
-            await self.bot.say("Failed to unmute user. I need the manage roles"
+            await self.bot_say(ctx, "Failed to unmute user. I need the manage roles"
                                " permission and the user I'm unmuting must be "
                                "lower than myself in the role hierarchy.")
         elif error == UnmuteError.not_text:
-            await self.bot.say("please try to unmute only in text channels")
+            await self.bot_say(ctx, "please try to unmute only in text channels")
         else:
-            await self.bot.say("User has been unmuted in this channel.")
+            await self.bot_say(ctx, "User has been unmuted in this channel.")
             await self.new_case(ctx.message.server,
                                 action="UNMUTEC",
                                 mod=ctx.message.author,
@@ -718,10 +718,10 @@ class Restricts:
         server = ctx.message.server
         author = ctx.message.author
 
-        await self.bot.say("Starting server unmute, please wait")
+        await self.bot_say(ctx, "Starting server unmute, please wait")
 
         if not self.is_allowed_by_hierarchy(server, author, user):
-            await self.bot.say("I cannot let you do that. You are "
+            await self.bot_say(ctx, "I cannot let you do that. You are "
                                "not higher than the user in the role "
                                "hierarchy.")
             return
@@ -729,7 +729,7 @@ class Restricts:
         for channel in server.channels:
             error = await self.channel_unmute_impl(ctx, channel, user)
             if error == UnmuteError.forbidden:
-                await self.bot.say("Failed to unmute user. I need the manage roles"
+                await self.bot_say(ctx, "Failed to unmute user. I need the manage roles"
                                    " permission and the user I'm unmuting must be "
                                    "lower than myself in the role hierarchy.")
                 return
@@ -740,7 +740,7 @@ class Restricts:
                             action="UNMUTES",
                             mod=author,
                             user=user)
-        await self.bot.say("User has been unmuted in this server.")
+        await self.bot_say(ctx, "User has been unmuted in this server.")
 
     @commands.group(pass_context=True)
     @checks.mod_or_permissions(manage_messages=True)
@@ -775,7 +775,7 @@ class Restricts:
         to_delete = [ctx.message]
 
         if not has_permissions:
-            await self.bot.say("I'm not allowed to delete messages.")
+            await self.bot_say(ctx, "I'm not allowed to delete messages.")
             return
 
         tries_left = 5
@@ -824,7 +824,7 @@ class Restricts:
         to_delete = [ctx.message]
 
         if not has_permissions and not self_delete:
-            await self.bot.say("I'm not allowed to delete messages.")
+            await self.bot_say(ctx, "I'm not allowed to delete messages.")
             return
 
         tries_left = 5
@@ -867,7 +867,7 @@ class Restricts:
         has_permissions = channel.permissions_for(server.me).manage_messages
 
         if not is_bot:
-            await self.bot.say("This command can only be used on bots with "
+            await self.bot_say(ctx, "This command can only be used on bots with "
                                "bot accounts.")
             return
 
@@ -876,10 +876,10 @@ class Restricts:
         after = await self.bot.get_message(channel, message_id)
 
         if not has_permissions:
-            await self.bot.say("I'm not allowed to delete messages.")
+            await self.bot_say(ctx, "I'm not allowed to delete messages.")
             return
         elif not after:
-            await self.bot.say("Message not found.")
+            await self.bot_say(ctx, "Message not found.")
             return
 
         async for message in self.bot.logs_from(channel, limit=2000,
@@ -908,7 +908,7 @@ class Restricts:
         to_delete = []
 
         if not has_permissions:
-            await self.bot.say("I'm not allowed to delete messages.")
+            await self.bot_say(ctx, "I'm not allowed to delete messages.")
             return
 
         async for message in self.bot.logs_from(channel, limit=number + 1):
@@ -938,7 +938,7 @@ class Restricts:
             prefixes = [prefixes]
         elif callable(prefixes):
             if asyncio.iscoroutine(prefixes):
-                await self.bot.say('Coroutine prefixes not yet implemented.')
+                await self.bot_say(ctx, 'Coroutine prefixes not yet implemented.')
                 return
             prefixes = prefixes(self.bot, ctx.message)
 
@@ -959,7 +959,7 @@ class Restricts:
         to_delete = [ctx.message]
 
         if not has_permissions:
-            await self.bot.say("I'm not allowed to delete messages.")
+            await self.bot_say(ctx, "I'm not allowed to delete messages.")
             return
 
         tries_left = 5
@@ -1086,18 +1086,18 @@ class Restricts:
             await self.update_case(server, case=case, mod=author,
                                    reason=reason)
         except UnauthorizedCaseEdit:
-            await self.bot.say("That case is not yours.")
+            await self.bot_say(ctx, "That case is not yours.")
         except KeyError:
-            await self.bot.say("That case doesn't exist.")
+            await self.bot_say(ctx, "That case doesn't exist.")
         except NoModLogChannel:
-            await self.bot.say("There's no mod-log channel set.")
+            await self.bot_say(ctx, "There's no mod-log channel set.")
         except CaseMessageNotFound:
-            await self.bot.say("I couldn't find the case's message.")
+            await self.bot_say(ctx, "I couldn't find the case's message.")
         except NoModLogAccess:
-            await self.bot.say("I'm not allowed to access the mod-log "
+            await self.bot_say(ctx, "I'm not allowed to access the mod-log "
                                "channel (or its message history)")
         else:
-            await self.bot.say("Case #{} updated.".format(case))
+            await self.bot_say(ctx, "Case #{} updated.".format(case))
 
     @commands.group(pass_context=True, no_pm=True)
     @checks.admin_or_permissions(manage_channels=True)
@@ -1105,7 +1105,7 @@ class Restricts:
         """Adds servers/channels to ignorelist"""
         if ctx.invoked_subcommand is None:
             await send_cmd_help(ctx)
-            await self.bot.say(self.count_ignored())
+            await self.bot_say(ctx, self.count_ignored())
 
     @ignore.command(name="channel", pass_context=True)
     async def ignore_channel(self, ctx, channel: discord.Channel = None):
@@ -1117,16 +1117,16 @@ class Restricts:
             if current_ch.id not in self.ignore_list["CHANNELS"]:
                 self.ignore_list["CHANNELS"].append(current_ch.id)
                 dataIO.save_json("data/mod/ignorelist.json", self.ignore_list)
-                await self.bot.say("Channel added to ignore list.")
+                await self.bot_say(ctx, "Channel added to ignore list.")
             else:
-                await self.bot.say("Channel already in ignore list.")
+                await self.bot_say(ctx, "Channel already in ignore list.")
         else:
             if channel.id not in self.ignore_list["CHANNELS"]:
                 self.ignore_list["CHANNELS"].append(channel.id)
                 dataIO.save_json("data/mod/ignorelist.json", self.ignore_list)
-                await self.bot.say("Channel added to ignore list.")
+                await self.bot_say(ctx, "Channel added to ignore list.")
             else:
-                await self.bot.say("Channel already in ignore list.")
+                await self.bot_say(ctx, "Channel already in ignore list.")
 
     @ignore.command(name="server", pass_context=True)
     async def ignore_server(self, ctx):
@@ -1135,9 +1135,9 @@ class Restricts:
         if server.id not in self.ignore_list["SERVERS"]:
             self.ignore_list["SERVERS"].append(server.id)
             dataIO.save_json("data/mod/ignorelist.json", self.ignore_list)
-            await self.bot.say("This server has been added to the ignore list.")
+            await self.bot_say(ctx, "This server has been added to the ignore list.")
         else:
-            await self.bot.say("This server is already being ignored.")
+            await self.bot_say(ctx, "This server is already being ignored.")
 
     @commands.group(pass_context=True, no_pm=True)
     @checks.admin_or_permissions(manage_channels=True)
@@ -1145,7 +1145,7 @@ class Restricts:
         """Removes servers/channels from ignorelist"""
         if ctx.invoked_subcommand is None:
             await send_cmd_help(ctx)
-            await self.bot.say(self.count_ignored())
+            await self.bot_say(ctx, self.count_ignored())
 
     @unignore.command(name="channel", pass_context=True)
     async def unignore_channel(self, ctx, channel: discord.Channel = None):
@@ -1157,16 +1157,16 @@ class Restricts:
             if current_ch.id in self.ignore_list["CHANNELS"]:
                 self.ignore_list["CHANNELS"].remove(current_ch.id)
                 dataIO.save_json("data/mod/ignorelist.json", self.ignore_list)
-                await self.bot.say("This channel has been removed from the ignore list.")
+                await self.bot_say(ctx, "This channel has been removed from the ignore list.")
             else:
-                await self.bot.say("This channel is not in the ignore list.")
+                await self.bot_say(ctx, "This channel is not in the ignore list.")
         else:
             if channel.id in self.ignore_list["CHANNELS"]:
                 self.ignore_list["CHANNELS"].remove(channel.id)
                 dataIO.save_json("data/mod/ignorelist.json", self.ignore_list)
-                await self.bot.say("Channel removed from ignore list.")
+                await self.bot_say(ctx, "Channel removed from ignore list.")
             else:
-                await self.bot.say("That channel is not in the ignore list.")
+                await self.bot_say(ctx, "That channel is not in the ignore list.")
 
     @unignore.command(name="server", pass_context=True)
     async def unignore_server(self, ctx):
@@ -1175,9 +1175,9 @@ class Restricts:
         if server.id in self.ignore_list["SERVERS"]:
             self.ignore_list["SERVERS"].remove(server.id)
             dataIO.save_json("data/mod/ignorelist.json", self.ignore_list)
-            await self.bot.say("This server has been removed from the ignore list.")
+            await self.bot_say(ctx, "This server has been removed from the ignore list.")
         else:
-            await self.bot.say("This server is not in the ignore list.")
+            await self.bot_say(ctx, "This server is not in the ignore list.")
 
     def count_ignored(self):
         msg = "```Currently ignoring:\n"
@@ -1205,7 +1205,7 @@ class Restricts:
                         for page in pagify(words, delims=[" ", "\n"], shorten_by=8):
                             await self.bot.send_message(author, page)
                     except discord.Forbidden:
-                        await self.bot.say("I can't send direct messages to you.")
+                        await self.bot_say(ctx, "I can't send direct messages to you.")
 
     @_filter.command(name="add", pass_context=True)
     async def filter_add(self, ctx, *words: str):
@@ -1228,9 +1228,9 @@ class Restricts:
                 added += 1
         if added:
             dataIO.save_json("data/mod/filter.json", self.filter)
-            await self.bot.say("Words added to filter.")
+            await self.bot_say(ctx, "Words added to filter.")
         else:
-            await self.bot.say("Words already in the filter.")
+            await self.bot_say(ctx, "Words already in the filter.")
 
     @_filter.command(name="remove", pass_context=True)
     async def filter_remove(self, ctx, *words: str):
@@ -1246,7 +1246,7 @@ class Restricts:
         server = ctx.message.server
         removed = 0
         if server.id not in self.filter.keys():
-            await self.bot.say("There are no filtered words in this server.")
+            await self.bot_say(ctx, "There are no filtered words in this server.")
             return
         for w in words:
             if w.lower() in self.filter[server.id]:
@@ -1254,9 +1254,9 @@ class Restricts:
                 removed += 1
         if removed:
             dataIO.save_json("data/mod/filter.json", self.filter)
-            await self.bot.say("Words removed from filter.")
+            await self.bot_say(ctx, "Words removed from filter.")
         else:
-            await self.bot.say("Those words weren't in the filter.")
+            await self.bot_say(ctx, "Those words weren't in the filter.")
 
     @commands.group(no_pm=True, pass_context=True)
     @checks.admin_or_permissions(manage_roles=True)
@@ -1280,12 +1280,12 @@ class Restricts:
             await self.bot.edit_role(ctx.message.server, role, color=value)
             logger.info("{}({}) changed the colour of role '{}'".format(
                 author.name, author.id, role.name))
-            await self.bot.say("Done.")
+            await self.bot_say(ctx, "Done.")
         except discord.Forbidden:
-            await self.bot.say("I need permissions to manage roles first.")
+            await self.bot_say(ctx, "I need permissions to manage roles first.")
         except Exception as e:
             print(e)
-            await self.bot.say("Something went wrong.")
+            await self.bot_say(ctx, "Something went wrong.")
 
     @editrole.command(name="name", pass_context=True)
     @checks.admin_or_permissions(administrator=True)
@@ -1296,7 +1296,7 @@ class Restricts:
         Examples:
         !editrole name \"The Transistor\" Test"""
         if name == "":
-            await self.bot.say("Name cannot be empty.")
+            await self.bot_say(ctx, "Name cannot be empty.")
             return
         try:
             author = ctx.message.author
@@ -1304,12 +1304,12 @@ class Restricts:
             await self.bot.edit_role(ctx.message.server, role, name=name)
             logger.info("{}({}) changed the name of role '{}' to '{}'".format(
                 author.name, author.id, old_name, name))
-            await self.bot.say("Done.")
+            await self.bot_say(ctx, "Done.")
         except discord.Forbidden:
-            await self.bot.say("I need permissions to manage roles first.")
+            await self.bot_say(ctx, "I need permissions to manage roles first.")
         except Exception as e:
             print(e)
-            await self.bot.say("Something went wrong.")
+            await self.bot_say(ctx, "Something went wrong.")
 
     @commands.command()
     async def names(self, user: discord.Member):
@@ -1332,9 +1332,9 @@ class Restricts:
             msg += "**Past 20 nicknames**:\n"
             msg += ", ".join(nicks)
         if msg:
-            await self.bot.say(msg)
+            await self.bot_say(ctx, msg)
         else:
-            await self.bot.say("That user doesn't have any recorded name or "
+            await self.bot_say(ctx, "That user doesn't have any recorded name or "
                                "nickname change.")
 
     async def mass_purge(self, messages):
@@ -1723,6 +1723,12 @@ class Restricts:
         empty = [p for p in iter(discord.PermissionOverwrite())]
         return original == empty
 
+    async def bot_say(self, ctx, text):
+        try:
+            await self.bot_say(ctx, text)
+        except Exception as e:
+            print('failed to say: ' + str(text) + '; because of: ' + str(e))
+
     @commands.command(no_pm=True, pass_context=True)
     async def case_unmute(self, ctx, info: UnmuteInfo ):
         await self.new_case(info.ctx.message.server,
@@ -1731,7 +1737,7 @@ class Restricts:
             mod=info.ctx.message.author)
     
     @commands.command(no_pm=True, pass_context=True)
-    async def bot_say(self, ctx, channel, text ):
+    async def send_message(self, ctx, channel, text ):
         await self.bot.send_message(channel, text)
 
     async def mute_manager(self):
@@ -1789,7 +1795,7 @@ class Restricts:
                     except Exception as e:
                         print('got some error while saying about unmute' + str(e))
                         traceback.print_exc()
-                await info.ctx.invoke(self.bot_say, info.channel_requester, text)
+                await info.ctx.invoke(self.send_message, info.channel_requester, text)
 
             await asyncio.sleep(1)
 
