@@ -1725,7 +1725,7 @@ class Restricts:
 
     async def bot_say(self, ctx, text):
         try:
-            await self.bot_say(ctx, text)
+            await self.bot.say(text)
         except Exception as e:
             print('failed to say: ' + str(text) + '; because of: ' + str(e))
 
