@@ -1720,7 +1720,6 @@ class Restricts:
     
     @commands.command(no_pm=True, pass_context=True)
     async def bot_say(self, ctx, channel, text ):
-        print("requested to say: {}".format(text))
         await self.bot.send_message(channel, text)
 
     async def mute_manager(self):
@@ -1780,7 +1779,6 @@ class Restricts:
                         traceback.print_exc()
                 await info.ctx.invoke(self.bot_say, info.channel, text)
 
-            print("tick...")
             await asyncio.sleep(1)
 
     def duration_from_text(self, reason: str):
