@@ -667,7 +667,7 @@ class Restricts:
             await self.bot.say("please try to unmute only in text channels")
         else:
             await self.bot.say("User has been unmuted in this channel.")
-            await self.new_case(server,
+            await self.new_case(ctx.message.server,
                                 action="UNMUTEC",
                                 mod=author,
                                 user=user)
