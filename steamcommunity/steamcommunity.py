@@ -47,7 +47,7 @@ class SteamCommunity:
     @steamcommunity.command(name="profile", pass_context=True, aliases=["p"])
     async def steamprofile(self, ctx, user: str):
         """Get steam user's steamcommunity profile"""
-        if not self.check_api:
+        if not self.check_api():
             await self.bot.say(chat.error("Steam web API key not set or it is incorrect."
                                           "Use `{}sc apikey` to setup API key".format(ctx.prefix)))
             return
