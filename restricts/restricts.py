@@ -100,12 +100,13 @@ class TempCache:
 
 
 class UnmuteInfo:
-    def __init__(self, ctx, channel, user: discord.Member, duration=0):
+    def __init__(self, ctx, channel, user: discord.Member, duration = 0):
         self.ctx = ctx
         self.channel = channel
         self.user = user
         self.duration = duration
         self.start_time = time.time()
+        self.unmute_time = self.start_time + self.duration
 
     def __eq__(self, other):
         return self.user == other.user \
@@ -116,7 +117,7 @@ class UnmuteInfo:
         return hash(self.user) ^ \
                hash(self.channel) ^ \
                hash(self.ctx.message.server)
-
+    
 
 class UnmuteError:
     forbidden = "forbidden"
@@ -140,8 +141,8 @@ class Restricts:
         self.cases = dataIO.load_json("data/mod/modlog.json")
         self.last_case = defaultdict(dict)
         self.temp_cache = TempCache(bot)
+        #cache to store information about unmute
         self.to_unmute = set()
-        self.unmuted_list = set()
         self.mutex = Lock()
 
     @commands.group(pass_context=True, no_pm=True)
@@ -650,7 +651,7 @@ class Restricts:
     @checks.mod_or_permissions(administrator=True)
     @unmute.command(name="channel", pass_context=True, no_pm=True)
     async def channel_unmute(self, ctx, user: discord.Member):
-        error = await channel_unmute_impl(self, ctx, ctx.message.channel, user)
+        error = await self.channel_unmute_impl(ctx, ctx.message.channel, user)
         if error == UnmuteError.not_muted:
             await self.bot.say("That user doesn't seem to be muted "
                                "in this channel.")
@@ -666,9 +667,9 @@ class Restricts:
             await self.bot.say("please try to unmute only in text channels")
         else:
             await self.bot.say("User has been unmuted in this channel.")
-            await self.new_case(server,
+            await self.new_case(ctx.message.server,
                                 action="UNMUTEC",
-                                mod=author,
+                                mod=ctx.message.author,
                                 user=user)
 
     async def channel_unmute_impl(self, ctx, channel, user: discord.Member):
@@ -697,7 +698,7 @@ class Restricts:
         except discord.Forbidden:
             return error.failed_to_unmute
         else:
-            self.unmuted_list.add(UnmuteInfo(ctx, ctx.message.channel, user))
+            await self.on_unmueted(UnmuteInfo(ctx, ctx.message.channel, user))
             return error
 
     @checks.mod_or_permissions(administrator=True)
@@ -1712,53 +1713,37 @@ class Restricts:
 
     async def mute_manager(self):
         while self == self.bot.get_cog('Restricts'):
-            print("going to iterate to_unmute. Exists: {}, size, {}\n unmuted_list size: {}".format(self.to_unmute,
-                                                                                                    len(self.to_unmute),
-                                                                                                    len(
-                                                                                                        self.unmuted_list)))
+            to_unmute = set()
 
-            # user can be unmuted here on by command
-            # clean µute_list first
-            if self.unmuted_list:
-                for info in self.unmuted_list:
-                    print("user {} was unmuted, cleanup".format(info.user.name))
-                    try:
-                        self.to_unmute.remove(info)
-                    except KeyError:
-                        pass
+            self.mutex.acquire()
+            print("going to iterate to_unmute. Exists: {}, size, {}\n ".format(self.to_unmute, len(self.to_unmute)))
+            for info in self.to_unmute:
+                to_unmute.add(info)
+            self.mutex.release()
 
-                # all entries used, need to clean-up the list
-                self.unmuted_list.clear()
-
-            if self.to_unmute:
-                if self.mutex.test():
-                    print("wtf, is acquired: ", threading.get_ident())
-                    print(traceback.format_exc())
-
-                self.mutex.acquire()
-                unmuted = set()
-                not_unmuted = set()
-                for info in self.to_unmute:
-                    print("processing to unmute user {} {}".format(info.user.name, type(info) is UnmuteInfo))
-                    if type(info) is UnmuteInfo:
-                        now = time.time()
-                        print("now {}, need to be unmuted: {} {} {}".format(now, info.start_time, info.duration,
-                                                                            info.start_time + info.duration))
-                        if now > (info.start_time + info.duration):
-                            print("requesting to unmute {}".format(info.user.name))
-                            info.ctx.message.channel = info.channel
-                            try:
-                                if await self.channel_unmute_impl(info.ctx, info.user):
-                                    unmuted.add(info)
-                                else:
-                                    not_unmuted.add(info)
-                            except Exception as e:
-                                print('got some error while unmuted' + str(e))
+            unmuted = set()
+            failed_to_unmute = set()
+            for info in to_unmute:
+                print("processing to unmute user {} {}".format(info.user.name, type(info) is UnmuteInfo))
+                if type(info) is UnmuteInfo:
+                    now = time.time()
+                    print("now {}, need to be unmuted: {} {} {}".format(now, info.start_time, info.duration, info.start_time + info.duration))
+                    if now > info.unmute_time:
+                        print("requesting to unmute {}".format(info.user.name))
+                        try:
+                            if await self.channel_unmute_impl(info.ctx, info.channel, info.user):
+                                unmuted.add(info)
+                            else:
+                                failed_to_unmute.add(info)
+                        except Exception as e:
+                            print('got some error while unmuted'+ str(e))
+                            traceback.print_exc()
+    
                 str = "unmuted in channels: "
                 for info in unmuted:
                     str += info.channel.name + " "
                 str += "\nand not unmeted in channels: "
-                for info in not_unmuted:
+                for info in failed_to_unmute:
                     str += info.channel.name + " "
                 if len(unmuted):
                     try:
@@ -1769,8 +1754,7 @@ class Restricts:
                         await self.bot.say(str)
                     except Exception as e:
                         print('got some error while saying about unmute' + str(e))
-
-                self.mutex.release()
+                        traceback.print_exc()
 
             await asyncio.sleep(1)
 
@@ -1797,20 +1781,25 @@ class Restricts:
         return duration
 
     async def on_muted(self, info: UnmuteInfo):
-        if self.mutex.test():
-            print("wtf, is acquired: ", threading.get_ident())
-            print(traceback.format_exc())
-
         self.mutex.acquire()
         try:
-            # remove the last user info and fucking caches
+            #remove the last user info with it fucking caches
             self.to_unmute.remove(info)
         except KeyError:
             pass
         finally:
             # add new user info with it fucking caches
             self.to_unmute.add(info)
-        self.mutex.release()
+            self.mutex.release() 
+
+    async def on_unmueted(self, info: UnmuteInfo):
+        self.mutex.acquire()
+        try:                
+            self.to_unmute.remove(info)
+        except KeyError:
+            pass
+        finally:
+            self.mutex.release()
 
 
 def strfdelta(delta):
