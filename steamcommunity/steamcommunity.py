@@ -48,7 +48,7 @@ class SteamCommunity:
         await self.bot.say(chat.info("API key Updated"))
 
     @steamcommunity.command(name="profile", pass_context=True, aliases=["p"])
-    async def steamprofile(self, ctx, user: str):
+    async def steamprofile(self, ctx, steamid: str):
         """Get steam user's steamcommunity profile"""
         if not ctx.message.channel.permissions_for(ctx.message.server.me).embed_links:
             await self.bot.say(chat.error("This command requires enabled embeds.\n"
@@ -59,18 +59,19 @@ class SteamCommunity:
                                           "Ask owner of the bot to use "
                                           "`{}sc apikey` to setup API key".format(ctx.prefix)))
             return
-        if not user.isdigit():
-            user, message = await self.resolve_vanity_url(user)
-            if user is None:
-                await self.bot.say(chat.error("Unable to resolve vanity ID: {}".format(message)))
-                return
-        if user.startswith("STEAM_0:"):
-            user = SteamID.from_text(user).as_64()
+        if not steamid.isdigit():
+            if steamid.startswith("STEAM_0:"):
+                steamid = SteamID.from_text(steamid).as_64()
+            else:
+                steamid, message = await self.resolve_vanity_url(steamid)
+                if steamid is None:
+                    await self.bot.say(chat.error("Unable to resolve vanity ID: {}".format(message)))
+                    return
         try:
-            profile = SteamUser(self.config["apikey"], user)
+            profile = SteamUser(self.config["apikey"], steamid)
         except IndexError:
             await self.bot.say(chat.error("Unable to get profile for {}. "
-                                          "Check your input or try again later.".format(user)))
+                                          "Check your input or try again later.".format(steamid)))
             return
         em = discord.Embed(title=profile.personaname,
                            description=profile.personastate(),
