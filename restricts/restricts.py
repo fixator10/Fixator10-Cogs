@@ -1719,8 +1719,9 @@ class Restricts:
             author=info.ctx.message.author)
     
     @commands.command(no_pm=True, pass_context=True)
-    async def bot_say(self, ctx, str ):
-        await self.bot.say(str)
+    async def bot_say(self, ctx, text ):
+        print("requested to say: {}".format(text))
+        await self.bot.say(text)
 
     async def mute_manager(self):
         while self == self.bot.get_cog('Restricts'):
@@ -1730,7 +1731,6 @@ class Restricts:
                 print("mutex already locked: mute_manager")
                 traceback.print_exc()
             self.mutex.acquire()
-            print("going to iterate to_unmute. Exists: {}, size, {}".format(self.to_unmute, len(self.to_unmute)))
             for info in self.to_unmute:
                 to_unmute.add(info)
             self.mutex.release()
@@ -1745,29 +1745,30 @@ class Restricts:
                         try:
                             error = await self.channel_unmute_impl(info.ctx, info.channel, info.user)
                             if error:
-                                unmuted.add(info)
-                                print("success")
-                            else:
                                 print("failed: {}".format(error))
                                 failed_to_unmute.add(info)
+                            else:
+                                unmuted.add(info)
+                                print("success")
+
                         except Exception as e:
                             print('got some error while unmuted'+ str(e))
                             traceback.print_exc()
         
             if unmuted or failed_to_unmute:
-                str = "unmuted in channels: "
+                text = "unmuted in channels: "
                 if unmuted:
                     for info in unmuted:
-                        str += info.channel.name + " "
+                        text += info.channel.name + " "
                 else:
-                    str += "none"
-                str += "\nand not unmeted in channels: "
+                    text += "none"
+                text += "\nand not unmeted in channels: "
                 if failed_to_unmute:
                     for info in failed_to_unmute:
-                        str += info.channel.name + " "
+                        text += info.channel.name + " "
                 else:
-                    str += "none"
-                print(str)
+                    text += "none"
+                print(text)
                 print("going to say it with a bot")
                 if unmuted:
                     info = list(unmuted)[0]
@@ -1779,7 +1780,7 @@ class Restricts:
                     except Exception as e:
                         print('got some error while saying about unmute' + str(e))
                         traceback.print_exc()
-                await info.ctx.invoke(self.bot_say, str)
+                await info.ctx.invoke(self.bot_say, text)
 
             print("tick...")
             await asyncio.sleep(1)
