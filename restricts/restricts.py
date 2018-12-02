@@ -1775,12 +1775,13 @@ class Restricts:
                     info = list(failed_to_unmute)[0]
                 if unmuted:
                     try:
-                        await info.ctx.invoke(self.case_unmute, info)
+                        print("should await case_unmute but commented")
+                        #await info.ctx.invoke(self.case_unmute, info)
                     except Exception as e:
                         print('got some error while saying about unmute' + str(e))
                         traceback.print_exc()
-
-                await info.ctx.invoke(self.bot_say, str)
+                print("should await bot_say but commented")
+                #await info.ctx.invoke(self.bot_say, str)
 
             print("tick...")
             await asyncio.sleep(1)
@@ -1827,6 +1828,7 @@ class Restricts:
             pass
         finally:
             self.mutex.release()
+
 
 def strfdelta(delta):
     s = []
