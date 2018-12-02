@@ -47,8 +47,11 @@ class SteamCommunity:
     @steamcommunity.command(name="profile", pass_context=True, aliases=["p"])
     async def steamprofile(self, ctx, user: str):
         """Get steam user's steamcommunity profile"""
+        if not ctx.message.channel.permissions_for(ctx.message.server.me).embed_links:
+            await self.bot.say(chat.error("This command requires enabled embeds.\n"
+                                          "Ask admins of server to enable embeds for me in this channel and try again"))
         if not self.check_api():
-            await self.bot.say(chat.error("Steam web API key not set or it is incorrect."
+            await self.bot.say(chat.error("Steam web API key not set or it is incorrect.\n"
                                           "Use `{}sc apikey` to setup API key".format(ctx.prefix)))
             return
         if not user.isdigit():
