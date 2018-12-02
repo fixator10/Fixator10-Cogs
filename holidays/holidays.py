@@ -11,10 +11,7 @@ from cogs.utils.dataIO import dataIO
 
 
 def bool_emojify(bool_var: bool) -> str:
-    if bool_var:
-        return "✅"
-    else:
-        return "❎"
+    return "✅" if bool_var else "❎"
 
 
 class Holidays:

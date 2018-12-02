@@ -50,10 +50,7 @@ def rgb_to_cmyk(r, g, b):
 
 
 def bool_emojify(bool_var: bool) -> str:
-    if bool_var:
-        return "✔"
-    else:
-        return "❌"
+    return "✔" if bool_var else "❌"
 
 
 class CustomChecks:
