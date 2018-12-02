@@ -103,6 +103,7 @@ class UnmuteInfo:
     def __init__(self, ctx, channel, user: discord.Member, duration = 0):
         self.ctx = ctx
         self.channel = channel
+        self.channel_requester = ctx.message.channel
         self.user = user
         self.duration = duration
         self.start_time = time.time()
@@ -1777,7 +1778,7 @@ class Restricts:
                     except Exception as e:
                         print('got some error while saying about unmute' + str(e))
                         traceback.print_exc()
-                await info.ctx.invoke(self.bot_say, info.channel, text)
+                await info.ctx.invoke(self.bot_say, info.channel_requester, text)
 
             await asyncio.sleep(1)
 
