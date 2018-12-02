@@ -3,6 +3,7 @@ from datetime import datetime
 
 import discord
 from discord.ext import commands
+from valve.source.a2s import ServerQuerier
 from valve.steam.api import interface
 from valve.steam.id import SteamID
 
@@ -82,7 +83,11 @@ class SteamCommunity:
             em.description = "In game: [{}](http://store.steampowered.com/app/{})" \
                 .format(profile.gameextrainfo or "Unknown", profile.gameid)
         if profile.gameserver:
-            em.description += " on server {}".format(profile.gameserver)
+            server = profile.gameserver.split(":")
+            server = (server[0], int(server))
+            server = ServerQuerier(server)
+            servername = server.info().get("server_name").strip()
+            em.description += " on server {} IP: {}".format(servername, profile.gameserver)
         if profile.realname:
             em.add_field(name="Real name", value=profile.realname, inline=False)
         em.add_field(name="Level", value=profile.level or "0")
