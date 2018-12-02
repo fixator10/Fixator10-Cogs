@@ -1712,14 +1712,14 @@ class Restricts:
         return original == empty
 
     @commands.command(no_pm=True, pass_context=True)
-    async def case_unmute(self, ctx, info: UnmuteInfo ):
-        await self.new_case(ctx.message.server,
+    async def case_unmute(self, info: UnmuteInfo ):
+        await self.new_case(info.ctx.message.server,
             action="UNMUTEB",
             user=info.user,
-            author=ctx.message.author)
+            author=info.ctx.message.author)
     
     @commands.command(no_pm=True, pass_context=True)
-    async def bot_say(self, ctx, str ):
+    async def bot_say(self, str ):
         await self.bot.say(str)
 
     async def mute_manager(self):
@@ -1727,7 +1727,6 @@ class Restricts:
             to_unmute = set()
 
             self.mutex.acquire()
-            print("tick...")
             print("going to iterate to_unmute. Exists: {}, size, {}".format(self.to_unmute, len(self.to_unmute)))
             for info in self.to_unmute:
                 to_unmute.add(info)
@@ -1765,14 +1764,17 @@ class Restricts:
                 str += "\nand not unmeted in channels: "
                 if failed_to_unmute:
                     for info in failed_to_unmute:
-                        str += info.channel.name + " ":
+                        str += info.channel.name + " "
                 else:
                     str += "none"
                 print(str)
                 print("going to say it with a bot")
                 if unmuted:
+                    info = list(unmuted)[0]
+                else:
+                    info = list(failed_to_unmute)[0]
+                if unmuted:
                     try:
-                        info = list(unmuted)[0]
                         await info.ctx.invoke(self.case_unmute, info)
                     except Exception as e:
                         print('got some error while saying about unmute' + str(e))
@@ -1780,6 +1782,7 @@ class Restricts:
 
                 await info.ctx.invoke(self.bot_say, str)
 
+            print("tick...")
             await asyncio.sleep(1)
 
     def duration_from_text(self, reason: str):
