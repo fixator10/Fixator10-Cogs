@@ -1712,14 +1712,14 @@ class Restricts:
         return original == empty
 
     @commands.command(no_pm=True, pass_context=True)
-    async def case_unmute(self, info: UnmuteInfo ):
+    async def case_unmute(self, ctx, info: UnmuteInfo ):
         await self.new_case(info.ctx.message.server,
             action="UNMUTEB",
             user=info.user,
             author=info.ctx.message.author)
     
     @commands.command(no_pm=True, pass_context=True)
-    async def bot_say(self, str ):
+    async def bot_say(self, ctx, str ):
         await self.bot.say(str)
 
     async def mute_manager(self):
@@ -1775,12 +1775,12 @@ class Restricts:
                     info = list(failed_to_unmute)[0]
                 if unmuted:
                     try:
-                        await self.info.ctx.invoke(self.case_unmute, info)
+                        await info.ctx.invoke(self.case_unmute, info.ctx, info)
                     except Exception as e:
                         print('got some error while saying about unmute' + str(e))
                         traceback.print_exc()
 
-                await self.info.ctx.invoke(self.bot_say, str)
+                await info.ctx.invoke(self.bot_say, info.ctx, str)
 
             print("tick...")
             await asyncio.sleep(1)
