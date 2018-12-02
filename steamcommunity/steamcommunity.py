@@ -99,7 +99,7 @@ class SteamUser:
         self.avatar32 = self._userdata.get("avatar")
         self.avatar64 = self._userdata.get("avatarmedium")
         self.avatar184 = self._userdata.get("avatarfull")
-        self.visibility = visibilites[self._userdata.get("communityvisibiltystate", 1)]
+        self.visibility = visibilites[self._userdata.get("communityvisibilitystate", 1)]
         self.hasprofile = True if self._userdata.get("profilestate") else False
         self.lastlogoff = self._userdata.get("lastlogoff")
         self.comments = self._userdata.get("commentpermission")
