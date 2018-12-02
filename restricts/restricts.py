@@ -607,6 +607,7 @@ class Restricts:
                                "To use mute with timer please try again with a correct duration format.")
 
         register = {}
+        muted = set()
         for channel in server.channels:
             if channel.type != discord.ChannelType.text:
                 continue
@@ -625,8 +626,11 @@ class Restricts:
                 return
             else:
                 if parsedDuration:
-                    await self.on_muted(UnmuteInfo(ctx, channel, user, parsedDuration))
+                    muted.add(UnmuteInfo(ctx, channel, user, parsedDuration))
                 await asyncio.sleep(0.1)
+        for info in muted:
+            self.on_muted(info)
+
         if not register:
             await self.bot.say("That user is already muted in all channels.")
             return
