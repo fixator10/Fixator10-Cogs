@@ -70,8 +70,8 @@ class GodvilleData:
                 text += "{}: {}\n".format(profile_replacements[key], value)
             elif key == "pet":
                 text += "Питомец:\n"
-                for key, value in profile["pet"].items():
-                    text += "    {}: {}\n".format(pet_replacements[key], value)
+                for petfield, petdata in profile["pet"].items():
+                    text += "    {}: {}\n".format(pet_replacements[petfield], petdata)
         await self.bot.say(text_header + chat.box(text))
 
 

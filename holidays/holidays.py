@@ -11,16 +11,13 @@ from cogs.utils.dataIO import dataIO
 
 
 def bool_emojify(bool_var: bool) -> str:
-    if bool_var:
-        return "✅"
-    else:
-        return "❎"
+    return "✅" if bool_var else "❎"
 
 
 class Holidays:
     """Check holidays for this month"""
 
-    def __init__(self, bot):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.session = aiohttp.ClientSession(loop=self.bot.loop)
         self.config_file = "data/holidays/config.json"

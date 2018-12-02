@@ -50,10 +50,7 @@ def rgb_to_cmyk(r, g, b):
 
 
 def bool_emojify(bool_var: bool) -> str:
-    if bool_var:
-        return "✔"
-    else:
-        return "❌"
+    return "✔" if bool_var else "❌"
 
 
 class CustomChecks:
@@ -69,7 +66,7 @@ class CustomChecks:
 
 
 class MoreUtils:
-    def __init__(self, bot: discord.Client):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.config_file = "data/moreutils/config.json"
         self.config = dataIO.load_json(self.config_file)
@@ -266,14 +263,14 @@ class MoreUtils:
             await self.bot.say(embed=em)
         else:
             await self.bot.say("```\n" +
-                                   "Provided HEX: " + color +
-                                   "\nRGB: " + str(colorrgb) +
-                                   "\nCMYK: " + str(colorcmyk) +
-                                   "\nHSV: " + str(colorhsv) +
-                                   "\nHLS: " + str(colorhls) +
-                                   "\nYIQ: " + str(coloryiq) +
-                                   "\nint: " + str(colorint) +
-                                   "```")
+                               "Provided HEX: " + color +
+                               "\nRGB: " + str(colorrgb) +
+                               "\nCMYK: " + str(colorcmyk) +
+                               "\nHSV: " + str(colorhsv) +
+                               "\nHLS: " + str(colorhls) +
+                               "\nYIQ: " + str(coloryiq) +
+                               "\nint: " + str(colorint) +
+                               "```")
 
     @commands.command(pass_context=True, no_pm=True)
     async def someone(self, ctx, *, text: str = None):

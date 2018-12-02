@@ -11,7 +11,7 @@ from cogs.utils.chat_formatting import *
 class MemeGen:
     """Make memes with bot!"""
 
-    def __init__(self, bot):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.session = aiohttp.ClientSession(loop=self.bot.loop)
 

@@ -12,7 +12,7 @@ from cogs.utils.dataIO import dataIO
 class SelfRole:
     """Let users assign roles without asking to mods"""
 
-    def __init__(self, bot: discord.Client):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.config_file = "data/selfrole/config.json"
         self.config = dataIO.load_json(self.config_file)
@@ -70,18 +70,18 @@ class SelfRole:
 
     @selfrole.command(pass_context=True, hidden=True)
     @checks.admin_or_permissions(manage_roles=True)
-    async def removeid(self, ctx: commands.Context, *, id: str):
+    async def removeid(self, ctx: commands.Context, *, roleid: str):
         """Remove role to accessible roles for selfrole command by id"""
         sv = ctx.message.server.id
         if sv not in self.config:
             self.config[sv] = []
-        if id not in self.config[sv]:
+        if roleid not in self.config[sv]:
             await self.bot.say(chat.error("This role is not in selfrole list"))
         else:
-            self.config[sv].remove(id)
+            self.config[sv].remove(roleid)
             dataIO.save_json(self.config_file, self.config)
             await self.bot.say(chat.info("Removed role with id `{}` from list of available roles "
-                                         "for selfrole command".format(id)))
+                                         "for selfrole command".format(roleid)))
 
     @selfrole.command(pass_context=True)
     async def list(self, ctx: commands.Context):

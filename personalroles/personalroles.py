@@ -35,7 +35,7 @@ class PRCustomCheck:
 class PersonalRoles:
     """Assign and edit personal roles"""
 
-    def __init__(self, bot: discord.Client):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.config_file = "data/personalroles/config.json"
         self.config = dataIO.load_json(self.config_file)
@@ -72,15 +72,15 @@ class PersonalRoles:
 
     @myrole.command(pass_context=True, no_pm=True, hidden=True)
     @checks.admin_or_permissions(manage_roles=True)
-    async def unassignid(self, ctx, *, id: str):
+    async def unassignid(self, ctx, *, userid: str):
         """Unassign personal role from someone by ID"""
         sv = ctx.message.server.id
-        if sv not in self.config or id not in self.config[sv]["users"]:
-            await self.bot.say("Can't find {} in assigned roles list.".format(id))
+        if sv not in self.config or userid not in self.config[sv]["users"]:
+            await self.bot.say("Can't find {} in assigned roles list.".format(userid))
             return
-        del self.config[sv]["users"][id]
+        del self.config[sv]["users"][userid]
         dataIO.save_json(self.config_file, self.config)
-        await self.bot.say("Ok. I just removed {} from assigned roles list.".format(id))
+        await self.bot.say("Ok. I just removed {} from assigned roles list.".format(userid))
 
     @myrole.command(pass_context=True, no_pm=True, name="list")
     @checks.admin_or_permissions(manage_roles=True)
