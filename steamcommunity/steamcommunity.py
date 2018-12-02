@@ -52,6 +52,7 @@ class SteamCommunity:
         if not ctx.message.channel.permissions_for(ctx.message.server.me).embed_links:
             await self.bot.say(chat.error("This command requires enabled embeds.\n"
                                           "Ask admins of server to enable embeds for me in this channel and try again"))
+            return
         if not self.check_api():
             await self.bot.say(chat.error("Steam web API key not set or it is incorrect.\n"
                                           "Ask owner of the bot to use "
@@ -62,7 +63,12 @@ class SteamCommunity:
             if user is None:
                 await self.bot.say(chat.error("Unable to resolve vanity ID: {}".format(message)))
                 return
-        profile = SteamUser(self.config["apikey"], user)
+        try:
+            profile = SteamUser(self.config["apikey"], user)
+        except IndexError:
+            await self.bot.say(chat.error("Unable to get profile for {}. "
+                                          "Check your input or try again later.".format(user)))
+            return
         em = discord.Embed(title=profile.personaname,
                            description=profile.personastate(),
                            url=profile.profileurl,
