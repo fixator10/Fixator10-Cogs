@@ -1,6 +1,6 @@
 {
     "AUTHOR" : "ctin",
-    "INSTALL_MSG" : "installed restricts",
+  "INSTALL_MSG": "Thanks for install.\nRemember to unload default mod.py before loading this module",
     "NAME" : "Restricts",
     "SHORT" : "Restricts to mute, unmute etc.",
     "DESCRIPTION" : "Restricts to mute, unmute etc.",
