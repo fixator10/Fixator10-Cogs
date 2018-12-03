@@ -5,5 +5,7 @@
     "SHORT": "Get data about Godville profiles",
     "DESCRIPTION": "Get data about Godville profiles",
     "TAGS": [],
-    "REQUIREMENTS": []
+    "REQUIREMENTS": [
+        "python-dateutil"
+    ]
 }
