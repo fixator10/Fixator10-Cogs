@@ -21,9 +21,9 @@ ACTIONS_REPR = {
     "KICK": ("Kick", "\N{WOMANS BOOTS}"),
     "CMUTE": ("Channel mute", "\N{SPEAKER WITH CANCELLATION STROKE}"),
     "SMUTE": ("Server mute", "\N{SPEAKER WITH CANCELLATION STROKE}"),
-    "UNMUTEC": ("Channel Unmute", "\N{SPEAKER}"),
-    "UNMUTES": ("Server Unmute", "\N{SPEAKER}"),
-    "UNMUTEB": ("Bot Unmute", "\N{SPEAKER}"),
+    "UNMUTEC": ("Channel Unmute", "\N{SPEAKER WITH THREE SOUND WAVES}"),
+    "UNMUTES": ("Server Unmute", "\N{SPEAKER WITH THREE SOUND WAVES}"),
+    "UNMUTEB": ("Auto-Unmute", "\N{ROBOT FACE} \N{SPEAKER WITH THREE SOUND WAVES}"),
     "SOFTBAN": ("Softban", "\N{DASH SYMBOL} \N{HAMMER}"),
     "HACKBAN": ("Preemptive ban", "\N{BUST IN SILHOUETTE} \N{HAMMER}"),
     "UNBAN": ("Unban", "\N{DOVE OF PEACE}")
@@ -100,7 +100,7 @@ class TempCache:
 
 
 class UnmuteInfo:
-    def __init__(self, ctx, channel, user: discord.Member, duration = 0):
+    def __init__(self, ctx, channel, user: discord.Member, duration=0):
         self.ctx = ctx
         self.channel = channel
         self.channel_requester = ctx.message.channel
@@ -120,7 +120,7 @@ class UnmuteInfo:
         return hash(self.user) ^ \
                hash(self.channel) ^ \
                hash(self.ctx.message.server)
-    
+
 
 class UnmuteError:
     forbidden = "forbidden"
@@ -144,7 +144,7 @@ class Restricts:
         self.cases = dataIO.load_json("data/mod/modlog.json")
         self.last_case = defaultdict(dict)
         self.temp_cache = TempCache(bot)
-        #cache to store information about unmute
+        # cache to store information about unmute
         self.to_unmute = set()
         self.mutex = Lock()
 
@@ -176,13 +176,13 @@ class Restricts:
     async def _modset_adminrole(self, ctx):
         """Use [p]set adminrole instead"""
         await self.bot_say(ctx, "This command has been renamed "
-                           "`{}set adminrole`".format(ctx.prefix))
+                                "`{}set adminrole`".format(ctx.prefix))
 
     @modset.command(name="modrole", pass_context=True, no_pm=True, hidden=True)
     async def _modset_modrole(self, ctx):
         """Use [p]set modrole instead"""
         await self.bot_say(ctx, "This command has been renamed "
-                           "`{}set modrole`".format(ctx.prefix))
+                                "`{}set modrole`".format(ctx.prefix))
 
     @modset.command(pass_context=True, no_pm=True)
     async def modlog(self, ctx, channel: discord.Channel = None):
@@ -193,7 +193,7 @@ class Restricts:
         if channel:
             self.settings[server.id]["mod-log"] = channel.id
             await self.bot_say(ctx, "Mod events will be sent to {}"
-                               "".format(channel.mention))
+                                    "".format(channel.mention))
         else:
             if self.settings[server.id]["mod-log"] is None:
                 await send_cmd_help(ctx)
@@ -213,9 +213,9 @@ class Restricts:
                 max_mentions = 5
             self.settings[server.id]["ban_mention_spam"] = max_mentions
             await self.bot_say(ctx, "Autoban for mention spam enabled. "
-                               "Anyone mentioning {} or more different people "
-                               "in a single message will be autobanned."
-                               "".format(max_mentions))
+                                    "Anyone mentioning {} or more different people "
+                                    "in a single message will be autobanned."
+                                    "".format(max_mentions))
         else:
             if self.settings[server.id]["ban_mention_spam"] is False:
                 await send_cmd_help(ctx)
@@ -231,7 +231,7 @@ class Restricts:
         if not self.settings[server.id]["delete_repeats"]:
             self.settings[server.id]["delete_repeats"] = True
             await self.bot_say(ctx, "Messages repeated up to 3 times will "
-                               "be deleted.")
+                                    "be deleted.")
         else:
             self.settings[server.id]["delete_repeats"] = False
             await self.bot_say(ctx, "Repeated messages will be ignored.")
@@ -259,19 +259,19 @@ class Restricts:
                 await self.bot_say(ctx, "Command deleting disabled.")
             else:
                 await self.bot_say(ctx, "Delete delay set to {}"
-                                   " seconds.".format(time))
+                                        " seconds.".format(time))
             dataIO.save_json("data/mod/settings.json", self.settings)
         else:
             try:
                 delay = self.settings[server.id]["delete_delay"]
             except KeyError:
                 await self.bot_say(ctx, "Delete delay not yet set up on this"
-                                   " server.")
+                                        " server.")
             else:
                 if delay != -1:
                     await self.bot_say(ctx, "Bot will delete command messages after"
-                                       " {} seconds. Set this value to -1 to"
-                                       " stop deleting messages".format(delay))
+                                            " {} seconds. Set this value to -1 to"
+                                            " stop deleting messages".format(delay))
                 else:
                     await self.bot_say(ctx, "I will not delete command messages.")
 
@@ -332,11 +332,11 @@ class Restricts:
         if not toggled:
             self.settings[server.id]["respect_hierarchy"] = True
             await self.bot_say(ctx, "Role hierarchy will be checked when "
-                               "moderation commands are issued.")
+                                    "moderation commands are issued.")
         else:
             self.settings[server.id]["respect_hierarchy"] = False
             await self.bot_say(ctx, "Role hierarchy will be ignored when "
-                               "moderation commands are issued.")
+                                    "moderation commands are issued.")
         dataIO.save_json("data/mod/settings.json", self.settings)
 
     @commands.command(no_pm=True, pass_context=True)
@@ -348,12 +348,12 @@ class Restricts:
 
         if author == user:
             await self.bot_say(ctx, "I cannot let you do that. Self-harm is "
-                               "bad \N{PENSIVE FACE}")
+                                    "bad \N{PENSIVE FACE}")
             return
         elif not self.is_allowed_by_hierarchy(server, author, user):
             await self.bot_say(ctx, "I cannot let you do that. You are "
-                               "not higher than the user in the role "
-                               "hierarchy.")
+                                    "not higher than the user in the role "
+                                    "hierarchy.")
             return
 
         try:
@@ -383,12 +383,12 @@ class Restricts:
 
         if author == user:
             await self.bot_say(ctx, "I cannot let you do that. Self-harm is "
-                               "bad \N{PENSIVE FACE}")
+                                    "bad \N{PENSIVE FACE}")
             return
         elif not self.is_allowed_by_hierarchy(server, author, user):
             await self.bot_say(ctx, "I cannot let you do that. You are "
-                               "not higher than the user in the role "
-                               "hierarchy.")
+                                    "not higher than the user in the role "
+                                    "hierarchy.")
             return
 
         if days:
@@ -451,7 +451,7 @@ class Restricts:
             await self.bot.http.ban(user_id, server.id, 0)
         except discord.NotFound:
             await self.bot_say(ctx, "User not found. Have you provided the "
-                               "correct user ID?")
+                                    "correct user ID?")
         except discord.Forbidden:
             await self.bot_say(ctx, "I lack the permissions to do this.")
         else:
@@ -464,7 +464,7 @@ class Restricts:
                                 user=user,
                                 reason=reason)
             await self.bot_say(ctx, "Done. The user will not be able to join this "
-                               "server.")
+                                    "server.")
 
     @commands.command(no_pm=True, pass_context=True)
     @checks.admin_or_permissions(ban_members=True)
@@ -477,12 +477,12 @@ class Restricts:
 
         if author == user:
             await self.bot_say(ctx, "I cannot let you do that. Self-harm is "
-                               "bad \N{PENSIVE FACE}")
+                                    "bad \N{PENSIVE FACE}")
             return
         elif not self.is_allowed_by_hierarchy(server, author, user):
             await self.bot_say(ctx, "I cannot let you do that. You are "
-                               "not higher than the user in the role "
-                               "hierarchy.")
+                                    "not higher than the user in the role "
+                                    "hierarchy.")
             return
 
         try:
@@ -533,7 +533,7 @@ class Restricts:
             await self.bot_say(ctx, "Done.")
         except discord.Forbidden:
             await self.bot_say(ctx, "I cannot do that, I lack the "
-                               "\"Manage Nicknames\" permission.")
+                                    "\"Manage Nicknames\" permission.")
 
     @commands.group(pass_context=True, no_pm=True, invoke_without_command=True)
     @checks.mod_or_permissions(administrator=True)
@@ -555,12 +555,12 @@ class Restricts:
 
         if overwrites.send_messages is False:
             await self.bot_say(ctx, "That user can not can't send messages in this "
-                               "channel (already muted?)")
+                                    "channel (already muted?)")
             return
         elif not self.is_allowed_by_hierarchy(server, author, user):
             await self.bot_say(ctx, "I cannot let you do that. You are "
-                               "not higher than the user in the role "
-                               "hierarchy.")
+                                    "not higher than the user in the role "
+                                    "hierarchy.")
             return
 
         overwrites.send_messages = False
@@ -568,16 +568,16 @@ class Restricts:
             await self.bot.edit_channel_permissions(channel, user, overwrites)
         except discord.Forbidden:
             await self.bot_say(ctx, "Failed to mute user. I need the manage roles "
-                               "permission and the user I'm muting must be "
-                               "lower than myself in the role hierarchy.")
+                                    "permission and the user I'm muting must be "
+                                    "lower than myself in the role hierarchy.")
         else:
             parsedDuration = self.duration_from_text(reason)
             if parsedDuration:
                 await self.on_muted(UnmuteInfo(ctx, ctx.message.channel, user, parsedDuration))
             else:
                 await self.bot_say(ctx, "Can not parse duration. "
-                                   "Will mute without timer. "
-                                   "To use mute with timer please try again with a correct duration format.")
+                                        "Will mute without timer. "
+                                        "To use mute with timer please try again with a correct duration format.")
 
             await self.new_case(server,
                                 action="CMUTE",
@@ -601,14 +601,14 @@ class Restricts:
 
         if not self.is_allowed_by_hierarchy(server, author, user):
             await self.bot_say(ctx, "I cannot let you do that. You are "
-                               "not higher than the user in the role "
-                               "hierarchy.")
+                                    "not higher than the user in the role "
+                                    "hierarchy.")
             return
         parsedDuration = self.duration_from_text(reason)
         if not parsedDuration:
             await self.bot_say(ctx, "Can not parse duration. "
-                               "Will mute without timer. "
-                               "To use mute with timer please try again with a correct duration format.")
+                                    "Will mute without timer. "
+                                    "To use mute with timer please try again with a correct duration format.")
 
         register = {}
         muted = set()
@@ -625,8 +625,8 @@ class Restricts:
                                                         overwrites)
             except discord.Forbidden:
                 await self.bot_say(ctx, "Failed to mute user. I need the manage roles "
-                                   "permission and the user I'm muting must be "
-                                   "lower than myself in the role hierarchy.")
+                                        "permission and the user I'm muting must be "
+                                        "lower than myself in the role hierarchy.")
                 return
             else:
                 if parsedDuration:
@@ -660,19 +660,19 @@ class Restricts:
 
     @checks.mod_or_permissions(administrator=True)
     @unmute.command(name="channel", pass_context=True, no_pm=True)
-    async def channel_unmute(self, ctx, user: discord.Member):
+    async def channel_unmute(self, ctx, user: discord.Member, *, reason: str = None):
         error = await self.channel_unmute_impl(ctx, ctx.message.channel, user)
         if error == UnmuteError.not_muted:
             await self.bot_say(ctx, "That user doesn't seem to be muted "
-                               "in this channel.")
+                                    "in this channel.")
         elif error == UnmuteError.forbidden:
             await self.bot_say(ctx, "I cannot let you do that. You are "
-                               "not higher than the user in the role "
-                               "hierarchy.")
+                                    "not higher than the user in the role "
+                                    "hierarchy.")
         elif error == UnmuteError.failed_to_unmute:
             await self.bot_say(ctx, "Failed to unmute user. I need the manage roles"
-                               " permission and the user I'm unmuting must be "
-                               "lower than myself in the role hierarchy.")
+                                    " permission and the user I'm unmuting must be "
+                                    "lower than myself in the role hierarchy.")
         elif error == UnmuteError.not_text:
             await self.bot_say(ctx, "please try to unmute only in text channels")
         else:
@@ -680,7 +680,8 @@ class Restricts:
             await self.new_case(ctx.message.server,
                                 action="UNMUTEC",
                                 mod=ctx.message.author,
-                                user=user)
+                                user=user,
+                                reason=reason)
 
     async def channel_unmute_impl(self, ctx, channel, user: discord.Member):
         """Unmutes user in the current channel"""
@@ -708,12 +709,12 @@ class Restricts:
         except discord.Forbidden:
             return error.failed_to_unmute
         else:
-            await self.on_unmueted(UnmuteInfo(ctx, channel, user))
+            await self.on_unmuted(UnmuteInfo(ctx, channel, user))
             return error
 
     @checks.mod_or_permissions(administrator=True)
     @unmute.command(name="server", pass_context=True, no_pm=True)
-    async def server_unmute(self, ctx, user: discord.Member):
+    async def server_unmute(self, ctx, user: discord.Member, *, reason: str = None):
         """Unmutes user in the server"""
         server = ctx.message.server
         author = ctx.message.author
@@ -722,16 +723,16 @@ class Restricts:
 
         if not self.is_allowed_by_hierarchy(server, author, user):
             await self.bot_say(ctx, "I cannot let you do that. You are "
-                               "not higher than the user in the role "
-                               "hierarchy.")
+                                    "not higher than the user in the role "
+                                    "hierarchy.")
             return
 
         for channel in server.channels:
             error = await self.channel_unmute_impl(ctx, channel, user)
             if error == UnmuteError.forbidden:
                 await self.bot_say(ctx, "Failed to unmute user. I need the manage roles"
-                                   " permission and the user I'm unmuting must be "
-                                   "lower than myself in the role hierarchy.")
+                                        " permission and the user I'm unmuting must be "
+                                        "lower than myself in the role hierarchy.")
                 return
             else:
                 await asyncio.sleep(0.1)
@@ -739,7 +740,8 @@ class Restricts:
         await self.new_case(server,
                             action="UNMUTES",
                             mod=author,
-                            user=user)
+                            user=user,
+                            reason=reason)
         await self.bot_say(ctx, "User has been unmuted in this server.")
 
     @commands.group(pass_context=True)
@@ -868,7 +870,7 @@ class Restricts:
 
         if not is_bot:
             await self.bot_say(ctx, "This command can only be used on bots with "
-                               "bot accounts.")
+                                    "bot accounts.")
             return
 
         to_delete = []
@@ -1095,7 +1097,7 @@ class Restricts:
             await self.bot_say(ctx, "I couldn't find the case's message.")
         except NoModLogAccess:
             await self.bot_say(ctx, "I'm not allowed to access the mod-log "
-                               "channel (or its message history)")
+                                    "channel (or its message history)")
         else:
             await self.bot_say(ctx, "Case #{} updated.".format(case))
 
@@ -1284,7 +1286,7 @@ class Restricts:
         except discord.Forbidden:
             await self.bot_say(ctx, "I need permissions to manage roles first.")
         except Exception as e:
-            print(e)
+            # print(e)
             await self.bot_say(ctx, "Something went wrong.")
 
     @editrole.command(name="name", pass_context=True)
@@ -1308,11 +1310,11 @@ class Restricts:
         except discord.Forbidden:
             await self.bot_say(ctx, "I need permissions to manage roles first.")
         except Exception as e:
-            print(e)
+            # print(e)
             await self.bot_say(ctx, "Something went wrong.")
 
-    @commands.command()
-    async def names(self, user: discord.Member):
+    @commands.command(pass_context=True)
+    async def names(self, ctx, user: discord.Member):
         """Show previous names/nicknames of a user"""
         server = user.server
         names = self.past_names[user.id] if user.id in self.past_names else None
@@ -1335,7 +1337,7 @@ class Restricts:
             await self.bot_say(ctx, msg)
         else:
             await self.bot_say(ctx, "That user doesn't have any recorded name or "
-                               "nickname change.")
+                                    "nickname change.")
 
     async def mass_purge(self, messages):
         while messages:
@@ -1727,28 +1729,29 @@ class Restricts:
         try:
             await self.bot.say(text)
         except Exception as e:
-            print('failed to say: ' + str(text) + '; because of: ' + str(e))
+            # print('failed to say: ' + str(text) + '; because of: ' + str(e))
+            pass
 
-    @commands.command(no_pm=True, pass_context=True)
-    async def case_unmute(self, ctx, info: UnmuteInfo ):
+    async def case_unmute(self, info: UnmuteInfo):
         await self.new_case(info.ctx.message.server,
-            action="UNMUTEB",
-            user=info.user,
-            mod=info.ctx.message.author)
-    
-    @commands.command(no_pm=True, pass_context=True)
-    async def send_message(self, ctx, channel, text ):
+                            action="UNMUTEB",
+                            user=info.user,
+                            mod=info.ctx.message.author,
+                            reason="Auto unmute")
+
+    async def send_message(self, channel, text):
         try:
             await self.bot.send_message(channel, text)
         except Exception as e:
-            print('failed to send_message: ' + str(text) + '; because of: ' + str(e))
+            # print('failed to send_message: ' + str(text) + '; because of: ' + str(e))
+            pass
 
     async def mute_manager(self):
         while self == self.bot.get_cog('Restricts'):
             to_unmute = set()
 
             if self.mutex.locked():
-                print("mutex already locked: mute_manager")
+                # print("mutex already locked: mute_manager")
                 traceback.print_exc()
             self.mutex.acquire()
             for info in self.to_unmute:
@@ -1761,32 +1764,32 @@ class Restricts:
                 if type(info) is UnmuteInfo:
                     now = time.time()
                     if now > info.unmute_time():
-                        print("trying to unmute {}".format(info.user.name))
+                        # print("trying to unmute {}".format(info.user.name))
                         try:
                             error = await self.channel_unmute_impl(info.ctx, info.channel, info.user)
                             if error:
-                                print("failed: {}".format(error))
+                                # print("failed: {}".format(error))
                                 failed_to_unmute.add(info)
                             else:
                                 unmuted.add(info)
-                                print("success")
+                                # print("success")
 
                         except Exception as e:
-                            print('got some error while unmuted'+ str(e))
+                            # print('got some error while unmuted' + str(e))
                             traceback.print_exc()
-        
+
             if unmuted or failed_to_unmute:
                 text = "bot timer: "
                 if unmuted:
                     text = "unmuted in channels: "
                     for info in unmuted:
-                        text += info.channel.name + " "
+                        text += info.channel.mention + " "
                 if unmuted and failed_to_unmute:
                     text += "\n"
                 if failed_to_unmute:
                     text += "not unmuted in channels: "
                     for info in failed_to_unmute:
-                        text += info.channel.name + " "
+                        text += info.channel.mention + " "
 
                 if unmuted:
                     info = list(unmuted)[0]
@@ -1794,11 +1797,11 @@ class Restricts:
                     info = list(failed_to_unmute)[0]
                 if unmuted:
                     try:
-                        await info.ctx.invoke(self.case_unmute, info)
+                        await self.case_unmute(info)
                     except Exception as e:
-                        print('got some error while saying about unmute' + str(e))
+                        # print('got some error while saying about unmute' + str(e))
                         traceback.print_exc()
-                await info.ctx.invoke(self.send_message, info.channel_requester, text)
+                await self.send_message(info.channel_requester, text)
 
             await asyncio.sleep(1)
 
@@ -1813,7 +1816,7 @@ class Restricts:
 
         text = words[-1]
         text = text.strip()
-        
+
         if re.match("([0-9]+){1}(day|days|d)", text):
             duration += int(re.match("([0-9]+){1}(day|days|d)", text).group(1)) * 24 * 60 * 60
         if re.match("([0-9]+){1}(hours|hour|h)", text):
@@ -1826,27 +1829,27 @@ class Restricts:
 
     async def on_muted(self, info: UnmuteInfo):
         if self.mutex.locked():
-            print("mutex already locked: on_muted")
+            # print("mutex already locked: on_muted")
             traceback.print_exc()
 
         self.mutex.acquire()
         try:
-            #remove the last user info with it fucking caches
+            # remove the last user info with it fucking caches
             self.to_unmute.remove(info)
         except KeyError:
             pass
         finally:
             # add new user info with it fucking caches
             self.to_unmute.add(info)
-            self.mutex.release() 
+            self.mutex.release()
 
-    async def on_unmueted(self, info: UnmuteInfo):
+    async def on_unmuted(self, info: UnmuteInfo):
         if self.mutex.locked():
-            print("mutex already locked: on_unmueted")
+            # print("mutex already locked: on_unmuted")
             traceback.print_exc()
 
         self.mutex.acquire()
-        try:                
+        try:
             self.to_unmute.remove(info)
         except KeyError:
             pass
