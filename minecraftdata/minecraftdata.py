@@ -71,8 +71,7 @@ class MinecraftData:
                 if data.status == 404:
                     await self.bot.say(chat.error("404. Player not found on LabyMod's servers."))
                     return
-                else:
-                    cape = await data.read()
+                cape = await data.read()
         except:
             await self.bot.say(chat.error("Data is not found. (Or LabyMod capes server is down)"))
             return
@@ -106,7 +105,7 @@ class MinecraftData:
             return
         try:
             async with self.session.get('http://textures.5zig.net/textures/2/' + uuid) as data:
-                response_data = await data.json(content_type='text/plain')
+                response_data = await data.json()
             cape = response_data["cape"]
         except:
             await self.bot.say(chat.error("Data is not found. (Or 5zig texture server is down)"))
@@ -124,7 +123,7 @@ class MinecraftData:
             return
         try:
             async with self.session.get('http://textures.5zig.net/textures/2/' + uuid) as data:
-                response_data = await data.json(content_type='text/plain')
+                response_data = await data.json()
             cape = response_data["animatedCape"]
         except:
             await self.bot.say(chat.error("Data is not found. (Or 5zig texture server is down)"))
