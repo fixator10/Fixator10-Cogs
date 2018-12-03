@@ -121,7 +121,7 @@ class GodvilleUser(object):
         self._clan = profile.get("clan")
         self._clan_pos = profile.get("clan_position")
         self._motto = profile.get("motto")
-        self._pet_data = profile.get("pet")
+        self._pet_data = profile.get("pet", {})
         self._gold = profile.get("gold_approx")
         self._town = profile.get("town_name")
 
