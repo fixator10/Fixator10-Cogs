@@ -209,11 +209,10 @@ class MinecraftData:
             return None
         if response_data is None or "id" not in response_data:
             return None
-        else:
-            uuid = str(response_data["id"])
-            if dashed:
-                uuid = str(UUID(hex=uuid))
-            return uuid
+        uuid = str(response_data["id"])
+        if dashed:
+            uuid = str(UUID(hex=uuid))
+        return uuid
 
 
 def setup(bot):
