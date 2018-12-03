@@ -277,7 +277,8 @@ class MoreUtils:
                    "(⁄ ⁄•⁄ω⁄•⁄ ⁄)", "(╯°□°）╯︵ ┻━┻", "ಠ_ಠ", "¯\\(°_o)/¯", "（✿ ͡◕ ᴗ◕)つ━━✫・o。", "ヽ༼ ಠ益ಠ ༽ﾉ"]
         smile = random.choice(smilies)
         member = await self.random_channel_member(ctx.message.channel)
-        await self.bot.say("**@someone** {} ***{}*** {}".format(smile, member.display_name,
+        await self.bot.say("**@someone** {} ***{}*** {}".format(smile,
+                                                                chat.escape(member.display_name, mass_mentions=True),
                                                                 chat.escape(text, mass_mentions=True) if text else ""))
 
     async def random_channel_member(self, channel: discord.Channel):
