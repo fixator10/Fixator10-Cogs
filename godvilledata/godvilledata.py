@@ -1,6 +1,7 @@
 import os
 
 import aiohttp
+from dateutil.parser import *
 from discord.ext import commands
 
 from cogs.utils import chat_formatting as chat
@@ -43,8 +44,9 @@ class GodvilleData:
         if profile.need_update:
             text_header += chat.bold("! УСТАРЕВШАЯ ИНФОРМАЦИЯ !") + "\n"
         text = ""
-        # TODO: times
-        # TODO: pet
+        pet = ""
+        times = ""
+        anytime = any([profile.ark_date, profile.savings_date, profile.temple_date])
         if profile.gold_approximately:
             text += "Золота: {}\n".format(profile.gold_approximately)
         if profile.distance:
@@ -60,7 +62,7 @@ class GodvilleData:
         text += "Пол: {}\n".format(profile.gender)
         text += "Побед/Поражений: {}/{}\n".format(profile.arena_won, profile.arena_lost)
         text += "Гильдия: {} ({})\n".format(profile.clan, profile.clan_position) if profile.clan \
-            else "Гильдия: Не состоит "
+            else "Гильдия: Не состоит\n"
         text += "Кирпичей: {} ({}%)\n".format(profile.bricks, profile.bricks_percent)
         if profile.inventory:
             text += "Инвентарь: {}/{}\n".format(profile.inventory, profile.inventory_max)
@@ -76,6 +78,7 @@ class GodvilleData:
             text += "Уровень торговли: {}\n".format(profile.trading_level)
         if profile.wood:
             text += "Поленьев: {}\n".format(profile.wood)
+
         # private (api only)
         if profile.diary_last:
             text += "Дневник: {}\n".format(profile.diary_last)
@@ -83,7 +86,25 @@ class GodvilleData:
             text += "Активируемое в инвентаре: {}\n".format(", ".join(profile.activatables))
         if profile.aura:
             text += "Аура: {}\n".format(profile.aura)
-        await self.bot.say(text_header + chat.box(text))
+
+        # pet
+        if profile.pet.name:
+            pet += "Имя: {}\n".format(profile.pet.name)
+            pet += "Уровень: {}\n".format(profile.pet.level)
+            if profile.pet.type:
+                pet += "Тип: {}\n".format(profile.pet.type)
+
+        # times
+        if profile.temple_date:
+            times += "Храм достроен: {}\n".format(profile.date_string("temple"))
+        if profile.ark_date:
+            times += "Ковчег достроен: {}\n".format(profile.date_string("ark"))
+        if profile.savings_date:
+            times += "Пенсия собрана: {}\n".format(profile.date_string("savings"))
+        await self.bot.say(text_header + chat.box(text) +
+                           "\nПитомец:\n" + chat.box(pet) if profile.pet.name else "" +
+                                                                                   "\n" + chat.box(
+            times) if anytime else "")
 
     @godville.command(pass_context=True, hidden=True)
     async def apikey(self, ctx: commands.Context, apikey: str, *, godname: str):
@@ -154,6 +175,17 @@ class GodvilleUser(object):
             "dungeon": "Подземелье"
         }
         return fights.get(self.fight_type)
+
+    def date_string(self, date: str):
+        """Get a date string"""
+        dates = {
+            "ark": self.ark_date,
+            "savings": self.savings_date,
+            "temple": self.temple_date
+        }
+        if date not in dates:
+            raise KeyError
+        return parse(dates[date]) - parse(dates[date]).utcoffset()  # shit way to get UTC time out of ISO timestamp
 
 
 class GodvillePet:
