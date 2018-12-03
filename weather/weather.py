@@ -44,13 +44,13 @@ class Weather:
         """Shows weather in provided place"""
         if place is None:
             place = self.config["hometown"]
-        g = geocoder.google(place)
-        if len(g.latlng) == 0:
+        g = geocoder.komoot(place)
+        if not g.latlng:
             await self.bot.say("Cannot find a place `" + place + "`")
             return
         forecast = forecastio.load_forecast(self.apikey, g.latlng[0], g.latlng[1], units="si")
         by_hour = forecast.currently()
-        place = g.city_long + " | " + xstr(g.country_long)
+        place = g.city + " | " + xstr(g.country)
 
         content = "Weather in " + place \
                   + ":\n" + by_hour.summary + "\n" + str(by_hour.temperature) + \
@@ -112,13 +112,13 @@ class Weather:
         """Shows 7 days forecast for provided place"""
         if place is None:
             place = self.config["hometown"]
-        g = geocoder.google(place)
-        if g.latlng:
+        g = geocoder.komoot(place)
+        if not g.latlng:
             await self.bot.say("Cannot find a place `" + place + "`")
             return
         forecast = forecastio.load_forecast(self.apikey, g.latlng[0], g.latlng[1], units="si")
         by_hour = forecast.daily()
-        place = g.city_long + " | " + xstr(g.country_long)
+        place = g.city + " | " + xstr(g.country)
 
         content = "Weather in " + place + ":\n"
         for i in range(0, 6):
