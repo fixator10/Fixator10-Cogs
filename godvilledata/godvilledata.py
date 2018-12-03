@@ -191,7 +191,8 @@ class GodvilleUser(object):
         }
         if date not in dates:
             raise KeyError
-        return parse(dates[date]) - parse(dates[date]).utcoffset()  # shit way to get UTC time out of ISO timestamp
+        utctime = parse(dates[date]) - parse(dates[date]).utcoffset()  # shit way to get UTC time out of ISO timestamp
+        return utctime.strftime('%d.%m.%Y %H:%M:%S')
 
 
 class GodvillePet:
