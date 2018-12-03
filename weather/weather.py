@@ -113,7 +113,7 @@ class Weather:
         if place is None:
             place = self.config["hometown"]
         g = geocoder.google(place)
-        if len(g.latlng) == 0:
+        if g.latlng:
             await self.bot.say("Cannot find a place `" + place + "`")
             return
         forecast = forecastio.load_forecast(self.apikey, g.latlng[0], g.latlng[1], units="si")
