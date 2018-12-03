@@ -159,8 +159,7 @@ class SteamUser:
             return 0x90ba3c
         elif self._personastate > 0:
             return 0x57cbde
-        else:
-            return 0x898989
+        return 0x898989
 
     @property
     def steamid(self):
