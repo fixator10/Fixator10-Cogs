@@ -58,7 +58,7 @@ class GodvilleData:
             text += "Праны: {}/{}\n".format(profile.godpower, 200 if profile.savings_date else 100)
         text += "Характер: {}\n".format(profile.alignment)
         text += "Пол: {}\n".format(profile.gender)
-        text += "Побед/Поражений: {]/{}\n".format(profile.arena_won, profile.arena_lost)
+        text += "Побед/Поражений: {}/{}\n".format(profile.arena_won, profile.arena_lost)
         text += "Гильдия: {} ({})\n".format(profile.clan, profile.clan_position) if profile.clan \
             else "Гильдия: Не состоит "
         text += "Кирпичей: {} ({}%)\n".format(profile.bricks, profile.bricks_percent)
