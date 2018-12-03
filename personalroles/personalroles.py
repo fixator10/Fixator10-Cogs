@@ -24,10 +24,9 @@ class PRCustomCheck:
             if author.id not in config[server.id]["users"]:
                 return False
             role = discord.utils.get(server.roles, id=config[server.id]["users"][author.id])
-            if role is not None:
+            if role:
                 return True
-            else:
-                return False
+            return False
 
         return commands.check(predicate)
 
@@ -184,8 +183,7 @@ class PersonalRoles:
         content_str = str(content)
         if len(content_str) <= length:
             return content
-        else:
-            return ' '.join(content_str[:length + 1].split(' ')[0:-1]) + suffix
+        return ' '.join(content_str[:length + 1].split(' ')[0:-1]) + suffix
 
     async def role_persistance(self, member):
         """Automatically give already assigned roles on join"""
