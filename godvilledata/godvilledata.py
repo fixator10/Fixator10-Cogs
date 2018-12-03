@@ -101,10 +101,16 @@ class GodvilleData:
             times += "Ковчег достроен: {}\n".format(profile.date_string("ark"))
         if profile.savings_date:
             times += "Пенсия собрана: {}\n".format(profile.date_string("savings"))
-        await self.bot.say(text_header + chat.box(text) +
-                           "\nПитомец:\n" + chat.box(pet) if profile.pet.name else "" +
-                                                                                   "\n" + chat.box(
-            times) if anytime else "")
+
+        finaltext = ""
+        finaltext += text_header
+        finaltext += chat.box(text)
+        if profile.pet.name:
+            finaltext += "Питомец:\n"
+            finaltext += chat.box(pet)
+        if anytime:
+            finaltext += chat.box(times)
+        await self.bot.say(finaltext)
 
     @godville.command(pass_context=True, hidden=True)
     async def apikey(self, ctx: commands.Context, apikey: str, *, godname: str):
