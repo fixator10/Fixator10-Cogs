@@ -110,7 +110,7 @@ class PersonalRoles:
 
     @blacklist.command(pass_context=True, no_pm=True)
     @checks.admin_or_permissions(manage_roles=True)
-    async def add(self, ctx, rolename: str):
+    async def add(self, ctx, *, rolename: str):
         """Add rolename to blacklist
         Members will be not able to change name of role to blacklisted names"""
         rolename = rolename.casefold()
@@ -126,7 +126,7 @@ class PersonalRoles:
 
     @blacklist.command(pass_context=True, no_pm=True)
     @checks.admin_or_permissions(manage_roles=True)
-    async def remove(self, ctx, rolename: str):
+    async def remove(self, ctx, *, rolename: str):
         """Remove rolename from blacklist"""
         rolename = rolename.casefold()
         sv = ctx.message.server.id
