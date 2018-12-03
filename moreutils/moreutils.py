@@ -59,8 +59,7 @@ class CustomChecks:
         def predicate(ctx):
             if ctx.bot.user.bot:  # if bot.user.bot is True - bot is not selfbot
                 return False
-            else:
-                return True
+            return True
 
         return commands.check(predicate)
 
@@ -211,17 +210,14 @@ class MoreUtils:
         """Get info about emoji
         
         Works only with nonstandard emojis (non-unicode)"""
-        allowed_roles = []
-        for elem in emoji.roles:
-            allowed_roles.append(elem.name)
         em = discord.Embed(title=emoji.name, colour=random.randint(0, 16777215))
         em.add_field(name="ID", value=emoji.id)
         em.add_field(name="Has existed since", value=emoji.created_at.strftime('%d.%m.%Y %H:%M:%S %Z'))
         em.add_field(name="\":\" required", value=bool_emojify(emoji.require_colons))
         em.add_field(name="Managed", value=bool_emojify(emoji.managed))
         em.add_field(name="Server", value=emoji.server)
-        if len(allowed_roles) > 0:
-            em.add_field(name="Roles", value="\n".join([str(x) for x in allowed_roles]))
+        if emoji.roles:
+            em.add_field(name="Roles", value="\n".join([x.name for x in emoji.roles]))
         em.set_image(url=emoji.url)
         if ctx.message.channel.permissions_for(ctx.message.server.me).embed_links:
             await self.bot.say(embed=em)
@@ -232,7 +228,7 @@ class MoreUtils:
                                "\n\":\" required: " + bool_emojify(emoji.require_colons) +
                                "\nManaged: " + bool_emojify(emoji.managed) +
                                "\nServer: " + str(emoji.server) +
-                               "\nRoles: " + "\n".join([str(x) for x in allowed_roles]) +
+                               "\nRoles: " + "\n".join([x.name for x in emoji.roles]) +
                                "```" +
                                emoji.url)
 
@@ -289,8 +285,7 @@ class MoreUtils:
         randommember = random.choice(list(channel.server.members))
         if channel.permissions_for(randommember).read_messages:
             return randommember
-        else:
-            return await self.random_channel_member(channel)
+        return await self.random_channel_member(channel)
 
 
 def check_folders():
