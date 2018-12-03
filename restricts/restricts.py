@@ -1801,8 +1801,8 @@ class Restricts:
                     except Exception as e:
                         # print('got some error while saying about unmute' + str(e))
                         traceback.print_exc()
-                await self.send_message(info.channel_requester, text)
-
+                # await self.send_message(info.channel_requester, text)
+                logger.debug(text)
             await asyncio.sleep(1)
 
     def duration_from_text(self, reason: str):
