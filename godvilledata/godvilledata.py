@@ -69,7 +69,7 @@ class GodvilleData:
         if profile.health:
             text += "Здоровье: {}/{}\n".format(profile.health, profile.health_max)
         else:
-            text += "Максимум здоровья: {]\n".format(profile.health_max)
+            text += "Максимум здоровья: {}\n".format(profile.health_max)
         if profile.savings:
             text += "Сбережений: {}\n".format(profile.savings)
         if profile.trading_level:
