@@ -155,7 +155,7 @@ class SteamUser:
 
     @property
     def personastatecolor(self):
-        if self.gameextrainfo is not None:
+        if self.gameextrainfo:
             return 0x90ba3c
         elif self._personastate > 0:
             return 0x57cbde
