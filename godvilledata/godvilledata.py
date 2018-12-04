@@ -21,11 +21,21 @@ class GodvilleData:
     def __unload(self):
         self.session.close()
 
+    async def api_by_god(self, godname: str):
+        """Get apikey by godname
+        :param godname: name of god to get key"""
+        for user, data in self.config:
+            if data["godname"] == godname:
+                return data["apikey"]
+        return None
+
     @commands.group(invoke_without_command=True)
     @commands.cooldown(30, 10 * 60, commands.BucketType.user)
     async def godville(self, *, godname: str):
         """Get data about godville's god by name"""
-        async with self.session.get("{}/{}".format(self.baseAPI, godname)) as sg:
+        async with self.session.get("{}/{}/{}".format(self.baseAPI,
+                                                      godname,
+                                                      await self.api_by_god(godname) or "")) as sg:
             if sg.status == 404:
                 await self.bot.say(chat.error("404 — Sorry, but there is nothing here\nCheck god name and try again"))
                 return
@@ -90,7 +100,7 @@ class GodvilleData:
         # pet
         if profile.pet.name:
             pet += "Имя: {}\n".format(profile.pet.name)
-            pet += "Уровень: {}\n".format(profile.pet.level)
+            pet += "Уровень: {}\n".format(profile.pet.level or "Без уровня")
             if profile.pet.type:
                 pet += "Тип: {}\n".format(profile.pet.type)
 
@@ -114,6 +124,8 @@ class GodvilleData:
 
     @godville.command(pass_context=True, hidden=True)
     async def apikey(self, ctx: commands.Context, apikey: str, *, godname: str):
+        """Set apikey for your character.
+        Only one character per user"""
         self.config[ctx.message.author.id] = {"godname": godname,
                                               "apikey": apikey}
         dataIO.save_json(self.config_file, self.config)
