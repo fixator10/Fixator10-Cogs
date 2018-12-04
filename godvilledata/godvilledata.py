@@ -34,8 +34,8 @@ class GodvilleData:
     async def godville(self, *, godname: str):
         """Get data about godville's god by name"""
         async with self.session.get("{}/{}/{}".format(self.baseAPI,
-                                                      godname,
-                                                      await self.api_by_god(godname) or "")) as sg:
+                                                      godname.casefold(),
+                                                      await self.api_by_god(godname.casefold()) or "")) as sg:
             if sg.status == 404:
                 await self.bot.say(chat.error("404 — Sorry, but there is nothing here\nCheck god name and try again"))
                 return
