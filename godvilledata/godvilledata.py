@@ -24,7 +24,7 @@ class GodvilleData:
     async def api_by_god(self, godname: str):
         """Get apikey by godname
         :param godname: name of god to get key"""
-        for user, data in self.config:
+        for user, data in self.config.items():
             if data["godname"] == godname:
                 return data["apikey"]
         return None
