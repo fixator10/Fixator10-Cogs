@@ -122,7 +122,7 @@ class GodvilleData:
             finaltext += chat.box(times)
         await self.bot.say(finaltext)
 
-    @godville.command(pass_context=True, hidden=True)
+    @godville.group(pass_context=True, invoke_without_command=True)
     async def apikey(self, ctx: commands.Context, apikey: str, *, godname: str):
         """Set apikey for your character.
         Only one character per user"""
@@ -130,6 +130,13 @@ class GodvilleData:
                                               "apikey": apikey}
         dataIO.save_json(self.config_file, self.config)
         await self.bot.say("Your name and apikey has been saved")
+
+    @apikey.command(pass_context=True)
+    async def remove(self, ctx: commands.Context):
+        """Remove your apikey and godname from bot's data"""
+        del self.config[ctx.message.author.id]
+        dataIO.save_json(self.config_file, self.config)
+        await self.bot.say("Your key removed from database")
 
 
 class GodvilleUser(object):
