@@ -126,7 +126,7 @@ class GodvilleData:
     async def apikey(self, ctx: commands.Context, apikey: str, *, godname: str):
         """Set apikey for your character.
         Only one character per user"""
-        self.config[ctx.message.author.id] = {"godname": godname,
+        self.config[ctx.message.author.id] = {"godname": godname.casefold(),
                                               "apikey": apikey}
         dataIO.save_json(self.config_file, self.config)
         await self.bot.say("Your name and apikey has been saved")
