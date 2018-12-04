@@ -73,7 +73,7 @@ class GodvilleData:
         text += "Побед/Поражений: {}/{}\n".format(profile.arena_won, profile.arena_lost)
         text += "Гильдия: {} ({})\n".format(profile.clan, profile.clan_position) if profile.clan \
             else "Гильдия: Не состоит\n"
-        text += "Кирпичей: {} ({}%)\n".format(profile.bricks, profile.bricks_percent)
+        text += "Кирпичей: {} ({}%)\n".format(profile.bricks, profile.bricks / 10)
         if profile.inventory:
             text += "Инвентарь: {}/{}\n".format(profile.inventory, profile.inventory_max)
         else:
@@ -87,7 +87,7 @@ class GodvilleData:
         if profile.trading_level:
             text += "Уровень торговли: {}\n".format(profile.trading_level)
         if profile.wood:
-            text += "Поленьев: {}\n".format(profile.wood)
+            text += "Поленьев: {} ({}%)\n".format(profile.wood, profile.wood / 10)
 
         # private (api only)
         if profile.diary_last:
@@ -168,7 +168,6 @@ class GodvilleUser(object):
         self.ark_date = profile.get("ark_completed_at")
         self.alignment = profile.get("alignment")
         self.bricks = profile.get("bricks_cnt", 0)
-        self.bricks_percent = self.bricks / 10
         self.clan = self._clan if self._clan else None
         self.clan_position = self._clan_pos if self._clan_pos else None
         self.gender = profile.get("gender")
