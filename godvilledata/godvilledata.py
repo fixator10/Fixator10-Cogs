@@ -64,7 +64,7 @@ class GodvilleData:
         if profile.quest_progress:
             text += "Задание: {} ({}%)\n".format(profile.quest, profile.quest_progress)
         if profile.experience:
-            text += "Опыта до следующего уровня: {}/100\n".format(profile.experience)
+            text += "Опыта до следующего уровня: {}%\n".format(profile.experience)
         text += "Уровень: {}\n".format(profile.level)
         if profile.godpower:
             text += "Праны: {}/{}\n".format(profile.godpower, 200 if profile.savings_date else 100)
