@@ -150,7 +150,7 @@ class SteamUser:
         self.cityid = self._userdata.get("loccityid")
 
         self.level = self._player.GetSteamLevel(player_id)["response"].get("player_level", 0)
-        self.shared_by = self._player.IsPlayingSharedGame(player_id, self.gameid)["response"].get("lender_steamid")
+        self.shared_by = self._player.IsPlayingSharedGame(self.gameid, player_id)["response"].get("lender_steamid")
 
         self.communitybanned = self._bandata.get("CommunityBanned")
         self.VACbanned = self._bandata.get("VACBanned")
