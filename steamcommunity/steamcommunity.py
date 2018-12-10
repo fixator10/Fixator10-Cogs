@@ -89,7 +89,7 @@ class SteamCommunity:
                 em.description += " on server {}".format(profile.gameserver)
             if profile.shared_by:
                 em.description += "\nFamily Shared by {}" \
-                    .format(SteamUser(self.config["apikey"], profile.shared_by).personaname)
+                    .format(profile.shared_by.personaname)
         if profile.realname:
             em.add_field(name="Real name", value=profile.realname, inline=False)
         em.add_field(name="Level", value=profile.level or "0")
