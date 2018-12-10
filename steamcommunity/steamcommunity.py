@@ -179,8 +179,9 @@ class SteamUser:
     @property
     def shared_by(self):
         if self.gameid:
-            return SteamUser(self._apikey, self._player.IsPlayingSharedGame(self.gameid, self.steamid64)["response"]
-                             .get("lender_steamid"))
+            sharedbyid = self._player.IsPlayingSharedGame(self.gameid, self.steamid64)["response"].get("lender_steamid")
+            if sharedbyid != "0":
+                return SteamUser(self._apikey, sharedbyid)
         return None
 
     @property
