@@ -11,6 +11,10 @@ from cogs.utils import checks
 from cogs.utils.dataIO import dataIO
 
 
+def bool_emojify(bool_var: bool) -> str:
+    return "✔" if bool_var else "❌"
+
+
 class SteamCommunity:
     """SteamCommunity commands"""
 
@@ -81,8 +85,11 @@ class SteamCommunity:
         if profile.gameid:
             em.description = "In game: [{}](http://store.steampowered.com/app/{})" \
                 .format(profile.gameextrainfo or "Unknown", profile.gameid)
-        if profile.gameserver:
-            em.description += " on server {}".format(profile.gameserver)
+            if profile.gameserver:
+                em.description += " on server {}".format(profile.gameserver)
+            if profile.shared_by:
+                em.description += "\nFamily Shared by {}" \
+                    .format(SteamUser(self.config["apikey"], profile.shared_by).personaname)
         if profile.realname:
             em.add_field(name="Real name", value=profile.realname, inline=False)
         em.add_field(name="Level", value=profile.level or "0")
@@ -91,6 +98,12 @@ class SteamCommunity:
         em.add_field(name="Visibility", value=profile.visibility)
         em.add_field(name="SteamID", value=profile.steamid)
         em.add_field(name="SteamID64", value=profile.steamid64)
+        em.add_field(name="Community bans", value="\u200b", inline=False)
+        em.add_field(name="Community Banned", value=bool_emojify(profile.communitybanned))
+        em.add_field(name="VAC bans", value="VAC BANNED ({} bans, {} since last ban)"
+                     .format(profile.VACbans, profile.sincelastban) if profile.VACbanned else bool_emojify(False))
+        em.add_field(name="Game bans", value="{} game bans".format(profile.gamebans or "No"))
+        em.add_field(name="Economy ban", value=profile.economyban.capitalize() if profile.economyban else "Not banned")
         em.set_thumbnail(url=profile.avatar184)
         em.set_footer(text="Powered by Steam | Last seen on",
                       icon_url='https://steamstore-a.akamaihd.net/public/shared/images/responsive/share_steam_logo.png')
@@ -105,6 +118,7 @@ class SteamUser:
         self._user = self._steam['ISteamUser']
         self._player = self._steam['IPlayerService']
         self._userdata = self._user.GetPlayerSummaries(player_id)["response"]["players"][0]
+        self._bandata = self._user.GetPlayerBans(player_id)["response"]["players"][0]
         self._personastate = self._userdata.get("personastate", 0)
         visibilites = {
             1: "Private",
@@ -136,6 +150,15 @@ class SteamUser:
         self.cityid = self._userdata.get("loccityid")
 
         self.level = self._player.GetSteamLevel(player_id)["response"].get("player_level", 0)
+        self.shared_by = self._player.IsPlayingSharedGame(player_id, self.gameid)["response"].get("lender_steamid")
+
+        self.communitybanned = self._bandata.get("CommunityBanned")
+        self.VACbanned = self._bandata.get("VACBanned")
+        self.VACbans = self._bandata.get("NumberOfVACBans")
+        self.sincelastban = self._bandata.get("DaysSinceLastBan")
+        self.gamebans = self._bandata.get("NumberOfGameBans")
+        economyban = self._bandata.get("EconomyBan")
+        self.economyban = economyban if economyban != "none" else None
 
     def personastate(self, string: bool = True):
         """Get persona state
