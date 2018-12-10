@@ -98,7 +98,7 @@ class SteamCommunity:
         em.add_field(name="Visibility", value=profile.visibility)
         em.add_field(name="SteamID", value=profile.steamid)
         em.add_field(name="SteamID64", value=profile.steamid64)
-        em.add_field(name="Community bans", value="\u200b", inline=False)
+        em.add_field(name="🛡 Bans", value="\u200b", inline=False)
         em.add_field(name="Community Banned", value=bool_emojify(profile.communitybanned))
         em.add_field(name="VAC bans", value="VAC BANNED ({} bans, {} since last ban)"
                      .format(profile.VACbans, profile.sincelastban) if profile.VACbanned else bool_emojify(False))
