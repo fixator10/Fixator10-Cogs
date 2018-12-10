@@ -118,7 +118,7 @@ class SteamUser:
         self._user = self._steam['ISteamUser']
         self._player = self._steam['IPlayerService']
         self._userdata = self._user.GetPlayerSummaries(player_id)["response"]["players"][0]
-        self._bandata = self._user.GetPlayerBans(player_id)["response"]["players"][0]
+        self._bandata = self._user.GetPlayerBans(player_id)["players"][0]
         self._personastate = self._userdata.get("personastate", 0)
         visibilites = {
             1: "Private",
