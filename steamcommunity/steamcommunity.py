@@ -120,6 +120,7 @@ class SteamUser:
         self._userdata = self._user.GetPlayerSummaries(player_id)["response"]["players"][0]
         self._bandata = self._user.GetPlayerBans(player_id)["players"][0]
         self._personastate = self._userdata.get("personastate", 0)
+        self._shared = self._player.IsPlayingSharedGame(self.gameid or 0, player_id)["response"].get("lender_steamid")
         visibilites = {
             1: "Private",
             2: "Friends only",
@@ -150,7 +151,6 @@ class SteamUser:
         self.cityid = self._userdata.get("loccityid")
 
         self.level = self._player.GetSteamLevel(player_id)["response"].get("player_level", 0)
-        self.shared_by = self._player.IsPlayingSharedGame(self.gameid or 0, player_id)["response"].get("lender_steamid")
 
         self.communitybanned = self._bandata.get("CommunityBanned")
         self.VACbanned = self._bandata.get("VACBanned")
@@ -175,6 +175,14 @@ class SteamUser:
         if string:
             return stringnames[self._personastate]
         return self._personastate
+
+    @property
+    def shared_by(self):
+        shared = self._shared
+        if shared != "0":
+            return shared
+        return None
+
 
     @property
     def personastatecolor(self):
