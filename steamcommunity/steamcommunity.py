@@ -114,13 +114,13 @@ class SteamUser:
     """SteamCommunity profile"""
 
     def __init__(self, apikey: str, player_id: str):
+        self._apikey = apikey
         self._steam = interface.API(key=apikey)
         self._user = self._steam['ISteamUser']
         self._player = self._steam['IPlayerService']
         self._userdata = self._user.GetPlayerSummaries(player_id)["response"]["players"][0]
         self._bandata = self._user.GetPlayerBans(player_id)["players"][0]
         self._personastate = self._userdata.get("personastate", 0)
-        self._shared = self._player.IsPlayingSharedGame(self.gameid or 0, player_id)["response"].get("lender_steamid")
         visibilites = {
             1: "Private",
             2: "Friends only",
@@ -178,11 +178,10 @@ class SteamUser:
 
     @property
     def shared_by(self):
-        shared = self._shared
-        if shared != "0":
-            return shared
+        if self.gameid:
+            return SteamUser(self._apikey, self._player.IsPlayingSharedGame(self.gameid, self.steamid64)["response"]
+                             .get("lender_steamid"))
         return None
-
 
     @property
     def personastatecolor(self):
