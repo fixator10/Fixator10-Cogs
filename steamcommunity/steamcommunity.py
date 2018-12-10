@@ -52,6 +52,7 @@ class SteamCommunity:
         await self.bot.say(chat.info("API key Updated"))
 
     @steamcommunity.command(name="profile", pass_context=True, aliases=["p"])
+    @commands.cooldown(1, 15, commands.BucketType.user)
     async def steamprofile(self, ctx, steamid: str):
         """Get steam user's steamcommunity profile"""
         if not ctx.message.channel.permissions_for(ctx.message.server.me).embed_links:
@@ -88,8 +89,8 @@ class SteamCommunity:
             if profile.gameserver:
                 em.description += " on server {}".format(profile.gameserver)
             if profile.shared_by:
-                em.description += "\nFamily Shared by {}" \
-                    .format(profile.shared_by.personaname)
+                em.description += "\nFamily Shared by [{}]({})" \
+                    .format(profile.shared_by.personaname, profile.shared_by.profileurl)
         if profile.realname:
             em.add_field(name="Real name", value=profile.realname, inline=False)
         em.add_field(name="Level", value=profile.level or "0")
