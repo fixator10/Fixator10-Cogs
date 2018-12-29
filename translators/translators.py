@@ -92,7 +92,10 @@ class Translators:
 
     @commands.command(pass_context=True)
     async def googlesay(self, ctx, lang: str, *, text: str):
-        """Say something via Google Translate"""
+        """Say something via Google Translate
+
+        If text contains more than 200 symbols, it will be cut"""
+        text = text[:200]
         try:
             async with self.session.get("http://translate.google.com/translate_tts?ie=utf-8"
                                         "&q={}&tl={}&client=tw-ob".format(parse.quote(text), lang),
@@ -107,7 +110,7 @@ class Translators:
             await self.bot.say("Unable to get data from Google Translate TTS")
             return
         speechfile = io.BytesIO(speech)
-        await self.bot.send_file(ctx.message.channel, speechfile, filename="{}.mp3".format(text[:100]))
+        await self.bot.send_file(ctx.message.channel, speechfile, filename="{}.mp3".format(text[:32]))
         speechfile.close()
 
     @commands.command(pass_context=True, aliases=["ецихо"])
