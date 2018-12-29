@@ -95,7 +95,10 @@ class Translators:
         """Say something via Google Translate"""
         try:
             async with self.session.get("http://translate.google.com/translate_tts?ie=utf-8"
-                                        "&q={}&tl={}&client=tw-ob".format(parse.quote(text), lang)) as data:
+                                        "&q={}&tl={}&client=tw-ob".format(parse.quote(text), lang),
+                                        headers={"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 ("
+                                                               "KHTML, like Gecko) Ubuntu Chromium/69.0.3497.81 "
+                                                               "Chrome/69.0.3497.81 Safari/537.36"}) as data:
                 if data.status != 200:
                     await self.bot.say(chat.error("Google Translate returned code {}".format(data.status)))
                     return
@@ -104,7 +107,7 @@ class Translators:
             await self.bot.say("Unable to get data from Google Translate TTS")
             return
         speechfile = io.BytesIO(speech)
-        await self.bot.send_file(ctx.message.channel, speechfile, filename="translate_tts.mp3")
+        await self.bot.send_file(ctx.message.channel, speechfile, filename="{}.mp3".format(text[:100]))
         speechfile.close()
 
     @commands.command(pass_context=True, aliases=["ецихо"])
