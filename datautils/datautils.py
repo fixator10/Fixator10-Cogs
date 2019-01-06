@@ -166,6 +166,7 @@ class DataUtils:
                                server.icon_url)
 
     @commands.command(pass_context=True, no_pm=True)
+    @checks.is_owner()
     async def bans(self, ctx: commands.Context, *, server: str = None):
         if server is None:
             server = ctx.message.server
