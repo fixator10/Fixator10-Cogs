@@ -165,6 +165,23 @@ class DataUtils:
                                "```\n" +
                                server.icon_url)
 
+    @commands.command(pass_context=True, no_pm=True)
+    async def bans(self, ctx: commands.Context, *, server: str = None):
+        if server is None:
+            server = ctx.message.server
+        else:
+            server = self.bot.get_server(server)
+        if server is None:
+            await self.bot.say("Failed to get server with provided ID")
+            return
+        if not server.me.server_permissions.ban_members:
+            await self.bot.say("I need permission \"Ban Members\" to access banned members on server")
+            return
+        banlist = await self.bot.get_bans(server)
+        banlisttext = "\n".join(["{} ({})".format(x, x.id) for x in banlist])
+        for page in chat.pagify(banlisttext):
+            await self.bot.say(chat.box(page))
+
     @commands.command(pass_context=True, no_pm=True, aliases=['chaninfo', 'channelinfo'])
     async def cinfo(self, ctx, *, channel: discord.Channel):
         """Get info about channel"""
