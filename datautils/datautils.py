@@ -178,9 +178,12 @@ class DataUtils:
             await self.bot.say("I need permission \"Ban Members\" to access banned members on server")
             return
         banlist = await self.bot.get_bans(server)
-        banlisttext = "\n".join(["{} ({})".format(x, x.id) for x in banlist])
-        for page in chat.pagify(banlisttext):
-            await self.bot.say(chat.box(page))
+        if banlist:
+            banlisttext = "\n".join(["{} ({})".format(x, x.id) for x in banlist])
+            for page in chat.pagify(banlisttext):
+                await self.bot.say(chat.box(page))
+        else:
+            await self.bot.say("Banlist is empty!")
 
     @commands.command(pass_context=True, no_pm=True, aliases=['chaninfo', 'channelinfo'])
     async def cinfo(self, ctx, *, channel: discord.Channel):
