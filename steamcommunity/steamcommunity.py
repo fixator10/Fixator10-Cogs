@@ -100,7 +100,7 @@ class SteamCommunity:
         if profile.createdat:
             em.add_field(name="Created at",
                          value=datetime.utcfromtimestamp(profile.createdat).strftime("%d.%m.%Y %H:%M:%S"))
-        em.add_field(name="SteamID", value=profile.steamid)
+        em.add_field(name="SteamID", value=profile.steamid or "-")
         em.add_field(name="SteamID64", value=profile.steamid64)
         em.add_field(name="🛡 Bans", value="\u200b", inline=False)
         em.add_field(name="Community Banned", value=bool_emojify(profile.communitybanned))
@@ -205,6 +205,8 @@ class SteamUser:
     def steamid(self):
         steamid = "STEAM_0:"
         steamid_last_part = int(self.steamid64) - 76561197960265728
+        if steamid_last_part < 0:
+            return None  # Wrong steamid64 (In example - discord steam integration)
         if steamid_last_part % 2 == 0:
             steamid += "0:"
         else:
