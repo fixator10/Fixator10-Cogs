@@ -97,6 +97,8 @@ class SteamCommunity:
         if profile.country:
             em.add_field(name="Country", value=":flag_{}:".format(profile.country.lower()))
         em.add_field(name="Visibility", value=profile.visibility)
+        em.add_field(name="Created at",
+                     value=datetime.utcfromtimestamp(profile.createdat).strftime("%d.%m.%Y %H:%M:%S"))
         em.add_field(name="SteamID", value=profile.steamid)
         em.add_field(name="SteamID64", value=profile.steamid64)
         em.add_field(name="🛡 Bans", value="\u200b", inline=False)
@@ -131,6 +133,7 @@ class SteamUser:
         }
 
         self.steamid64 = self._userdata.get("steamid")
+        self.createdat = self._userdata.get("timecreated")
         self.personaname = self._userdata.get("personaname")
         self.profileurl = self._userdata.get("profileurl")
         self.avatar32 = self._userdata.get("avatar")
