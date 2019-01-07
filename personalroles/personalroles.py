@@ -156,8 +156,13 @@ class PersonalRoles:
         sv = ctx.message.server.id
         authorid = ctx.message.author.id
         role = discord.utils.get(ctx.message.server.roles, id=self.config[sv]["users"][authorid])
-        await self.bot.edit_role(ctx.message.server, role, colour=colour)
-        await self.bot.say("Changed color of {}'s personal role to {}".format(ctx.message.author.name, colour))
+        try:
+            await self.bot.edit_role(ctx.message.server, role, colour=colour)
+        except discord.Forbidden:
+            await self.bot.say(chat.error("Unable to edit role.\nRole must be lower than my top role and i must have "
+                                          "permission \"Manage Roles\""))
+        else:
+            await self.bot.say("Changed color of {}'s personal role to {}".format(ctx.message.author.name, colour))
 
     @commands.cooldown(1, 30, commands.BucketType.user)
     @myrole.command(pass_context=True, no_pm=True)
@@ -168,15 +173,19 @@ class PersonalRoles:
         sv = ctx.message.server.id
         authorid = ctx.message.author.id
         role = discord.utils.get(ctx.message.server.roles, id=self.config[sv]["users"][authorid])
-        if len(name) > 100:
-            name = name[:100]
+        name = name[:100]
         if name.casefold() in self.config[sv]["blacklist"] \
                 or settings.get_server_mod(ctx.message.server).lower() == name.lower() \
                 or settings.get_server_admin(ctx.message.server).lower() == name.lower():
             await self.bot.say(chat.error("NONONO!!! This rolename is blacklisted."))
             return
-        await self.bot.edit_role(ctx.message.server, role, name=name)
-        await self.bot.say("Changed name of {}'s personal role to {}".format(ctx.message.author.name, name))
+        try:
+            await self.bot.edit_role(ctx.message.server, role, name=name)
+        except discord.Forbidden:
+            await self.bot.say(chat.error("Unable to edit role.\nRole must be lower than my top role and i must have "
+                                          "permission \"Manage Roles\""))
+        else:
+            await self.bot.say("Changed name of {}'s personal role to {}".format(ctx.message.author.name, name))
 
     async def smart_truncate(self, content, length=32, suffix='…'):
         """https://stackoverflow.com/questions/250357/truncate-a-string-without-ending-in-the-middle-of-a-word"""
