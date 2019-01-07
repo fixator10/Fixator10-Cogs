@@ -184,8 +184,12 @@ class SteamUser:
     @property
     def shared_by(self):
         if self.gameid:
-            sharedbyid = self._player.IsPlayingSharedGame(self.gameid, self.steamid64)["response"].get("lender_steamid")
-            if sharedbyid != "0":
+            try:
+                sharedbyid = self._player.IsPlayingSharedGame(self.gameid, self.steamid64)["response"].get(
+                    "lender_steamid", 0)
+            except ValueError:
+                return None  # TODO: Find a better way do detect mods and other shit like that
+            if int(sharedbyid) != 0:
                 return SteamUser(self._apikey, sharedbyid)
         return None
 
