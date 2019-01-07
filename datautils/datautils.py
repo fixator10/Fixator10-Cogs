@@ -186,6 +186,28 @@ class DataUtils:
         else:
             await self.bot.say("Banlist is empty!")
 
+    @commands.command(pass_context=True, no_pm=True)
+    @checks.is_owner()
+    async def invites(self, ctx: commands.Context, *, server: str = None):
+        if server is None:
+            server = ctx.message.server
+        else:
+            server = self.bot.get_server(server)
+        if server is None:
+            await self.bot.say("Failed to get server with provided ID")
+            return
+        if not server.me.server_permissions.manage_server:
+            await self.bot.say("I need permission \"Manage Guild\" to access list of invites on server")
+            return
+        invites = await self.bot.invites_from(server)
+        if invites:
+            inviteslist = "\n".join(["{} ({})".format(x, x.channel.name) for x in invites])
+            for page in chat.pagify(inviteslist):
+                await self.bot.say(chat.box(page))
+        else:
+            await self.bot.say("There is no invites for this server")
+
+
     @commands.command(pass_context=True, no_pm=True, aliases=['chaninfo', 'channelinfo'])
     async def cinfo(self, ctx, *, channel: discord.Channel):
         """Get info about channel"""
