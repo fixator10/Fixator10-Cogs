@@ -110,11 +110,11 @@ class SteamCommunity:
             bansdescription = "No bans on record"
         em.add_field(name="🛡 Bans", value=bansdescription, inline=False)
         em.add_field(name="Community Banned", value=bool_emojify(profile.communitybanned))
-        em.add_field(name="Economy ban", value=profile.economyban.capitalize() if profile.economyban else "Not banned")
+        em.add_field(name="Economy ban", value=profile.economyban.capitalize() if profile.economyban else "❌")
         em.add_field(name="VAC bans", value="{} VAC bans"
-                     .format(profile.VACbans) if profile.VACbans else bool_emojify(False))
+                     .format(profile.VACbans) if profile.VACbans else "❌")
         em.add_field(name="Game bans", value="{} game bans"
-                     .format(profile.gamebans) if profile.gamebans else bool_emojify(False))
+                     .format(profile.gamebans) if profile.gamebans else "❌")
         em.set_thumbnail(url=profile.avatar184)
         em.set_footer(text="Powered by Steam | Last seen on",
                       icon_url='https://steamstore-a.akamaihd.net/public/shared/images/responsive/share_steam_logo.png')
