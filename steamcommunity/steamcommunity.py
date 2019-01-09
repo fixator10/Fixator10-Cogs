@@ -104,7 +104,7 @@ class SteamCommunity:
         em.add_field(name="SteamID64", value=profile.steamid64)
         if any([profile.VACbanned, profile.gamebans]):
             bansdescription = "Days since last ban: {}".format(profile.sincelastban)
-        elif any([profile.VACbanned, profile.gamebans]):
+        elif any([profile.communitybanned, profile.economyban]):
             bansdescription = "Has one or more bans:"
         else:
             bansdescription = "No bans on record"
