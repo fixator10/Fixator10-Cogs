@@ -102,12 +102,17 @@ class SteamCommunity:
                          value=datetime.utcfromtimestamp(profile.createdat).strftime("%d.%m.%Y %H:%M:%S"))
         em.add_field(name="SteamID", value=profile.steamid or "-")
         em.add_field(name="SteamID64", value=profile.steamid64)
-        em.add_field(name="🛡 Bans", value="\u200b", inline=False)
+        if any([profile.VACbanned, profile.gamebans]):
+            bansdescription = "Days since last ban: {}".format(profile.sincelastban)
+        elif any([profile.VACbanned, profile.gamebans]):
+            bansdescription = "Has one or more bans:"
+        else:
+            bansdescription = "No bans on record"
+        em.add_field(name="🛡 Bans", value=bansdescription)
         em.add_field(name="Community Banned", value=bool_emojify(profile.communitybanned))
-        em.add_field(name="VAC bans", value="VAC BANNED ({} bans, {} since last ban)"
-                     .format(profile.VACbans, profile.sincelastban) if profile.VACbanned else bool_emojify(False))
-        em.add_field(name="Game bans", value="{} game bans".format(profile.gamebans or "No"))
         em.add_field(name="Economy ban", value=profile.economyban.capitalize() if profile.economyban else "Not banned")
+        em.add_field(name="VAC bans", value="{} VAC bans".format(profile.VACbans) or bool_emojify(False))
+        em.add_field(name="Game bans", value="{} game bans".format(profile.gamebans) or bool_emojify(False))
         em.set_thumbnail(url=profile.avatar184)
         em.set_footer(text="Powered by Steam | Last seen on",
                       icon_url='https://steamstore-a.akamaihd.net/public/shared/images/responsive/share_steam_logo.png')
