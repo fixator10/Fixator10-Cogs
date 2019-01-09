@@ -109,7 +109,7 @@ class SteamCommunity:
         else:
             bansdescription = "No bans on record"
         em.add_field(name="🛡 Bans", value=bansdescription, inline=False)
-        em.add_field(name="Community Banned", value=bool_emojify(profile.communitybanned))
+        em.add_field(name="Community ban", value=bool_emojify(profile.communitybanned))
         em.add_field(name="Economy ban", value=profile.economyban.capitalize() if profile.economyban else "❌")
         em.add_field(name="VAC bans", value="{} VAC bans".format(profile.VACbans) if profile.VACbans else "❌")
         em.add_field(name="Game bans", value="{} game bans".format(profile.gamebans) if profile.gamebans else "❌")
