@@ -114,7 +114,7 @@ class SteamCommunity:
         em.add_field(name="VAC bans", value="{} VAC bans".format(profile.VACbans) if profile.VACbans else "❌")
         em.add_field(name="Game bans", value="{} game bans".format(profile.gamebans) if profile.gamebans else "❌")
         em.set_thumbnail(url=profile.avatar184)
-        em.set_footer(text="Powered by Steam | Last seen on",
+        em.set_footer(text="Powered by Steam • Last seen on",
                       icon_url='https://steamstore-a.akamaihd.net/public/shared/images/responsive/share_steam_logo.png')
         await self.bot.say(embed=em)
 
