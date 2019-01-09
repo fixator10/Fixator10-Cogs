@@ -286,9 +286,9 @@ class DataUtils:
         em.add_field(name="Voice channels:",
                      value=voice_channels,
                      inline=False)
-        em.set_footer(text="Total count of channels: {} | "
-                           "Categories: {} | "
-                           "Text Channels: {} | "
+        em.set_footer(text="Total count of channels: {} • "
+                           "Categories: {} • "
+                           "Text Channels: {} • "
                            "Voice Channels: {}".format(acc, cc, tcc, vcc))
         if ctx.message.channel.permissions_for(ctx.message.server.me).embed_links:
             await self.bot.say(embed=em)
