@@ -35,8 +35,8 @@ class SelfRole:
         else:
             await self.bot.say(chat.error("This role is not allowed for selfrole. Check available roles with "
                                           "{}selfrole list".format(ctx.prefix) +
-                                          chat.box("Username is not in sudoers file.\n"
-                                                   "This incident will be reported.")))
+                                          chat.box("{} is not in sudoers file.\n"
+                                                   "This incident will be reported.".format(author.display_name))))
 
     @selfrole.command(pass_context=True)
     @checks.admin_or_permissions(manage_roles=True)
