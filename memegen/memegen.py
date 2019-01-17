@@ -54,13 +54,11 @@ class MemeGen:
     async def get_template(self, template: str):
         if url(template):
             return "custom"
-        else:
-            async with self.session.get("https://memegen.link/api/search/{}".format(template)) as data:
-                data = await data.json()
-            if len(data) > 0:
-                return data[0]["template"]["blank"].replace("https://memegen.link/", "").replace("/_.jpg", "")
-            else:
-                return None
+        async with self.session.get("https://memegen.link/api/search/{}".format(template)) as data:
+            data = await data.json()
+        if data:
+            return data[0]["template"]["blank"].replace("https://memegen.link/", "").replace("/_.jpg", "")
+        return None
 
     async def get_meme(self, template: str, upper_text: str, down_text: str, font: str):
         template = template.replace(" ", "-")
