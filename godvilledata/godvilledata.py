@@ -56,7 +56,6 @@ class GodvilleData:
         text = ""
         pet = ""
         times = ""
-        anytime = any([profile.ark_date, profile.savings_date, profile.temple_date])
         if profile.gold_approximately:
             text += "Золота: {}\n".format(profile.gold_approximately)
         if profile.distance:
@@ -107,6 +106,8 @@ class GodvilleData:
             pet += "Уровень: {}\n".format(profile.pet.level or "Без уровня")
             if profile.pet.type:
                 pet += "Тип: {}\n".format(profile.pet.type)
+            if profile.pet.wounded:
+                pet += "❌ — Контужен"
 
         # times
         if profile.temple_date:
@@ -119,10 +120,10 @@ class GodvilleData:
         finaltext = ""
         finaltext += text_header
         finaltext += chat.box(text)
-        if profile.pet.name:
+        if pet:
             finaltext += "Питомец:\n"
             finaltext += chat.box(pet)
-        if anytime:
+        if times:
             finaltext += chat.box(times)
         await self.bot.say(finaltext)
 
