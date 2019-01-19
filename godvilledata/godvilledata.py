@@ -88,7 +88,7 @@ class GodvilleData:
         if profile.ark_female:
             text += "Тварей ♀: {} ({}%)\n".format(profile.ark_female, profile.ark_female / 10)
         if profile.savings:
-            text += "Сбережений: {} ({}%)\n".format(profile.savings, profile.savings / 30000 * 100)
+            text += "Сбережений: {}\n".format(profile.savings)
         if profile.trading_level:
             text += "Уровень торговли: {}\n".format(profile.trading_level)
         if profile.wood:
