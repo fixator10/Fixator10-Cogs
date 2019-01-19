@@ -75,12 +75,12 @@ class GodvilleData:
         text += "Кирпичей: {} ({}%)\n".format(profile.bricks, profile.bricks / 10)
         if profile.inventory:
             text += "Инвентарь: {}/{} ({}%)\n".format(profile.inventory, profile.inventory_max,
-                                                      profile.inventory / profile.inventory_max * 100)
+                                                      int(profile.inventory / profile.inventory_max * 100))
         else:
             text += "Вместимость инвентаря: {}\n".format(profile.inventory_max)
         if profile.health:
             text += "Здоровье: {}/{} ({}%)\n".format(profile.health, profile.health_max,
-                                                     profile.health / profile.health * 100)
+                                                     int(profile.health / profile.health * 100))
         else:
             text += "Максимум здоровья: {}\n".format(profile.health_max)
         if profile.ark_male:
