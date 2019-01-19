@@ -74,19 +74,21 @@ class GodvilleData:
             else "Гильдия: Не состоит\n"
         text += "Кирпичей: {} ({}%)\n".format(profile.bricks, profile.bricks / 10)
         if profile.inventory:
-            text += "Инвентарь: {}/{}\n".format(profile.inventory, profile.inventory_max)
+            text += "Инвентарь: {}/{} ({}%)\n".format(profile.inventory, profile.inventory_max,
+                                                      profile.inventory / profile.inventory_max * 100)
         else:
             text += "Вместимость инвентаря: {}\n".format(profile.inventory_max)
         if profile.health:
-            text += "Здоровье: {}/{}\n".format(profile.health, profile.health_max)
+            text += "Здоровье: {}/{} ({}%)\n".format(profile.health, profile.health_max,
+                                                     profile.health / profile.health * 100)
         else:
             text += "Максимум здоровья: {}\n".format(profile.health_max)
         if profile.ark_male:
-            text += "Тварей ♂: {}\n".format(profile.ark_male)
+            text += "Тварей ♂: {} ({}%)\n".format(profile.ark_male, profile.ark_male / 10)
         if profile.ark_female:
-            text += "Тварей ♀: {}\n".format(profile.ark_female)
+            text += "Тварей ♀: {} ({}%)\n".format(profile.ark_female, profile.ark_female / 10)
         if profile.savings:
-            text += "Сбережений: {}\n".format(profile.savings)
+            text += "Сбережений: {} ({}%)\n".format(profile.savings, profile.savings / 30000 * 100)
         if profile.trading_level:
             text += "Уровень торговли: {}\n".format(profile.trading_level)
         if profile.wood:
