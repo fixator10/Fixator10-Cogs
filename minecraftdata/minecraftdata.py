@@ -1,7 +1,6 @@
 import base64
 import io
 from datetime import datetime
-from random import choice
 from uuid import UUID
 
 import aiohttp
@@ -132,28 +131,29 @@ class MinecraftData:
         await self.bot.send_file(ctx.message.channel, capefile, filename="{}.png".format(nickname))
         capefile.close()
 
-    @minecraft.command(pass_context=True)
-    async def server(self, ctx, IP_or_domain: str):
-        """Get info about server"""
-        banner_style = choice(["", "sunset", "night", "nether"])
-        try:
-            async with self.session.get('https://use.gameapis.net/mc/query/info/{}'.format(IP_or_domain)) as data:
-                data = await data.json()
-            em = discord.Embed(title="Server data: " + IP_or_domain, timestamp=ctx.message.timestamp)
-            em.set_footer(text="Provided by GameAPIs.net")
-            em.add_field(name="Status", value=str(data["status"]).replace("True", "OK").replace("False", "Not OK"))
-            em.set_thumbnail(url="https://use.gameapis.net/mc/query/icon/{}".format(IP_or_domain))
-            em.set_image(url="https://use.gameapis.net/mc/query/banner/{}/{}".format(IP_or_domain, banner_style))
-            if data["status"]:
-                em.description = "**MOTD:**{}".format(chat.box(data["motds"]["clean"]))
-                em.add_field(name="Ping", value=data["ping"] or chat.inline("N/A"))
-                em.add_field(name="Version", value="{} (Protocol: {})".format(data["version"], data["protocol"]))
-                em.add_field(name="Players", value="{}/{}".format(data["players"]["online"], data["players"]["max"]))
-            else:
-                em.add_field(name="Error", value="Unable to fetch server: {}".format(chat.inline(data["error"])))
-            await self.bot.say(embed=em)
-        except Exception as e:
-            await self.bot.say(chat.error("Unable to check. An error has been occurred: " + chat.inline(e)))
+    # TODO: find new library/api for that
+    # @minecraft.command(pass_context=True)
+    # async def server(self, ctx, IP_or_domain: str):
+    #     """Get info about server"""
+    #     banner_style = choice(["", "sunset", "night", "nether"])
+    #     try:
+    #         async with self.session.get('https://use.gameapis.net/mc/query/info/{}'.format(IP_or_domain)) as data:
+    #             data = await data.json()
+    #         em = discord.Embed(title="Server data: " + IP_or_domain, timestamp=ctx.message.timestamp)
+    #         em.set_footer(text="Provided by GameAPIs.net")
+    #         em.add_field(name="Status", value=str(data["status"]).replace("True", "OK").replace("False", "Not OK"))
+    #         em.set_thumbnail(url="https://use.gameapis.net/mc/query/icon/{}".format(IP_or_domain))
+    #         em.set_image(url="https://use.gameapis.net/mc/query/banner/{}/{}".format(IP_or_domain, banner_style))
+    #         if data["status"]:
+    #             em.description = "**MOTD:**{}".format(chat.box(data["motds"]["clean"]))
+    #             em.add_field(name="Ping", value=data["ping"] or chat.inline("N/A"))
+    #             em.add_field(name="Version", value="{} (Protocol: {})".format(data["version"], data["protocol"]))
+    #             em.add_field(name="Players", value="{}/{}".format(data["players"]["online"], data["players"]["max"]))
+    #         else:
+    #             em.add_field(name="Error", value="Unable to fetch server: {}".format(chat.inline(data["error"])))
+    #         await self.bot.say(embed=em)
+    #     except Exception as e:
+    #         await self.bot.say(chat.error("Unable to check. An error has been occurred: " + chat.inline(e)))
 
     @minecraft.command(pass_context=True)
     async def status(self, ctx):
