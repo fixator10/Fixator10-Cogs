@@ -106,8 +106,8 @@ class Translators:
                     await self.bot.say(chat.error("Google Translate returned code {}".format(data.status)))
                     return
                 speech = await data.read()
-        except:
-            await self.bot.say("Unable to get data from Google Translate TTS")
+        except Exception as e:
+            await self.bot.say("Unable to get data from Google Translate TTS: {}".format(e))
             return
         speechfile = io.BytesIO(speech)
         await self.bot.send_file(ctx.message.channel, speechfile, filename="{}.mp3".format(text[:32]))
