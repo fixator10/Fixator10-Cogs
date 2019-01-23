@@ -46,8 +46,8 @@ class GodvilleData:
         profile = GodvilleUser(profile)
         text_header = "{} и его {}\n{}\n".format(chat.bold(profile.god),
                                                  chat.bold(profile.name),
-                                                 chat.italics(
-                                                     chat.escape(profile.motto) or chat.inline("Здесь ничего нет")))
+                                                 chat.italics(chat.escape(profile.motto.strip())
+                                                              or chat.inline("Здесь ничего нет")))
         if profile.arena_is_in_fight:
             text_header += "В сражении: {}\n".format(profile.fight_type_rus)
         if profile.town:
