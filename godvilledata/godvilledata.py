@@ -44,10 +44,11 @@ class GodvilleData:
                 return
             profile = await sg.json()
         profile = GodvilleUser(profile)
-        text_header = "{} и его {}\n{}\n".format(chat.bold(profile.god),
-                                                 chat.bold(profile.name),
-                                                 chat.italics(chat.escape(profile.motto.strip(), formatting=True)
-                                                              if profile.motto else chat.inline("Здесь ничего нет")))
+        text_header = "{} и его {}\n{}\n" \
+            .format(chat.bold(profile.god),
+                    chat.bold(profile.name),
+                    chat.italics(chat.escape(profile.motto.strip(), formatting=True))
+                    if profile.motto else chat.inline("Здесь ничего нет"))
         if profile.arena_is_in_fight:
             text_header += "В сражении: {}\n".format(profile.fight_type_rus)
         if profile.town:
