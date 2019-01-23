@@ -5,7 +5,7 @@ import discord
 from discord.ext import commands
 from validators import url
 
-from cogs.utils.chat_formatting import *
+from cogs.utils import chat_formatting as chat
 
 
 class MemeGen:
@@ -49,7 +49,7 @@ class MemeGen:
     async def fonts(self):
         """Get list of fonts"""
         font_list = await self.get_fonts()
-        await self.bot.say(box("\n".join([str(x) for x in font_list])))
+        await self.bot.say(chat.box("\n".join([str(x) for x in font_list])))
 
     async def get_template(self, template: str):
         if url(template):
