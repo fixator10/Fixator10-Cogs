@@ -71,8 +71,9 @@ class MinecraftData:
                     await self.bot.say(chat.error("404. Player not found on LabyMod's servers."))
                     return
                 cape = await data.read()
-        except:
-            await self.bot.say(chat.error("Data is not found. (Or LabyMod capes server is down)"))
+        except Exception as e:
+            await self.bot.say(chat.error("Data is not found. (Or LabyMod capes server is down)\n{}"
+                                          .format(chat.inline(e))))
             return
         capefile = io.BytesIO(cape)
         await self.bot.send_file(ctx.message.channel, capefile, filename="{}.png".format(nickname))
@@ -106,8 +107,9 @@ class MinecraftData:
             async with self.session.get('http://textures.5zig.net/textures/2/' + uuid) as data:
                 response_data = await data.json()
             cape = response_data["cape"]
-        except:
-            await self.bot.say(chat.error("Data is not found. (Or 5zig texture server is down)"))
+        except Exception as e:
+            await self.bot.say(chat.error("Data is not found. (Or 5zig texture server is down)\n{}"
+                                          .format(chat.inline(e))))
             return
         capefile = io.BytesIO(base64.decodebytes(cape.encode()))
         await self.bot.send_file(ctx.message.channel, capefile, filename="{}.png".format(nickname))
@@ -124,8 +126,9 @@ class MinecraftData:
             async with self.session.get('http://textures.5zig.net/textures/2/' + uuid) as data:
                 response_data = await data.json()
             cape = response_data["animatedCape"]
-        except:
-            await self.bot.say(chat.error("Data is not found. (Or 5zig texture server is down)"))
+        except Exception as e:
+            await self.bot.say(chat.error("Data is not found. (Or 5zig texture server is down)\n{}"
+                                          .format(chat.inline(e))))
             return
         capefile = io.BytesIO(base64.decodebytes(cape.encode()))
         await self.bot.send_file(ctx.message.channel, capefile, filename="{}.png".format(nickname))
@@ -174,7 +177,11 @@ class MinecraftData:
     @minecraft.command(pass_context=True, aliases=["nicknames", "nickhistory"])
     async def nicks(self, ctx, current_nick: str):
         """Check history of user's nicks"""
-        uuid = await self.getuuid(current_nick)
+        try:
+            uuid = await self.getuuid(current_nick)
+        except Exception as e:
+            await self.bot.say(chat.error("Unable to get data from Mojang: {}".format(e)))
+            return
         if uuid is None:
             await self.bot.say(chat.error("This player not found"))
             return
@@ -186,7 +193,7 @@ class MinecraftData:
                 try:
                     nick["changedToAt"] = \
                         datetime.utcfromtimestamp(nick["changedToAt"] / 1000).strftime('%d.%m.%Y %H:%M:%S')
-                except:
+                except KeyError:
                     nick["changedToAt"] = "Initial"
             table = tabulate.tabulate(data_history, headers={"name": "Nickname",
                                                              "changedToAt": "Changed to at... (UTC)"},
@@ -204,8 +211,8 @@ class MinecraftData:
         try:
             async with self.session.get('https://api.mojang.com/users/profiles/minecraft/' + nickname) as data:
                 response_data = await data.json()
-        except:
-            return None
+        except Exception as e:
+            raise e
         if response_data is None or "id" not in response_data:
             return None
         uuid = str(response_data["id"])
