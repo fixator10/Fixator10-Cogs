@@ -1,7 +1,7 @@
 import os
 
 import aiohttp
-from dateutil.parser import *
+from dateutil.parser import parse
 from discord.ext import commands
 
 from cogs.utils import chat_formatting as chat
