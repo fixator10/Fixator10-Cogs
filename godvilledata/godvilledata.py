@@ -46,8 +46,8 @@ class GodvilleData:
         profile = GodvilleUser(profile)
         text_header = "{} и его {}\n{}\n".format(chat.bold(profile.god),
                                                  chat.bold(profile.name),
-                                                 chat.italics(chat.escape(profile.motto, formatting=True)
-                                                              or chat.inline("Здесь ничего нет")))
+                                                 chat.italics(chat.escape(profile.motto.strip(), formatting=True)
+                                                              if profile.motto else chat.inline("Здесь ничего нет")))
         if profile.arena_is_in_fight:
             text_header += "В сражении: {}\n".format(profile.fight_type_rus)
         if profile.town:
@@ -190,7 +190,7 @@ class GodvilleUser(object):
         self.inventory_max = profile.get("inventory_max_num")
         self.level = profile.get("level")
         self.health_max = profile.get("max_health")
-        self.motto = self._motto.strip() if self._motto else None
+        self.motto = self._motto if self._motto else None
         self.name = profile.get("name")
         self.savings_date = profile.get("savings_completed_at")
         self.temple_date = profile.get("temple_completed_at")
