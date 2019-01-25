@@ -17,7 +17,7 @@ class SelfRole:
         self.config_file = "data/selfrole/config.json"
         self.config = dataIO.load_json(self.config_file)
 
-    @commands.group(pass_context=True, invoke_without_command=True)
+    @commands.group(pass_context=True, invoke_without_command=True, no_pm=True)
     async def selfrole(self, ctx: commands.Context, *, role: discord.Role):
         """Assign yourself an role"""
         sv = ctx.message.server.id
@@ -38,7 +38,7 @@ class SelfRole:
                                           chat.box("{} is not in sudoers file.\n"
                                                    "This incident will be reported.".format(author.display_name))))
 
-    @selfrole.command(pass_context=True)
+    @selfrole.command(pass_context=True, no_pm=True)
     @checks.admin_or_permissions(manage_roles=True)
     async def add(self, ctx: commands.Context, *, role: discord.Role):
         """Add an role to accessible roles for selfrole command"""
@@ -53,7 +53,7 @@ class SelfRole:
             await self.bot.say(chat.info("Added role `{}` (`{}`) as available "
                                          "for selfrole command".format(role.name, role.id)))
 
-    @selfrole.command(pass_context=True)
+    @selfrole.command(pass_context=True, no_pm=True)
     @checks.admin_or_permissions(manage_roles=True)
     async def remove(self, ctx: commands.Context, *, role: discord.Role):
         """Remove role to accessible roles for selfrole command"""
@@ -68,7 +68,7 @@ class SelfRole:
             await self.bot.say(chat.info("Removed role `{}` (`{}`) from list of available roles "
                                          "for selfrole command".format(role.name, role.id)))
 
-    @selfrole.command(pass_context=True, hidden=True)
+    @selfrole.command(pass_context=True, hidden=True, no_pm=True)
     @checks.admin_or_permissions(manage_roles=True)
     async def removeid(self, ctx: commands.Context, *, roleid: str):
         """Remove role to accessible roles for selfrole command by id"""
@@ -83,7 +83,7 @@ class SelfRole:
             await self.bot.say(chat.info("Removed role with id `{}` from list of available roles "
                                          "for selfrole command".format(roleid)))
 
-    @selfrole.command(pass_context=True)
+    @selfrole.command(pass_context=True, no_pm=True)
     async def list(self, ctx: commands.Context):
         """Shows up an list of available roles for selfrole command"""
         sv = ctx.message.server.id
