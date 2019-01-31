@@ -14,6 +14,7 @@ class GodvilleData:
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.baseAPI = "https://godville.net/gods/api/"
+        self.baseAPIGlobal = "http://godvillegame.com/gods/api/"
         self.config_file = "data/godville/config.json"
         self.config = dataIO.load_json(self.config_file)
         self.session = aiohttp.ClientSession(loop=self.bot.loop)
@@ -126,6 +127,107 @@ class GodvilleData:
         finaltext += chat.box(text)
         if pet:
             finaltext += "Питомец:\n"
+            finaltext += chat.box(pet)
+        if times:
+            finaltext += chat.box(times)
+        await self.bot.say(finaltext)
+
+    @commands.group(invoke_without_command=True)
+    @commands.cooldown(30, 10 * 60, commands.BucketType.user)
+    async def godvillegame(self, *, godname: str):
+        """Get data about godville's god by name"""
+        async with self.session.get("{}/{}".format(self.baseAPIGlobal,
+                                                   godname.casefold())) as sg:
+            if sg.status == 404:
+                await self.bot.say(chat.error("404 — Sorry, but there is nothing here\nCheck god name and try again"))
+                return
+            elif sg.status != 200:
+                await self.bot.say(chat.error("Something went wrong. Server returned {}.".format(sg.status)))
+                return
+            profile = await sg.json()
+        profile = GodvilleUser(profile)
+        text_header = "{} and his {}\n{}\n" \
+            .format(chat.bold(profile.god),
+                    chat.bold(profile.name),
+                    chat.italics(chat.escape(profile.motto.strip(), formatting=True))
+                    if profile.motto else chat.inline("Nothing here"))
+        if profile.arena_is_in_fight:
+            text_header += "In fight: {}\n".format(profile.fight_type_rus)
+        if profile.town:
+            text_header += "In city: {}\n".format(profile.town)
+        if profile.need_update:
+            text_header += chat.bold("! INFO OUTDATED !") + "\n"
+        text = ""
+        pet = ""
+        times = ""
+        if profile.gold_approximately:
+            text += "Gold: {}\n".format(profile.gold_approximately)
+        if profile.distance:
+            text += "Milestone: {}\n".format(profile.distance)
+        if profile.quest_progress:
+            text += "Quest: {} ({}%)\n".format(profile.quest, profile.quest_progress)
+        if profile.experience:
+            text += "Exp for next level: {}%\n".format(profile.experience)
+        text += "Level: {}\n".format(profile.level)
+        if profile.godpower:
+            text += "Godpower: {}/{}\n".format(profile.godpower, 200 if profile.savings_date else 100)
+        text += "Personality: {}\n".format(profile.alignment)
+        text += "Gender: {}\n".format(profile.gender)
+        text += "Wins / Losses: {}/{}\n".format(profile.arena_won, profile.arena_lost)
+        text += "Guild: {} ({})\n".format(profile.clan, profile.clan_position) if profile.clan \
+            else "Guild: Not in guild\n"
+        text += "Bricks: {} ({}%)\n".format(profile.bricks, profile.bricks / 10)
+        if profile.inventory:
+            text += "Inventory: {}/{} ({}%)\n".format(profile.inventory, profile.inventory_max,
+                                                      int(profile.inventory / profile.inventory_max * 100))
+        else:
+            text += "Inventory max: {}\n".format(profile.inventory_max)
+        if profile.health:
+            text += "Health: {}/{} ({}%)\n".format(profile.health, profile.health_max,
+                                                   int(profile.health / profile.health_max * 100))
+        else:
+            text += "Health maximum: {}\n".format(profile.health_max)
+        if profile.ark_male:
+            text += "Manimals: {} ({}%)\n".format(profile.ark_male, profile.ark_male / 10)
+        if profile.ark_female:
+            text += "Fenimals: {} ({}%)\n".format(profile.ark_female, profile.ark_female / 10)
+        if profile.savings:
+            text += "Savings: {}\n".format(profile.savings)
+        if profile.trading_level:
+            text += "Trading Level: {}\n".format(profile.trading_level)
+        if profile.wood:
+            text += "Wood: {} ({}%)\n".format(profile.wood, profile.wood / 10)
+
+        # private (api only)
+        if profile.diary_last:
+            text += "Diary: {}\n".format(profile.diary_last)
+        if profile.activatables:
+            text += "Activatables in inv: {}\n".format(", ".join(profile.activatables))
+        if profile.aura:
+            text += "Aura: {}\n".format(profile.aura)
+
+        # pet
+        if profile.pet.name:
+            pet += "Name: {}\n".format(profile.pet.name)
+            pet += "Level: {}\n".format(profile.pet.level or "No level")
+            if profile.pet.type:
+                pet += "Type: {}\n".format(profile.pet.type)
+            if profile.pet.wounded:
+                pet += "❌ — Knocked out"
+
+        # times
+        if profile.temple_date:
+            times += "Temple completed: {}\n".format(profile.date_string("temple"))
+        if profile.ark_date:
+            times += "Ark completed: {}\n".format(profile.date_string("ark"))
+        if profile.savings_date:
+            times += "Pension collected: {}\n".format(profile.date_string("savings"))  # ?
+
+        finaltext = ""
+        finaltext += text_header
+        finaltext += chat.box(text)
+        if pet:
+            finaltext += "Pet:\n"
             finaltext += chat.box(pet)
         if times:
             finaltext += chat.box(times)
