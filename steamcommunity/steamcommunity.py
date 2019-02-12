@@ -208,16 +208,14 @@ class SteamUser:
 
     @property
     def steamid(self):
-        steamid = "STEAM_0:"
-        steamid_last_part = int(self.steamid64) - 76561197960265728
-        if steamid_last_part < 0:
-            return None  # Wrong steamid64 (In example - discord steam integration)
-        if steamid_last_part % 2 == 0:
-            steamid += "0:"
-        else:
-            steamid += "1:"
-        steamid += (str(steamid_last_part // 2))
-        return steamid
+        # STEAM_X:Y:Z
+        sid64 = int(self.steamid64)
+        y = sid64 & 0b1
+        z = (sid64 & 0b11111111111111111111111111111110) >> 1
+        x = sid64 >> 56
+        # instance = (sid64 & 0b1111111111111111111100000000000000000000000000000000) >> 32
+        # type = (sid64 & 0b11110000000000000000000000000000000000000000000000000000) >> 52
+        return "STEAM_{}:{}:{}".format(x, y, z)
 
 
 def check_folders():
