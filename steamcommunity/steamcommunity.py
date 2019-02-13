@@ -10,9 +10,25 @@ from cogs.utils import chat_formatting as chat
 from cogs.utils import checks
 from cogs.utils.dataIO import dataIO
 
+CONFIG_FILE = "data/steamcommunity/config.json"
+
 
 def bool_emojify(bool_var: bool) -> str:
     return "✔" if bool_var else "❌"
+
+
+class IDParser:
+    def __init__(self, argument):
+        config = dataIO.load_json(CONFIG_FILE)
+        steam = interface.API(key=config["apikey"])
+        userapi = steam['ISteamUser']
+        if argument.isdigit():
+            self.id64 = argument
+        else:
+            if argument.startswith("STEAM_"):
+                self.id64 = SteamID.from_text(argument).as_64()
+            else:
+                self.id64 = userapi.ResolveVanityURL(argument)["response"]["steamid"]
 
 
 class SteamCommunity:
@@ -20,20 +36,13 @@ class SteamCommunity:
 
     def __init__(self, bot):
         self.bot = bot
-        self.config_file = "data/steamcommunity/config.json"
-        self.config = dataIO.load_json(self.config_file)
+        self.config = dataIO.load_json(CONFIG_FILE)
         self.steam = interface.API(key=self.config["apikey"])
 
     def check_api(self):
         if "ISteamUser" in list(self.steam._interfaces.keys()):
             return True
         return False
-
-    async def resolve_vanity_url(self, vanity_url: str):
-        """Resolve vanity URL"""
-        userapi = self.steam['ISteamUser']
-        resolved = userapi.ResolveVanityURL(vanity_url)["response"]
-        return resolved.get("steamid"), resolved.get("message")
 
     @commands.group(pass_context=True, aliases=["sc"])
     async def steamcommunity(self, ctx):
@@ -48,12 +57,12 @@ class SteamCommunity:
         You can get it here: https://steamcommunity.com/dev/apikey"""
         self.config["apikey"] = apikey
         self.steam = interface.API(key=self.config["apikey"])
-        dataIO.save_json(self.config_file, self.config)
+        dataIO.save_json(CONFIG_FILE, self.config)
         await self.bot.say(chat.info("API key Updated"))
 
     @steamcommunity.command(name="profile", pass_context=True, aliases=["p"])
     @commands.cooldown(1, 15, commands.BucketType.user)
-    async def steamprofile(self, ctx, steamid: str):
+    async def steamprofile(self, ctx, steamid: IDParser):
         """Get steam user's steamcommunity profile"""
         if not ctx.message.channel.permissions_for(ctx.message.server.me).embed_links:
             await self.bot.say(chat.error("This command requires enabled embeds.\n"
@@ -64,16 +73,8 @@ class SteamCommunity:
                                           "Ask owner of the bot to use "
                                           "`{}sc apikey` to setup API key".format(ctx.prefix)))
             return
-        if not steamid.isdigit():
-            if steamid.startswith("STEAM_0:"):
-                steamid = SteamID.from_text(steamid).as_64()
-            else:
-                steamid, message = await self.resolve_vanity_url(steamid)
-                if steamid is None:
-                    await self.bot.say(chat.error("Unable to resolve vanity ID: {}".format(message)))
-                    return
         try:
-            profile = SteamUser(self.config["apikey"], steamid)
+            profile = SteamUser(self.config["apikey"], steamid.id64)
         except IndexError:
             await self.bot.say(chat.error("Unable to get profile for {}. "
                                           "Check your input or try again later.".format(steamid)))
@@ -100,7 +101,7 @@ class SteamCommunity:
         if profile.createdat:
             em.add_field(name="Created at",
                          value=datetime.utcfromtimestamp(profile.createdat).strftime("%d.%m.%Y %H:%M:%S"))
-        em.add_field(name="SteamID", value=profile.steamid or "-")
+        em.add_field(name="SteamID", value="{}\n{}".format(profile.steamid, profile.sid3))
         em.add_field(name="SteamID64", value=profile.steamid64)
         if any([profile.VACbanned, profile.gamebans]):
             bansdescription = "Days since last ban: {}".format(profile.sincelastban)
@@ -137,6 +138,7 @@ class SteamUser:
             4: "Users only",
             5: "Public"
         }
+        acctypes = ["I", "U", "M", "G", "A", "P", "C", "g", "T", "", "a"]
 
         self.steamid64 = self._userdata.get("steamid")
         self.createdat = self._userdata.get("timecreated")
@@ -169,6 +171,16 @@ class SteamUser:
         self.gamebans = self._bandata.get("NumberOfGameBans")
         economyban = self._bandata.get("EconomyBan")
         self.economyban = economyban if economyban != "none" else None
+
+        self.iduniverse = int(self.steamid64) >> 56
+        self.idpart = int(self.steamid64) & 0b1
+        self.accountnumber = (int(self.steamid64) & 0b11111111111111111111111111111110) >> 1
+        self.accountid = int(self.steamid64) & 0b11111111111111111111111111111111
+        self.idinstance = (int(self.steamid64) & 0b1111111111111111111100000000000000000000000000000000) >> 32
+        self.idtype = (int(self.steamid64) & 0b11110000000000000000000000000000000000000000000000000000) >> 52
+
+        self.steamid = "STEAM_{}:{}:{}".format(self.iduniverse, self.idpart, self.accountnumber)
+        self.sid3 = "[{}:{}:{}]".format(acctypes[self.idtype], self.iduniverse, self.accountid)
 
     def personastate(self, string: bool = True):
         """Get persona state
@@ -205,17 +217,6 @@ class SteamUser:
         elif self._personastate > 0:
             return 0x57cbde
         return 0x898989
-
-    @property
-    def steamid(self):
-        # STEAM_X:Y:Z
-        sid64 = int(self.steamid64)
-        y = sid64 & 0b1
-        z = (sid64 & 0b11111111111111111111111111111110) >> 1
-        x = sid64 >> 56
-        # instance = (sid64 & 0b1111111111111111111100000000000000000000000000000000) >> 32
-        # type = (sid64 & 0b11110000000000000000000000000000000000000000000000000000) >> 52
-        return "STEAM_{}:{}:{}".format(x, y, z)
 
 
 def check_folders():
