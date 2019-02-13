@@ -77,7 +77,7 @@ class SteamCommunity:
             profile = SteamUser(self.config["apikey"], steamid.id64)
         except IndexError:
             await self.bot.say(chat.error("Unable to get profile for {}. "
-                                          "Check your input or try again later.".format(steamid)))
+                                          "Check your input or try again later.".format(steamid.id64)))
             return
         em = discord.Embed(title=profile.personaname,
                            description=profile.personastate(),
