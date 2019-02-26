@@ -6,6 +6,6 @@
 Cogs from my edition of DiNitride's selfbot and moar
 
 # Installation
-`[p]cog repo add Fixator10-Cogs https://github.com/fixator10/Fixator10-Cogs`
+`[p]repo add Fixator10-Cogs https://github.com/fixator10/Fixator10-Cogs V3`
 
-`[p]cog install Fixator10-Cogs <cogname>`
+`[p]cog install Fixator10-Cogs <cog_name>`
