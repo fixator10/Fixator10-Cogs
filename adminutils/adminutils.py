@@ -1,27 +1,15 @@
-import json
-from asyncio import sleep
+from asyncio import TimeoutError
 
 import aiohttp
 import discord
-from discord.ext import commands
-
-from cogs.utils import chat_formatting as chat
-from cogs.utils import checks
-
-
-# class CustomChecks:
-#     # noinspection PyMethodParameters
-#     def selfbot():
-#         def predicate(ctx):
-#             if ctx.bot.user.bot:  # if bot.user.bot is True - bot is not selfbot
-#                 return False
-#             else:
-#                 return True
-#
-#         return commands.check(predicate)
+from redbot.core import checks
+from redbot.core import commands
+from redbot.core.utils import chat_formatting as chat
+from redbot.core.utils.mod import get_audit_reason
+from redbot.core.utils.predicates import MessagePredicate
 
 
-class AdminUtils:
+class AdminUtils(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.base_api_url = "https://discordapp.com/api/oauth2/authorize?"
@@ -30,119 +18,100 @@ class AdminUtils:
     def __unload(self):
         self.session.close()
 
-    @commands.command(no_pm=True, pass_context=True, aliases=["prune"])
+    @commands.command(name="prune")
+    @commands.guild_only()
     @checks.admin_or_permissions(kick_members=True)
+    @checks.bot_has_permissions(kick_members=True)
     async def cleanup_users(self, ctx, days: int = 1):
         """Cleanup inactive server members"""
         if days > 30:
-            await self.bot.say(
+            await ctx.send(
                 chat.error("Due to Discord Restrictions, you cannot use more than 30 days for that cmd."))
             days = 30
         elif days == 0:
-            await self.bot.say(chat.error("\"days\" arg cannot be an zero..."))
+            await ctx.send(chat.error("\"days\" arg cannot be an zero..."))
             days = 1
-        to_kick = await self.bot.estimate_pruned_members(ctx.message.server, days=days)
-        await self.bot.say(chat.warning("You about to kick **{}** inactive for **{}** days members from this server. "
-                                        "Are you sure?\nTo agree, type \"yes\"".format(to_kick, days)))
-        await sleep(1)  # otherwise wait_for_message will catch message-warning
-        resp = await self.bot.wait_for_message(author=ctx.message.author, channel=ctx.message.channel)
-        if resp.content.casefold().strip() == "yes":
-            cleanup = await self.bot.prune_members(ctx.message.server, days=days)
-            await self.bot.say(chat.info("**{}**/**{}** inactive members removed.\n"
-                                         "(They was inactive for **{}** days)".format(cleanup, to_kick, days)))
-        else:
-            await self.bot.say(chat.error("Inactive members cleanup canceled."))
-
-    # @commands.command(no_pm=True, pass_context=True)
-    # @checks.admin_or_permissions(manage_nicknames=True)
-    # async def invite(self, ctx):
-    #     """Creates a server invite"""
-    #     server = ctx.message.server
-    #     invite = await self.bot.create_invite(server)
-    #     await self.bot.say(invite.url)
-
-    @commands.command(no_pm=True, pass_context=True)
-    @commands.has_permissions(manage_emojis=True)
-    async def addemoji(self, ctx, emoji_name: str, emoji_url: str):
-        """Adds an emoji to server
-        Requires proper permissions
-        PNG/JPG only"""
+        to_kick = await ctx.guild.estimate_pruned_members(days=days)
+        await ctx.send(chat.warning("You about to kick **{}** inactive for **{}** days members from this server. "
+                                    "Are you sure?\nTo agree, type \"yes\"".format(to_kick, days)))
+        pred = MessagePredicate.yes_or_no(ctx)
         try:
-            async with self.session.get(emoji_url) as r:  # from Red's owner.py
-                data = await r.read()
-            await self.bot.create_custom_emoji(server=ctx.message.server, name=emoji_name, image=data)
-            await self.bot.say("Done.")
-        except Exception as e:
-            await self.bot.say("Failed: " + chat.inline(e))
+            await self.bot.wait_for("message", check=pred, timeout=30)
+        except TimeoutError:
+            pass
+        if pred.result:
+            cleanup = await ctx.guild.prune_members(days=days, reason=get_audit_reason(ctx.author))
+            await ctx.send(chat.info("**{}**/**{}** inactive members removed.\n"
+                                     "(They was inactive for **{}** days)".format(cleanup, to_kick, days)))
+        else:
+            await ctx.send(chat.error("Inactive members cleanup canceled."))
 
-    @commands.command(no_pm=True, pass_context=True)
+    @commands.command()
+    @commands.guild_only()
     @checks.admin_or_permissions(manage_nicknames=True)
+    @checks.bot_has_permissions(manage_nicknames=True)
     async def massnick(self, ctx, nickname: str):
         """Mass nicknames everyone on the server"""
-        server = ctx.message.server
+        server = ctx.guild
         counter = 0
         for user in server.members:
-            # if user.nick is None:
-            #     nickname = "{} {}".format(nickname, user.name)
-            # else:
-            #     nickname = "{} {}".format(nickname, user.nick)
             try:
-                await self.bot.change_nickname(user, nickname)
+                await user.edit(nick=nickname, reason=get_audit_reason(ctx.author, "Massnick"))
             except discord.HTTPException:
                 counter += 1
                 continue
-        await self.bot.say("Finished nicknaming server. {} nicknames could not be completed.".format(counter))
+        await ctx.send("Finished nicknaming server. {} nicknames could not be completed.".format(counter))
 
-    @commands.command(no_pm=True, pass_context=True)
+    @commands.command()
+    @commands.guild_only()
     @checks.admin_or_permissions(manage_nicknames=True)
+    @checks.bot_has_permissions(manage_nicknames=True)
     async def resetnicks(self, ctx):
         """Resets nicknames on the server"""
-        server = ctx.message.server
+        server = ctx.guild
         for user in server.members:
             try:
-                await self.bot.change_nickname(user, nickname=None)
+                await user.edit(nickname=None, reason=get_audit_reason(ctx.author, "Reset nicks"))
             except discord.HTTPException:
                 continue
-        await self.bot.say("Finished resetting server nicknames")
+        await ctx.send("Finished resetting server nicknames")
 
-    # @commands.command(no_pm=True, pass_context=True)
-    # @CustomChecks.selfbot()
-    # @checks.admin_or_permissions(manage_server=True)
-    # async def addbot(self, ctx, oauth_url):  # From Squid-Plugins for Red-DiscordBot:
-    #     # https://github.com/tekulvw/Squid-Plugins
-    #     """[SELFBOT ONLY] Adds bot to current server
-    #
-    #     Based on autoapprove cog from Squid-Plugins
-    #     https://github.com/tekulvw/Squid-Plugins"""
-    #     if self.bot.user.bot:
-    #         await self.bot.say(chat.error("This command is only for SelfBots") +
-    #                            chat.box("For bot accounts use autoapprove cog from Squid-Plugins repo:\n"
-    #                                     "{0}cog repo add Squid-Plugins https://github.com/tekulvw/Squid-Plugins\n"
-    #                                     "{0}cog install Squid-Plugins autoapprove").format(ctx.prefix))
-    #         return
-    #     server = ctx.message.server
-    #
-    #     key = self.bot.settings.token
-    #     parsed = up.urlparse(oauth_url)
-    #     queryattrs = up.parse_qs(parsed.query)
-    #     queryattrs['client_id'] = int(queryattrs['client_id'][0])
-    #     queryattrs['scope'] = queryattrs['scope'][0]
-    #     queryattrs.pop('permissions', None)
-    #     full_url = self.base_api_url + up.urlencode(queryattrs)
-    #     status = await self.get_bot_api_response(full_url, key, server.id)
-    #     if status < 400:
-    #         await self.bot.say("Succeeded!")
-    #     else:
-    #         await self.bot.say("Failed, error code {}. ".format(status))
+    @commands.group()
+    @commands.guild_only()
+    @checks.admin_or_permissions(manage_emojis=True)
+    @checks.bot_has_permissions(manage_emojis=True)
+    async def emoji(self, ctx):
+        """Manage emoji"""
+        pass
 
-    async def get_bot_api_response(self, url, key, serverid):
-        data = {"guild_id": serverid, "permissions": 1024, "authorize": True}
-        data = json.dumps(data).encode('utf-8')
-        headers = {'authorization': key, 'content-type': 'application/json'}
-        async with self.session.post(url, data=data, headers=headers) as r:
-            status = r.status
-        return status
+    @emoji.command(name="add")
+    async def emoji_add(self, ctx, name: str, url: str, *roles: discord.Role):
+        """Create custom emoji"""
+        try:
+            async with self.session.get(url) as r:  # from Red's owner.py
+                data = await r.read()
+        except Exception as e:
+            await ctx.send(chat.error("Unable to get emoji from provided url: {}".format(e)))
+            return
+        await ctx.guild.create_custom_emoji(name=name, image=data, roles=roles,
+                                            reason=get_audit_reason(ctx.author,
+                                                                    ("Restricted to roles: " +
+                                                                     ", ".join([f"{role.name}" for role in roles]))
+                                                                    if roles else None))
+        await ctx.tick()
 
+    @emoji.command(name="rename")
+    async def emoji_rename(self, ctx, emoji: discord.Emoji, name: str, *roles: discord.Role):
+        """Rename emoji and restrict to certain roles
+        Only this roles will be able to use this emoji"""
+        await emoji.edit(name=name, roles=roles,
+                         reason=get_audit_reason(ctx.author, ("Restricted to roles: " +
+                                                              ", ".join([f"{role.name}" for role in roles]))
+                         if roles else None))
+        await ctx.tick()
 
-def setup(bot):
-    bot.add_cog(AdminUtils(bot))
+    @emoji.command(name="remove")
+    async def emoji_remove(self, ctx, emoji: discord.Emoji):
+        """Remove emoji from server"""
+        await emoji.delete(reason=get_audit_reason(ctx.author))
+        await ctx.tick()
