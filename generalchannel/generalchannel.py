@@ -28,9 +28,9 @@ class GeneralChannel(commands.Cog):
 
     @commands.group(invoke_without_command=True, name="generalchannel")
     @commands.guild_only()
-    async def gc(self, ctx, name: str):
+    async def gc(self, ctx):
         """Change general server's channel name/topic"""
-        await ctx.invoke(self.gcname, name=name)
+        pass
 
     @gc.group()
     @checks.admin_or_permissions(manage_channels=True)
