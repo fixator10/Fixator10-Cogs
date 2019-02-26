@@ -1,9 +1,0 @@
-{
-    "AUTHOR" : "Fixator10",
-    "INSTALL_MSG" : "Thanks for install.\nUse [p]selfrole to setup",
-    "NAME" : "SelfRole",
-    "SHORT" : "Selfroles",
-    "DESCRIPTION" : "Make selfassignable roles for members",
-    "TAGS" : ["selfrole", "role"],
-    "REQUIREMENTS": ["tabulate", "wcwidth"]
-}

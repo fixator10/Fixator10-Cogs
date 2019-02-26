@@ -1,9 +1,0 @@
-{
-    "AUTHOR" : "Fixator10",
-    "INSTALL_MSG" : "Thanks for install.",
-    "NAME" : "MemeGen",
-    "SHORT" : "This cog creates memes",
-    "DESCRIPTION" : "This cog creates memes",
-    "TAGS" : ["memes", "fun"],
-	"REQUIREMENTS" : ["validators"]
-}
