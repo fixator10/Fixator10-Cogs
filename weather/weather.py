@@ -1,154 +1,112 @@
 import datetime
-import os
 
 import discord
 import forecastio
 import geocoder
-from discord.ext import commands
+from redbot.core import checks
+from redbot.core import commands
+from redbot.core.utils import chat_formatting as chat
+from requests.exceptions import HTTPError, ConnectionError, Timeout
 
-from cogs.utils import chat_formatting as chat
-from cogs.utils import checks
-from cogs.utils.dataIO import dataIO
-
-
-def xstr(s):
-    if s is None:
-        return ''
-    return str(s)
-
-
-dictionary = {
-    "clear-day": ":sunny:",
-    "clear-night": ":night_with_stars:",
-    "rain": ":cloud_rain:",
-    "snow": ":cloud_snow:",
-    "sleet": ":snowflake:",
-    "wind": ":wind_blowing_face: ",
-    "fog": ":foggy:",
-    "cloudy": ":white_sun_cloud:",
-    "partly-cloudy-day": ":white_sun_small_cloud:",
-    "partly-cloudy-night": ":night_with_stars:",
-    "": ":sunny:"
+WEATHER_STATES = {
+    "clear-day": "\N{Black Sun with Rays}",
+    "clear-night": "\N{Night with Stars}",
+    "rain": "\N{Cloud with Rain}",
+    "snow": "\N{Cloud with Snow}",
+    "sleet": "\N{Snowflake}",
+    "wind": "\N{Wind Blowing Face}",
+    "fog": "\N{Foggy}",
+    "cloudy": "\N{White Sun Behind Cloud}",
+    "partly-cloudy-day": "\N{White Sun with Small Cloud}",
+    "partly-cloudy-night": "\N{Night with Stars}"
 }
 
 
-class Weather:
-    def __init__(self, bot: commands.Bot):
+class Weather(commands.Cog):
+    def __init__(self, bot):
         self.bot = bot
-        self.config_file = "data/weather/config.json"
-        self.config = dataIO.load_json(self.config_file)
-        self.apikey = self.config["dark_sky_api_key"]
 
-    @commands.command(pass_context=True)
-    async def weather(self, ctx, place: str = None):
+    @commands.command()
+    @checks.is_owner()
+    async def forecastapi(self, ctx):
+        """Set API key for forecast.io"""
+        message = (
+            "To get forecast.io API key:\n"
+            "1. Register/login at [DarkSky](https://darksky.net/dev/register)\n"
+            "2. Copy [\"Your Secret Key\"](https://darksky.net/dev/account)\n"
+            "3. Use `{}set api forecastio secret,<your_apikey>`".format(ctx.prefix)
+        )
+        await ctx.maybe_send_embed(message)
+
+    @commands.command()
+    async def weather(self, ctx, place: str):
         """Shows weather in provided place"""
-        if place is None:
-            place = self.config["hometown"]
+        apikeys = await self.bot.db.api_tokens.get_raw("forecastio", default={"secret": None})
         g = geocoder.komoot(place)
         if not g.latlng:
-            await self.bot.say("Cannot find a place `" + place + "`")
+            await ctx.send(chat.error(f"Cannot find a place {chat.inline(place)}"))
             return
-        forecast = forecastio.load_forecast(self.apikey, g.latlng[0], g.latlng[1], units="si")
+        try:
+            forecast = forecastio.load_forecast(apikeys["secret"], g.latlng[0], g.latlng[1], units="si")
+        except HTTPError:
+            await ctx.send(chat.error("This command requires API key. "
+                                      f"Use {ctx.prefix}forecastapi to get more information"))
+            return
+        except ConnectionError:
+            await ctx.send(chat.error("Unable to get data from forecast.io"))
+            return
+        except Timeout:
+            await ctx.send(chat.error("Unable to get data from forecast.io"))
+            return
         by_hour = forecast.currently()
-        place = g.city + " | " + xstr(g.country)
+        place = f"{g.city} | {g.country}"
 
-        content = "Weather in " + place \
-                  + ":\n" + by_hour.summary + "\n" + str(by_hour.temperature) + \
-                  "˚C" + "\n" + dictionary.get(xstr(by_hour.icon))
-        em = discord.Embed(description=content, colour=0xff0000, timestamp=by_hour.time)
-        if ctx.message.channel.permissions_for(ctx.message.server.me).embed_links:
-            await self.bot.say(embed=em)
+        content = (
+            "Weather in {}:\n"
+            "{}\n"
+            "{}˚C\n"
+            "{}\n".format(place, by_hour.summary, by_hour.temperature,
+                          WEATHER_STATES.get(by_hour.icon, "\N{Black Sun with Rays}"))
+        )
+        em = discord.Embed(description=content, color=await ctx.embed_color(), timestamp=by_hour.time)
+        if ctx.channel.permissions_for(ctx.guild.me).embed_links:
+            await ctx.send(embed=em)
         else:
-            await self.bot.say(content)
+            await ctx.send(content)
 
-    @commands.group(pass_context=True)
-    @checks.is_owner()
-    async def weather_set(self, ctx):
-        """Set weather cog settings"""
-        if ctx.invoked_subcommand is None:
-            await self.bot.send_cmd_help(ctx)
-
-    @weather_set.command()
-    @checks.is_owner()
-    async def api(self, *, apikey: str):
-        """Set Weather apikey
-        https://darksky.net/dev/"""
-        self.config["dark_sky_api_key"] = apikey
-        self.apikey = self.config["dark_sky_api_key"]
-        dataIO.save_json(self.config_file, self.config)
-        await self.bot.say(chat.info("Apikey Updated"))
-
-    @weather_set.command()
-    @checks.is_owner()
-    async def hometown(self, place: str):
-        """Set default town for commands"""
-        self.config["hometown"] = place
-        dataIO.save_json(self.config_file, self.config)
-        await self.bot.say(chat.info("Bot's hometown now is \"{}\"".format(place)))
-
-    @weather.error
-    async def error(self, exception, ctx):
-        await self.bot.say(chat.error("An error has been occured. Check your apikey, "
-                                      "and set new with {}weather_set api").format(ctx.prefix))
-
-    # @commands.command(pass_context=True)
-    # async def time(self, ctx, place: str = None):
-    #     if place is None:
-    #         forecast = forecastio.load_forecast(self.apikey, "40.241495", "-75.283786", units="si")
-    #         by_hour = forecast.currently()
-    #         place = "Lansdale, PA"
-    #     else:
-    #         g = geocoder.google(place)
-    #         if len(g.latlng) == 0:
-    #             await self.bot.say("Cannot find a place " + place)
-    #             return
-    #         forecast = forecastio.load_forecast(self.apikey, g.latlng[0], g.latlng[1], units="si")
-    #         by_hour = forecast.currently()
-    #
-    #     await self.bot.say("Time in " + place + " " + by_hour.time.timetz().isoformat())
-
-    @commands.command(pass_context=True)
-    async def forecast(self, ctx, place: str = None):
+    @commands.command()
+    async def forecast(self, ctx, place: str):
         """Shows 7 days forecast for provided place"""
-        if place is None:
-            place = self.config["hometown"]
+        apikeys = await self.bot.db.api_tokens.get_raw("forecastio", default={"secret": None})
         g = geocoder.komoot(place)
         if not g.latlng:
-            await self.bot.say("Cannot find a place `" + place + "`")
+            await ctx.send(f"Cannot find a place {chat.inline(place)}")
             return
-        forecast = forecastio.load_forecast(self.apikey, g.latlng[0], g.latlng[1], units="si")
+        try:
+            forecast = forecastio.load_forecast(apikeys["secret"], g.latlng[0], g.latlng[1], units="si")
+        except HTTPError:
+            await ctx.send(chat.error("This command requires API key. "
+                                      f"Use {ctx.prefix}forecastapi to get more information"))
+            return
+        except ConnectionError:
+            await ctx.send(chat.error("Unable to get data from forecast.io"))
+            return
+        except Timeout:
+            await ctx.send(chat.error("Unable to get data from forecast.io"))
+            return
         by_hour = forecast.daily()
-        place = g.city + " | " + xstr(g.country)
+        place = f"{g.city} | {g.country}"
 
-        content = "Weather in " + place + ":\n"
-        for i in range(0, 6):
-            content = content + \
-                      "__***" + by_hour.data[i].time.strftime("%d/%m") + ":***__       " + \
-                      xstr(by_hour.data[i].temperatureMin) + " - " + \
-                      xstr(by_hour.data[i].temperatureMax) + "˚C       " \
-                      + dictionary.get(xstr(by_hour.data[i].icon)) + "\n"
-        em = discord.Embed(description=content, colour=0xff0000, timestamp=datetime.datetime.now())
-        if ctx.message.channel.permissions_for(ctx.message.server.me).embed_links:
-            await self.bot.say(embed=em)
+        content = f"Weather in {place}:\n"
+        for i in range(0, 7):
+            content = content + "{}:       {} - {}˚C       {}\n".format(
+                chat.underline(chat.bold(by_hour.data[i].time.strftime("%d.%m"))),
+                by_hour.data[i].temperatureMin or "\N{White Question Mark Ornament}",
+                by_hour.data[i].temperatureMax or "\N{White Question Mark Ornament}",
+                WEATHER_STATES.get(by_hour.data[i].icon) or "\N{Black Sun with Rays}"
+            )
+        em = discord.Embed(description=content, color=await ctx.embed_color(), timestamp=datetime.datetime.now())
+        if ctx.channel.permissions_for(ctx.guild.me).embed_links:
+            await ctx.send(embed=em)
         else:
-            await self.bot.say(content)
-
-
-def check_folders():
-    if not os.path.exists("data/weather"):
-        os.makedirs("data/weather")
-
-
-def check_files():
-    system = {"dark_sky_api_key": "",
-              "hometown": "Pripyat"}
-
-    f = "data/weather/config.json"
-    if not dataIO.is_valid_json(f):
-        dataIO.save_json(f, system)
-
-
-def setup(bot):
-    check_folders()
-    check_files()
-    bot.add_cog(Weather(bot))
+            await ctx.send(content)
