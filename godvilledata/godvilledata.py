@@ -1,47 +1,66 @@
-import os
+from pathlib import Path
 
 import aiohttp
-from dateutil.parser import parse
-from discord.ext import commands
+from redbot.core import checks
+from redbot.core import commands
+from redbot.core.config import Config
+from redbot.core.utils import chat_formatting as chat
+from redbot.core.utils.data_converter import DataConverter as dc
 
-from cogs.utils import chat_formatting as chat
-from cogs.utils.dataIO import dataIO
+from .godvilleuser import GodvilleUser
+
+BASE_API = "https://godville.net/gods/api/"
+BASE_API_GLOBAL = "http://godvillegame.com/gods/api/"
 
 
-class GodvilleData:
+class GodvilleData(commands.Cog):
     """Get data about Godville profiles"""
 
-    def __init__(self, bot: commands.Bot):
+    def __init__(self, bot):
         self.bot = bot
-        self.baseAPI = "https://godville.net/gods/api/"
-        self.baseAPIGlobal = "http://godvillegame.com/gods/api/"
-        self.config_file = "data/godville/config.json"
-        self.config = dataIO.load_json(self.config_file)
+        self.config = Config.get_conf(self, identifier=0x7894d37506ab41b0a1c9f63388ec3a25)
+        default_user = {
+            "godville": {
+                "apikey": None,
+                "godname": None
+            },
+            "godvillegame": {
+                "apikey": None,
+                "godname": None
+            }
+        }
+        self.config.register_user(**default_user)
         self.session = aiohttp.ClientSession(loop=self.bot.loop)
 
     def __unload(self):
         self.session.close()
 
-    async def api_by_god(self, godname: str):
+    async def api_by_god(self, godname: str, game: str):
         """Get apikey by godname
-        :param godname: name of god to get key"""
-        for user, data in self.config.items():
-            if data["godname"] == godname:
-                return data["apikey"]
+        :param godname: name of god to get key
+        :param game: type of account ("godville" or "godvillegame")"""
+        if not any(g == game for g in ["godville", "godvillegame"]):
+            raise ValueError(f"{game} is not right type of account\n"
+                             "only \"godville\" and \"godvillegame\" are supported")
+        users = await self.config.all_users()
+        for user, data in users.items():
+            if data[game]["godname"] == godname:
+                return data[game]["apikey"]
         return None
 
     @commands.group(invoke_without_command=True)
     @commands.cooldown(30, 10 * 60, commands.BucketType.user)
-    async def godville(self, *, godname: str):
+    async def godville(self, ctx, *, godname: str):
         """Get data about godville's god by name"""
-        async with self.session.get("{}/{}/{}".format(self.baseAPI,
+        async with self.session.get("{}/{}/{}".format(BASE_API,
                                                       godname.casefold(),
-                                                      await self.api_by_god(godname.casefold()) or "")) as sg:
+                                                      await self.api_by_god(godname.casefold(),
+                                                                            "godville") or "")) as sg:
             if sg.status == 404:
-                await self.bot.say(chat.error("404 — Sorry, but there is nothing here\nCheck god name and try again"))
+                await ctx.send(chat.error("404 — Sorry, but there is nothing here\nCheck god name and try again"))
                 return
             elif sg.status != 200:
-                await self.bot.say(chat.error("Something went wrong. Server returned {}.".format(sg.status)))
+                await ctx.send(chat.error("Something went wrong. Server returned {}.".format(sg.status)))
                 return
             profile = await sg.json()
         profile = GodvilleUser(profile)
@@ -130,19 +149,19 @@ class GodvilleData:
             finaltext += chat.box(pet)
         if times:
             finaltext += chat.box(times)
-        await self.bot.say(finaltext)
+        await ctx.send(finaltext)
 
     @commands.group(invoke_without_command=True)
     @commands.cooldown(30, 10 * 60, commands.BucketType.user)
-    async def godvillegame(self, *, godname: str):
+    async def godvillegame(self, ctx, *, godname: str):
         """Get data about godville's god by name"""
-        async with self.session.get("{}/{}".format(self.baseAPIGlobal,
+        async with self.session.get("{}/{}".format(BASE_API_GLOBAL,
                                                    godname.casefold())) as sg:
             if sg.status == 404:
-                await self.bot.say(chat.error("404 — Sorry, but there is nothing here\nCheck god name and try again"))
+                await ctx.send(chat.error("404 — Sorry, but there is nothing here\nCheck god name and try again"))
                 return
             elif sg.status != 200:
-                await self.bot.say(chat.error("Something went wrong. Server returned {}.".format(sg.status)))
+                await ctx.send(chat.error("Something went wrong. Server returned {}.".format(sg.status)))
                 return
             profile = await sg.json()
         profile = GodvilleUser(profile)
@@ -231,121 +250,43 @@ class GodvilleData:
             finaltext += chat.box(pet)
         if times:
             finaltext += chat.box(times)
-        await self.bot.say(finaltext)
+        await ctx.send(finaltext)
 
-    @godville.group(pass_context=True, invoke_without_command=True)
+    @godville.group(invoke_without_command=True)
     async def apikey(self, ctx: commands.Context, apikey: str, *, godname: str):
         """Set apikey for your character.
-        Only one character per user"""
-        self.config[ctx.message.author.id] = {"godname": godname.casefold(),
-                                              "apikey": apikey}
-        dataIO.save_json(self.config_file, self.config)
-        await self.bot.say("Your name and apikey has been saved")
 
-    @apikey.command(pass_context=True)
+        Only one character per user"""
+        await self.config.user(ctx.author).godville.apikey.set(apikey)
+        await self.config.user(ctx.author).godville.godname.set(godname.casefold())
+        await ctx.tick()
+
+    @apikey.command()
+    @checks.is_owner()
+    async def convertv2(self, ctx, path):
+        """Convert data from V2 cog"""
+        base_path = Path(path)
+        fp = base_path / 'data' / 'godville' / 'config.json'
+        if not fp.is_file():
+            ctx.send(chat.error("Config is not found, check your path and try again"))
+            return
+        converter = dc(self.config)
+
+        def conversion_spec(v2data: dict):
+            for member in v2data.keys():
+                yield {(Config.USER, member): {
+                    ("godville",):
+                        {
+                            "apikey": v2data[member].get("apikey"),
+                            "godname": v2data[member].get("godname")
+                        }
+                }}
+
+        await converter.convert(fp, conversion_spec)
+        await ctx.tick()
+
+    @apikey.command()
     async def remove(self, ctx: commands.Context):
         """Remove your apikey and godname from bot's data"""
-        del self.config[ctx.message.author.id]
-        dataIO.save_json(self.config_file, self.config)
-        await self.bot.say("Your key removed from database")
-
-
-class GodvilleUser(object):
-    """Godville API wrapper"""
-
-    def __init__(self, profile: dict):
-        self._clan = profile.get("clan")
-        self._clan_pos = profile.get("clan_position")
-        self._motto = profile.get("motto")
-        self._pet_data = profile.get("pet", {})
-        self._gold = profile.get("gold_approx")
-        self._town = profile.get("town_name")
-
-        self.activatables = profile.get("activatables")
-        self.arena_is_in_fight = True if profile.get("arena_fight") else False
-        self.aura = profile.get("aura")
-        self.diary_last = profile.get("diary_last")
-        self.distance = profile.get("distance")
-        self.experience = profile.get("exp_progress")
-        self.need_update = True if profile.get("expired") else False
-        self.fight_type = profile.get("fight_type")
-        self.godpower = profile.get("godpower")
-        self.gold_approximately = self._gold if self._gold else None
-        self.health = profile.get("health")
-        self.inventory = profile.get("inventory_num")
-        self.quest = profile.get("quest")
-        self.quest_progress = profile.get("quest_progress")
-        self.town = self._town if self._town else None
-
-        self.ark_female = profile.get("ark_f")
-        self.ark_male = profile.get("ark_m")
-        self.savings = profile.get("savings")
-        self.trading_level = profile.get("t_level")
-        self.arena_won = profile.get("arena_won", 0)
-        self.arena_lost = profile.get("arena_lost", 0)
-        self.ark_date = profile.get("ark_completed_at")
-        self.alignment = profile.get("alignment")
-        self.bricks = profile.get("bricks_cnt", 0)
-        self.clan = self._clan if self._clan else None
-        self.clan_position = self._clan_pos if self._clan_pos else None
-        self.gender = profile.get("gender")
-        self.god = profile.get("godname")
-        self.inventory_max = profile.get("inventory_max_num")
-        self.level = profile.get("level")
-        self.health_max = profile.get("max_health")
-        self.motto = self._motto if self._motto else None
-        self.name = profile.get("name")
-        self.savings_date = profile.get("savings_completed_at")
-        self.temple_date = profile.get("temple_completed_at")
-        self.wood = profile.get("wood_cnt")
-
-        self.pet = GodvillePet(self._pet_data)
-
-    @property
-    def fight_type_rus(self):
-        fights = {
-            "sail": "Морской поход",
-            "arena": "Арена",
-            "challenge": "Тренировка",
-            "dungeon": "Подземелье"
-        }
-        return fights.get(self.fight_type)
-
-    def date_string(self, date: str):
-        """Get a date string"""
-        dates = {
-            "ark": self.ark_date,
-            "savings": self.savings_date,
-            "temple": self.temple_date
-        }
-        if date not in dates:
-            raise KeyError
-        utctime = parse(dates[date]) - parse(dates[date]).utcoffset()  # shit way to get UTC time out of ISO timestamp
-        return utctime.strftime('%d.%m.%Y %H:%M:%S')
-
-
-class GodvillePet:
-    def __init__(self, pet: dict):
-        self._level = pet.get("pet_level")
-        self.name = pet.get("pet_name")
-        self.level = self._level if self._level else None
-        self.type = pet.get("pet_class")
-        self.wounded = True if pet.get("wounded") else False
-
-
-def check_folders():
-    if not os.path.exists("data/godville"):
-        os.makedirs("data/godville")
-
-
-def check_files():
-    system = {}
-    f = "data/godville/config.json"
-    if not dataIO.is_valid_json(f):
-        dataIO.save_json(f, system)
-
-
-def setup(bot):
-    check_folders()
-    check_files()
-    bot.add_cog(GodvilleData(bot))
+        await self.config.user(ctx.author).clear()
+        await ctx.tick()
