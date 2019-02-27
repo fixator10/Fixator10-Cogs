@@ -38,7 +38,7 @@ class PersonalRoles(commands.Cog):
         """Assign personal role to someone"""
         await self.config.member(user).role.set(role.id)
         await ctx.send("Ok. I just assigned {} ({}) to role {} ({})."
-                           .format(user.name, user.id, role.name, role.id))
+                       .format(user.name, user.id, role.name, role.id))
 
     @myrole.command()
     @checks.admin_or_permissions(manage_roles=True)
@@ -121,12 +121,12 @@ class PersonalRoles(commands.Cog):
     @checks.admin_or_permissions(manage_roles=True)
     async def bl_list(self, ctx):
         """List of blacklisted role names"""
-        async with self.config.guild(ctx.guild).blacklist() as blacklist:
-            pages = [chat.box(page) for page in chat.pagify('\n'.join(blacklist))]
-            if pages:
-                await menu(ctx, pages, DEFAULT_CONTROLS)
-            else:
-                await ctx.send(chat.info("There is no blacklisted roles"))
+        blacklist = await self.config.guild(ctx.guild).blacklist()
+        pages = [chat.box(page) for page in chat.pagify('\n'.join(blacklist))]
+        if pages:
+            await menu(ctx, pages, DEFAULT_CONTROLS)
+        else:
+            await ctx.send(chat.info("There is no blacklisted roles"))
 
     @commands.cooldown(1, 30, commands.BucketType.user)
     @myrole.command(aliases=["color"])
@@ -140,7 +140,7 @@ class PersonalRoles(commands.Cog):
             await role.edit(colour=colour, reason=get_audit_reason(ctx.author, "Personal Role"))
         except discord.Forbidden:
             await ctx.send(chat.error("Unable to edit role.\nRole must be lower than my top role and i must have "
-                                          "permission \"Manage Roles\""))
+                                      "permission \"Manage Roles\""))
         else:
             await ctx.send("Changed color of {}'s personal role to {}".format(ctx.message.author.name, colour))
 
@@ -154,15 +154,14 @@ class PersonalRoles(commands.Cog):
         role = await self.config.member(ctx.author).role()
         role = ctx.guild.get_role(role)
         name = name[:100]
-        async with self.config.guild(ctx.guild).blacklist() as blacklist:
-            if name.casefold() in blacklist:
-                await ctx.send(chat.error("NONONO!!! This rolename is blacklisted."))
-                return
+        if name.casefold() in await self.config.guild(ctx.guild).blacklist():
+            await ctx.send(chat.error("NONONO!!! This rolename is blacklisted."))
+            return
         try:
             await role.edit(name=name, reason=get_audit_reason(ctx.author, "Personal Role"))
         except discord.Forbidden:
             await ctx.send(chat.error("Unable to edit role.\nRole must be lower than my top role and i must have "
-                                          "permission \"Manage Roles\""))
+                                      "permission \"Manage Roles\""))
         else:
             await ctx.send("Changed name of {}'s personal role to {}".format(ctx.message.author.name, name))
 
