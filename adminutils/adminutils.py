@@ -12,7 +12,6 @@ from redbot.core.utils.predicates import MessagePredicate
 class AdminUtils(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
-        self.base_api_url = "https://discordapp.com/api/oauth2/authorize?"
         self.session = aiohttp.ClientSession(loop=self.bot.loop)
 
     def __unload(self):
@@ -88,7 +87,7 @@ class AdminUtils(commands.Cog):
     async def emoji_add(self, ctx, name: str, url: str, *roles: discord.Role):
         """Create custom emoji"""
         try:
-            async with self.session.get(url) as r:  # from Red's owner.py
+            async with self.session.get(url) as r:
                 data = await r.read()
         except Exception as e:
             await ctx.send(chat.error("Unable to get emoji from provided url: {}".format(e)))
