@@ -9,8 +9,7 @@ from redbot.core.utils.mod import get_audit_reason
 async def server_set(ctx):
     """Check if member has required role and channel is configured"""
     channel = await ctx.cog.config.guild(ctx.guild).channel()
-    if not ctx.guild.get_channel(channel):
-        return False
+    return ctx.guild.get_channel(channel)
 
 
 class GeneralChannel(commands.Cog):
