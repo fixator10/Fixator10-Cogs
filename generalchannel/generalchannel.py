@@ -6,14 +6,11 @@ from redbot.core.utils import chat_formatting as chat
 from redbot.core.utils.mod import get_audit_reason
 
 
-async def has_required_role(ctx):
+async def server_set(ctx):
     """Check if member has required role and channel is configured"""
     channel = await ctx.cog.config.guild(ctx.guild).channel()
     if not ctx.guild.get_channel(channel):
         return False
-    memberroles = [r.id for r in ctx.author.roles]
-    async with ctx.cog.config.guild(ctx.guild).roles() as roles:
-        return any(map(lambda v: v in roles, memberroles))
 
 
 class GeneralChannel(commands.Cog):
@@ -21,8 +18,7 @@ class GeneralChannel(commands.Cog):
         self.bot = bot
         self.config = Config.get_conf(self, identifier=0x8a87069db515498281c88d41675bf85b)
         default_guild = {
-            "channel": None,
-            "roles": []
+            "channel": None
         }
         self.config.register_guild(**default_guild)
 
@@ -49,20 +45,9 @@ class GeneralChannel(commands.Cog):
             await self.config.guild(ctx.guild).channel.clear()
         await ctx.tick()
 
-    @set.command(name="roles")
-    async def setroles(self, ctx, *roles: discord.Role):
-        """Set allowed roles
-
-        Only this roles will be able to use [p]generalchannel"""
-        roles = [r.id for r in roles]
-        async with self.config.guild(ctx.guild).roles() as saved_roles:
-            saved_roles.clear()
-            saved_roles.extend(roles)
-        await ctx.tick()
-
     @gc.command(name="name")
     @commands.cooldown(1, 60, commands.BucketType.user)
-    @commands.check(has_required_role)
+    @commands.check(server_set)
     async def gcname(self, ctx, *, name: str):
         """Change name of #general"""
         channel = await self.config.guild(ctx.guild).channel()
@@ -80,7 +65,7 @@ class GeneralChannel(commands.Cog):
 
     @gc.command(name="topic")
     @commands.cooldown(1, 60, commands.BucketType.user)
-    @commands.check(has_required_role)
+    @commands.check(server_set)
     async def gctopic(self, ctx, *, topic: str = None):
         """Change topic of #general
 
