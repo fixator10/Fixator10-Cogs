@@ -1,11 +1,15 @@
 {
-    "AUTHOR": "Fixator10",
-    "INSTALL_MSG": "Thanks for install.",
-    "NAME": "GodvilleData",
-    "SHORT": "Get data about Godville profiles",
-    "DESCRIPTION": "Get data about Godville profiles",
-    "TAGS": [],
-    "REQUIREMENTS": [
-        "python-dateutil"
-    ]
+  "author": [
+    "Fixator10"
+  ],
+  "install_msg": "Thanks for install.",
+  "short": "Get data about Godville profiles",
+  "description": "Get data about Godville profiles",
+  "tags": [
+    "godville",
+    "ZPG"
+  ],
+  "requirements": [
+    "python-dateutil"
+  ]
 }

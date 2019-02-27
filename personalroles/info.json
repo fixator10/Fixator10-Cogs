@@ -1,8 +1,16 @@
 {
-    "AUTHOR" : "Fixator10",
-    "INSTALL_MSG" : "Thanks for install.",
-    "NAME" : "PersonalRoles",
-    "SHORT" : "Personal roles for members",
-    "DESCRIPTION" : "Personal roles for members",
-    "TAGS" : []
+  "author": [
+    "Fixator10"
+  ],
+  "install_msg": "Thanks for install.",
+  "short": "Personal roles for members",
+  "description": "Personal roles for members",
+  "tags": [
+    "myrole",
+    "personal role",
+    "roles"
+  ],
+  "requirements": [
+    "tabulate"
+  ]
 }

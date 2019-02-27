@@ -1,6 +1,8 @@
 {
-"NAME": "Fixator10's Cogs",
-"AUTHOR" : "Fixator10",
-"SHORT": "Cogs from my edition of DiNitride's selfbot and moar",
-"DESCRIPTION" : "Cogs from my edition of DiNitride's selfbot and moar\nhttps://github.com/fixator10/Discord-Self-Bot\nhttps://github.com/DiNitride/Discord-Self-Bot"
+  "author": [
+    "Fixator10"
+  ],
+  "short": "Cogs from my edition of DiNitride's selfbot and moar",
+  "descrption": "Cogs from my edition of DiNitride's selfbot and moar\nhttps://github.com/fixator10/Discord-Self-Bot\nhttps://github.com/DiNitride/Discord-Self-Bot",
+  "install_msg": "Thanks for installing.\nIf you need help, visit my server: https://discord.gg/RJERbRM\nOr find me (Fixator10#7133) on Red-Cog Support: https://discord.gg/GET4DVk"
 }

@@ -1,9 +1,21 @@
 {
-    "AUTHOR" : "Romashkoo, Fixator10",
-    "INSTALL_MSG" : "Thanks for install.",
-    "NAME" : "Weather",
-    "SHORT" : "Weather forecast",
-    "DESCRIPTION" : "Weather forecast",
-    "TAGS" : [],
-	"REQUIREMENTS": ["python-forecastio", "geocoder"]
+  "author": [
+    "Romashkoo, Fixator10"
+  ],
+  "install_msg": "Thanks for install.\nDon't forget to set api key (`[p]forecastapi`)",
+  "short": "Weather forecast",
+  "description": "Weather forecast",
+  "bot_version": [
+    3,
+    0,
+    2
+  ],
+  "tags": [
+    "weather",
+    "forecast"
+  ],
+  "requirements": [
+    "python-forecastio",
+    "geocoder"
+  ]
 }

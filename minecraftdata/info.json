@@ -1,9 +1,16 @@
 {
-    "AUTHOR" : "Fixator10",
-    "INSTALL_MSG" : "Thanks for install.",
-    "NAME" : "MinecraftData",
-    "SHORT" : "This cog show minecraft-related data",
-    "DESCRIPTION" : "This cog show minecraft-related data\nIncluding:\n  Server info\n  Player's nicks history\n  Get skin by nickname  \n  Get status of minecraft data-servers",
-    "TAGS" : ["minecraft", "game"],
-	"REQUIREMENTS" : ["tabulate", "wcwidth"]
+  "author": [
+    "Fixator10"
+  ],
+  "install_msg": "Thanks for install.",
+  "short": "This cog show minecraft-related data",
+  "description": "This cog show minecraft-related data\nIncluding:\n  Player's nicks history\n  Get skin by nickname\n  Get status of minecraft data-servers",
+  "tags": [
+    "minecraft",
+    "game"
+  ],
+  "requirements": [
+    "tabulate",
+    "wcwidth"
+  ]
 }

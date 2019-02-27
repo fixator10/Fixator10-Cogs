@@ -1,9 +1,22 @@
 {
-    "AUTHOR" : "Fixator10, DiNitride",
-    "INSTALL_MSG" : "Thanks for install.",
-    "NAME" : "DataUtils",
-    "SHORT" : "Commands for getting information about users or servers.",
-    "DESCRIPTION" : "Commands for getting information about users or servers.\nSelfbot only",
-    "TAGS" : [],
-    "REQUIREMENTS": ["matplotlib", "tabulate", "wcwidth"]
+  "author": [
+    "Fixator10",
+    "DiNitride"
+  ],
+  "install_msg": "Thanks for install.",
+  "short": "Commands for getting information about users or servers.",
+  "description": "Commands for getting information about users or servers.",
+  "tags": [
+    "data",
+    "info",
+    "channel",
+    "rolemembers",
+    "server",
+    "permissions"
+  ],
+  "requirements": [
+    "matplotlib",
+    "tabulate",
+    "wcwidth"
+  ]
 }

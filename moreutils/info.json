@@ -1,9 +1,15 @@
 {
-    "AUTHOR" : "Fixator10, DiNitride",
-    "INSTALL_MSG" : "Thanks for install.",
-    "NAME" : "MoreUtils",
-    "SHORT" : "Some useful utils for selfbots and not.",
-    "DESCRIPTION" : "Some useful utils for selfbots and not.\nIncluding:\n  Colors\n  Current time\n  Emoji\n  Quotes",
-    "TAGS" : [],
-	"REQUIREMENTS": ["matplotlib"]
+  "author": [
+    "Fixator10",
+    "DiNitride"
+  ],
+  "install_msg": "Thanks for install.",
+  "short": "Some (maybe) useful utils.",
+  "description": "Some (maybe) useful utils.",
+  "tags": [
+    "utils",
+    "time",
+    "someone",
+    "color"
+  ]
 }
