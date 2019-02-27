@@ -1,0 +1,14 @@
+{
+  "author": [
+    "Fixator10"
+  ],
+  "install_msg": "Thanks for install.",
+  "short": "Allow users to manage #general channel's name and topic",
+  "description": "Allow users to manage #general channel's name and topic",
+  "tags": [
+    "#general",
+    "channel",
+    "name",
+    "topic"
+  ]
+}
