@@ -33,7 +33,7 @@ class GodvilleData(commands.Cog):
         self.session = aiohttp.ClientSession(loop=self.bot.loop)
 
     def __unload(self):
-        self.session.close()
+        self.bot.loop.create_task(self.session.close())
 
     async def api_by_god(self, godname: str, game: str):
         """Get apikey by godname
