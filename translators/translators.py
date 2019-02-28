@@ -19,7 +19,7 @@ class Translators(commands.Cog):
         self.session = aiohttp.ClientSession(loop=self.bot.loop)
 
     def __unload(self):
-        self.session.close()
+        self.bot.loop.create_task(self.session.close())
 
     @commands.command()
     @checks.is_owner()
