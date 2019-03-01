@@ -1,6 +1,8 @@
 from datetime import datetime
+from socket import gethostbyname_ex
 
 import discord
+import valve.source.a2s
 from redbot.core import checks
 from redbot.core import commands
 from redbot.core.utils import chat_formatting as chat
@@ -32,10 +34,23 @@ class SteamCommunity(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    # noinspection PyAttributeOutsideInit
     async def initialize(self):
         """Should be called straight after cog instantiation."""
         self.apikeys = await self.bot.db.api_tokens.get_raw("steam", default={"web": None})
         self.steam = interface.API(key=self.apikeys["web"])
+
+    async def validate_ip(self, s):
+        a = s.split('.')
+        if len(a) != 4:
+            return False
+        for x in a:
+            if not x.isdigit():
+                return False
+            i = int(x)
+            if i < 0 or i > 255:
+                return False
+        return True
 
     @commands.group(aliases=["sc"])
     async def steamcommunity(self, ctx):
@@ -114,4 +129,77 @@ class SteamCommunity(commands.Cog):
         em.set_thumbnail(url=profile.avatar184)
         em.set_footer(text="Powered by Steam • Last seen on",
                       icon_url='https://steamstore-a.akamaihd.net/public/shared/images/responsive/share_steam_logo.png')
+        await ctx.send(embed=em)
+
+    @commands.command(aliases=['gameserver'])
+    async def getserver(self, ctx, serverip: str):
+        """Get info about a gameserver"""
+
+        if ":" not in serverip:
+            serverip += ":27015"
+
+        serverc = serverip.split(":")
+        if not serverc[0][0].isdigit():
+            try:
+                ip = gethostbyname_ex(serverc[0])[2][0]
+            except Exception as e:
+                await ctx.send(f"The specified domain is not valid: {e}")
+                return
+            servercheck = ip
+            serverc = [str(ip), int(serverc[1])]
+        else:
+            servercheck = serverc[0]
+            serverc = [str(serverc[0]), int(serverc[1])]
+        serverc = tuple(serverc)
+
+        if not self.validate_ip(str(servercheck)):
+            await ctx.send_help()
+            return
+
+        try:
+            server = valve.source.a2s.ServerQuerier(serverc)
+            info = server.info()
+
+        except valve.source.a2s.NoResponseError:
+            await ctx.send(chat.error("Could not fetch Server or the Server is not on the Steam masterlist"))
+            return
+        except Exception as e:
+            await ctx.send(chat.error(f"An Error has been occurred: {e}"))
+            return
+
+        _map = info.values['map']
+
+        if _map.lower().startswith("workshop"):
+            link = "https://steamcommunity.com/sharedfiles/filedetails/?id={}".format(
+                _map.split("/")[1])
+            _map = "{} [(Workshop map)]({})".format(_map.split("/")[2], link)
+
+        game = info.values['folder']
+        gamemode = info.values['game']
+
+        servername = info.values['server_name'].strip()
+
+        playernumber = str(
+            info.values['player_count'] - info.values['bot_count'])
+        botnumber = int(info.values['bot_count'])
+        maxplayers = str(info.values['max_players'])
+
+        os = str(info.values['platform'])
+
+        em = discord.Embed(colour=await ctx.embed_color())
+        em.add_field(name="Game", value=game)
+        em.add_field(name="Gamemode", value=gamemode)
+        em.add_field(name="Server name", value=servername, inline=False)
+        em.add_field(name="IP", value=serverc[0])
+        em.add_field(name="Operating System", value=os)
+        em.add_field(name="VAC", value=bool_emojify(bool(info.values['vac_enabled'])))
+        if botnumber:
+            em.add_field(
+                name="Players",
+                value="{}/{}\n{} Bot{}".format(playernumber, maxplayers, botnumber, botnumber > 1 and "s" or ""))
+        else:
+            em.add_field(name="Players",
+                         value="{}/{}\n".format(playernumber, maxplayers))
+        em.add_field(name="Map", value=_map, inline=False)
+
         await ctx.send(embed=em)
