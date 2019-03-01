@@ -2,7 +2,9 @@
 import datetime
 import random
 
+import aiohttp
 import discord
+from dateutil.parser import parse
 from redbot.core import checks
 from redbot.core import commands
 from redbot.core.utils import chat_formatting as chat
@@ -38,6 +40,10 @@ def bool_emojify(bool_var: bool) -> str:
 class MoreUtils(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
+        self.session = aiohttp.ClientSession(loop=self.bot.loop)
+
+    def __unload(self):
+        self.bot.loop.create_task(self.session.close())
 
     @commands.command(name='thetime')
     async def _thetime(self, ctx):
@@ -84,8 +90,32 @@ class MoreUtils(commands.Cog):
         smile = random.choice(smilies)
         member = await self.random_channel_member(ctx.channel)
         await ctx.send("**@someone** {} ***{}*** {}".format(smile,
-                                                                chat.escape(member.display_name, mass_mentions=True),
-                                                                chat.escape(text, mass_mentions=True) if text else ""))
+                                                            chat.escape(member.display_name, mass_mentions=True),
+                                                            chat.escape(text, mass_mentions=True) if text else ""))
+
+    @commands.command(pass_context=True)
+    @commands.cooldown(1, 10, commands.BucketType.user)
+    async def discordstatus(self, ctx):
+        """Get current discord status from status.discordapp.com"""
+        try:
+            async with self.session.get("https://srhpyqt94yxb.statuspage.io/api/v2/summary.json") as data:
+                response = await data.json()
+        except Exception as e:
+            await ctx.send(chat.error("Unable to get data from https://status.discordapp.com: {}".format(e)))
+            return
+        status = response["status"]
+        status_indicators = {"none": "OK",
+                             "minor": "Minor problems",
+                             "major": "Major problems",
+                             "critical": "Critical problems"}
+        components = response["components"]
+        embed = discord.Embed(title="Discord Status", timestamp=parse(response["page"]["updated_at"]),
+                              color=ctx.message.server.me.color, url="https://status.discordapp.com")
+        embed.description = status_indicators.get(status["indicator"], status["indicator"])
+        for component in components:
+            embed.add_field(name=component["name"],
+                            value=component["status"].capitalize().replace("_", " "))
+        await ctx.send(embed=embed)
 
     async def random_channel_member(self, channel: discord.TextChannel):
         """Returns random member that has access to channel"""
