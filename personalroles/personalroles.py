@@ -174,7 +174,7 @@ class PersonalRoles(commands.Cog):
 
     async def role_persistance(self, member):
         """Automatically give already assigned roles on join"""
-        role = self.config.member(member).role
+        role = await self.config.member(member).role()
         if role:
             role = member.guild.get_role(role)
             if role and member:
