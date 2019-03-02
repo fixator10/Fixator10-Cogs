@@ -110,7 +110,7 @@ class MoreUtils(commands.Cog):
                              "critical": "Critical problems"}
         components = response["components"]
         embed = discord.Embed(title="Discord Status", timestamp=parse(response["page"]["updated_at"]),
-                              color=ctx.message.server.me.color, url="https://status.discordapp.com")
+                              color=await ctx.embed_color(), url="https://status.discordapp.com")
         embed.description = status_indicators.get(status["indicator"], status["indicator"])
         for component in components:
             embed.add_field(name=component["name"],
