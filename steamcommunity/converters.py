@@ -10,7 +10,7 @@ class SteamID(Converter):
             raise BadArgument("ApiKey not set or incorrect.")
         userapi = steam['ISteamUser']
         if argument.startswith("http"):
-            argument.strip("/")
+            argument = argument.strip("/")
             argument = argument.split("/")[-1]
         if argument.isdigit():
             id64 = argument
