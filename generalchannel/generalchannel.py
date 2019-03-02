@@ -30,7 +30,7 @@ class GeneralChannel(commands.Cog):
     @gc.group()
     @checks.admin_or_permissions(manage_channels=True)
     async def set(self, ctx):
-        """Set general channel and roles for it"""
+        """Set general channel"""
         pass
 
     @set.command(name="channel")
