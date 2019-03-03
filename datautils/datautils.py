@@ -55,7 +55,7 @@ class DataUtils(commands.Cog):
         """Information on a user"""
         if member is None:
             member = ctx.message.author
-        em = discord.Embed(title=member.nick, color=member.color.value and member.color)
+        em = discord.Embed(title=member.nick, color=member.color.value and member.color or None)
         em.add_field(name="Name", value=member.name)
         em.add_field(name="Client", value="📱: {}\n"
                                           "🖥: {}\n"
@@ -275,7 +275,7 @@ class DataUtils(commands.Cog):
     @checks.bot_has_permissions(embed_links=True)
     async def rinfo(self, ctx, *, role: discord.Role):
         """Get info about role"""
-        em = discord.Embed(title=role.name, color=role.color.value and role.color)
+        em = discord.Embed(title=role.name, color=role.color.value and role.color or None)
         em.add_field(name="ID", value=role.id)
         em.add_field(name="Perms",
                      value="[{0}](https://discordapi.com/permissions.html#{0})".format(role.permissions.value))
