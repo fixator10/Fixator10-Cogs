@@ -55,7 +55,7 @@ class DataUtils(commands.Cog):
         """Information on a user"""
         if member is None:
             member = ctx.message.author
-        em = discord.Embed(title=member.nick, colour=member.colour)
+        em = discord.Embed(title=member.nick, color=member.color.value and member.color)
         em.add_field(name="Name", value=member.name)
         em.add_field(name="Client", value="📱: {}\n"
                                           "🖥: {}\n"
@@ -65,7 +65,7 @@ class DataUtils(commands.Cog):
         em.add_field(name="Joined server", value=member.joined_at.strftime('%d.%m.%Y %H:%M:%S %Z'))
         em.add_field(name="ID", value=member.id)
         em.add_field(name="Has existed since", value=member.created_at.strftime('%d.%m.%Y %H:%M:%S %Z'))
-        em.add_field(name="Color", value=member.colour)
+        member.color.value and em.add_field(name="Color", value=member.colour)
         em.add_field(name="Bot?", value=bool_emojify(member.bot))
         em.add_field(name="Server perms", value="[{0}](https://discordapi.com/permissions.html#{0})"
                      .format(member.guild_permissions.value))
@@ -97,7 +97,7 @@ class DataUtils(commands.Cog):
         verified = bool_emojify("VERIFIED" in server.features)
         emoji_ext = bool_emojify("MORE_EMOJI" in server.features)
         inv_splash = "INVITE_SPLASH" in server.features
-        em = discord.Embed(title="Server info", colour=server.owner.colour)
+        em = discord.Embed(title="Server info", color=server.owner.color.value and server.owner.color)
         em.add_field(name="Name", value=server.name)
         em.add_field(name="Server ID", value=server.id)
         em.add_field(name="Region", value=server.region)
@@ -275,7 +275,7 @@ class DataUtils(commands.Cog):
     @checks.bot_has_permissions(embed_links=True)
     async def rinfo(self, ctx, *, role: discord.Role):
         """Get info about role"""
-        em = discord.Embed(title=role.name, colour=role.colour)
+        em = discord.Embed(title=role.name, color=role.color.value and role.color)
         em.add_field(name="ID", value=role.id)
         em.add_field(name="Perms",
                      value="[{0}](https://discordapi.com/permissions.html#{0})".format(role.permissions.value))
@@ -293,7 +293,7 @@ class DataUtils(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    async def rolemembers(self, ctx, role: discord.Role):
+    async def rolemembers(self, ctx, *, role: discord.Role):
         """Get list of members that has provided role"""
         memberslist = [str(m) for m in sorted(role.members, key=lambda m: m.joined_at)]
         pages = [discord.Embed(description=p, color=await ctx.embed_color())
@@ -359,7 +359,7 @@ class DataUtils(commands.Cog):
         if isinstance(emoji, str):
             await ctx.send_help()
             return
-        em = discord.Embed(title=emoji.name, colour=await ctx.embed_color())
+        em = discord.Embed(title=emoji.name, color=await ctx.embed_color())
         em.add_field(name="ID", value=emoji.id)
         em.add_field(name="Animated", value=bool_emojify(emoji.animated))
         if isinstance(emoji, discord.Emoji):
