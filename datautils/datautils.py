@@ -55,13 +55,14 @@ class DataUtils(commands.Cog):
         """Information on a user"""
         if member is None:
             member = ctx.message.author
-        em = discord.Embed(title=member.nick, color=member.color.value and member.color or None)
+        em = discord.Embed(title=member.nick, color=member.color.value and member.color or discord.Embed.Empty)
         em.add_field(name="Name", value=member.name)
-        em.add_field(name="Client", value="📱: {}\n"
-                                          "🖥: {}\n"
-                                          "🌎: {}".format(str(member.mobile_status).capitalize(),
-                                                          str(member.desktop_status).capitalize(),
-                                                          str(member.web_status).capitalize()))
+        em.add_field(name="Client",
+                     value="📱: {}\n"
+                           "🖥: {}\n"
+                           "🌎: {}".format(str(member.mobile_status).capitalize(),
+                                           str(member.desktop_status).capitalize(),
+                                           str(member.web_status).capitalize()))
         em.add_field(name="Joined server", value=member.joined_at.strftime('%d.%m.%Y %H:%M:%S %Z'))
         em.add_field(name="ID", value=member.id)
         em.add_field(name="Has existed since", value=member.created_at.strftime('%d.%m.%Y %H:%M:%S %Z'))
@@ -97,7 +98,8 @@ class DataUtils(commands.Cog):
         verified = bool_emojify("VERIFIED" in server.features)
         emoji_ext = bool_emojify("MORE_EMOJI" in server.features)
         inv_splash = "INVITE_SPLASH" in server.features
-        em = discord.Embed(title="Server info", color=server.owner.color.value and server.owner.color)
+        em = discord.Embed(title="Server info",
+                           color=server.owner.color.value and server.owner.color or discord.Embed.Empty)
         em.add_field(name="Name", value=server.name)
         em.add_field(name="Server ID", value=server.id)
         em.add_field(name="Region", value=server.region)
@@ -275,7 +277,7 @@ class DataUtils(commands.Cog):
     @checks.bot_has_permissions(embed_links=True)
     async def rinfo(self, ctx, *, role: discord.Role):
         """Get info about role"""
-        em = discord.Embed(title=role.name, color=role.color.value and role.color or None)
+        em = discord.Embed(title=role.name, color=role.color.value and role.color or discord.Embed.Empty)
         em.add_field(name="ID", value=role.id)
         em.add_field(name="Perms",
                      value="[{0}](https://discordapi.com/permissions.html#{0})".format(role.permissions.value))
