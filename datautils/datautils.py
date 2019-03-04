@@ -225,7 +225,7 @@ class DataUtils(commands.Cog):
             channel.slowmode_delay and em.add_field(name="Slowmode delay",
                                                     value="{} seconds".format(channel.slowmode_delay))
             em.add_field(name="NSFW", value=bool_emojify(channel.is_nsfw()))
-            if channel.guild.me.permissions_in(channel):
+            if channel.guild.me.permissions_in(channel).manage_webhooks:
                 await channel.webhooks() and em.add_field(name="Webhooks count",
                                                           value=str(len(await channel.webhooks())))
         elif isinstance(channel, discord.VoiceChannel):
