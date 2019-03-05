@@ -92,11 +92,15 @@ class AdminUtils(commands.Cog):
         except Exception as e:
             await ctx.send(chat.error("Unable to get emoji from provided url: {}".format(e)))
             return
-        await ctx.guild.create_custom_emoji(name=name, image=data, roles=roles,
-                                            reason=get_audit_reason(ctx.author,
-                                                                    ("Restricted to roles: " +
-                                                                     ", ".join([f"{role.name}" for role in roles]))
-                                                                    if roles else None))
+        try:
+            await ctx.guild.create_custom_emoji(name=name, image=data, roles=roles,
+                                                reason=get_audit_reason(ctx.author,
+                                                                        ("Restricted to roles: " +
+                                                                         ", ".join([f"{role.name}" for role in roles]))
+                                                                        if roles else None))
+        except discord.HTTPException as e:
+            await ctx.send(chat.error(f"An error occured on adding an emoji: {e}"))
+            return 
         await ctx.tick()
 
     @emoji.command(name="rename")
