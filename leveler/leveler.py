@@ -49,7 +49,7 @@ except:
     print("Can't load database. Follow instructions on Git/online to install MongoDB.")
 
 
-async def non_global_bank():
+async def non_global_bank(ctx):
     return not await bank.is_global()
 
 
