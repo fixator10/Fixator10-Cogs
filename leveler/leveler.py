@@ -1489,7 +1489,7 @@ class Leveler(commands.Cog):
 
         badges = db.badges.find_one({'server_id': str(serverid)})
         if not badges:
-            db.badges.insert_one({'server_id': serverid,
+            db.badges.insert_one({'server_id': str(serverid),
                                   'badges': {}})
             badges = db.badges.find_one({'server_id': str(serverid)})
 
@@ -1499,7 +1499,7 @@ class Leveler(commands.Cog):
             "price": price,
             "description": description,
             "border_color": border_color,
-            "server_id": serverid,
+            "server_id": str(serverid),
             "server_name": servername,
             "priority_num": 0
         }
