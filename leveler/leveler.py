@@ -49,6 +49,10 @@ except:
     print("Can't load database. Follow instructions on Git/online to install MongoDB.")
 
 
+async def non_global_bank():
+    return not await bank.is_global()
+
+
 class Leveler(commands.Cog):
     """A level up thing with image generation!"""
 
@@ -1019,8 +1023,8 @@ class Leveler(commands.Cog):
         await ctx.send(embed=em)
 
     @lvladmin.command()
-    @checks.is_owner()
     @commands.guild_only()
+    @commands.check(non_global_bank)
     async def msgcredits(self, ctx, currency: int = 0):
         """Credits per message logged.
 
@@ -1104,7 +1108,7 @@ class Leveler(commands.Cog):
 
     async def _give_chat_credit(self, user, server):
         msg_credits = await self.config.guild(server).msg_credits()
-        if msg_credits:
+        if msg_credits and not await bank.is_global():
             await bank.deposit_credits(user, msg_credits)
 
     @checks.is_owner()
