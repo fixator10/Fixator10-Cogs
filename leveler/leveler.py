@@ -59,11 +59,6 @@ class Leveler(commands.Cog):
         self.font_bold_file = f"{bundled_data_path(self)}/font_bold.ttf"
         self.font_unicode_file = f"{bundled_data_path(self)}/unicode.ttf"
         self.config = Config.get_conf(self, identifier=0x3aafd05ea4aa4fdf8ddead8224328191)
-        # self.backgrounds = fileIO("data/leveler/backgrounds.json", "load")
-        # self.badges = fileIO("data/leveler/badges.json", "load")
-        # self.settings = fileIO("data/leveler/settings.json", "load")
-        # bot_settings = fileIO("data/red/settings.json", "load")
-        # self.owner = bot_settings["OWNER"]
         default_global = {
             "bg_price": 0,
             "badge_type": "circles",
@@ -116,23 +111,6 @@ class Leveler(commands.Cog):
     async def initialize(self):
         """Should be called straight after cog instantiation."""
         self.owner = await self.bot.db.owner()
-
-        # dbs = client.list_database_names()
-        # if 'leveler' not in dbs:
-        #     self.pop_database()
-
-    # def pop_database(self):
-    #     if os.path.exists("data/leveler/users"):
-    #         for userid in os.listdir(user_directory):
-    #             userinfo = fileIO("data/leveler/users/{}/info.json".format(userid), "load")
-    #             userinfo['user_id'] = userid
-    #             db.users.insert_one(userinfo)
-    #
-    # def create_global(self):
-    #
-    #             userinfo = fileIO("data/leveler/users/{}/info.json".format(userid), "load")
-    #             userinfo['user_id'] = userid
-    #             db.users.insert_one(userinfo)
 
     @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.command(name="profile")
@@ -254,7 +232,9 @@ class Leveler(commands.Cog):
     @commands.command()
     @commands.guild_only()
     async def top(self, ctx, *options):
-        """Displays leaderboard. Add "global" parameter for global"""
+        """Displays leaderboard.
+
+        Add "global" parameter for global"""
         server = ctx.guild
         user = ctx.author
 
@@ -501,7 +481,9 @@ class Leveler(commands.Cog):
 
     @profileset.command(name="color", pass_context=True, no_pm=True)
     async def profilecolors(self, ctx, section: str, color: str):
-        """Set info color. e.g [p]lvlset profile color [exp|rep|badge|info|all] [default|white|hex|auto]"""
+        """Set info color.
+
+        e.g [p]lvlset profile color [exp|rep|badge|info|all] [default|white|hex|auto]"""
         user = ctx.author
         server = ctx.guild
         # creates user if doesn't exist
@@ -610,7 +592,9 @@ class Leveler(commands.Cog):
     @rankset.command(name="color")
     @commands.guild_only()
     async def rankcolors(self, ctx, section: str, color: str = None):
-        """Set info color. e.g [p]lvlset rank color [exp|info] [default|white|hex|auto]"""
+        """Set info color.
+
+        e.g [p]lvlset rank color [exp|info] [default|white|hex|auto]"""
         user = ctx.author
         server = ctx.guild
         # creates user if doesn't exist
@@ -699,7 +683,9 @@ class Leveler(commands.Cog):
     @levelupset.command(name="color")
     @commands.guild_only()
     async def levelupcolors(self, ctx, section: str, color: str = None):
-        """Set info color. e.g [p]lvlset color [info] [default|white|hex|auto]"""
+        """Set info color.
+
+        e.g [p]lvlset color [info] [default|white|hex|auto]"""
         user = ctx.author
         server = ctx.guild
         # creates user if doesn't exist
@@ -1036,7 +1022,9 @@ class Leveler(commands.Cog):
     @checks.is_owner()
     @commands.guild_only()
     async def msgcredits(self, ctx, currency: int = 0):
-        """Credits per message logged. Default = 0"""
+        """Credits per message logged.
+
+        Default = 0"""
         channel = ctx.channel
         server = ctx.guild
 
@@ -1072,7 +1060,9 @@ class Leveler(commands.Cog):
     @lvladmin.command(name="lock")
     @commands.guild_only()
     async def lvlmsglock(self, ctx):
-        """Locks levelup messages to one channel. Disable command via locked channel."""
+        """Locks levelup messages to one channel.
+
+        Disable command via locked channel."""
         channel = ctx.channel
         server = ctx.guild
 
@@ -1346,7 +1336,9 @@ class Leveler(commands.Cog):
     @badge.command(name="buy")
     @commands.guild_only()
     async def buy(self, ctx, name: str, global_badge: str = None):
-        """Get a badge from repository. optional = "-global\""""
+        """Get a badge from repository.
+
+        optional = "-global\""""
         user = ctx.author
         server = ctx.guild
         if global_badge == '-global':
@@ -1407,7 +1399,9 @@ class Leveler(commands.Cog):
     @badge.command(name="set")
     @commands.guild_only()
     async def set(self, ctx, name: str, priority_num: int):
-        """Set a badge to profile. -1(invis), 0(not on profile), max: 5000."""
+        """Set a badge to profile.
+
+        -1(invis), 0(not on profile), max: 5000."""
         user = ctx.author
         server = ctx.guild
         await self._create_user(user, server)
@@ -1443,7 +1437,9 @@ class Leveler(commands.Cog):
     @badge.command(name="add")
     @commands.guild_only()
     async def addbadge(self, ctx, name: str, bg_img: str, border_color: str, price: int, *, description: str):
-        """Add a badge. name = "Use Quotes", Colors = #hex. bg_img = url, price = -1(non-purchasable), 0,..."""
+        """Add a badge.
+
+        name = "Use Quotes", Colors = #hex. bg_img = url, price = -1(non-purchasable), 0,..."""
 
         user = ctx.author
         server = ctx.guild
@@ -1753,7 +1749,9 @@ class Leveler(commands.Cog):
     @role.command(name='link')
     @commands.guild_only()
     async def linkrole(self, ctx, role_name: str, level: int, remove_role=None):
-        """Associate a role with a level. Removes previous role if given."""
+        """Associate a role with a level.
+
+        Removes previous role if given."""
         server = ctx.guild
 
         role_obj = discord.utils.find(lambda r: r.name == role_name, server.roles)
@@ -1862,7 +1860,9 @@ class Leveler(commands.Cog):
     @lvladminbg.command()
     @commands.guild_only()
     async def addrankbg(self, ctx, name: str, url: str):
-        """Add a rank background. Proportions: (360px x 100px)"""
+        """Add a rank background.
+
+        Proportions: (360px x 100px)"""
         backgrounds = await self.config.backgrounds()
         if name in backgrounds["profile"].keys():
             await ctx.send("**That rank background name already exists!**")
@@ -1877,7 +1877,9 @@ class Leveler(commands.Cog):
     @lvladminbg.command()
     @commands.guild_only()
     async def addlevelbg(self, ctx, name: str, url: str):
-        """Add a level-up background. Proportions: (85px x 105px)"""
+        """Add a level-up background.
+
+        Proportions: (85px x 105px)"""
         backgrounds = await self.config.backgrounds()
         if name in backgrounds["levelup"].keys():
             await ctx.send("**That level-up background name already exists!**")
@@ -1952,7 +1954,9 @@ class Leveler(commands.Cog):
     @commands.command(name='backgrounds')
     @commands.guild_only()
     async def disp_backgrounds(self, ctx, bg_type):
-        """Gives a list of backgrounds. [p]backgrounds [profile|rank|levelup]"""
+        """Gives a list of backgrounds.
+
+        [p]backgrounds [profile|rank|levelup]"""
         server = ctx.guild
         backgrounds = await self.config.backgrounds()
 
@@ -2499,11 +2503,11 @@ class Leveler(commands.Cog):
         draw_lvl_circle = ImageDraw.Draw(lvl_circle)
         draw_lvl_circle.ellipse([0, 0, raw_length, raw_length], fill=(250, 250, 250, 250))
         # determines exp bar color
-        """
-        if "rank_exp_color" not in userinfo.keys() or not userinfo["rank_exp_color"]:
-            exp_fill = (255, 255, 255, 230)
-        else:
-            exp_fill = tuple(userinfo["rank_exp_color"])"""
+        # """
+        # if "rank_exp_color" not in userinfo.keys() or not userinfo["rank_exp_color"]:
+        #     exp_fill = (255, 255, 255, 230)
+        # else:
+        #     exp_fill = tuple(userinfo["rank_exp_color"])"""
         exp_fill = (255, 255, 255, 230)
 
         # put on profile circle background
@@ -2997,8 +3001,3 @@ class Leveler(commands.Cog):
                 if ord(unicode_char) in cmap.cmap:
                     return True
         return False
-
-# def setup(bot):
-#     n = Leveler(bot)
-#     bot.add_listener(n._handle_on_message, "on_message")
-#     bot.add_cog(n)
