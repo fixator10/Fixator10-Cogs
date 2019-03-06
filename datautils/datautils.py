@@ -106,7 +106,7 @@ class DataUtils(commands.Cog):
         em.add_field(name="Existed since", value=server.created_at.strftime('%d.%m.%Y %H:%M:%S %Z'))
         em.add_field(name="Owner", value=server.owner)
         em.add_field(name="AFK Timeout and Channel", value="{} min in {}".format(afk, server.afk_channel))
-        em.add_field(name="New member messages channel", value=server.system_channel.mention)
+        em.add_field(name="New member messages channel", value=server.system_channel)
         em.add_field(name="Verification level",
                      value="None" if server.verification_level == discord.VerificationLevel.none else
                      "Low" if server.verification_level == discord.VerificationLevel.low else
