@@ -1048,7 +1048,7 @@ class Leveler(commands.Cog):
         server = ctx.guild
         if channel is None:
             channels = [server.get_channel(c) and server.get_channel(c).mention or c
-                        for c in await self.config.guild(server).ignored_channels()]
+                        for c in await self.config.guild(server).ignored_channels() if server.get_channel(c)]
             await ctx.send("**Ignored channels:** \n" +
                            ("\n".join(channels) or "No ignored channels set"))
             return
@@ -1849,7 +1849,9 @@ class Leveler(commands.Cog):
     @lvladminbg.command()
     @commands.guild_only()
     async def addprofilebg(self, ctx, name: str, url: str):
-        """Add a profile background. Proportions: (290px x 290px)"""
+        """Add a profile background. 
+        
+        Proportions: (290px x 290px)"""
         backgrounds = await self.config.backgrounds()
         if name in backgrounds["profile"].keys():
             await ctx.send("**That profile background name already exists!**")
