@@ -81,7 +81,7 @@ class GeneralChannel(commands.Cog):
                 if len(topic) > 1024:
                     topic = topic[-1024:]
         try:
-            await channel.edit(topic=topic, reason=get_audit_reason(ctx.author, "General channel name change"))
+            await channel.edit(topic=topic, reason=get_audit_reason(ctx.author, "General channel topic change"))
         except discord.Forbidden:
             await ctx.send(chat.error("Unable to change channel's topic: Missing permissions"))
         except discord.HTTPException:
