@@ -152,7 +152,7 @@ class SteamCommunity(commands.Cog):
             serverc = [str(serverc[0]), int(serverc[1])]
         serverc = tuple(serverc)
 
-        if not self.validate_ip(str(servercheck)):
+        if not await self.validate_ip(str(servercheck)):
             await ctx.send_help()
             return
 
