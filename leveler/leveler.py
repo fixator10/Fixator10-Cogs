@@ -2758,77 +2758,58 @@ class Leveler(commands.Cog):
             }})
 
     async def _handle_levelup(self, user, userinfo, server, channel):
+        # channel lock implementation
+        channel_id = await self.config.guild(server).lvl_msg_lock()
+        if channel_id:
+            channel = find(lambda m: m.id == channel_id, server.channels)
+
+        server_identifier = ""  # super hacky
+        name = await self._is_mention(user)  # also super hacky
+        # private message takes precedent, of course
+        if await self.config.guild(server).private_lvl_message():
+            server_identifier = f" on {server.name}"
+            channel = user
+            name = "You"
+
+        new_level = str(userinfo["servers"][str(server.id)]["level"])
+        # add to appropriate role if necessary
+        # try:
+        server_roles = db.roles.find_one({'server_id': str(server.id)})
+        if server_roles is not None:
+            for role in server_roles['roles'].keys():
+                if int(server_roles['roles'][role]['level']) == int(new_level):
+                    add_role = discord.utils.get(server.roles, name=role)
+                    if add_role is not None:
+                        try:
+                            await user.add_roles(add_role, reason="Levelup")
+                        except discord.Forbidden:
+                            await channel.send("Levelup role adding failed: Missing Permissions")
+                        except discord.HTTPException:
+                            await channel.send("Levelup role adding failed")
+                    remove_role = discord.utils.get(server.roles, name=server_roles['roles'][role]['remove_role'])
+                    if remove_role is not None:
+                        try:
+                            await user.remove_roles(remove_role, reason="Levelup")
+                        except discord.Forbidden:
+                            await channel.send("Levelup role removal failed: Missing Permissions")
+                        except discord.HTTPException:
+                            await channel.send("Levelup role removal failed")
+        try:
+            server_linked_badges = db.badgelinks.find_one({'server_id': str(server.id)})
+            if server_linked_badges is not None:
+                for badge_name in server_linked_badges['badges']:
+                    if int(server_linked_badges['badges'][badge_name]) == int(new_level):
+                        server_badges = db.badges.find_one({'server_id': str(server.id)})
+                        if server_badges is not None and badge_name in server_badges['badges'].keys():
+                            userinfo_db = db.users.find_one({'user_id': str(user.id)})
+                            new_badge_name = "{}_{}".format(badge_name, server.id)
+                            userinfo_db["badges"][new_badge_name] = server_badges['badges'][badge_name]
+                            db.users.update_one({'user_id': str(user.id)},
+                                                {'$set': {"badges": userinfo_db["badges"]}})
+        except:
+            await channel.send('Error. Badge was not given!')
+
         if await self.config.guild(server).lvl_msg():  # if lvl msg is enabled
-            # channel lock implementation
-            channel_id = await self.config.guild(server).lvl_msg_lock()
-            if channel_id:
-                channel = find(lambda m: m.id == channel_id, server.channels)
-
-            server_identifier = ""  # super hacky
-            name = await self._is_mention(user)  # also super hacky
-            # private message takes precedent, of course
-            if await self.config.guild(server).private_lvl_message():
-                server_identifier = f" on {server.name}"
-                channel = user
-                name = "You"
-
-            new_level = str(userinfo["servers"][str(server.id)]["level"])
-            # add to appropriate role if necessary
-            # try:
-            server_roles = db.roles.find_one({'server_id': str(server.id)})
-            if server_roles is not None:
-                for role in server_roles['roles'].keys():
-                    if int(server_roles['roles'][role]['level']) == int(new_level):
-                        # role_obj = discord.utils.find(lambda r: r.name == role, server.roles)
-
-                        # new_roles = discord.utils._unique(
-                        # role.id for role in itertools.chain(user.roles, (role_obj,)))
-
-                        # if server_roles['roles'][role]['remove_role'] is not None:
-                        # remove_role_obj = discord.utils.find(
-                        # lambda r: r.name == server_roles['roles'][role]['remove_role'], server.roles)
-                        # if remove_role_obj is not None:
-                        # try:
-                        # new_roles.remove(remove_role_obj.id)
-                        # except ValueError:
-                        # pass
-                        add_role = discord.utils.get(server.roles, name=role)
-                        if add_role is not None:
-                            try:
-                                await user.add_roles(add_role, reason="Levelup")
-                            except discord.Forbidden:
-                                await channel.send("Levelup role adding failed: Missing Permissions")
-                            except discord.HTTPException:
-                                await channel.send("Levelup role adding failed")
-                        remove_role = discord.utils.get(server.roles, name=server_roles['roles'][role]['remove_role'])
-                        if remove_role is not None:
-                            try:
-                                await user.remove_roles(remove_role, reason="Levelup")
-                            except discord.Forbidden:
-                                await channel.send("Levelup role removal failed: Missing Permissions")
-                            except discord.HTTPException:
-                                await channel.send("Levelup role removal failed")
-                        # await user.edit(roles=new_roles, reason="Levelup")
-
-            # except Exception as e:
-            # await channel.send(f'Role was not set. Missing Permissions! {e}')
-
-            # add appropriate badge if necessary
-            try:
-                server_linked_badges = db.badgelinks.find_one({'server_id': str(server.id)})
-                if server_linked_badges is not None:
-                    for badge_name in server_linked_badges['badges']:
-                        if int(server_linked_badges['badges'][badge_name]) == int(new_level):
-                            server_badges = db.badges.find_one({'server_id': str(server.id)})
-                            if server_badges is not None and badge_name in server_badges['badges'].keys():
-                                userinfo_db = db.users.find_one({'user_id': str(user.id)})
-                                new_badge_name = "{}_{}".format(badge_name, server.id)
-                                userinfo_db["badges"][new_badge_name] = server_badges['badges'][badge_name]
-                                db.users.update_one({'user_id': str(user.id)},
-                                                    {'$set': {"badges": userinfo_db["badges"]}})
-            except:
-                await channel.send('Error. Badge was not given!')
-
             if await self.config.guild(server).text_only():
                 await self.bot.send_typing(channel)
                 em = discord.Embed(
