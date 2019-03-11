@@ -1,6 +1,7 @@
 import base64
 import io
 import re
+from base64 import b64decode
 from datetime import datetime
 
 import aiohttp
@@ -160,9 +161,13 @@ class MinecraftData(commands.Cog):
             motd = re.sub(r"\xA7[0-9A-FK-OR]+", "", status.description.get("text", ""), flags=re.IGNORECASE)
         else:
             motd = re.sub(r"\xA7[0-9A-FK-OR]+", "", status.description, flags=re.IGNORECASE)
+        icon = status.favicon and discord.File(b64decode(status.favicon.split(",", 1)),
+                                               filename="icon.png") or None
         embed = discord.Embed(title=IP_or_domain,
                               description=motd,
                               color=await ctx.embed_color())
+        if icon:
+            embed.set_thumbnail(url="attachment://icon.png")
         embed.add_field(name="Latency", value=f"{status.latency} ms")
         embed.add_field(name="Players",
                         value="{0.players.online}/{0.players.max}\n{1}"
@@ -182,7 +187,7 @@ class MinecraftData(commands.Cog):
                             f"Version: {query.software.version}\n"
                             # f"Plugins: {query.software.plugins}"
                             )
-        await ctx.send(embed=embed)
+        await ctx.send(file=icon, embed=embed)
 
 
 
