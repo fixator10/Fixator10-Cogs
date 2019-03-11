@@ -156,9 +156,12 @@ class MinecraftData(commands.Cog):
                 query = await self.bot.loop.run_in_executor(None, server.query)
             except (ConnectionResetError, OSError):
                 query = None
+        if isinstance(status.description, dict):
+            motd = re.sub(r"\xA7[0-9A-FK-OR]+", "", status.description.get("text", ""), flags=re.IGNORECASE)
+        else:
+            motd = re.sub(r"\xA7[0-9A-FK-OR]+", "", status.description, flags=re.IGNORECASE)
         embed = discord.Embed(title=f"Minecraft server {IP_or_domain}",
-                              description=re.sub(r"\xA7[0-9A-FK-OR]+", "",
-                                                 status.description.get("text", ""), flags=re.IGNORECASE),
+                              description=motd,
                               color=await ctx.embed_color())
         embed.add_field(name="Latency", value=f"{status.latency} ms")
         embed.add_field(name="Players",
