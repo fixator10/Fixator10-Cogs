@@ -1,5 +1,6 @@
 import base64
 import io
+import re
 from datetime import datetime
 
 import aiohttp
@@ -141,20 +142,23 @@ class MinecraftData(commands.Cog):
         cape.close()
 
     @minecraft.command()
+    @commands.cooldown(1, 30, commands.BucketType.member)
     async def server(self, ctx, IP_or_domain: str):
         """Get info about server"""
         server = await self.bot.loop.run_in_executor(None, MinecraftServer, IP_or_domain)
-        try:
-            status = await self.bot.loop.run_in_executor(None, server.status)
-        except OSError as e:
-            await ctx.send(chat.error(f"Unable to get server's status: {e}"))
-            return
-        try:
-            query = await self.bot.loop.run_in_executor(None, server.query)
-        except (ConnectionResetError, OSError):
-            query = None
+        async with ctx.channel.typing():
+            try:
+                status = await self.bot.loop.run_in_executor(None, server.status)
+            except OSError as e:
+                await ctx.send(chat.error(f"Unable to get server's status: {e}"))
+                return
+            try:
+                query = await self.bot.loop.run_in_executor(None, server.query)
+            except (ConnectionResetError, OSError):
+                query = None
         embed = discord.Embed(title=f"Minecraft server {IP_or_domain}",
-                              description=status.description.get("text", None),  # FIXME: Incorrect encoding
+                              description=re.sub(r"\xA7[0-9A-FK-OR]+", "",
+                                                 status.description.get("text", ""), flags=re.IGNORECASE),
                               color=await ctx.embed_color())
         embed.add_field(name="Latency", value=f"{status.latency} ms")
         embed.add_field(name="Players",
@@ -166,8 +170,8 @@ class MinecraftData(commands.Cog):
                                 or "")
                         )
         embed.add_field(name="Version",
-                        value=f"Version:{status.version.name}\n"
-                        f"Protocol:{status.version.protocol}")
+                        value=f"Version: {status.version.name}\n"
+                        f"Protocol: {status.version.protocol}")
         if query:
             embed.add_field(name="World", value=f"{query.map}")
             embed.add_field(name="Software",
