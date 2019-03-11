@@ -5,6 +5,7 @@ from datetime import datetime
 import aiohttp
 import discord
 import tabulate
+from mcstatus import MinecraftServer
 from redbot.core import commands
 from redbot.core.utils import chat_formatting as chat
 from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
@@ -139,10 +140,44 @@ class MinecraftData(commands.Cog):
         await ctx.send(file=file)
         cape.close()
 
-    # TODO: find new library/api for that
-    # @minecraft.command()
-    # async def server(self, ctx, IP_or_domain: str):
-    #     """Get info about server"""
+    @minecraft.command()
+    async def server(self, ctx, IP_or_domain: str):
+        """Get info about server"""
+        server = await self.bot.loop.run_in_executor(None, MinecraftServer, IP_or_domain)
+        try:
+            status = await self.bot.loop.run_in_executor(None, server.status)
+        except OSError as e:
+            await ctx.send(chat.error(f"Unable to get server's status: {e}"))
+            return
+        try:
+            query = await self.bot.loop.run_in_executor(None, server.query)
+        except ConnectionResetError:
+            query = None
+        embed = discord.Embed(title=f"Minecraft server {IP_or_domain}",
+                              description=status.description.get("text", None),  # FIXME: Incorrect encoding
+                              color=await ctx.embed_color())
+        embed.add_field(name="Latency", value=f"{status.latency} ms")
+        embed.add_field(name="Players",
+                        value="{0.players.online}/{0.players.max}\n{1}"
+                        .format(status,
+                                list(chat.pagify("\n".join([p.name for p in status.players.sample]),
+                                                 page_length=1024)
+                                     )[0]
+                                )
+                        )
+        embed.add_field(name="Version",
+                        value=f"Version:{status.version.name}\n"
+                        f"Protocol:{status.version.protocol}")
+        if query:
+            embed.add_field(name="World", value=f"{query.map}")
+            embed.add_field(name="Software",
+                            value=f"{query.software.brand}\n"
+                            f"Version: {query.software.version}\n"
+                            # f"Plugins: {query.software.plugins}"
+                            )
+        await ctx.send(embed=embed)
+
+
 
     @minecraft.command()
     async def status(self, ctx):
@@ -154,8 +189,9 @@ class MinecraftData(commands.Cog):
                                color=await ctx.embed_color())
             for service in data:
                 for entry, status in service.items():
-                    em.add_field(name=entry, value=status.replace("red", "💔 **UNAVAILABLE**") \
-                                 .replace("yellow", "💛 **SOME ISSUES**") \
+                    em.add_field(name=entry,
+                                 value=status.replace("red", "💔 **UNAVAILABLE**")
+                                 .replace("yellow", "💛 **SOME ISSUES**")
                                  .replace("green", "💚 **OK**"))
             await ctx.send(embed=em)
         except Exception as e:
