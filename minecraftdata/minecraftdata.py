@@ -160,7 +160,7 @@ class MinecraftData(commands.Cog):
             motd = re.sub(r"\xA7[0-9A-FK-OR]+", "", status.description.get("text", ""), flags=re.IGNORECASE)
         else:
             motd = re.sub(r"\xA7[0-9A-FK-OR]+", "", status.description, flags=re.IGNORECASE)
-        embed = discord.Embed(title=f"Minecraft server {IP_or_domain}",
+        embed = discord.Embed(title=IP_or_domain,
                               description=motd,
                               color=await ctx.embed_color())
         embed.add_field(name="Latency", value=f"{status.latency} ms")
@@ -173,7 +173,7 @@ class MinecraftData(commands.Cog):
                                 or "")
                         )
         embed.add_field(name="Version",
-                        value=f"Version: {status.version.name}\n"
+                        value=f"{status.version.name}\n"
                         f"Protocol: {status.version.protocol}")
         if query:
             embed.add_field(name="World", value=f"{query.map}")
