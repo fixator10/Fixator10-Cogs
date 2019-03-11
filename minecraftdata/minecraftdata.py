@@ -160,10 +160,10 @@ class MinecraftData(commands.Cog):
         embed.add_field(name="Players",
                         value="{0.players.online}/{0.players.max}\n{1}"
                         .format(status,
+                                status.players.sample and
                                 list(chat.pagify("\n".join([p.name for p in status.players.sample]),
-                                                 page_length=1024)
-                                     )[0]
-                                )
+                                                 page_length=1024))[0]
+                                or "")
                         )
         embed.add_field(name="Version",
                         value=f"Version:{status.version.name}\n"
