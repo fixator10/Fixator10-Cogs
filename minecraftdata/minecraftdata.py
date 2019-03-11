@@ -151,7 +151,7 @@ class MinecraftData(commands.Cog):
             return
         try:
             query = await self.bot.loop.run_in_executor(None, server.query)
-        except ConnectionResetError:
+        except (ConnectionResetError, OSError):
             query = None
         embed = discord.Embed(title=f"Minecraft server {IP_or_domain}",
                               description=status.description.get("text", None),  # FIXME: Incorrect encoding
