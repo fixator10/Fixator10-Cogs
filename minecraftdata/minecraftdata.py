@@ -47,10 +47,10 @@ class MinecraftData(commands.Cog):
         em.set_footer(text="Provided by Crafatar", icon_url="https://crafatar.com/logo.png")
         await ctx.send(embed=em)
 
-    @minecraft.group(invoke_without_command=True)
+    @minecraft.group(autohelp=True)
     async def cape(self, ctx):
         """Get minecraft cape by nickname"""
-        await ctx.send_help()
+        pass
 
     @cape.command(aliases=["of"])
     async def optifine(self, ctx, nickname: MCNickname):

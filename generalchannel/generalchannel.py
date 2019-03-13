@@ -21,7 +21,7 @@ class GeneralChannel(commands.Cog):
         }
         self.config.register_guild(**default_guild)
 
-    @commands.group(invoke_without_command=True, name="generalchannel")
+    @commands.group(autohelp=True, name="generalchannel")
     @commands.guild_only()
     async def gc(self, ctx):
         """Change general server's channel name/topic"""
