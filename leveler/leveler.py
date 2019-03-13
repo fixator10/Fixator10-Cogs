@@ -121,11 +121,11 @@ class Leveler(commands.Cog):
     @commands.guild_only()
     async def profile(self, ctx, *, user: discord.Member = None):
         """Displays a user profile."""
+        if user is None:
+            user = ctx.message.author
         if user.bot:
             await ctx.send_help()
             return
-        if user is None:
-            user = ctx.message.author
         channel = ctx.message.channel
         server = user.guild
         curr_time = time.time()
@@ -185,11 +185,11 @@ class Leveler(commands.Cog):
     @commands.guild_only()
     async def rank(self, ctx, user: discord.Member = None):
         """Displays the rank of a user."""
+        if user is None:
+            user = ctx.message.author
         if user.bot:
             await ctx.send_help()
             return
-        if user is None:
-            user = ctx.message.author
         channel = ctx.message.channel
         server = user.guild
         curr_time = time.time()
@@ -1312,11 +1312,11 @@ class Leveler(commands.Cog):
     @commands.guild_only()
     async def listuserbadges(self, ctx, user: discord.Member = None):
         """Get the badges of a user."""
+        if user is None:
+            user = ctx.author
         if user.bot:
             await ctx.send_help()
             return
-        if user is None:
-            user = ctx.author
         server = ctx.guild
         await self._create_user(user, server)
         userinfo = db.users.find_one({'user_id': str(user.id)})
