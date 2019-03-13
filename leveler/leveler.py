@@ -121,6 +121,9 @@ class Leveler(commands.Cog):
     @commands.guild_only()
     async def profile(self, ctx, *, user: discord.Member = None):
         """Displays a user profile."""
+        if user.bot:
+            await ctx.send_help()
+            return
         if user is None:
             user = ctx.message.author
         channel = ctx.message.channel
@@ -182,6 +185,9 @@ class Leveler(commands.Cog):
     @commands.guild_only()
     async def rank(self, ctx, user: discord.Member = None):
         """Displays the rank of a user."""
+        if user.bot:
+            await ctx.send_help()
+            return
         if user is None:
             user = ctx.message.author
         channel = ctx.message.channel
@@ -366,6 +372,9 @@ class Leveler(commands.Cog):
         org_user = ctx.author
         server = ctx.guild
         # creates user if doesn't exist
+        if user.bot:
+            await ctx.send_help()
+            return
         await self._create_user(org_user, server)
         if user:
             await self._create_user(user, server)
@@ -411,7 +420,9 @@ class Leveler(commands.Cog):
     @commands.guild_only()
     async def lvlinfo(self, ctx, user: discord.Member = None):
         """Gives more specific details about user profile image."""
-
+        if user.bot:
+            await ctx.send_help()
+            return
         if not user:
             user = ctx.author
         server = ctx.guild
@@ -1130,6 +1141,9 @@ class Leveler(commands.Cog):
         server = user.guild
         channel = ctx.channel
         # creates user if doesn't exist
+        if user.bot:
+            await ctx.send_help()
+            return
         await self._create_user(user, server)
         userinfo = db.users.find_one({'user_id': str(user.id)})
 
@@ -1298,6 +1312,9 @@ class Leveler(commands.Cog):
     @commands.guild_only()
     async def listuserbadges(self, ctx, user: discord.Member = None):
         """Get the badges of a user."""
+        if user.bot:
+            await ctx.send_help()
+            return
         if user is None:
             user = ctx.author
         server = ctx.guild
@@ -1611,6 +1628,9 @@ class Leveler(commands.Cog):
         org_user = ctx.message.author
         server = ctx.guild
         # creates user if doesn't exist
+        if user.bot:
+            await ctx.send_help()
+            return
         await self._create_user(user, server)
         userinfo = db.users.find_one({'user_id': str(user.id)})
         userinfo = self._badge_convert_dict(userinfo)
@@ -1642,6 +1662,9 @@ class Leveler(commands.Cog):
     @commands.guild_only()
     async def take(self, ctx, user: discord.Member, name: str):
         """Take a user's badge."""
+        if user.bot:
+            await ctx.send_help()
+            return
         org_user = ctx.author
         server = ctx.guild
         # creates user if doesn't exist
