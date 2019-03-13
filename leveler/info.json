@@ -13,6 +13,8 @@
   ],
   "requirements": [
     "pymongo",
-    "fonttools"
+    "fonttools",
+    "pillow",
+    "scipy"
   ]
 }
