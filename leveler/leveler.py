@@ -200,7 +200,7 @@ class Leveler(commands.Cog):
         # no cooldown for text only
         if await self.config.guild(server).text_only():
             em = await self.rank_text(user, server, userinfo)
-            await self.bot.send_message(channel, '', embed=em)
+            await channel.send(embed=em)
         else:
             async with channel.typing():
                 await self.draw_rank(user, server)
