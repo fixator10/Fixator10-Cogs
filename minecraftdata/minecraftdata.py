@@ -40,18 +40,18 @@ class MinecraftData(commands.Cog):
         files = []
         async with self.session.get(
                 "https://crafatar.com/renders/head/{}{}".format(uuid, "?overlay" if helm_layer else "")) as s:
-            files.append(discord.File(await s.read(), filename=f"{nickname.name} head.png"))
+            files.append(discord.File(await s.read(), filename=f"{nickname.name}_head.png"))
         async with self.session.get("https://crafatar.com/skins/{}".format(uuid)) as s:
             files.append(discord.File(await s.read(), filename=f"{nickname.name}.png"))
         async with self.session.get(
                 "https://crafatar.com/renders/body/{}.png{}".format(uuid, "?overlay" if helm_layer else "")) as s:
-            files.append(discord.File(await s.read(), filename=f"{nickname.name} body.png"))
+            files.append(discord.File(await s.read(), filename=f"{nickname.name}_body.png"))
         em = discord.Embed(timestamp=ctx.message.created_at, color=await ctx.embed_color())
         em.set_author(name=nickname.name,
-                      icon_url=f"attachment://{nickname.name} head.png",
+                      icon_url=f"attachment://{nickname.name}_head.png",
                       url="https://crafatar.com/skins/{}".format(uuid))
         em.set_thumbnail(url=f"attachment://{nickname.name}.png")
-        em.set_image(url=f"attachment://{nickname.name} body.png")
+        em.set_image(url=f"attachment://{nickname.name}_body.png")
         em.set_footer(text="Provided by Crafatar", icon_url="https://crafatar.com/logo.png")
         await ctx.send(embed=em, files=files)
 
