@@ -372,9 +372,6 @@ class Leveler(commands.Cog):
         org_user = ctx.author
         server = ctx.guild
         # creates user if doesn't exist
-        if user.bot:
-            await ctx.send_help()
-            return
         await self._create_user(org_user, server)
         if user:
             await self._create_user(user, server)
@@ -420,11 +417,11 @@ class Leveler(commands.Cog):
     @commands.guild_only()
     async def lvlinfo(self, ctx, user: discord.Member = None):
         """Gives more specific details about user profile image."""
+        if not user:
+            user = ctx.author
         if user.bot:
             await ctx.send_help()
             return
-        if not user:
-            user = ctx.author
         server = ctx.guild
         userinfo = db.users.find_one({'user_id': str(user.id)})
 
