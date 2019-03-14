@@ -49,7 +49,7 @@ class MinecraftData(commands.Cog):
         em = discord.Embed(timestamp=ctx.message.created_at, color=await ctx.embed_color())
         em.set_author(name=nickname.name,
                       icon_url=f"attachment://{nickname.name} head.png",
-                      url=f"attachment://{nickname.name}.png")
+                      url="https://crafatar.com/skins/{}".format(uuid))
         em.set_thumbnail(url=f"attachment://{nickname.name}.png")
         em.set_image(url=f"attachment://{nickname.name} body.png")
         em.set_footer(text="Provided by Crafatar", icon_url="https://crafatar.com/logo.png")
