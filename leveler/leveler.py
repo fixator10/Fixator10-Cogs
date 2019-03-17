@@ -1093,8 +1093,8 @@ class Leveler(commands.Cog):
         if bg_price != 0:
             if not await bank.can_spend(user, bg_price):
                 await ctx.send(
-                    f"**Insufficient funds. Backgrounds changes cost: {bg_price}{await bank.get_currency_name(
-                        server)}**")
+                    f"**Insufficient funds. Backgrounds changes cost: "
+                    f"{bg_price}{await bank.get_currency_name(server)}**")
                 return False
             else:
                 await ctx.send(
