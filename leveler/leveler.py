@@ -172,7 +172,7 @@ class Leveler(commands.Cog):
         em.add_field(name="Total Exp:", value=userinfo["total_exp"])
         em.add_field(name="Server Exp:", value=await self._find_server_exp(user, server))
         u_credits = await bank.get_balance(user)
-        em.add_field(name="Credits: ", value=f"{u_credits}{await bank.get_currency_name(server)}")
+        em.add_field(name="Credits: ", value=f"{u_credits}{(await bank.get_currency_name(server))[0]}")
         em.add_field(name="Info: ", value=test_empty(userinfo["info"]))
         em.add_field(name="Badges: ", value=test_empty(", ".join(userinfo["badges"])).replace("_", " "))
         em.set_author(name="Profile for {}".format(user.name), url=user.avatar_url)
@@ -1094,7 +1094,7 @@ class Leveler(commands.Cog):
             if not await bank.can_spend(user, bg_price):
                 await ctx.send(
                     f"**Insufficient funds. Backgrounds changes cost: "
-                    f"{bg_price}{await bank.get_currency_name(server)}**")
+                    f"{bg_price}{(await bank.get_currency_name(server))[0]}**")
                 return False
             else:
                 await ctx.send(
@@ -2220,7 +2220,7 @@ class Leveler(commands.Cog):
                   fill=exp_font_color)  # Exp Text
 
         credits = await bank.get_balance(user)
-        credit_txt = f"{credits}{await bank.get_currency_name(server)}"
+        credit_txt = f"{credits}{(await bank.get_currency_name(server))[0]}"
         draw.text((self._center(200, 340, credit_txt, large_fnt), label_align - 27),
                   self._truncate_text(credit_txt, 18), font=large_fnt, fill=info_text_color)  # Credits
 
@@ -2587,7 +2587,7 @@ class Leveler(commands.Cog):
         draw.text((self._center(95, 360, level_text, large_fnt), v_label_align - 30), level_text, font=large_fnt,
                   fill=info_text_color)  # Level
         credits = await bank.get_balance(user)
-        credit_txt = f"{credits}{await bank.get_currency_name(server)}"
+        credit_txt = f"{credits}{(await bank.get_currency_name(server))[0]}"
         draw.text((self._center(260, 360, credit_txt, large_fnt), v_label_align - 30), credit_txt, font=large_fnt,
                   fill=info_text_color)  # Balance
         exp_text = "{}/{}".format(exp_frac, exp_total)
