@@ -1104,7 +1104,7 @@ class Leveler(commands.Cog):
                     await self.bot.wait_for("message", timeout=15, check=pred)
                 except TimeoutError:
                     pass
-                if not pred:
+                if not pred.result:
                     await ctx.send('**Purchase canceled.**')
                     return False
                 else:
@@ -1390,7 +1390,7 @@ class Leveler(commands.Cog):
                             await self.bot.wait_for("message", timeout=15, check=pred)
                         except TimeoutError:
                             pass
-                        if not pred:
+                        if not pred.result:
                             await ctx.send('**Purchase canceled.**')
                             return
                         else:
