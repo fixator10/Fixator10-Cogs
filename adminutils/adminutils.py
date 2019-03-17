@@ -27,8 +27,8 @@ class AdminUtils(commands.Cog):
             await ctx.send(
                 chat.error("Due to Discord Restrictions, you cannot use more than 30 days for that cmd."))
             days = 30
-        elif days == 0:
-            await ctx.send(chat.error("\"days\" arg cannot be an zero..."))
+        elif days <= 0:
+            await ctx.send(chat.error("\"days\" arg cannot be less than 1..."))
             days = 1
         to_kick = await ctx.guild.estimate_pruned_members(days=days)
         await ctx.send(chat.warning("You about to kick **{}** inactive for **{}** days members from this server. "
