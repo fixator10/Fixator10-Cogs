@@ -172,7 +172,7 @@ class Leveler(commands.Cog):
         em.add_field(name="Total Exp:", value=userinfo["total_exp"])
         em.add_field(name="Server Exp:", value=await self._find_server_exp(user, server))
         u_credits = await bank.get_balance(user)
-        em.add_field(name="Credits: ", value="${}".format(u_credits))
+        em.add_field(name="Credits: ", value=f"{u_credits}{bank.get_currency_name(server)}")
         em.add_field(name="Info: ", value=test_empty(userinfo["info"]))
         em.add_field(name="Badges: ", value=test_empty(", ".join(userinfo["badges"])).replace("_", " "))
         em.set_author(name="Profile for {}".format(user.name), url=user.avatar_url)
@@ -1093,7 +1093,7 @@ class Leveler(commands.Cog):
         if bg_price != 0:
             if not await bank.can_spend(user, bg_price):
                 await ctx.send(
-                    "**Insufficient funds. Backgrounds changes cost: ${}**".format(bg_price))
+                    f"**Insufficient funds. Backgrounds changes cost: {bg_price}{bank.get_currency_name(server)}**")
                 return False
             else:
                 await ctx.send(
@@ -2219,7 +2219,7 @@ class Leveler(commands.Cog):
                   fill=exp_font_color)  # Exp Text
 
         credits = await bank.get_balance(user)
-        credit_txt = "${}".format(credits)
+        credit_txt = f"{credits}{bank.get_currency_name(server)}"
         draw.text((self._center(200, 340, credit_txt, large_fnt), label_align - 27),
                   self._truncate_text(credit_txt, 18), font=large_fnt, fill=info_text_color)  # Credits
 
@@ -2586,7 +2586,7 @@ class Leveler(commands.Cog):
         draw.text((self._center(95, 360, level_text, large_fnt), v_label_align - 30), level_text, font=large_fnt,
                   fill=info_text_color)  # Level
         credits = await bank.get_balance(user)
-        credit_txt = "${}".format(credits)
+        credit_txt = f"{credits}{bank.get_currency_name(server)}"
         draw.text((self._center(260, 360, credit_txt, large_fnt), v_label_align - 30), credit_txt, font=large_fnt,
                   fill=info_text_color)  # Balance
         exp_text = "{}/{}".format(exp_frac, exp_total)
@@ -2974,6 +2974,7 @@ class Leveler(commands.Cog):
             pass
 
     def _truncate_text(self, text, max_length):
+        # TODO: Remove this
         if len(text) > max_length:
             if text.strip('$').isdigit():
                 text = int(text.strip('$'))
