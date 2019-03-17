@@ -81,7 +81,6 @@ class Leveler(commands.Cog):
                     "miraikuriyama": "http://i.imgur.com/jQ4s4jj.png",
                     "mountaindawn": "http://i.imgur.com/kJ1yYY6.jpg",
                     "waterlilies": "http://i.imgur.com/qwdcJjI.jpg",
-                    "greenery": "http://i.imgur.com/70ZH6LX.png",
                 },
                 "rank": {
                     "aurora": "http://i.imgur.com/gVSbmYj.jpg",
