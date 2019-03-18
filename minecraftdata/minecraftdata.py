@@ -166,9 +166,9 @@ class MinecraftData(commands.Cog):
             except (ConnectionResetError, OSError):
                 query = None
         if isinstance(status.description, dict):
-            motd = re.sub(r"\xA7[0-9A-FK-OR]+", "", status.description.get("text", ""), flags=re.IGNORECASE)
+            motd = re.sub(r"\xA7[0-9A-FK-OR]", "", status.description.get("text", ""), flags=re.IGNORECASE)
         else:
-            motd = re.sub(r"\xA7[0-9A-FK-OR]+", "", status.description, flags=re.IGNORECASE)
+            motd = re.sub(r"\xA7[0-9A-FK-OR]", "", status.description, flags=re.IGNORECASE)
         icon = status.favicon and discord.File(b64decode(status.favicon.split(",", 1)[1]),
                                                filename="icon.png") or None
         embed = discord.Embed(title=IP_or_domain,
