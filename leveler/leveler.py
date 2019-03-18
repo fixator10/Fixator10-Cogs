@@ -2741,7 +2741,7 @@ class Leveler(commands.Cog):
             userinfo["last_message"] = 0
         if all([float(curr_time) - float(userinfo["chat_block"]) >= 120,
                 not any(text.startswith(x) for x in prefix),
-                len(message.content) > 10,
+                len(message.content) > 10 or message.attachments,
                 message.content != userinfo["last_message"],
                 message.channel.id not in await self.config.guild(server).ignored_channels()]):
             await self._process_exp(message, userinfo, random.randint(15, 20))
