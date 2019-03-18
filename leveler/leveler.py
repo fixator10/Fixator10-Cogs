@@ -1252,7 +1252,7 @@ class Leveler(commands.Cog):
             await self.config.guild(server).private_lvl_message.set(True)
             await ctx.send("**Private level-up alerts enabled for `{}`.**".format(server.name))
 
-    @commands.group()
+    @lvladmin.group(autohelp=True)
     async def badge(self, ctx):
         """Badge Configuration Options"""
         pass
@@ -1764,7 +1764,7 @@ class Leveler(commands.Cog):
         em.description = msg
         await ctx.send(embed=em)
 
-    @commands.group()
+    @lvladmin.group()
     async def role(self, ctx):
         """Admin Background Configuration"""
         pass
