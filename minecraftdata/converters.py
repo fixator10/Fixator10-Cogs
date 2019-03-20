@@ -1,5 +1,6 @@
 from uuid import UUID
 
+from aiohttp import ContentTypeError
 from redbot.core.commands import BadArgument
 from redbot.core.commands import Converter
 
@@ -17,8 +18,10 @@ class MCNickname(Converter):
         try:
             async with session.get('https://api.mojang.com/users/profiles/minecraft/' + argument) as data:
                 response_data = await data.json()
-        except:
-            raise BadArgument("Unable to get data from Minecraft API")
+        except ContentTypeError:
+            response_data = None
+        except Exception as e:
+            raise BadArgument(f"Unable to get data from Minecraft API: {e}")
         if response_data is None or "id" not in response_data:
             raise BadArgument("{} not found on Mojang servers".format(argument))
         uuid = str(response_data["id"])
