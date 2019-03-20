@@ -38,14 +38,15 @@ class MinecraftData(commands.Cog):
             await ctx.send(chat.error("This player not found"))
             return
         files = []
-        async with self.session.get(
-                "https://crafatar.com/renders/head/{}{}".format(uuid, "?overlay" if helm_layer else "")) as s:
-            files.append(discord.File(await s.read(), filename=f"{nickname.name}_head.png"))
-        async with self.session.get("https://crafatar.com/skins/{}".format(uuid)) as s:
-            files.append(discord.File(await s.read(), filename=f"{nickname.name}.png"))
-        async with self.session.get(
-                "https://crafatar.com/renders/body/{}.png{}".format(uuid, "?overlay" if helm_layer else "")) as s:
-            files.append(discord.File(await s.read(), filename=f"{nickname.name}_body.png"))
+        async with ctx.channel.typing():
+            async with self.session.get(
+                    "https://crafatar.com/renders/head/{}{}".format(uuid, "?overlay" if helm_layer else "")) as s:
+                files.append(discord.File(await s.read(), filename=f"{nickname.name}_head.png"))
+            async with self.session.get("https://crafatar.com/skins/{}".format(uuid)) as s:
+                files.append(discord.File(await s.read(), filename=f"{nickname.name}.png"))
+            async with self.session.get(
+                    "https://crafatar.com/renders/body/{}.png{}".format(uuid, "?overlay" if helm_layer else "")) as s:
+                files.append(discord.File(await s.read(), filename=f"{nickname.name}_body.png"))
         em = discord.Embed(timestamp=ctx.message.created_at, color=await ctx.embed_color())
         em.set_author(name=nickname.name,
                       icon_url=f"attachment://{nickname.name}_head.png",
