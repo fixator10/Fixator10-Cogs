@@ -307,7 +307,7 @@ class Leveler(commands.Cog):
                     if "servers" in userinfo and str(server.id) in userinfo["servers"]:
                         server_exp = 0
                         for i in range(userinfo["servers"][str(server.id)]["level"]):
-                            server_exp += self._required_exp(i)
+                            server_exp += await self._required_exp(i)
                         server_exp += userinfo["servers"][str(server.id)]["current_exp"]
                         try:
                             users.append((userinfo["username"], server_exp))
@@ -437,7 +437,7 @@ class Leveler(commands.Cog):
         msg += "Server Level: {}\n".format(userinfo["servers"][str(server.id)]["level"])
         total_server_exp = 0
         for i in range(userinfo["servers"][str(server.id)]["level"]):
-            total_server_exp += self._required_exp(i)
+            total_server_exp += await self._required_exp(i)
         total_server_exp += userinfo["servers"][str(server.id)]["current_exp"]
         msg += "Server Exp: {}\n".format(total_server_exp)
         msg += "Total Exp: {}\n".format(userinfo["total_exp"])
@@ -1155,12 +1155,12 @@ class Leveler(commands.Cog):
         # get rid of old level exp
         old_server_exp = 0
         for i in range(userinfo["servers"][str(server.id)]["level"]):
-            old_server_exp += self._required_exp(i)
+            old_server_exp += await self._required_exp(i)
         userinfo["total_exp"] -= old_server_exp
         userinfo["total_exp"] -= userinfo["servers"][str(server.id)]["current_exp"]
 
         # add in new exp
-        total_exp = self._level_exp(level)
+        total_exp = await self._level_exp(level)
         userinfo["servers"][str(server.id)]["current_exp"] = 0
         userinfo["servers"][str(server.id)]["level"] = level
         userinfo["total_exp"] += total_exp
@@ -2047,7 +2047,7 @@ class Leveler(commands.Cog):
 
             for char in text:
                 # if char.isalnum() or char in string.punctuation or char in string.whitespace:
-                if self.char_in_font(char, check_font):
+                if await self.char_in_font(char, check_font):
                     draw.text((write_pos, y), u"{}".format(char), font=font, fill=fill)
                     write_pos += font.getsize(char)[0]
                 else:
@@ -2179,16 +2179,16 @@ class Leveler(commands.Cog):
         # rep_text = "{} REP".format(userinfo["rep"])
         rep_text = "{}".format(userinfo["rep"])
         _write_unicode("❤", 257, 9, rep_fnt, rep_u_fnt, info_text_color)
-        draw.text((self._center(278, 340, rep_text, rep_fnt), 10), rep_text, font=rep_fnt,
+        draw.text((await self._center(278, 340, rep_text, rep_fnt), 10), rep_text, font=rep_fnt,
                   fill=info_text_color)  # Exp Text
 
         lvl_left = 100
         label_align = 362  # vertical
-        draw.text((self._center(0, 140, "    RANK", label_fnt), label_align), "    RANK", font=label_fnt,
+        draw.text((await self._center(0, 140, "    RANK", label_fnt), label_align), "    RANK", font=label_fnt,
                   fill=info_text_color)  # Rank
-        draw.text((self._center(0, 340, "    LEVEL", label_fnt), label_align), "    LEVEL", font=label_fnt,
+        draw.text((await self._center(0, 340, "    LEVEL", label_fnt), label_align), "    LEVEL", font=label_fnt,
                   fill=info_text_color)  # Exp
-        draw.text((self._center(200, 340, "BALANCE", label_fnt), label_align), "BALANCE", font=label_fnt,
+        draw.text((await self._center(200, 340, "BALANCE", label_fnt), label_align), "BALANCE", font=label_fnt,
                   fill=info_text_color)  # Credits
 
         if "linux" in platform.system().lower():
@@ -2203,25 +2203,25 @@ class Leveler(commands.Cog):
 
         # userinfo
         global_rank = "#{}".format(await self._find_global_rank(user))
-        global_level = "{}".format(self._find_level(userinfo["total_exp"]))
-        draw.text((self._center(0, 140, global_rank, large_fnt), label_align - 27), global_rank, font=large_fnt,
+        global_level = "{}".format(await self._find_level(userinfo["total_exp"]))
+        draw.text((await self._center(0, 140, global_rank, large_fnt), label_align - 27), global_rank, font=large_fnt,
                   fill=info_text_color)  # Rank
-        draw.text((self._center(0, 340, global_level, large_fnt), label_align - 27), global_level, font=large_fnt,
+        draw.text((await self._center(0, 340, global_level, large_fnt), label_align - 27), global_level, font=large_fnt,
                   fill=info_text_color)  # Exp
         # draw level bar
         exp_font_color = self._contrast(exp_fill, light_color, dark_color)
-        exp_frac = int(userinfo["total_exp"] - self._level_exp(int(global_level)))
-        exp_total = self._required_exp(int(global_level) + 1)
+        exp_frac = int(userinfo["total_exp"] - await self._level_exp(int(global_level)))
+        exp_total = await self._required_exp(int(global_level) + 1)
         bar_length = int(exp_frac / exp_total * 340)
         draw.rectangle([(0, 305), (340, 323)], fill=(level_fill[0], level_fill[1], level_fill[2], 245))  # level box
         draw.rectangle([(0, 305), (bar_length, 323)], fill=(exp_fill[0], exp_fill[1], exp_fill[2], 255))  # box
         exp_text = "{}/{}".format(exp_frac, exp_total)  # Exp
-        draw.text((self._center(0, 340, exp_text, exp_fnt), 305), exp_text, font=exp_fnt,
+        draw.text((await self._center(0, 340, exp_text, exp_fnt), 305), exp_text, font=exp_fnt,
                   fill=exp_font_color)  # Exp Text
 
         credits = await bank.get_balance(user)
         credit_txt = f"{credits}{(await bank.get_currency_name(server))[0]}"
-        draw.text((self._center(200, 340, credit_txt, large_fnt), label_align - 27),
+        draw.text((await self._center(200, 340, credit_txt, large_fnt), label_align - 27),
                   self._truncate_text(credit_txt, 18), font=large_fnt, fill=info_text_color)  # Credits
 
         if userinfo["title"] == '':
@@ -2342,7 +2342,7 @@ class Leveler(commands.Cog):
                     pass
 
         result = Image.alpha_composite(result, process)
-        result = self._add_corners(result, 25)
+        result = await self._add_corners(result, 25)
         result.save(f'{cog_data_path(self)}/{user.id}_profile.png', 'PNG', quality=100)
 
         # remove images
@@ -2428,7 +2428,7 @@ class Leveler(commands.Cog):
 
             for char in text:
                 # if char.isalnum() or char in string.punctuation or char in string.whitespace:
-                if self.char_in_font(char, check_font):
+                if await self.char_in_font(char, check_font):
                     draw.text((write_pos, y), u"{}".format(char), font=font, fill=fill)
                     write_pos += font.getsize(char)[0]
                 else:
@@ -2493,7 +2493,7 @@ class Leveler(commands.Cog):
         draw_overlay.rectangle([(0, 0), (bg_width, 20)], fill=(230, 230, 230, 200))
         draw_overlay.rectangle([(0, 20), (bg_width, 30)], fill=(120, 120, 120, 180))  # Level bar
         exp_frac = int(userinfo["servers"][str(server.id)]["current_exp"])
-        exp_total = self._required_exp(userinfo["servers"][str(server.id)]["level"])
+        exp_total = await self._required_exp(userinfo["servers"][str(server.id)]["level"])
         exp_width = int(bg_width * (exp_frac / exp_total))
         if "rank_info_color" in userinfo.keys():
             exp_color = tuple(userinfo["rank_info_color"])
@@ -2509,7 +2509,7 @@ class Leveler(commands.Cog):
 
         # draw corners and finalize
         info_section = Image.alpha_composite(info_section, info_section_process)
-        info_section = self._add_corners(info_section, 25)
+        info_section = await self._add_corners(info_section, 25)
         process.paste(info_section, (35, 0))
 
         # draw level circle
@@ -2565,11 +2565,11 @@ class Leveler(commands.Cog):
         # labels
         v_label_align = 75
         info_text_color = white_color
-        draw.text((self._center(100, 200, "  RANK", label_fnt), v_label_align), "  RANK", font=label_fnt,
+        draw.text((await self._center(100, 200, "  RANK", label_fnt), v_label_align), "  RANK", font=label_fnt,
                   fill=info_text_color)  # Rank
-        draw.text((self._center(100, 360, "  LEVEL", label_fnt), v_label_align), "  LEVEL", font=label_fnt,
+        draw.text((await self._center(100, 360, "  LEVEL", label_fnt), v_label_align), "  LEVEL", font=label_fnt,
                   fill=info_text_color)  # Rank
-        draw.text((self._center(260, 360, "BALANCE", label_fnt), v_label_align), "BALANCE", font=label_fnt,
+        draw.text((await self._center(260, 360, "BALANCE", label_fnt), v_label_align), "BALANCE", font=label_fnt,
                   fill=info_text_color)  # Rank
         local_symbol = u"\U0001F3E0 "
         if "linux" in platform.system().lower():
@@ -2581,22 +2581,24 @@ class Leveler(commands.Cog):
 
         # userinfo
         server_rank = "#{}".format(await self._find_server_rank(user, server))
-        draw.text((self._center(100, 200, server_rank, large_fnt), v_label_align - 30), server_rank, font=large_fnt,
+        draw.text((await self._center(100, 200, server_rank, large_fnt), v_label_align - 30), server_rank,
+                  font=large_fnt,
                   fill=info_text_color)  # Rank
         level_text = "{}".format(userinfo["servers"][str(server.id)]["level"])
-        draw.text((self._center(95, 360, level_text, large_fnt), v_label_align - 30), level_text, font=large_fnt,
+        draw.text((await self._center(95, 360, level_text, large_fnt), v_label_align - 30), level_text, font=large_fnt,
                   fill=info_text_color)  # Level
         credits = await bank.get_balance(user)
         credit_txt = f"{credits}{(await bank.get_currency_name(server))[0]}"
-        draw.text((self._center(260, 360, credit_txt, large_fnt), v_label_align - 30), credit_txt, font=large_fnt,
+        draw.text((await self._center(260, 360, credit_txt, large_fnt), v_label_align - 30), credit_txt, font=large_fnt,
                   fill=info_text_color)  # Balance
         exp_text = "{}/{}".format(exp_frac, exp_total)
-        draw.text((self._center(80, 360, exp_text, exp_fnt), 19), exp_text, font=exp_fnt, fill=info_text_color)  # Rank
+        draw.text((await self._center(80, 360, exp_text, exp_fnt), 19), exp_text, font=exp_fnt,
+                  fill=info_text_color)  # Rank
 
         result = Image.alpha_composite(result, process)
         result.save(f'{cog_data_path(self)}/{user.id}_rank.png', 'PNG', quality=100)
 
-    def _add_corners(self, im, rad, multiplier=6):
+    async def _add_corners(self, im, rad, multiplier=6):
         raw_length = rad * 2 * multiplier
         circle = Image.new('L', (raw_length, raw_length), 0)
         draw = ImageDraw.Draw(circle)
@@ -2661,7 +2663,7 @@ class Leveler(commands.Cog):
         total_gap = 2
         border = int(total_gap / 2)
         info_section = Image.new('RGBA', (165, 55), (230, 230, 230, 20))
-        info_section = self._add_corners(info_section, int(lvl_circle_dia / 2))
+        info_section = await self._add_corners(info_section, int(lvl_circle_dia / 2))
         process.paste(info_section, (border, border))
 
         # draw transparent overlay
@@ -2707,11 +2709,11 @@ class Leveler(commands.Cog):
         dark_text = (35, 35, 35, 230)
         level_up_text = self._contrast(info_color, white_text, dark_text)
         lvl_text = "LEVEL {}".format(userinfo["servers"][str(server.id)]["level"])
-        draw.text((self._center(60, 170, lvl_text, level_fnt), 23), lvl_text, font=level_fnt,
+        draw.text((await self._center(60, 170, lvl_text, level_fnt), 23), lvl_text, font=level_fnt,
                   fill=level_up_text)  # Level Number
 
         result = Image.alpha_composite(result, process)
-        result = self._add_corners(result, int(height / 2))
+        result = await self._add_corners(result, int(height / 2))
         filename = f'{cog_data_path(self)}/{user.id}_level.png'
         result.save(filename, 'PNG', quality=100)
 
@@ -2754,7 +2756,7 @@ class Leveler(commands.Cog):
         channel = message.channel
         user = message.author
         # add to total exp
-        required = self._required_exp(userinfo["servers"][str(server.id)]["level"])
+        required = await self._required_exp(userinfo["servers"][str(server.id)]["level"])
         try:
             db.users.update_one({'user_id': str(user.id)}, {'$set': {
                 "total_exp": userinfo["total_exp"] + exp,
@@ -2852,7 +2854,7 @@ class Leveler(commands.Cog):
                 server_exp = 0
                 userid = userinfo["user_id"]
                 for i in range(userinfo["servers"][str(server.id)]["level"]):
-                    server_exp += self._required_exp(i)
+                    server_exp += await self._required_exp(i)
                 server_exp += userinfo["servers"][str(server.id)]["current_exp"]
                 users.append((userid, server_exp))
             except:
@@ -2888,7 +2890,7 @@ class Leveler(commands.Cog):
 
         try:
             for i in range(userinfo["servers"][str(server.id)]["level"]):
-                server_exp += self._required_exp(i)
+                server_exp += await self._required_exp(i)
             server_exp += userinfo["servers"][str(server.id)]["current_exp"]
             return server_exp
         except:
@@ -2984,26 +2986,26 @@ class Leveler(commands.Cog):
         return text
 
     # finds the the pixel to center the text
-    def _center(self, start, end, text, font):
+    async def _center(self, start, end, text, font):
         dist = end - start
         width = font.getsize(text)[0]
         start_pos = start + ((dist - width) / 2)
         return int(start_pos)
 
     # calculates required exp for next level
-    def _required_exp(self, level: int):
+    async def _required_exp(self, level: int):
         if level < 0:
             return 0
         return 139 * level + 65
 
-    def _level_exp(self, level: int):
+    async def _level_exp(self, level: int):
         return level * 65 + 139 * level * (level - 1) // 2
 
-    def _find_level(self, total_exp):
+    async def _find_level(self, total_exp):
         # this is specific to the function above
         return int((1 / 278) * (9 + math.sqrt(81 + 1112 * total_exp)))
 
-    def char_in_font(self, unicode_char, font):
+    async def char_in_font(self, unicode_char, font):
         for cmap in font['cmap'].tables:
             if cmap.isUnicode():
                 if ord(unicode_char) in cmap.cmap:
