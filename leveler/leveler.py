@@ -1252,7 +1252,7 @@ class Leveler(commands.Cog):
             await self.config.guild(server).private_lvl_message.set(True)
             await ctx.send("**Private level-up alerts enabled for `{}`.**".format(server.name))
 
-    @lvladmin.group(autohelp=True)
+    @lvlset.group(autohelp=True)
     async def badge(self, ctx):
         """Badge Configuration Options"""
         pass
