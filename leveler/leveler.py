@@ -2041,7 +2041,7 @@ class Leveler(commands.Cog):
         text_u_fnt = ImageFont.truetype(self.font_unicode_file, 14)
         symbol_u_fnt = ImageFont.truetype(self.font_unicode_file, 15)
 
-        def _write_unicode(text, init_x, y, font, unicode_font, fill):
+        async def _write_unicode(text, init_x, y, font, unicode_font, fill):
             write_pos = init_x
             check_font = TTFont(font.path)
 
@@ -2167,9 +2167,9 @@ class Leveler(commands.Cog):
         head_align = 140
         # determine info text color
         info_text_color = self._contrast(info_fill, white_color, dark_color)
-        _write_unicode(self._truncate_text(user.name, 22).upper(), head_align, 142, name_fnt, name_u_fnt,
-                       info_text_color)  # NAME
-        _write_unicode(userinfo["title"].upper(), head_align, 170, title_fnt, title_u_fnt, info_text_color)
+        await _write_unicode(self._truncate_text(user.name, 22).upper(), head_align, 142, name_fnt, name_u_fnt,
+                             info_text_color)  # NAME
+        await _write_unicode(userinfo["title"].upper(), head_align, 170, title_fnt, title_u_fnt, info_text_color)
 
         # draw divider
         draw.rectangle([(0, 323), (340, 324)], fill=(0, 0, 0, 255))  # box
@@ -2178,7 +2178,7 @@ class Leveler(commands.Cog):
 
         # rep_text = "{} REP".format(userinfo["rep"])
         rep_text = "{}".format(userinfo["rep"])
-        _write_unicode("❤", 257, 9, rep_fnt, rep_u_fnt, info_text_color)
+        await _write_unicode("❤", 257, 9, rep_fnt, rep_u_fnt, info_text_color)
         draw.text((await self._center(278, 340, rep_text, rep_fnt), 10), rep_text, font=rep_fnt,
                   fill=info_text_color)  # Exp Text
 
@@ -2198,8 +2198,8 @@ class Leveler(commands.Cog):
             global_symbol = "G."
             fine_adjust = 0
 
-        _write_unicode(global_symbol, 36, label_align + 5, label_fnt, symbol_u_fnt, info_text_color)  # Symbol
-        _write_unicode(global_symbol, 134, label_align + 5, label_fnt, symbol_u_fnt, info_text_color)  # Symbol
+        await _write_unicode(global_symbol, 36, label_align + 5, label_fnt, symbol_u_fnt, info_text_color)  # Symbol
+        await _write_unicode(global_symbol, 134, label_align + 5, label_fnt, symbol_u_fnt, info_text_color)  # Symbol
 
         # userinfo
         global_rank = "#{}".format(await self._find_global_rank(user))
@@ -2233,7 +2233,7 @@ class Leveler(commands.Cog):
         for line in textwrap.wrap(userinfo["info"], width=32):
             # for line in textwrap.wrap('userinfo["info"]', width=200):
             # draw.text((margin, offset), line, font=text_fnt, fill=white_color)
-            _write_unicode(line, margin, offset, text_fnt, text_u_fnt, txt_color)
+            await _write_unicode(line, margin, offset, text_fnt, text_u_fnt, txt_color)
             offset += text_fnt.getsize(line)[1] + 2
 
         # sort badges
@@ -2422,7 +2422,7 @@ class Leveler(commands.Cog):
         large_bold_fnt = ImageFont.truetype(font_bold_file, 24)
         symbol_u_fnt = ImageFont.truetype(self.font_unicode_file, 15)
 
-        def _write_unicode(text, init_x, y, font, unicode_font, fill):
+        async def _write_unicode(text, init_x, y, font, unicode_font, fill):
             write_pos = init_x
             check_font = TTFont(font.path)
 
@@ -2560,7 +2560,8 @@ class Leveler(commands.Cog):
         # name
         left_text_align = 130
         name_color = 0
-        _write_unicode(self._truncate_text(self._name(user, 20), 20), 100, 0, name_fnt, name_u_fnt, grey_color)  # Name
+        await _write_unicode(self._truncate_text(self._name(user, 20), 20), 100, 0, name_fnt, name_u_fnt,
+                             grey_color)  # Name
 
         # labels
         v_label_align = 75
@@ -2576,8 +2577,8 @@ class Leveler(commands.Cog):
             local_symbol = u"\U0001F3E0 "
         else:
             local_symbol = "S. "
-        _write_unicode(local_symbol, 117, v_label_align + 4, label_fnt, symbol_u_fnt, info_text_color)  # Symbol
-        _write_unicode(local_symbol, 195, v_label_align + 4, label_fnt, symbol_u_fnt, info_text_color)  # Symbol
+        await _write_unicode(local_symbol, 117, v_label_align + 4, label_fnt, symbol_u_fnt, info_text_color)  # Symbol
+        await _write_unicode(local_symbol, 195, v_label_align + 4, label_fnt, symbol_u_fnt, info_text_color)  # Symbol
 
         # userinfo
         server_rank = "#{}".format(await self._find_server_rank(user, server))
