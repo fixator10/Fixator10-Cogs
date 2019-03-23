@@ -11,5 +11,8 @@
     "time",
     "someone",
     "color"
+  ],
+  "requirements": [
+    "python-dateutil"
   ]
 }
