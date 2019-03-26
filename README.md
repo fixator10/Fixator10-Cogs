@@ -1,5 +1,5 @@
-[![Discord](https://img.shields.io/discord/221158719025709056.svg?style=for-the-badge)](https://discord.me/fixator10)
-[![Discord](https://img.shields.io/badge/Red-DiscordBot-red.svg?style=for-the-badge)](https://github.com/Cog-Creators/Red-DiscordBot)
+[![Discord](https://img.shields.io/discord/221158719025709056.svg?style=for-the-badge)](https://invite.gg/fixator10)
+[![Red](https://img.shields.io/badge/Red-DiscordBot-red.svg?style=for-the-badge)](https://github.com/Cog-Creators/Red-DiscordBot)
 [![CodeFactor](https://www.codefactor.io/repository/github/fixator10/fixator10-cogs/badge?style=for-the-badge)](https://www.codefactor.io/repository/github/fixator10/fixator10-cogs)
 
 # Fixator10-Cogs
