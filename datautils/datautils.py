@@ -349,6 +349,8 @@ class DataUtils(commands.Cog):
         if isinstance(channel, str):
             await ctx.send_help()
             return
+        if channel is None:
+            channel = ctx.channel
         perms = channel.permissions_for(member)
         await ctx.send("{}\n{}".format(chat.inline(str(member.guild_permissions.value)),
                                        chat.box(chat.format_perms_list(perms), lang="py")))
