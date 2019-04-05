@@ -32,9 +32,10 @@ class DataUtils(commands.Cog):
             return
         except discord.errors.HTTPException:
             await ctx.send(chat.warning("Bot was unable to get data about user with ID `{}`. "
-                                            "Try again later".format(user_id)))
+                                        "Try again later".format(user_id)))
             return
-        embed = discord.Embed(title=str(user), timestamp=user.created_at, color=await ctx.embed_color())
+        embed = discord.Embed(title=chat.escape(str(user), formatting=True),
+                              timestamp=user.created_at, color=await ctx.embed_color())
         embed.add_field(name="ID", value=user.id)
         embed.add_field(name="Bot?", value=bool_emojify(user.bot))
         embed.add_field(name="Mention", value=user.mention)
@@ -55,7 +56,8 @@ class DataUtils(commands.Cog):
         """Information on a user"""
         if member is None:
             member = ctx.message.author
-        em = discord.Embed(title=member.nick, color=member.color.value and member.color or discord.Embed.Empty)
+        em = discord.Embed(title=member.nick and chat.escape(member.nick, formatting=True) or None,
+                           color=member.color.value and member.color or discord.Embed.Empty)
         em.add_field(name="Name", value=member.name)
         em.add_field(name="Client",
                      value="📱: {}\n"
@@ -100,13 +102,16 @@ class DataUtils(commands.Cog):
         inv_splash = "INVITE_SPLASH" in server.features
         em = discord.Embed(title="Server info",
                            color=server.owner.color.value and server.owner.color or discord.Embed.Empty)
-        em.add_field(name="Name", value=server.name)
+        em.add_field(name="Name", value=chat.escape(server.name, formatting=True))
         em.add_field(name="Server ID", value=server.id)
         em.add_field(name="Region", value=server.region)
         em.add_field(name="Existed since", value=server.created_at.strftime('%d.%m.%Y %H:%M:%S %Z'))
-        em.add_field(name="Owner", value=server.owner)
-        em.add_field(name="AFK Timeout and Channel", value="{} min in {}".format(afk, server.afk_channel))
-        em.add_field(name="New member messages channel", value=server.system_channel)
+        em.add_field(name="Owner", value=chat.escape(str(server.owner), formatting=True))
+        em.add_field(name="AFK Timeout and Channel",
+                     value="{} min in {}".format(afk,
+                                                 chat.escape(str(server.afk_channel), formatting=True)))
+        em.add_field(name="New member messages channel",
+                     value=chat.escape(str(server.system_channel), formatting=True))
         em.add_field(name="Verification level",
                      value="None" if server.verification_level == discord.VerificationLevel.none else
                      "Low" if server.verification_level == discord.VerificationLevel.low else
@@ -202,7 +207,7 @@ class DataUtils(commands.Cog):
         changed_roles = sorted(channel.changed_roles,
                                key=lambda r: r.position,
                                reverse=True)
-        em = discord.Embed(title=channel.name,
+        em = discord.Embed(title=chat.escape(str(channel.name), formatting=True),
                            description=channel.topic if isinstance(channel, discord.TextChannel) else
                            "💬: {} | 🔈: {}".format(len(channel.text_channels), len(channel.voice_channels))
                            if isinstance(channel, discord.CategoryChannel) else
@@ -215,7 +220,8 @@ class DataUtils(commands.Cog):
                      "📑" if isinstance(channel, discord.CategoryChannel) else
                      "❔")
         em.add_field(name="Has existed since", value=channel.created_at.strftime('%d.%m.%Y %H:%M:%S %Z'))
-        em.add_field(name="Category", value=channel.category or chat.inline("Not in category"))
+        em.add_field(name="Category",
+                     value=chat.escape(str(channel.category), formatting=True) or chat.inline("Not in category"))
         em.add_field(name="Position", value=channel.position)
         em.add_field(name="Changed roles permissions",
                      value="\n".join([str(x) for x in changed_roles])
@@ -250,9 +256,12 @@ class DataUtils(commands.Cog):
         if server is None:
             await ctx.send("Failed to get server with provided ID")
             return
-        categories = "\n".join([chat.escape(x.name) for x in server.categories]) or "No categories"
-        text_channels = "\n".join([chat.escape(x.name) for x in server.text_channels]) or "No text channels"
-        voice_channels = "\n".join([chat.escape(x.name) for x in server.voice_channels]) or "No voice channels"
+        categories = "\n".join([chat.escape(x.name, formatting=True)
+                                for x in server.categories]) or "No categories"
+        text_channels = "\n".join([chat.escape(x.name, formatting=True)
+                                   for x in server.text_channels]) or "No text channels"
+        voice_channels = "\n".join([chat.escape(x.name, formatting=True)
+                                    for x in server.voice_channels]) or "No voice channels"
         em = discord.Embed(title="Channels list", color=await ctx.embed_color())
         em.add_field(name="Categories:",
                      value=categories,
@@ -277,7 +286,8 @@ class DataUtils(commands.Cog):
     @checks.bot_has_permissions(embed_links=True)
     async def rinfo(self, ctx, *, role: discord.Role):
         """Get info about role"""
-        em = discord.Embed(title=role.name, color=role.color.value and role.color or discord.Embed.Empty)
+        em = discord.Embed(title=chat.escape(role.name, formatting=True),
+                           color=role.color.value and role.color or discord.Embed.Empty)
         em.add_field(name="ID", value=role.id)
         em.add_field(name="Perms",
                      value="[{0}](https://discordapi.com/permissions.html#{0})".format(role.permissions.value))
@@ -322,7 +332,7 @@ class DataUtils(commands.Cog):
         roles = []
         for role in server.roles:
             dic = {
-                "Name": role.name,
+                "Name": await self.smart_truncate(role.name),
                 "ID": role.id
             }
             roles.append(dic)
@@ -363,7 +373,7 @@ class DataUtils(commands.Cog):
         if isinstance(emoji, str):
             await ctx.send_help()
             return
-        em = discord.Embed(title=emoji.name, color=await ctx.embed_color())
+        em = discord.Embed(title=chat.escape(emoji.name, formatting=True), color=await ctx.embed_color())
         em.add_field(name="ID", value=emoji.id)
         em.add_field(name="Animated", value=bool_emojify(emoji.animated))
         if isinstance(emoji, discord.Emoji):
@@ -378,3 +388,10 @@ class DataUtils(commands.Cog):
             em.add_field(name="Unicode emoji", value=bool_emojify(emoji.is_unicode_emoji()))
         em.set_image(url=emoji.url)
         await ctx.send(embed=em)
+
+    async def smart_truncate(self, content, length=32, suffix='…'):
+        """https://stackoverflow.com/questions/250357/truncate-a-string-without-ending-in-the-middle-of-a-word"""
+        content_str = str(content)
+        if len(content_str) <= length:
+            return content
+        return ' '.join(content_str[:length + 1].split(' ')[0:-1]) + suffix
