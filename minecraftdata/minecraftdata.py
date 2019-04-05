@@ -8,6 +8,7 @@ import aiohttp
 import discord
 import tabulate
 from mcstatus import MinecraftServer
+from redbot.core import checks
 from redbot.core import commands
 from redbot.core.utils import chat_formatting as chat
 from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
@@ -31,6 +32,7 @@ class MinecraftData(commands.Cog):
         pass
 
     @minecraft.command()
+    @checks.bot_has_permissions(embed_links=True)
     async def skin(self, ctx, nickname: MCNickname, helm_layer: bool = True):
         """Get minecraft skin by nickname"""
         uuid = nickname.uuid
@@ -62,6 +64,7 @@ class MinecraftData(commands.Cog):
         pass
 
     @cape.command(aliases=["of"])
+    @checks.bot_has_permissions(embed_links=True)
     async def optifine(self, ctx, nickname: MCNickname):
         """Get optifine cape by nickname"""
         em = discord.Embed(timestamp=ctx.message.created_at, color=await ctx.embed_color())
@@ -92,6 +95,7 @@ class MinecraftData(commands.Cog):
         cape.close()
 
     @cape.command(aliases=["minecraftcapes", "couk"])
+    @checks.bot_has_permissions(embed_links=True)
     async def mccapes(self, ctx, nickname: MCNickname):
         """Get MinecraftCapes.co.uk cape by nickname"""
         uuid = nickname.uuid
@@ -152,6 +156,7 @@ class MinecraftData(commands.Cog):
         cape.close()
 
     @minecraft.command()
+    @checks.bot_has_permissions(embed_links=True)
     @commands.cooldown(1, 30, commands.BucketType.member)
     async def server(self, ctx, IP_or_domain: str):
         """Get info about server"""
@@ -198,9 +203,8 @@ class MinecraftData(commands.Cog):
                             )
         await ctx.send(file=icon, embed=embed)
 
-
-
     @minecraft.command()
+    @checks.bot_has_permissions(embed_links=True)
     async def status(self, ctx):
         """Get status of minecraft services"""
         try:
