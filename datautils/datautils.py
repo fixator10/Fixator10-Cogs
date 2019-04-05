@@ -319,7 +319,6 @@ class DataUtils(commands.Cog):
     @commands.command(aliases=['listroles', 'rolelist'])
     @commands.guild_only()
     @checks.is_owner()
-    @checks.bot_has_permissions(embed_links=True)
     async def roles(self, ctx, server: int = None):
         """Get all roles on server"""
         if server is None:
@@ -336,16 +335,9 @@ class DataUtils(commands.Cog):
                 "ID": role.id
             }
             roles.append(dic)
-        embeds = []
-        for page in chat.pagify(tabulate.tabulate(roles, tablefmt="orgtbl"), page_length=1900):
-            em = discord.Embed(  # description="\n".join([str(x) for x in roles]),
-                description=chat.box(page),
-                color=await ctx.embed_color())
-            embeds.append(em)
-        for embed in embeds:
-            embed.title = "Table of roles"
-            embed.set_footer(text="Total count of roles: " + str(len(server.roles)))
-        await menu(ctx, embeds, DEFAULT_CONTROLS)
+        pages = list(chat.pagify(tabulate.tabulate(roles, tablefmt="orgtbl")))
+        pages = [chat.box(p) for p in pages]
+        await menu(ctx, pages, DEFAULT_CONTROLS)
 
     @commands.command(aliases=["cperms"])
     @commands.guild_only()
