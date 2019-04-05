@@ -87,8 +87,8 @@ class Translators(commands.Cog):
             input_lang = language[:2]
             output_lang = language[3:]
         if response["code"] == 200:
-            await ctx.send("**[{}] Input:** {}".format(input_lang.upper(), chat.box(text)))
-            await ctx.send("**[{}] Translation:** {}".format(output_lang.upper(), chat.box(response["text"][0])))
+            await ctx.send("**[{}-{}] Translation:** {}".format(input_lang.upper(), output_lang.upper(),
+                                                                chat.box(response["text"][0])))
         else:
             # According to yandex.translate source code this cannot happen too, but whatever...
             await ctx.send("An error has been occurred. Translation server returned code {}"
