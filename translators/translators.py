@@ -1,4 +1,5 @@
 import base64
+import functools
 import io
 import itertools
 import random
@@ -42,6 +43,7 @@ class Translators(commands.Cog):
 
         Language may be just "ru" (target language to translate)
         or "en-ru" (original text's language - target language)"""
+        # TODO: Remake this via aiohttp
         text = chat.escape(text, formatting=True)
         apikeys = await self.bot.db.api_tokens.get_raw("yandex", default={"translate": None})
         try:
@@ -75,7 +77,7 @@ class Translators(commands.Cog):
         output_lang = None
         if len(language) == 2:
             try:
-                input_lang = await self.bot.loop.run_in_executor(None, translate.detect, text=text)
+                input_lang = await self.bot.loop.run_in_executor(None, functools.partial(translate.detect, text=text))
             except YandexTranslateException as e:
                 if str(e) == "ERR_LANG_NOT_SUPPORTED":
                     await ctx.send(chat.error("This language is not supported"))
