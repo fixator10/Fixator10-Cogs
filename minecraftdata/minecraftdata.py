@@ -172,7 +172,10 @@ class MinecraftData(commands.Cog):
             except (ConnectionResetError, OSError):
                 query = None
         if isinstance(status.description, dict):
-            motd = re.sub(r"\xA7[0-9A-FK-OR]", "", status.description.get("text", ""), flags=re.IGNORECASE)
+            description = ""
+            async for text in self.gen_dict_extract("text", status.description):
+                description += text
+            motd = re.sub(r"\xA7[0-9A-FK-OR]", "", description, flags=re.IGNORECASE)
         else:
             motd = re.sub(r"\xA7[0-9A-FK-OR]", "", status.description, flags=re.IGNORECASE)
         icon = status.favicon and discord.File(b64decode(status.favicon.split(",", 1)[1]),
@@ -247,3 +250,16 @@ class MinecraftData(commands.Cog):
         except Exception as e:
             await ctx.send(chat.error("Unable to check name history.\nAn error has been occurred: " +
                                       chat.inline(str(e))))
+
+    async def gen_dict_extract(self, key, var):
+        if hasattr(var, 'items'):
+            for k, v in var.items():
+                if k == key:
+                    yield v
+                if isinstance(v, dict):
+                    for result in self.gen_dict_extract(key, v):
+                        yield result
+                elif isinstance(v, list):
+                    for d in v:
+                        for result in self.gen_dict_extract(key, d):
+                            yield result
