@@ -46,7 +46,7 @@ class Translators(commands.Cog):
         apikeys = await self.bot.db.api_tokens.get_raw("yandex", default={"translate": None})
         try:
             translate = YandexTranslate(apikeys["translate"])
-            response = translate.translate(text, language)
+            response = await self.bot.loop.run_in_executor(None, translate.translate, text, language)
         except YandexTranslateException as e:
             if str(e) == "ERR_LANG_NOT_SUPPORTED":
                 await ctx.send(chat.error("An error has been occurred: Language {} is not supported"
@@ -75,7 +75,7 @@ class Translators(commands.Cog):
         output_lang = None
         if len(language) == 2:
             try:
-                input_lang = translate.detect(text=text)
+                input_lang = await self.bot.loop.run_in_executor(None, translate.detect, text=text)
             except YandexTranslateException as e:
                 if str(e) == "ERR_LANG_NOT_SUPPORTED":
                     await ctx.send(chat.error("This language is not supported"))
