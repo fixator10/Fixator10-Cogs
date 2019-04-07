@@ -1,4 +1,5 @@
 from datetime import datetime
+from functools import partial
 from socket import gethostbyname_ex
 
 import discord
@@ -38,7 +39,7 @@ class SteamCommunity(commands.Cog):
     async def initialize(self):
         """Should be called straight after cog instantiation."""
         self.apikeys = await self.bot.db.api_tokens.get_raw("steam", default={"web": None})
-        self.steam = interface.API(key=self.apikeys["web"])
+        self.steam = await self.bot.loop.run_in_executor(None, partial(interface.API, key=self.apikeys["web"]))
 
     async def validate_ip(self, s):
         a = s.split('.')
@@ -86,7 +87,7 @@ class SteamCommunity(commands.Cog):
     async def steamprofile(self, ctx, steamid: SteamID):
         """Get steam user's steamcommunity profile"""
         try:
-            profile = SteamUser(self.steam, steamid)
+            profile = await self.bot.loop.run_in_executor(None, SteamUser, self.steam, steamid)
         except IndexError:
             await ctx.send(chat.error("Unable to get profile for {}. "
                                       "Check your input or try again later.".format(steamid)))
