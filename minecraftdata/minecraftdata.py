@@ -158,9 +158,9 @@ class MinecraftData(commands.Cog):
     @minecraft.command()
     @checks.bot_has_permissions(embed_links=True)
     @commands.cooldown(1, 30, commands.BucketType.member)
-    async def server(self, ctx, IP_or_domain: str):
+    async def server(self, ctx, server_ip: str):
         """Get info about server"""
-        server = await self.bot.loop.run_in_executor(None, MinecraftServer, IP_or_domain)
+        server = await self.bot.loop.run_in_executor(None, MinecraftServer, server_ip)
         async with ctx.channel.typing():
             try:
                 status = await self.bot.loop.run_in_executor(None, server.status)
@@ -180,7 +180,7 @@ class MinecraftData(commands.Cog):
             motd = re.sub(r"\xA7[0-9A-FK-OR]", "", status.description, flags=re.IGNORECASE)
         icon = status.favicon and discord.File(b64decode(status.favicon.split(",", 1)[1]),
                                                filename="icon.png") or None
-        embed = discord.Embed(title=IP_or_domain,
+        embed = discord.Embed(title=server_ip,
                               description=motd,
                               color=await ctx.embed_color())
         if icon:
