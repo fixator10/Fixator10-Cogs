@@ -194,6 +194,7 @@ class SteamCommunity(commands.Cog):
         em.add_field(name="Game", value=f"[{game}](http://store.steampowered.com/app/{gameid})")
         em.add_field(name="Gamemode", value=gamemode)
         em.add_field(name="Server name", value=servername, inline=False)
+        em.add_field(name="Map", value=_map, inline=False)
         em.add_field(name="IP", value=serverc[0])
         em.add_field(name="Operating System", value=os)
         em.add_field(name="Server type", value=servertype)
@@ -207,6 +208,5 @@ class SteamCommunity(commands.Cog):
         else:
             em.add_field(name="Players",
                          value="{}/{}\n".format(playernumber, maxplayers))
-        em.add_field(name="Map", value=_map, inline=False)
 
         await ctx.send(embed=em)
