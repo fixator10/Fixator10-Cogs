@@ -157,8 +157,9 @@ class SteamCommunity(commands.Cog):
             return
 
         try:
-            server = valve.source.a2s.ServerQuerier(serverc)
+            server = await self.bot.loop.run_in_executor(None, valve.source.a2s.ServerQuerier, serverc)
             info = server.info()
+            server.close()
 
         except valve.source.a2s.NoResponseError:
             await ctx.send(chat.error("Could not fetch Server or the Server is not on the Steam masterlist"))
@@ -175,9 +176,11 @@ class SteamCommunity(commands.Cog):
             _map = "{} [(Workshop map)]({})".format(_map.split("/")[2], link)
 
         game = info.values['folder']
+        gameid = info.values['app_id']
         gamemode = info.values['game']
 
         servername = info.values['server_name'].strip()
+        servertype = str(info.values['server_type'])
 
         playernumber = str(
             info.values['player_count'] - info.values['bot_count'])
@@ -185,14 +188,18 @@ class SteamCommunity(commands.Cog):
         maxplayers = str(info.values['max_players'])
 
         os = str(info.values['platform'])
+        version = info.values['version']
 
         em = discord.Embed(colour=await ctx.embed_color())
-        em.add_field(name="Game", value=game)
+        em.add_field(name="Game", value=f"[{game}](http://store.steampowered.com/app/{gameid})")
         em.add_field(name="Gamemode", value=gamemode)
         em.add_field(name="Server name", value=servername, inline=False)
         em.add_field(name="IP", value=serverc[0])
         em.add_field(name="Operating System", value=os)
+        em.add_field(name="Server type", value=servertype)
+        em.add_field(name="Version", value=version)
         em.add_field(name="VAC", value=bool_emojify(bool(info.values['vac_enabled'])))
+        em.add_field(name="Password", value=bool_emojify(bool(info.values['password_protected'])))
         if botnumber:
             em.add_field(
                 name="Players",
