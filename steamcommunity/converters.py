@@ -8,7 +8,7 @@ class SteamID(Converter):
         steam = ctx.cog.steam
         if "ISteamUser" not in list(steam._interfaces.keys()):
             raise BadArgument("ApiKey not set or incorrect.")
-        userapi = steam['ISteamUser']
+        userapi = steam["ISteamUser"]
         if argument.startswith("http"):
             argument = argument.strip("/")
             argument = argument.split("/")[-1]

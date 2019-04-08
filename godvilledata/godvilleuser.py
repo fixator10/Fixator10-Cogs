@@ -58,7 +58,7 @@ class GodvilleUser(object):
             "sail": "Морской поход",
             "arena": "Арена",
             "challenge": "Тренировка",
-            "dungeon": "Подземелье"
+            "dungeon": "Подземелье",
         }
         return fights.get(self.fight_type)
 
@@ -67,12 +67,14 @@ class GodvilleUser(object):
         dates = {
             "ark": self.ark_date,
             "savings": self.savings_date,
-            "temple": self.temple_date
+            "temple": self.temple_date,
         }
         if date not in dates:
             raise KeyError
-        utctime = parse(dates[date]) - parse(dates[date]).utcoffset()  # shit way to get UTC time out of ISO timestamp
-        return utctime.strftime('%d.%m.%Y %H:%M:%S')
+        utctime = (
+            parse(dates[date]) - parse(dates[date]).utcoffset()
+        )  # shit way to get UTC time out of ISO timestamp
+        return utctime.strftime("%d.%m.%Y %H:%M:%S")
 
 
 class GodvillePet:

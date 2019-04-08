@@ -25,23 +25,36 @@ class AdminUtils(commands.Cog):
         """Cleanup inactive server members"""
         if days > 30:
             await ctx.send(
-                chat.info("Due to Discord Restrictions, you cannot use more than 30 days for that cmd."))
+                chat.info(
+                    "Due to Discord Restrictions, you cannot use more than 30 days for that cmd."
+                )
+            )
             days = 30
         elif days <= 0:
-            await ctx.send(chat.info("\"days\" arg cannot be less than 1..."))
+            await ctx.send(chat.info('"days" arg cannot be less than 1...'))
             days = 1
         to_kick = await ctx.guild.estimate_pruned_members(days=days)
-        await ctx.send(chat.warning("You about to kick **{}** inactive for **{}** days members from this server. "
-                                    "Are you sure?\nTo agree, type \"yes\"".format(to_kick, days)))
+        await ctx.send(
+            chat.warning(
+                "You about to kick **{}** inactive for **{}** days members from this server. "
+                'Are you sure?\nTo agree, type "yes"'.format(to_kick, days)
+            )
+        )
         pred = MessagePredicate.yes_or_no(ctx)
         try:
             await self.bot.wait_for("message", check=pred, timeout=30)
         except TimeoutError:
             pass
         if pred.result:
-            cleanup = await ctx.guild.prune_members(days=days, reason=get_audit_reason(ctx.author))
-            await ctx.send(chat.info("**{}**/**{}** inactive members removed.\n"
-                                     "(They was inactive for **{}** days)".format(cleanup, to_kick, days)))
+            cleanup = await ctx.guild.prune_members(
+                days=days, reason=get_audit_reason(ctx.author)
+            )
+            await ctx.send(
+                chat.info(
+                    "**{}**/**{}** inactive members removed.\n"
+                    "(They was inactive for **{}** days)".format(cleanup, to_kick, days)
+                )
+            )
         else:
             await ctx.send(chat.error("Inactive members cleanup canceled."))
 
@@ -55,11 +68,17 @@ class AdminUtils(commands.Cog):
         counter = 0
         for user in server.members:
             try:
-                await user.edit(nick=nickname, reason=get_audit_reason(ctx.author, "Massnick"))
+                await user.edit(
+                    nick=nickname, reason=get_audit_reason(ctx.author, "Massnick")
+                )
             except discord.HTTPException:
                 counter += 1
                 continue
-        await ctx.send("Finished nicknaming server. {} nicknames could not be completed.".format(counter))
+        await ctx.send(
+            "Finished nicknaming server. {} nicknames could not be completed.".format(
+                counter
+            )
+        )
 
     @commands.command()
     @commands.guild_only()
@@ -70,7 +89,9 @@ class AdminUtils(commands.Cog):
         server = ctx.guild
         for user in server.members:
             try:
-                await user.edit(nickname=None, reason=get_audit_reason(ctx.author, "Reset nicks"))
+                await user.edit(
+                    nickname=None, reason=get_audit_reason(ctx.author, "Reset nicks")
+                )
             except discord.HTTPException:
                 continue
         await ctx.send("Finished resetting server nicknames")
@@ -90,27 +111,49 @@ class AdminUtils(commands.Cog):
             async with self.session.get(url) as r:
                 data = await r.read()
         except Exception as e:
-            await ctx.send(chat.error("Unable to get emoji from provided url: {}".format(e)))
+            await ctx.send(
+                chat.error("Unable to get emoji from provided url: {}".format(e))
+            )
             return
         try:
-            await ctx.guild.create_custom_emoji(name=name, image=data, roles=roles,
-                                                reason=get_audit_reason(ctx.author,
-                                                                        ("Restricted to roles: " +
-                                                                         ", ".join([f"{role.name}" for role in roles]))
-                                                                        if roles else None))
+            await ctx.guild.create_custom_emoji(
+                name=name,
+                image=data,
+                roles=roles,
+                reason=get_audit_reason(
+                    ctx.author,
+                    (
+                        "Restricted to roles: "
+                        + ", ".join([f"{role.name}" for role in roles])
+                    )
+                    if roles
+                    else None,
+                ),
+            )
         except discord.HTTPException as e:
             await ctx.send(chat.error(f"An error occured on adding an emoji: {e}"))
-            return 
+            return
         await ctx.tick()
 
     @emoji.command(name="rename")
-    async def emoji_rename(self, ctx, emoji: discord.Emoji, name: str, *roles: discord.Role):
+    async def emoji_rename(
+        self, ctx, emoji: discord.Emoji, name: str, *roles: discord.Role
+    ):
         """Rename emoji and restrict to certain roles
         Only this roles will be able to use this emoji"""
-        await emoji.edit(name=name, roles=roles,
-                         reason=get_audit_reason(ctx.author, ("Restricted to roles: " +
-                                                              ", ".join([f"{role.name}" for role in roles]))
-                         if roles else None))
+        await emoji.edit(
+            name=name,
+            roles=roles,
+            reason=get_audit_reason(
+                ctx.author,
+                (
+                    "Restricted to roles: "
+                    + ", ".join([f"{role.name}" for role in roles])
+                )
+                if roles
+                else None,
+            ),
+        )
         await ctx.tick()
 
     @emoji.command(name="remove")

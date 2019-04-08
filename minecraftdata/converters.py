@@ -16,7 +16,9 @@ class MCNickname(Converter):
     async def convert(self, ctx, argument):
         session = ctx.cog.session
         try:
-            async with session.get('https://api.mojang.com/users/profiles/minecraft/' + argument) as data:
+            async with session.get(
+                "https://api.mojang.com/users/profiles/minecraft/" + argument
+            ) as data:
                 response_data = await data.json()
         except ContentTypeError:
             response_data = None
