@@ -66,9 +66,9 @@ class Weather(commands.Cog):
         by_hour = forecast.currently()
         place = f"{g.city}"
         if g.state:
-            place += f" | {g.state}"
+            place += f", {g.state}"
         if g.country:
-            place += f" | {g.country}"
+            place += f", {g.country}"
 
         content = (
             "Weather in {}:\n"
@@ -117,9 +117,9 @@ class Weather(commands.Cog):
         by_hour = forecast.daily()
         place = f"{g.city}"
         if g.state:
-            place += f" | {g.state}"
+            place += f", {g.state}"
         if g.country:
-            place += f" | {g.country}"
+            place += f", {g.country}"
 
         content = f"Weather in {place}:\n"
         for i in range(0, 7):
