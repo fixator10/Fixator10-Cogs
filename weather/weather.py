@@ -39,7 +39,7 @@ class Weather(commands.Cog):
         await ctx.maybe_send_embed(message)
 
     @commands.command()
-    async def weather(self, ctx, place: str):
+    async def weather(self, ctx, *, place: str):
         """Shows weather in provided place"""
         apikeys = await self.bot.db.api_tokens.get_raw(
             "forecastio", default={"secret": None}
@@ -60,14 +60,15 @@ class Weather(commands.Cog):
                 )
             )
             return
-        except ConnectionError:
-            await ctx.send(chat.error("Unable to get data from forecast.io"))
-            return
-        except Timeout:
+        except (ConnectionError, Timeout):
             await ctx.send(chat.error("Unable to get data from forecast.io"))
             return
         by_hour = forecast.currently()
-        place = f"{g.city} | {g.country}"
+        place = f"{g.city}"
+        if g.state:
+            place += f" | {g.state}"
+        if g.country:
+            place += f" | {g.country}"
 
         content = (
             "Weather in {}:\n"
@@ -89,7 +90,7 @@ class Weather(commands.Cog):
             await ctx.send(content)
 
     @commands.command()
-    async def forecast(self, ctx, place: str):
+    async def forecast(self, ctx, *, place: str):
         """Shows 7 days forecast for provided place"""
         apikeys = await self.bot.db.api_tokens.get_raw(
             "forecastio", default={"secret": None}
@@ -110,19 +111,20 @@ class Weather(commands.Cog):
                 )
             )
             return
-        except ConnectionError:
-            await ctx.send(chat.error("Unable to get data from forecast.io"))
-            return
-        except Timeout:
+        except (ConnectionError, Timeout):
             await ctx.send(chat.error("Unable to get data from forecast.io"))
             return
         by_hour = forecast.daily()
-        place = f"{g.city} | {g.country}"
+        place = f"{g.city}"
+        if g.state:
+            place += f" | {g.state}"
+        if g.country:
+            place += f" | {g.country}"
 
         content = f"Weather in {place}:\n"
         for i in range(0, 7):
-            content = content + "{}:       {} - {}˚C       {}\n".format(
-                chat.underline(chat.bold(by_hour.data[i].time.strftime("%d.%m"))),
+            content = content + "__**{}**__:       {} - {}˚C       {}\n".format(
+                by_hour.data[i].time.strftime("%d.%m"),
                 by_hour.data[i].temperatureMin or "\N{White Question Mark Ornament}",
                 by_hour.data[i].temperatureMax or "\N{White Question Mark Ornament}",
                 WEATHER_STATES.get(by_hour.data[i].icon) or "\N{Black Sun with Rays}",
