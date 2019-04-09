@@ -2,9 +2,9 @@
   "author": [
     "Fixator10"
   ],
-  "install_msg": "Thanks for install.",
+  "install_msg": "Thanks for install.\n`[p]godville` shows info about russian version of game (godville.net)\n`[p]godvillegame` shows info about \"global\" version of game (godvillegame.com)",
   "short": "Get data about Godville profiles",
-  "description": "Get data about Godville profiles",
+  "description": "Get data about godville.net (russian) and godvillegame.com profiles",
   "tags": [
     "godville",
     "ZPG"

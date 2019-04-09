@@ -49,7 +49,7 @@ class GodvilleData(commands.Cog):
     @commands.group(invoke_without_command=True)
     @commands.cooldown(30, 10 * 60, commands.BucketType.user)
     async def godville(self, ctx, *, godname: str):
-        """Get data about godville's god by name"""
+        """Get data about godville.net (Russian) god by name"""
         async with self.session.get(
             "{}/{}/{}".format(
                 BASE_API,
@@ -182,7 +182,7 @@ class GodvilleData(commands.Cog):
     @commands.group(invoke_without_command=True)
     @commands.cooldown(30, 10 * 60, commands.BucketType.user)
     async def godvillegame(self, ctx, *, godname: str):
-        """Get data about godville's god by name"""
+        """Get data about godvillegame.com (Global) god by name"""
         async with self.session.get(
             "{}/{}".format(BASE_API_GLOBAL, godname.casefold())
         ) as sg:
