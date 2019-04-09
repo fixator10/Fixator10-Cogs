@@ -60,6 +60,7 @@ class AdminUtils(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
+    @commands.cooldown(1, 60, commands.BucketType.guild)
     @checks.admin_or_permissions(manage_nicknames=True)
     @checks.bot_has_permissions(manage_nicknames=True)
     async def massnick(self, ctx, nickname: str):
@@ -82,6 +83,7 @@ class AdminUtils(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
+    @commands.cooldown(1, 60, commands.BucketType.guild)
     @checks.admin_or_permissions(manage_nicknames=True)
     @checks.bot_has_permissions(manage_nicknames=True)
     async def resetnicks(self, ctx):
@@ -106,7 +108,14 @@ class AdminUtils(commands.Cog):
 
     @emoji.command(name="add")
     async def emoji_add(self, ctx, name: str, url: str, *roles: discord.Role):
-        """Create custom emoji"""
+        """Create custom emoji
+
+        Use double quotes if role name has spaces
+
+        Examples:
+            `[p]emoji add Example https://example.com/image.png`
+            `[p]emoji add RoleBased https://example.com/image.png EmojiRole "Test image"`
+        """
         try:
             async with self.session.get(url) as r:
                 data = await r.read()
@@ -140,7 +149,14 @@ class AdminUtils(commands.Cog):
         self, ctx, emoji: discord.Emoji, name: str, *roles: discord.Role
     ):
         """Rename emoji and restrict to certain roles
-        Only this roles will be able to use this emoji"""
+        Only this roles will be able to use this emoji
+
+        Use double quotes if role name has spaces
+
+        Examples:
+            `[p]emoji rename emoji NewEmojiName`
+            `[p]emoji rename emoji NewEmojiName Administrator "Allowed role"`
+        """
         await emoji.edit(
             name=name,
             roles=roles,
@@ -157,7 +173,7 @@ class AdminUtils(commands.Cog):
         await ctx.tick()
 
     @emoji.command(name="remove")
-    async def emoji_remove(self, ctx, emoji: discord.Emoji):
+    async def emoji_remove(self, ctx, *, emoji: discord.Emoji):
         """Remove emoji from server"""
         await emoji.delete(reason=get_audit_reason(ctx.author))
         await ctx.tick()
