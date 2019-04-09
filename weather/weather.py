@@ -65,7 +65,7 @@ class Weather(commands.Cog):
             return
         by_hour = forecast.currently()
         place = ""
-        if g.place:
+        if g.city:
             place += f"{g.city}"
         if g.state:
             place += f", {g.state}"
@@ -118,7 +118,7 @@ class Weather(commands.Cog):
             return
         by_hour = forecast.daily()
         place = ""
-        if g.place:
+        if g.city:
             place += f"{g.city}"
         if g.state:
             place += f", {g.state}"
