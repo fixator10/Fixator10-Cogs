@@ -64,7 +64,9 @@ class Weather(commands.Cog):
             await ctx.send(chat.error("Unable to get data from forecast.io"))
             return
         by_hour = forecast.currently()
-        place = f"{g.city}"
+        place = ""
+        if g.place:
+            place += f"{g.city}"
         if g.state:
             place += f", {g.state}"
         if g.country:
@@ -115,7 +117,9 @@ class Weather(commands.Cog):
             await ctx.send(chat.error("Unable to get data from forecast.io"))
             return
         by_hour = forecast.daily()
-        place = f"{g.city}"
+        place = ""
+        if g.place:
+            place += f"{g.city}"
         if g.state:
             place += f", {g.state}"
         if g.country:
