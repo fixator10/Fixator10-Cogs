@@ -64,13 +64,8 @@ class Weather(commands.Cog):
             await ctx.send(chat.error("Unable to get data from forecast.io"))
             return
         by_hour = forecast.currently()
-        place = ""
-        if g.city:
-            place += f"{g.city}"
-        if g.state:
-            place += f", {g.state}"
-        if g.country:
-            place += f", {g.country}"
+        place = [place for place in [g.city, g.state, g.country] if place]
+        place = ", ".join(place)
 
         content = (
             "Weather in {}:\n"
@@ -117,13 +112,8 @@ class Weather(commands.Cog):
             await ctx.send(chat.error("Unable to get data from forecast.io"))
             return
         by_hour = forecast.daily()
-        place = ""
-        if g.city:
-            place += f"{g.city}"
-        if g.state:
-            place += f", {g.state}"
-        if g.country:
-            place += f", {g.country}"
+        place = [place for place in [g.city, g.state, g.country] if place]
+        place = ", ".join(place)
 
         content = f"Weather in {place}:\n"
         for i in range(0, 7):
