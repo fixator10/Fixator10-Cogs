@@ -11,6 +11,6 @@
     "translate"
   ],
   "requirements": [
-    "yandex-translate"
+    "yandex.translate"
   ]
 }
