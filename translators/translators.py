@@ -1,5 +1,4 @@
 import base64
-import functools
 import io
 import itertools
 import random
@@ -11,7 +10,8 @@ import discord
 from redbot.core import checks
 from redbot.core import commands
 from redbot.core.utils import chat_formatting as chat
-from yandex_translate import YandexTranslate, YandexTranslateException
+
+from . import yandextranslate
 
 
 class Translators(commands.Cog):
@@ -38,108 +38,62 @@ class Translators(commands.Cog):
         await ctx.maybe_send_embed(message)
 
     @commands.command()
+    @commands.bot_has_permissions(embed_links=True)
     async def ytranslate(self, ctx, language: str, *, text: str):
         """Translate text via yandex
 
         Language may be just "ru" (target language to translate)
         or "en-ru" (original text's language - target language)"""
-        # TODO: Remake this via aiohttp
         text = chat.escape(text, formatting=True)
         apikeys = await self.bot.db.api_tokens.get_raw(
             "yandex", default={"translate": None}
         )
         try:
-            translate = YandexTranslate(apikeys["translate"])
-            response = await self.bot.loop.run_in_executor(
-                None, translate.translate, text, language
+            translator = yandextranslate.YTranslateAPI(
+                self.session, apikeys["translate"]
             )
-        except YandexTranslateException as e:
-            if str(e) == "ERR_LANG_NOT_SUPPORTED":
-                await ctx.send(
-                    chat.error(
-                        "An error has been occurred: Language {} is not supported".format(
-                            chat.inline(language)
-                        )
-                    )
-                )
-            elif str(e) == "ERR_TEXT_TOO_LONG":
-                # Discord will return BAD REQUEST (400) sooner than this happen, but whatever...
-                await ctx.send(
-                    chat.error(
-                        "An error has been occurred: Text that you provided is too big to "
-                        "translate"
-                    )
-                )
-            elif str(e) == "ERR_KEY_INVALID":
-                await ctx.send(
-                    chat.error(
-                        "This command requires Yandex.Translate API key\n"
-                        "You can set it via {}ytapikey".format(ctx.prefix)
-                    )
-                )
-            elif str(e) == "ERR_KEY_BLOCKED":
-                await ctx.send(
-                    chat.error(
-                        "API key is blocked. You need to get new api key or unlock current."
-                    )
-                )
-            elif str(e) == "ERR_DAILY_REQ_LIMIT_EXCEEDED":
-                await ctx.send(
-                    chat.error("Daily requests limit reached. Try again later.")
-                )
-            elif str(e) == "ERR_DAILY_CHAR_LIMIT_EXCEEDED":
-                await ctx.send(
-                    chat.error("Daily char limit is exceeded. Try again later.")
-                )
-            elif str(e) == "ERR_UNPROCESSABLE_TEXT":
-                await ctx.send(
-                    chat.error(
-                        "An error has been occurred: Text is unprocessable by translation server"
-                    )
-                )
-            elif str(e) == "ERR_SERVICE_NOT_AVAIBLE":
-                await ctx.send(
-                    chat.error(
-                        "An error has been occurred: Service Unavailable. Try again later"
-                    )
-                )
-            else:
-                await ctx.send(chat.error("An error has been occurred: {}".format(e)))
-            return
-        input_lang = None
-        output_lang = None
-        if len(language) == 2:
-            try:
-                input_lang = await self.bot.loop.run_in_executor(
-                    None, functools.partial(translate.detect, text=text)
-                )
-            except YandexTranslateException as e:
-                if str(e) == "ERR_LANG_NOT_SUPPORTED":
-                    await ctx.send(chat.error("This language is not supported"))
-                else:
-                    await ctx.send(
-                        chat.error("Unable to detect language: {}".format(e))
-                    )
-                return
-            output_lang = language
-        elif len(language) == 5:
-            input_lang = language[:2]
-            output_lang = language[3:]
-        if response["code"] == 200:
+            translation = await translator.get_translation(language, text)
+        except yandextranslate.Exceptions.IncorrectLang:
             await ctx.send(
-                "**[{}-{}] Translation:** {}".format(
-                    input_lang.upper(),
-                    output_lang.upper(),
-                    chat.box(response["text"][0]),
+                chat.error(
+                    "An error has been occurred: "
+                    f"Language {chat.inline(language)} is not supported or incorrect, "
+                    "check your formatting and try again"
                 )
             )
+        except yandextranslate.Exceptions.MaxTextLengthExceeded:
+            await ctx.send(
+                chat.error(
+                    "An error has been occurred: Text that you provided is too big to translate"
+                )
+            )
+        except yandextranslate.Exceptions.KeyBlocked:
+            await ctx.send(
+                chat.error(
+                    "API key is blocked. Bot owner needs to get new api key or unlock current."
+                )
+            )
+        except yandextranslate.Exceptions.DailyLimitExceeded:
+            await ctx.send(chat.error("Daily requests limit reached. Try again later."))
+        except yandextranslate.Exceptions.UnableToTranslate:
+            await ctx.send(
+                chat.error(
+                    "An error has been occurred: Yandex.Translate is unable to translate your text"
+                )
+            )
+        except yandextranslate.Exceptions.UnknownException as e:
+            await ctx.send(chat.error(f"An error has been occured: {e}"))
         else:
-            # According to yandex.translate source code this cannot happen too, but whatever...
-            await ctx.send(
-                "An error has been occurred. Translation server returned code {}".format(
-                    chat.inline(response["code"])
-                )
+            embed = discord.Embed(
+                description=f"**[{translation.lang.upper()}]**{chat.box(translation.text)}",
+                color=await ctx.embed_color(),
             )
+            embed.set_author(
+                name="Translated via Yandex.Translate",
+                url="https://translate.yandex.com",
+                icon_url="https://translate.yandex.ru/icons/favicon.png",
+            )
+            await ctx.send(embed=embed)
 
     @commands.command()
     async def googlesay(self, ctx, lang: str, *, text: str):
