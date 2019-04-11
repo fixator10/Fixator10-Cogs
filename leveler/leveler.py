@@ -106,11 +106,6 @@ class Leveler(commands.Cog):
     def __unload(self):
         self.session.detach()
 
-    # noinspection PyAttributeOutsideInit
-    async def initialize(self):
-        """Should be called straight after cog instantiation."""
-        self.owner = await self.bot.db.owner()
-
     @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.command(name="profile")
     @commands.guild_only()
@@ -1646,7 +1641,7 @@ class Leveler(commands.Cog):
         required_members = 35
         members = len([member for member in server.members if not member.bot])
 
-        if user.id == self.owner:
+        if await self.bot.is_owner(user):
             pass
         elif members < required_members:
             await ctx.send(
@@ -1656,7 +1651,7 @@ class Leveler(commands.Cog):
             )
             return
 
-        if "-global" in description and user.id == self.owner:
+        if "-global" in description and await self.bot.is_owner(user):
             description = description.replace("-global", "")
             serverid = "global"
             servername = "global"
@@ -1769,7 +1764,7 @@ class Leveler(commands.Cog):
 
         # return
 
-        if "-global" in name and user.id == self.owner:
+        if "-global" in name and await self.bot.is_owner(user):
             name = name.replace(" -global", "")
             serverid = "global"
         else:
