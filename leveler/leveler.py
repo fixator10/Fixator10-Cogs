@@ -38,8 +38,6 @@ import time
 
 from redbot.core import Config
 
-# log = logging.getLogger("red.leveler")
-
 try:
     client = MongoClient()
     db = client["leveler"]
@@ -273,7 +271,6 @@ class Leveler(commands.Cog):
         else:
             return user.name
 
-    # @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.command()
     @commands.guild_only()
     async def top(self, ctx, *options):
@@ -334,7 +331,6 @@ class Leveler(commands.Cog):
                     user_stat = userinfo["rep"]
 
             board_type = "Rep"
-            # print(await self._find_server_rep_rank(user, server))
             footer_text = "Your Rank: {}         {}: {}".format(
                 await self._find_server_rep_rank(user, server), board_type, user_stat
             )
@@ -922,7 +918,7 @@ class Leveler(commands.Cog):
         return tuple(colors)
 
     # dampens the color given a parameter
-    def _moderate_color(self, rgb, a, moderate_num):
+    def _moderate_color(self, rgb, moderate_num):
         new_colors = []
         for color in rgb[:3]:
             if color > 128:
@@ -1095,7 +1091,6 @@ class Leveler(commands.Cog):
     @lvladmin.group()
     async def overview(self, ctx):
         """A list of settings"""
-        user = ctx.author
 
         disabled_servers = []
         private_levels = []
@@ -1193,7 +1188,6 @@ class Leveler(commands.Cog):
         channel = ctx.channel
         server = ctx.guild
 
-        # if channel.id == self.settings["lvl_msg_lock"][server.id]:
         if channel.id == await self.config.guild(server).lvl_msg_lock():
             await self.config.guild(server).lvl_msg_lock.set(None)
             await ctx.send("**Level-up message lock disabled.**".format(channel.name))
@@ -1320,7 +1314,7 @@ class Leveler(commands.Cog):
                 image = await r.content.read()
             with open(f"{cog_data_path(self)}/test.png", "wb") as f:
                 f.write(image)
-            image = Image.open(f"{cog_data_path(self)}/test.png").convert("RGBA")
+            Image.open(f"{cog_data_path(self)}/test.png").convert("RGBA")
             os.remove(f"{cog_data_path(self)}/test.png")
             return True
         except:
@@ -1362,7 +1356,6 @@ class Leveler(commands.Cog):
     async def lvlalert(self, ctx):
         """Toggle level-up messages on the server."""
         server = ctx.guild
-        user = ctx.author
 
         if await self.config.guild(server).lvl_msg():
             await self.config.guild(server).lvl_msg.set(False)
@@ -1398,7 +1391,6 @@ class Leveler(commands.Cog):
     async def available(self, ctx):
         """Get a list of available badges for server or 'global'."""
         # TODO
-        user = ctx.author
         server = ctx.guild
 
         # get server stuff
@@ -2090,7 +2082,6 @@ class Leveler(commands.Cog):
     async def listrole(self, ctx):
         """List level/role associations."""
         server = ctx.guild
-        user = ctx.author
 
         server_roles = db.roles.find_one({"server_id": str(server.id)})
 
@@ -2344,7 +2335,6 @@ class Leveler(commands.Cog):
 
         # COLORS
         white_color = (240, 240, 240, 255)
-        light_color = (160, 160, 160, 255)
         if "rep_color" not in userinfo.keys() or not userinfo["rep_color"]:
             rep_fill = (92, 130, 203, 230)
         else:
@@ -2409,13 +2399,6 @@ class Leveler(commands.Cog):
         # draw filter
         draw.rectangle([(0, 0), (340, 340)], fill=(0, 0, 0, 10))
 
-        # draw transparent overlay
-        vert_pos = 305
-        left_pos = 0
-        right_pos = 340
-        title_height = 30
-        gap = 3
-
         draw.rectangle([(0, 134), (340, 325)], fill=info_fill_tx)  # general content
         # draw profile circle
         multiplier = 8
@@ -2452,7 +2435,6 @@ class Leveler(commands.Cog):
         output = ImageOps.fit(
             profile_image, (raw_length, raw_length), centering=(0.5, 0.5)
         )
-        output = output.resize((profile_size, profile_size), Image.ANTIALIAS)
         mask = mask.resize((profile_size, profile_size), Image.ANTIALIAS)
         profile_image = profile_image.resize(
             (profile_size, profile_size), Image.ANTIALIAS
@@ -2501,7 +2483,6 @@ class Leveler(commands.Cog):
             fill=info_text_color,
         )  # Exp Text
 
-        lvl_left = 100
         label_align = 362  # vertical
         draw.text(
             (await self._center(0, 140, "    RANK", label_fnt), label_align),
@@ -2524,10 +2505,8 @@ class Leveler(commands.Cog):
 
         if "linux" in platform.system().lower():
             global_symbol = "\U0001F30E "
-            fine_adjust = 1
         else:
             global_symbol = "G."
-            fine_adjust = 0
 
         await _write_unicode(
             global_symbol, 36, label_align + 5, label_fnt, symbol_u_fnt, info_text_color
@@ -2616,7 +2595,6 @@ class Leveler(commands.Cog):
             vert_pos = 172
             right_shift = 0
             left = 9 + right_shift
-            right = 52 + right_shift
             size = 38
             total_gap = 4  # /2
             hor_gap = 6
@@ -2841,7 +2819,6 @@ class Leveler(commands.Cog):
         # fonts
         font_thin_file = f"{bundled_data_path(self)}/Uni_Sans_Thin.ttf"
         font_heavy_file = f"{bundled_data_path(self)}/Uni_Sans_Heavy.ttf"
-        font_file = f"{bundled_data_path(self)}/SourceSansPro-Regular.ttf"
         font_bold_file = f"{bundled_data_path(self)}/SourceSansPro-Semibold.ttf"
 
         name_fnt = ImageFont.truetype(font_heavy_file, 24)
@@ -2849,7 +2826,6 @@ class Leveler(commands.Cog):
         label_fnt = ImageFont.truetype(font_bold_file, 16)
         exp_fnt = ImageFont.truetype(font_bold_file, 9)
         large_fnt = ImageFont.truetype(font_thin_file, 24)
-        large_bold_fnt = ImageFont.truetype(font_bold_file, 24)
         symbol_u_fnt = ImageFont.truetype(self.font_unicode_file, 15)
 
         async def _write_unicode(text, init_x, y, font, unicode_font, fill):
@@ -2871,11 +2847,6 @@ class Leveler(commands.Cog):
         # get urls
         bg_url = userinfo["rank_background"]
         profile_url = user.avatar_url
-        server_icon_url = server.icon_url
-
-        # create image objects
-        bg_image = Image
-        profile_image = Image
 
         async with self.session.get(bg_url) as r:
             image = await r.content.read()
@@ -2904,9 +2875,6 @@ class Leveler(commands.Cog):
         profile_image = Image.open(
             f"{cog_data_path(self)}/{user.id}_temp_rank_profile.png"
         ).convert("RGBA")
-        server_image = Image.open(
-            f"{cog_data_path(self)}/{user.id}_temp_server_icon.png"
-        ).convert("RGBA")
 
         # set canvas
         width = 390
@@ -2920,7 +2888,6 @@ class Leveler(commands.Cog):
         # info section
         info_section = Image.new("RGBA", (bg_width, height), bg_color)
         info_section_process = Image.new("RGBA", (bg_width, height), bg_color)
-        draw_info = ImageDraw.Draw(info_section)
         # puts in background
         bg_image = bg_image.resize((width, height), Image.ANTIALIAS)
         bg_image = bg_image.crop((0, 0, width, height))
@@ -2981,14 +2948,6 @@ class Leveler(commands.Cog):
         draw_lvl_circle.ellipse(
             [0, 0, raw_length, raw_length], fill=(250, 250, 250, 250)
         )
-        # determines exp bar color
-        # """
-        # if "rank_exp_color" not in userinfo.keys() or not userinfo["rank_exp_color"]:
-        #     exp_fill = (255, 255, 255, 230)
-        # else:
-        #     exp_fill = tuple(userinfo["rank_exp_color"])"""
-        exp_fill = (255, 255, 255, 230)
-
         # put on profile circle background
         lvl_circle = lvl_circle.resize(
             (lvl_circle_dia, lvl_circle_dia), Image.ANTIALIAS
@@ -3005,7 +2964,7 @@ class Leveler(commands.Cog):
         output = ImageOps.fit(
             profile_image, (raw_length, raw_length), centering=(0.5, 0.5)
         )
-        output = output.resize((profile_size, profile_size), Image.ANTIALIAS)
+        output.resize((profile_size, profile_size), Image.ANTIALIAS)
         mask = mask.resize((profile_size, profile_size), Image.ANTIALIAS)
         profile_image = profile_image.resize(
             (profile_size, profile_size), Image.ANTIALIAS
@@ -3017,8 +2976,6 @@ class Leveler(commands.Cog):
         white_color = (220, 220, 220, 255)
 
         # name
-        left_text_align = 130
-        name_color = 0
         await _write_unicode(
             self._truncate_text(self._name(user, 20), 20),
             100,
@@ -3049,7 +3006,6 @@ class Leveler(commands.Cog):
             font=label_fnt,
             fill=info_text_color,
         )  # Rank
-        local_symbol = "\U0001F3E0 "
         if "linux" in platform.system().lower():
             local_symbol = "\U0001F3E0 "
         else:
@@ -3131,10 +3087,6 @@ class Leveler(commands.Cog):
         # get urls
         bg_url = userinfo["levelup_background"]
         profile_url = user.avatar_url
-
-        # create image objects
-        bg_image = Image
-        profile_image = Image
 
         async with self.session.get(bg_url) as r:
             image = await r.content.read()
@@ -3223,7 +3175,7 @@ class Leveler(commands.Cog):
         output = ImageOps.fit(
             profile_image, (raw_length, raw_length), centering=(0.5, 0.5)
         )
-        output = output.resize((profile_size, profile_size), Image.ANTIALIAS)
+        output.resize((profile_size, profile_size), Image.ANTIALIAS)
         mask = mask.resize((profile_size, profile_size), Image.ANTIALIAS)
         profile_image = profile_image.resize(
             (profile_size, profile_size), Image.ANTIALIAS
@@ -3248,10 +3200,7 @@ class Leveler(commands.Cog):
         result.save(filename, "PNG", quality=100)
 
     async def _handle_on_message(self, message):
-        # log.debug("leveler_test_original")
-        # try:
         text = message.content
-        channel = message.channel
         server = message.guild
         user = message.author
         prefix = await self.bot.command_prefix(self.bot, message)
@@ -3456,7 +3405,6 @@ class Leveler(commands.Cog):
         targetid = str(user.id)
         users = []
         for userinfo in db.users.find({}):
-            userid = userinfo["user_id"]
             if "servers" in userinfo and server.id in userinfo["servers"]:
                 users.append((userinfo["user_id"], userinfo["rep"]))
 
@@ -3565,7 +3513,7 @@ class Leveler(commands.Cog):
                     },
                     upsert=True,
                 )
-        except AttributeError as e:
+        except AttributeError:
             pass
 
     def _truncate_text(self, text, max_length):
