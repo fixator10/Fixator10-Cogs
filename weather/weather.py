@@ -39,6 +39,7 @@ class Weather(commands.Cog):
         await ctx.maybe_send_embed(message)
 
     @commands.command()
+    @commands.guild_only()
     async def weather(self, ctx, *, place: str):
         """Shows weather in provided place"""
         apikeys = await self.bot.db.api_tokens.get_raw(
@@ -87,6 +88,7 @@ class Weather(commands.Cog):
             await ctx.send(content)
 
     @commands.command()
+    @commands.guild_only()
     async def forecast(self, ctx, *, place: str):
         """Shows 7 days forecast for provided place"""
         apikeys = await self.bot.db.api_tokens.get_raw(
