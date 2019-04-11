@@ -1295,11 +1295,11 @@ class Leveler(commands.Cog):
     @commands.guild_only()
     async def mention(self, ctx):
         """Toggle mentions on messages."""
-        if await self.config.mentions():
-            await self.config.metnions.set(False)
+        if await self.config.mention():
+            await self.config.mention.set(False)
             await ctx.send("**Mentions disabled.**")
         else:
-            await self.config.metnions.set(True)
+            await self.config.mention.set(True)
             await ctx.send("**Mentions enabled.**")
 
     async def _valid_image_url(self, url):
