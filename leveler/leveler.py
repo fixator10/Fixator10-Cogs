@@ -6,7 +6,6 @@ import random
 import re
 import textwrap
 from asyncio import TimeoutError
-from pathlib import Path
 
 import aiohttp
 import discord
@@ -17,7 +16,6 @@ from redbot.core import checks
 from redbot.core import commands
 from redbot.core.data_manager import bundled_data_path, cog_data_path
 from redbot.core.utils.chat_formatting import pagify
-from redbot.core.utils.data_converter import DataConverter as dc
 from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
 from redbot.core.utils.predicates import MessagePredicate
 
@@ -1092,48 +1090,6 @@ class Leveler(commands.Cog):
     async def lvladmin(self, ctx):
         """Admin Toggle Features"""
         pass
-
-    @lvladmin.command()
-    @checks.is_owner()
-    async def convertv2(self, ctx, path):
-        """Convert data from V2 cog"""
-        base_path = Path(path)
-        fp_settings = base_path / "data" / "leveler" / "settings.json"
-        fp_backgrounds = base_path / "data" / "leveler" / "backgrounds.json"
-        if any([not fp_settings.is_file(), not fp_backgrounds.is_file()]):
-            ctx.send("Config is not found, check your path and try again")
-            return
-        converter = dc(self.config)
-
-        def conversion_spec_bgs(v2data: dict):
-            yield {(Config.GLOBAL,): {("backgrounds",): v2data}}
-
-        def conversion_spec_settings(v2data: dict):
-            yield {
-                (Config.GLOBAL,): {
-                    ("bg_price",): v2data["bg_price"],
-                    ("badge_type",): v2data["badge_type"],
-                    ("mention",): v2data["mention"],
-                }
-            }
-            for guild in v2data["disabled_servers"]:
-                yield {(Config.GUILD, guild): {("disabled",): True}}
-            for guild in v2data["msg_credits"]:
-                yield {
-                    (Config.GUILD, guild): {
-                        ("msg_credits",): v2data["msg_credits"][guild]
-                    }
-                }
-            for guild in v2data["private_lvl_msg"]:
-                yield {(Config.GUILD, guild): {("private_lvl_message",): True}}
-            for guild in v2data["lvl_msg"]:
-                yield {(Config.GUILD, guild): {("lvl_msg",): True}}
-            for guild in v2data["text_only"]:
-                yield {(Config.GUILD, guild): {("text_only",): True}}
-
-        await converter.convert(fp_backgrounds, conversion_spec_bgs)
-        await converter.convert(fp_settings, conversion_spec_settings)
-        await ctx.tick()
 
     @checks.admin_or_permissions(manage_guild=True)
     @lvladmin.group()

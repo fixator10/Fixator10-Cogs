@@ -1,11 +1,7 @@
-from pathlib import Path
-
 import aiohttp
-from redbot.core import checks
 from redbot.core import commands
 from redbot.core.config import Config
 from redbot.core.utils import chat_formatting as chat
-from redbot.core.utils.data_converter import DataConverter as dc
 
 from .godvilleuser import GodvilleUser
 
@@ -315,31 +311,6 @@ class GodvilleData(commands.Cog):
         Only one character per user"""
         await self.config.user(ctx.author).godville.apikey.set(apikey)
         await self.config.user(ctx.author).godville.godname.set(godname.casefold())
-        await ctx.tick()
-
-    @apikey.command()
-    @checks.is_owner()
-    async def convertv2(self, ctx, path):
-        """Convert data from V2 cog"""
-        base_path = Path(path)
-        fp = base_path / "data" / "godville" / "config.json"
-        if not fp.is_file():
-            ctx.send(chat.error("Config is not found, check your path and try again"))
-            return
-        converter = dc(self.config)
-
-        def conversion_spec(v2data: dict):
-            for member in v2data.keys():
-                yield {
-                    (Config.USER, member): {
-                        ("godville",): {
-                            "apikey": v2data[member].get("apikey"),
-                            "godname": v2data[member].get("godname"),
-                        }
-                    }
-                }
-
-        await converter.convert(fp, conversion_spec)
         await ctx.tick()
 
     @apikey.command()

@@ -1,11 +1,8 @@
-from pathlib import Path
-
 import discord
 from redbot.core import checks
 from redbot.core import commands
 from redbot.core.config import Config
 from redbot.core.utils import chat_formatting as chat
-from redbot.core.utils.data_converter import DataConverter as dc
 from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
 from redbot.core.utils.mod import get_audit_reason
 from tabulate import tabulate
@@ -78,34 +75,6 @@ class PersonalRoles(commands.Cog):
         )
         pages = [chat.box(page) for page in pages]
         await menu(ctx, pages, DEFAULT_CONTROLS)
-
-    @myrole.command()
-    @checks.is_owner()
-    async def convertv2(self, ctx, path):
-        """Convert data from V2 cog"""
-        base_path = Path(path)
-        fp = base_path / "data" / "personalroles" / "config.json"
-        if not fp.is_file():
-            ctx.send(chat.error("Config is not found, check your path and try again"))
-            return
-        converter = dc(self.config)
-
-        def conversion_spec(v2data: dict):
-            for server in v2data.keys():
-                yield {
-                    (Config.GUILD, server): {
-                        ("blacklist",): v2data[server]["blacklist"]
-                    }
-                }
-                for user in v2data[server]["users"]:
-                    yield {
-                        (Config.MEMBER, server, user): {
-                            ("role",): int(v2data[server]["users"][user])
-                        }
-                    }
-
-        await converter.convert(fp, conversion_spec)
-        await ctx.tick()
 
     @myrole.group()
     @commands.guild_only()
