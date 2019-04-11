@@ -6,6 +6,8 @@
 # Fixator10-Cogs
 Cogs from [my edition of DiNitride's selfbot](https://github.com/fixator10/Discord-Self-Bot) and moar
 
+Some of cogs requires `V3/develop` branch of Red for now (mostly cogs thats requires API-keys setup)
+
 # Installation
 `[p]repo add Fixator10-Cogs https://github.com/fixator10/Fixator10-Cogs V3`
 
