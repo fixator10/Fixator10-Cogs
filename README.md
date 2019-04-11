@@ -4,7 +4,7 @@
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=for-the-badge)](https://github.com/ambv/black)
 
 # Fixator10-Cogs
-Cogs from my edition of DiNitride's selfbot and moar
+Cogs from [my edition of DiNitride's selfbot](https://github.com/fixator10/Discord-Self-Bot) and moar
 
 # Installation
 `[p]repo add Fixator10-Cogs https://github.com/fixator10/Fixator10-Cogs V3`
