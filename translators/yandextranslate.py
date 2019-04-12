@@ -55,12 +55,11 @@ class YTranslateAPI:
             message = response.get("message")
             if code == 401:
                 raise Exceptions.InvalidKey(message)
-            elif code == 402:
+            if code == 402:
                 raise Exceptions.KeyBlocked(message)
-            elif code == 404:
+            if code == 404:
                 raise Exceptions.DailyLimitExceeded(message)
-            else:
-                raise Exceptions.UnknownException(message)
+            raise Exceptions.UnknownException(message)
         return response.get("lang", "")
 
     async def get_translation(self, lang: str, text: str):
@@ -73,17 +72,16 @@ class YTranslateAPI:
             message = response.get("message")
             if code == 401:
                 raise Exceptions.InvalidKey(message)
-            elif code == 402:
+            if code == 402:
                 raise Exceptions.KeyBlocked(message)
-            elif code == 404:
+            if code == 404:
                 raise Exceptions.DailyLimitExceeded(message)
-            elif code == 413:
+            if code == 413:
                 raise Exceptions.MaxTextLengthExceeded(message)
-            elif code == 422:
+            if code == 422:
                 raise Exceptions.UnableToTranslate(message)
-            elif code == 501:
+            if code == 501:
                 raise Exceptions.IncorrectLang(message)
-            else:
-                raise Exceptions.UnknownException(message)
+            raise Exceptions.UnknownException(message)
         Translation = namedtuple("Translation", ["lang", "text"])
         return Translation(response.get("lang", "??-??"), response.get("text", [""])[0])

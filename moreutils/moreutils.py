@@ -129,9 +129,7 @@ class MoreUtils(commands.Cog):
         except Exception as e:
             await ctx.send(
                 chat.error(
-                    "Unable to get data from https://status.discordapp.com: {}".format(
-                        e
-                    )
+                    f"Unable to get data from https://status.discordapp.com: {e}"
                 )
             )
             return

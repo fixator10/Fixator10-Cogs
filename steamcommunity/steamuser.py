@@ -101,9 +101,7 @@ class SteamUser:
                     self.gameid, self.steamid64
                 )["response"].get("lender_steamid", 0)
             except ValueError:
-                return (
-                    None
-                )  # TODO: Find a better way do detect mods and other shit like that
+                return None
             if int(sharedbyid) != 0:
                 return SteamUser(self._steam, sharedbyid)
         return None
@@ -112,6 +110,6 @@ class SteamUser:
     def personastatecolor(self):
         if self.gameextrainfo:
             return 0x90BA3C
-        elif self._personastate > 0:
+        if self._personastate > 0:
             return 0x57CBDE
         return 0x898989

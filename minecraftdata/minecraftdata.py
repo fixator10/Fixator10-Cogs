@@ -238,11 +238,11 @@ class MinecraftData(commands.Cog):
                 r"\xA7[0-9A-FK-OR]", "", status.description, flags=re.IGNORECASE
             )
         icon = (
-            status.favicon
-            and discord.File(
+            discord.File(
                 b64decode(status.favicon.split(",", 1)[1]), filename="icon.png"
             )
-            or None
+            if status.favicon
+            else None
         )
         embed = discord.Embed(
             title=server_ip, description=motd, color=await ctx.embed_color()

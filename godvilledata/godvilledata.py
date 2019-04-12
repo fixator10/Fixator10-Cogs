@@ -60,7 +60,7 @@ class GodvilleData(commands.Cog):
                     )
                 )
                 return
-            elif sg.status != 200:
+            if sg.status != 200:
                 await ctx.send(
                     chat.error(
                         "Something went wrong. Server returned {}.".format(sg.status)
@@ -189,7 +189,7 @@ class GodvilleData(commands.Cog):
                     )
                 )
                 return
-            elif sg.status != 200:
+            if sg.status != 200:
                 await ctx.send(
                     chat.error(
                         "Something went wrong. Server returned {}.".format(sg.status)

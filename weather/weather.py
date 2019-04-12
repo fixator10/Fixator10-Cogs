@@ -6,7 +6,7 @@ import geocoder
 from redbot.core import checks
 from redbot.core import commands
 from redbot.core.utils import chat_formatting as chat
-from requests.exceptions import HTTPError, ConnectionError, Timeout
+from requests.exceptions import HTTPError, Timeout
 
 WEATHER_STATES = {
     "clear-day": "\N{Black Sun with Rays}",

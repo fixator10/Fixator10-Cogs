@@ -1,5 +1,3 @@
-from asyncio import TimeoutError
-
 import aiohttp
 import discord
 from redbot.core import checks
