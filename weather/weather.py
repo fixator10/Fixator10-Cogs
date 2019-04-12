@@ -1,4 +1,5 @@
 import datetime
+from functools import partial
 
 import discord
 import forecastio
@@ -6,7 +7,11 @@ import geocoder
 from redbot.core import checks
 from redbot.core import commands
 from redbot.core.utils import chat_formatting as chat
-from requests.exceptions import HTTPError, Timeout
+from requests.exceptions import (
+    HTTPError,
+    ConnectionError as RequestsConnectionError,
+    Timeout,
+)
 
 WEATHER_STATES = {
     "clear-day": "\N{Black Sun with Rays}",
@@ -45,13 +50,20 @@ class Weather(commands.Cog):
         apikeys = await self.bot.db.api_tokens.get_raw(
             "forecastio", default={"secret": None}
         )
-        g = geocoder.komoot(place)
+        g = await self.bot.loop.run_in_executor(None, geocoder.komoot, place)
         if not g.latlng:
             await ctx.send(chat.error(f"Cannot find a place {chat.inline(place)}"))
             return
         try:
-            forecast = forecastio.load_forecast(
-                apikeys["secret"], g.latlng[0], g.latlng[1], units="si"
+            forecast = await self.bot.loop.run_in_executor(
+                None,
+                partial(
+                    forecastio.load_forecast,
+                    apikeys["secret"],
+                    g.latlng[0],
+                    g.latlng[1],
+                    units="si",
+                ),
             )
         except HTTPError:
             await ctx.send(
@@ -61,7 +73,7 @@ class Weather(commands.Cog):
                 )
             )
             return
-        except (ConnectionError, Timeout):
+        except (RequestsConnectionError, Timeout):
             await ctx.send(chat.error("Unable to get data from forecast.io"))
             return
         by_hour = forecast.currently()
@@ -94,13 +106,20 @@ class Weather(commands.Cog):
         apikeys = await self.bot.db.api_tokens.get_raw(
             "forecastio", default={"secret": None}
         )
-        g = geocoder.komoot(place)
+        g = await self.bot.loop.run_in_executor(None, geocoder.komoot, place)
         if not g.latlng:
             await ctx.send(f"Cannot find a place {chat.inline(place)}")
             return
         try:
-            forecast = forecastio.load_forecast(
-                apikeys["secret"], g.latlng[0], g.latlng[1], units="si"
+            forecast = await self.bot.loop.run_in_executor(
+                None,
+                partial(
+                    forecastio.load_forecast,
+                    apikeys["secret"],
+                    g.latlng[0],
+                    g.latlng[1],
+                    units="si",
+                ),
             )
         except HTTPError:
             await ctx.send(
@@ -110,7 +129,7 @@ class Weather(commands.Cog):
                 )
             )
             return
-        except (ConnectionError, Timeout):
+        except (RequestsConnectionError, Timeout):
             await ctx.send(chat.error("Unable to get data from forecast.io"))
             return
         by_hour = forecast.daily()
