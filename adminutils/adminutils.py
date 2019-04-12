@@ -1,3 +1,5 @@
+from asyncio import TimeoutError as AsyncTimeoutError
+
 import aiohttp
 import discord
 from redbot.core import checks
@@ -41,7 +43,7 @@ class AdminUtils(commands.Cog):
         pred = MessagePredicate.yes_or_no(ctx)
         try:
             await self.bot.wait_for("message", check=pred, timeout=30)
-        except TimeoutError:
+        except AsyncTimeoutError:
             pass
         if pred.result:
             cleanup = await ctx.guild.prune_members(
