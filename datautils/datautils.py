@@ -288,13 +288,12 @@ class DataUtils(commands.Cog):
         ctx,
         *,
         channel: Union[
-            discord.TextChannel, discord.VoiceChannel, discord.CategoryChannel, str
-        ]
+            discord.TextChannel, discord.VoiceChannel, discord.CategoryChannel, None
+        ] = None
     ):
         """Get info about channel"""
-        if isinstance(channel, str):
-            await ctx.send_help()
-            return
+        if channel is None:
+            channel = ctx.channel
         changed_roles = sorted(
             channel.changed_roles, key=lambda r: r.position, reverse=True
         )
@@ -510,12 +509,9 @@ class DataUtils(commands.Cog):
     @commands.guild_only()
     @checks.bot_has_permissions(embed_links=True)
     async def einfo(
-        self, ctx, *, emoji: Union[discord.Emoji, discord.PartialEmoji, str]
+            self, ctx, *, emoji: Union[discord.Emoji, discord.PartialEmoji, None]
     ):
         """Get info about emoji"""
-        if isinstance(emoji, str):
-            await ctx.send_help()
-            return
         em = discord.Embed(
             title=chat.escape(emoji.name, formatting=True),
             color=await ctx.embed_color(),
