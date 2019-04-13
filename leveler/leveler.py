@@ -1378,55 +1378,53 @@ class Leveler(commands.Cog):
 
     @badge.command(name="available")
     @commands.guild_only()
-    async def available(self, ctx):
-        """Get a list of available badges for server or 'global'."""
-        # TODO
+    async def available(self, ctx, badge_type: str = "server"):
+        """Get a list of available badges for 'server' or 'global'.
+
+        Defaults for server"""
         server = ctx.guild
-
-        # get server stuff
-        ids = [
-            ("global", "Global", self.bot.user.avatar_url),
-            (server.id, server.name, server.icon_url),
-        ]
-
-        title_text = "**Available Badges**"
-        index = 0
-        for serverid, servername, icon_url in ids:
-            em = discord.Embed(colour=await ctx.embed_color())
-            em.set_author(name="{}".format(servername), icon_url=icon_url)
-            msg = ""
-            server_badge_info = db.badges.find_one({"server_id": str(serverid)})
-            if server_badge_info:
-                server_badges = server_badge_info["badges"]
-                for badgename in server_badges:
-                    badgeinfo = server_badges[badgename]
-                    if badgeinfo["price"] == -1:
-                        price = "Non-purchasable"
-                    elif badgeinfo["price"] == 0:
-                        price = "Free"
-                    else:
-                        price = badgeinfo["price"]
-
-                    msg += "**• {}** ({}) - {}\n".format(
-                        badgename, price, badgeinfo["description"]
-                    )
-            else:
-                msg = "None"
-
-            em.description = msg
-
-            total_pages = len(list(pagify(msg)))
-
-            counter = 1
-            for page in pagify(msg, ["\n"]):
-                if index == 0:
-                    await ctx.send(title_text, embed=em)
+        if any([badge_type.casefold() == btype for btype in ["server", "guild"]]):
+            servername = server.name
+            icon_url = server.icon_url
+            serverid = server.id
+        elif badge_type.casefold() == "global":
+            servername = "Global"
+            icon_url = self.bot.user.avatar_url
+            serverid = "global"
+        else:
+            await ctx.send("**Invalid Badge Type. (profile, rank, levelup)**")
+            return
+        em = discord.Embed(title="Badges available", colour=await ctx.embed_color())
+        em.set_author(name="{}".format(servername), icon_url=icon_url)
+        msg = ""
+        server_badge_info = db.badges.find_one({"server_id": str(serverid)})
+        if server_badge_info:
+            server_badges = server_badge_info["badges"]
+            for badgename in server_badges:
+                badgeinfo = server_badges[badgename]
+                if badgeinfo["price"] == -1:
+                    price = "Non-purchasable"
+                elif badgeinfo["price"] == 0:
+                    price = "Free"
                 else:
-                    await ctx.send(embed=em)
-                index += 1
+                    price = badgeinfo["price"]
 
-                em.set_footer(text="Page {} of {}".format(counter, total_pages))
-                counter += 1
+                msg += "**• {}** ({}) - {}\n".format(
+                    badgename, price, badgeinfo["description"]
+                )
+        else:
+            msg = "None"
+
+        pages = [
+            discord.Embed(title="Badges available", description=page, colour=await ctx.embed_color())
+            for page in pagify(msg, page_length=2048)
+        ]
+        pagenum = 1
+        for page in pages:
+            page.set_author(name=servername, icon_url=icon_url)
+            page.set_footer(text="Page {}/{}".format(pagenum, len(pages)))
+            pagenum += 1
+        await menu(ctx, pages, DEFAULT_CONTROLS)
 
     @badge.command(name="list")
     @commands.guild_only()
@@ -2544,12 +2542,12 @@ class Leveler(commands.Cog):
         credit_txt = f"{bank_credits}{(await bank.get_currency_name(server))[0]}"
         draw.text(
             (await self._center(200, 340, credit_txt, large_fnt), label_align - 27),
-            await self._truncate_text(credit_txt, 18),
+            credit_txt,
             font=large_fnt,
             fill=info_text_color,
         )  # Credits
 
-        if userinfo["title"] == "":
+        if not userinfo["title"]:
             offset = 170
         else:
             offset = 195
