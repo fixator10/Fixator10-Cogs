@@ -183,10 +183,10 @@ class Leveler(commands.Cog):
             name="Credits: ",
             value=f"{u_credits}{(await bank.get_currency_name(server))[0]}",
         )
-        em.add_field(name="Info: ", value=userinfo["info"] or "None")
+        em.add_field(name="Info: ", value=userinfo["info"] or None)
         em.add_field(
             name="Badges: ",
-            value=(", ".join(userinfo["badges"]) or "None").replace("_", " "),
+            value=(", ".join(userinfo["badges"]) or None).replace("_", " "),
         )
         em.set_author(name="Profile for {}".format(user.name), url=user.avatar_url)
         em.set_thumbnail(url=user.avatar_url)
@@ -1215,8 +1215,7 @@ class Leveler(commands.Cog):
                 return False
             await bank.withdraw_credits(user, bg_price)
             return True
-        else:
-            return True
+        return True
 
     async def _give_chat_credit(self, user, server):
         msg_credits = await self.config.guild(server).msg_credits()
@@ -1828,16 +1827,15 @@ class Leveler(commands.Cog):
                 "**{} already has that badge!**".format(await self._is_mention(user))
             )
             return
-        else:
-            userinfo["badges"][badge_name] = badges[name]
-            db.users.update_one(
-                {"user_id": str(user.id)}, {"$set": {"badges": userinfo["badges"]}}
+        userinfo["badges"][badge_name] = badges[name]
+        db.users.update_one(
+            {"user_id": str(user.id)}, {"$set": {"badges": userinfo["badges"]}}
+        )
+        await ctx.send(
+            "**{} has just given `{}` the `{}` badge!**".format(
+                await self._is_mention(org_user), await self._is_mention(user), name
             )
-            await ctx.send(
-                "**{} has just given `{}` the `{}` badge!**".format(
-                    await self._is_mention(org_user), await self._is_mention(user), name
-                )
-            )
+        )
 
     @checks.mod_or_permissions(manage_roles=True)
     @badge.command()
