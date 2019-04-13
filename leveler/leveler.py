@@ -1,7 +1,6 @@
 import logging
 import math
 import operator
-import os
 import platform
 import random
 import re
@@ -17,7 +16,7 @@ from fontTools.ttLib import TTFont
 from redbot.core import bank
 from redbot.core import checks
 from redbot.core import commands
-from redbot.core.data_manager import bundled_data_path, cog_data_path
+from redbot.core.data_manager import bundled_data_path
 from redbot.core.utils.chat_formatting import pagify, box
 from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
 from redbot.core.utils.predicates import MessagePredicate
@@ -144,9 +143,9 @@ class Leveler(commands.Cog):
             await channel.send(embed=em)
         else:
             async with ctx.channel.typing():
-                await self.draw_profile(user, server)
+                profile = await self.draw_profile(user, server)
                 file = discord.File(
-                    f"{cog_data_path(self)}/{user.id}_profile.png",
+                    profile,
                     filename="profile.png",
                 )
                 await channel.send(
@@ -158,10 +157,6 @@ class Leveler(commands.Cog):
                 {"$set": {"profile_block": curr_time}},
                 upsert=True,
             )
-            try:
-                os.remove(f"{cog_data_path(self)}/{user.id}_profile.png")
-            except Exception as exc:
-                log.warning(f"Unable to remove temp file {user.id}_profile.png: {exc}")
 
     async def profile_text(self, user, server, userinfo):
 
@@ -226,9 +221,9 @@ class Leveler(commands.Cog):
             await channel.send(embed=em)
         else:
             async with channel.typing():
-                await self.draw_rank(user, server)
+                rank = await self.draw_rank(user, server)
                 file = discord.File(
-                    f"{cog_data_path(self)}/{user.id}_rank.png", filename="rank.png"
+                    rank, filename="rank.png"
                 )
                 await channel.send(
                     "**Ranking & Statistics for {}**".format(
@@ -241,10 +236,6 @@ class Leveler(commands.Cog):
                 {"$set": {"rank_block".format(server.id): curr_time}},
                 upsert=True,
             )
-            try:
-                os.remove(f"{cog_data_path(self)}/{user.id}_rank.png")
-            except Exception as exc:
-                log.warning(f"Unable to remove temp file {user.id}_rank.png: {exc}")
 
     async def rank_text(self, user, server, userinfo):
         em = discord.Embed(colour=user.colour)
@@ -873,10 +864,9 @@ class Leveler(commands.Cog):
 
         async with self.session.get(url) as r:
             image = await r.content.read()
-        with open(f"{cog_data_path(self)}/temp_auto.png", "wb") as f:
-            f.write(image)
+        image = BytesIO(image)
 
-        im = Image.open(f"{cog_data_path(self)}/temp_auto.png").convert("RGBA")
+        im = Image.open(image).convert("RGBA")
         im = im.resize((290, 290))  # resized to reduce time
         ar = scipy.misc.fromimage(im)
         shape = ar.shape
@@ -2353,21 +2343,13 @@ class Leveler(commands.Cog):
 
         async with self.session.get(bg_url) as r:
             image = await r.content.read()
-        with open(f"{cog_data_path(self)}/{user.id}_temp_profile_bg.png", "wb") as f:
-            f.write(image)
+            profile_background = BytesIO(image)
         async with self.session.get(user.avatar_url) as r:
             image = await r.content.read()
-        with open(
-            f"{cog_data_path(self)}/{user.id}_temp_profile_profile.png", "wb"
-        ) as f:
-            f.write(image)
+            profile_avatar = BytesIO(image)
 
-        bg_image = Image.open(
-            f"{cog_data_path(self)}/{user.id}_temp_profile_bg.png"
-        ).convert("RGBA")
-        profile_image = Image.open(
-            f"{cog_data_path(self)}/{user.id}_temp_profile_profile.png"
-        ).convert("RGBA")
+        bg_image = Image.open(profile_background).convert("RGBA")
+        profile_image = Image.open(profile_avatar).convert("RGBA")
 
         # set canvas
         bg_color = (255, 255, 255, 0)
@@ -2417,7 +2399,6 @@ class Leveler(commands.Cog):
         total_gap = 6
         border = int(total_gap / 2)
         profile_size = lvl_circle_dia - total_gap
-        raw_length = profile_size * multiplier
         mask = mask.resize((profile_size, profile_size), Image.ANTIALIAS)
         profile_image = profile_image.resize(
             (profile_size, profile_size), Image.ANTIALIAS
@@ -2617,13 +2598,8 @@ class Leveler(commands.Cog):
                         # get image
                         async with self.session.get(bg_color) as r:
                             image = await r.content.read()
-                        with open(
-                            f"{cog_data_path(self)}/{user.id}_temp_badge.png", "wb"
-                        ) as f:
-                            f.write(image)
-                        badge_image = Image.open(
-                            f"{cog_data_path(self)}/{user.id}_temp_badge.png"
-                        ).convert("RGBA")
+                        badge = BytesIO(image)
+                        badge_image = Image.open(badge).convert("RGBA")
                         badge_image = badge_image.resize(
                             (raw_length, raw_length), Image.ANTIALIAS
                         )
@@ -2704,31 +2680,12 @@ class Leveler(commands.Cog):
                     outer_mask = mask.resize((size, size), Image.ANTIALIAS)
                     process.paste(output, coord, outer_mask)
 
-                # attempt to remove badge image
-                try:
-                    os.remove(f"{cog_data_path(self)}/{user.id}_temp_badge.png")
-                except Exception as exc:
-                    log.warning(
-                        f"Unable to remove temp file {user.id}_temp_badge.png: {exc}"
-                    )
-
         result = Image.alpha_composite(result, process)
         result = await self._add_corners(result, 25)
-        result.save(f"{cog_data_path(self)}/{user.id}_profile.png", "PNG", quality=100)
+        file = BytesIO()
+        result.save(file, "PNG", quality=100)
+        return file
 
-        # remove images
-        try:
-            os.remove(f"{cog_data_path(self)}/{user.id}_temp_profile_bg.png")
-        except Exception as exc:
-            log.warning(
-                f"Unable to remove temp file {user.id}_temp_profile_bg.png: {exc}"
-            )
-        try:
-            os.remove(f"{cog_data_path(self)}/{user.id}_temp_profile_profile.png")
-        except Exception as exc:
-            log.warning(
-                f"Unable to remove temp file {user.id}_temp_profile_profile.png: {exc}"
-            )
 
     # returns color that contrasts better in background
     def _contrast(self, bg_color, color1, color2):
@@ -2836,23 +2793,13 @@ class Leveler(commands.Cog):
 
         async with self.session.get(bg_url) as r:
             image = await r.content.read()
-        with open(f"{cog_data_path(self)}/{user.id}_temp_rank_bg.png", "wb") as f:
-            f.write(image)
+        rank_background = BytesIO(image)
         async with self.session.get(user.avatar_url) as r:
             image = await r.content.read()
-        with open(f"{cog_data_path(self)}/{user.id}_temp_rank_profile.png", "wb") as f:
-            f.write(image)
-        async with self.session.get(user.avatar_url) as r:
-            image = await r.content.read()
-        with open(f"{cog_data_path(self)}/{user.id}_temp_server_icon.png", "wb") as f:
-            f.write(image)
+        rank_avatar = BytesIO(image)
 
-        bg_image = Image.open(
-            f"{cog_data_path(self)}/{user.id}_temp_rank_bg.png"
-        ).convert("RGBA")
-        profile_image = Image.open(
-            f"{cog_data_path(self)}/{user.id}_temp_rank_profile.png"
-        ).convert("RGBA")
+        bg_image = Image.open(rank_background).convert("RGBA")
+        profile_image = Image.open(rank_avatar).convert("RGBA")
 
         # set canvas
         width = 390
@@ -3037,7 +2984,9 @@ class Leveler(commands.Cog):
         )  # Rank
 
         result = Image.alpha_composite(result, process)
-        result.save(f"{cog_data_path(self)}/{user.id}_rank.png", "PNG", quality=100)
+        file = BytesIO()
+        result.save(file, "PNG", quality=100)
+        return file
 
     async def _add_corners(self, im, rad, multiplier=6):
         raw_length = rad * 2 * multiplier
@@ -3067,19 +3016,13 @@ class Leveler(commands.Cog):
 
         async with self.session.get(bg_url) as r:
             image = await r.content.read()
-        with open(f"{cog_data_path(self)}/{user.id}_temp_level_bg.png", "wb") as f:
-            f.write(image)
+        level_background = BytesIO(image)
         async with self.session.get(user.avatar_url) as r:
             image = await r.content.read()
-        with open(f"{cog_data_path(self)}/{user.id}_temp_level_profile.png", "wb") as f:
-            f.write(image)
+        level_avatar = BytesIO(image)
 
-        bg_image = Image.open(
-            f"{cog_data_path(self)}/{user.id}_temp_level_bg.png"
-        ).convert("RGBA")
-        profile_image = Image.open(
-            f"{cog_data_path(self)}/{user.id}_temp_level_profile.png"
-        ).convert("RGBA")
+        bg_image = Image.open(level_background).convert("RGBA")
+        profile_image = Image.open(level_avatar).convert("RGBA")
 
         # set canvas
         width = 176
@@ -3169,8 +3112,9 @@ class Leveler(commands.Cog):
 
         result = Image.alpha_composite(result, process)
         result = await self._add_corners(result, int(height / 2))
-        filename = f"{cog_data_path(self)}/{user.id}_level.png"
-        result.save(filename, "PNG", quality=100)
+        file = BytesIO()
+        result.save(file, "PNG", quality=100)
+        return file
 
     async def _handle_on_message(self, message):
         text = message.content
@@ -3339,9 +3283,9 @@ class Leveler(commands.Cog):
                 channel.send(embed=em)
             else:
                 async with channel.typing():
-                    await self.draw_levelup(user, server)
+                    levelup = await self.draw_levelup(user, server)
                     file = discord.File(
-                        f"{cog_data_path(self)}/{user.id}_level.png",
+                        levelup,
                         filename="levelup.png",
                     )
                     await channel.send(
