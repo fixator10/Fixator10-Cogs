@@ -269,7 +269,7 @@ class Leveler(commands.Cog):
     async def top(self, ctx, *options):
         """Displays leaderboard.
 
-        Add "global" parameter for global"""
+        Add -global parameter for global and -rep for reputation."""
         server = ctx.guild
         user = ctx.author
 
@@ -291,7 +291,7 @@ class Leveler(commands.Cog):
                     user_stat = userinfo["rep"]
 
             board_type = "Rep"
-            footer_text = "Your Rank: {}         {}: {}".format(
+            footer_text = "Your Rank: {}                  {}: {}".format(
                 await self._find_global_rep_rank(user), board_type, user_stat
             )
             icon_url = self.bot.user.avatar_url
@@ -307,7 +307,7 @@ class Leveler(commands.Cog):
                     user_stat = userinfo["total_exp"]
 
             board_type = "Points"
-            footer_text = "Your Rank: {}         {}: {}".format(
+            footer_text = "Your Rank: {}                  {}: {}".format(
                 await self._find_global_rank(user), board_type, user_stat
             )
             icon_url = self.bot.user.avatar_url
@@ -324,7 +324,7 @@ class Leveler(commands.Cog):
                     user_stat = userinfo["rep"]
 
             board_type = "Rep"
-            footer_text = "Your Rank: {}         {}: {}".format(
+            footer_text = "Your Rank: {}                  {}: {}".format(
                 await self._find_server_rep_rank(user, server), board_type, user_stat
             )
             icon_url = server.icon_url
@@ -335,7 +335,7 @@ class Leveler(commands.Cog):
                     if "servers" in userinfo and str(server.id) in userinfo["servers"]:
                         server_exp = 0
                         for i in range(userinfo["servers"][str(server.id)]["level"]):
-                            server_exp += await self._required_exp(i)
+                            server_exp += self._required_exp(i)
                         server_exp += userinfo["servers"][str(server.id)]["current_exp"]
                         try:
                             users.append((userinfo["username"], server_exp))
@@ -344,7 +344,7 @@ class Leveler(commands.Cog):
                 except Exception as e:
                     print(e)
             board_type = "Points"
-            footer_text = "Your Rank: {}         {}: {}".format(
+            footer_text = "Your Rank: {}                  {}: {}".format(
                 await self._find_server_rank(user, server),
                 board_type,
                 await self._find_server_exp(user, server),
@@ -362,15 +362,13 @@ class Leveler(commands.Cog):
                     page = int(str(option))
                 else:
                     await ctx.send(
-                        "**Please enter a valid page number! (1 - {})**".format(
-                            str(pages)
-                        )
+                        "**Please enter a valid page number! (1 - {})**".format(str(pages))
                     )
                     return
                 break
 
         msg = ""
-        msg += "**Rank              Name (Page {}/{})**\n".format(page, pages)
+        msg += "Rank     Name                   (Page {}/{})     \n\n".format(page, pages)
         rank = 1 + per_page * (page - 1)
         start_index = per_page * page - per_page
         end_index = per_page * page
@@ -384,19 +382,19 @@ class Leveler(commands.Cog):
             else:
                 label = default_label
 
-            msg += "`{:<2}{:<2}{:<2}   # {:<22}".format(
-                rank, label, "➤", await self._truncate_text(single_user[0], 20)
+            msg += "{:<2}{:<2}{:<2} # {:<11}".format(
+                rank, label, "➤", self._truncate_text(single_user[0], 11)
             )
-            msg += "{:>5}{:<2}{:<2}{:<5}`\n".format(
-                " ", " ", " ", "Total {}: ".format(board_type) + str(single_user[1])
+            msg += "{:>5}{:<2}{:<2}{:<5}\n".format(
+                " ", " ", " ", " {}: ".format(board_type) + str(single_user[1])
             )
             rank += 1
-        msg += "----------------------------------------------------\n"
-        msg += "`{}`".format(footer_text)
+        msg += "--------------------------------------------            \n"
+        msg += "{}".format(footer_text)
 
         em = discord.Embed(description="", colour=user.colour)
         em.set_author(name=title, icon_url=icon_url)
-        em.description = msg
+        em.description = box(msg)
 
         await ctx.send(embed=em)
 
