@@ -492,13 +492,10 @@ class DataUtils(commands.Cog):
         member: discord.Member,
         *,
         channel: Union[
-            discord.TextChannel, discord.VoiceChannel, discord.CategoryChannel, str
+            discord.TextChannel, discord.VoiceChannel, discord.CategoryChannel, None
         ] = None
     ):
         """Check user's permission for current or provided channel"""
-        if isinstance(channel, str):
-            await ctx.send_help()
-            return
         if channel is None:
             channel = ctx.channel
         perms = channel.permissions_for(member)
