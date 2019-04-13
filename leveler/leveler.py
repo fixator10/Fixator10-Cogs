@@ -159,14 +159,9 @@ class Leveler(commands.Cog):
                 pass
 
     async def profile_text(self, user, server, userinfo):
-        def test_empty(text):
-            if not text:
-                return "None"
-            else:
-                return text
 
         em = discord.Embed(colour=user.colour)
-        em.add_field(name="Title:", value=test_empty(userinfo["title"]))
+        em.add_field(name="Title:", value=userinfo["title"] or None)
         em.add_field(name="Reps:", value=userinfo["rep"])
         em.add_field(
             name="Global Rank:", value="#{}".format(await self._find_global_rank(user))
@@ -188,10 +183,10 @@ class Leveler(commands.Cog):
             name="Credits: ",
             value=f"{u_credits}{(await bank.get_currency_name(server))[0]}",
         )
-        em.add_field(name="Info: ", value=test_empty(userinfo["info"]))
+        em.add_field(name="Info: ", value=userinfo["info"] or "None")
         em.add_field(
             name="Badges: ",
-            value=test_empty(", ".join(userinfo["badges"])).replace("_", " "),
+            value=(", ".join(userinfo["badges"]) or "None").replace("_", " "),
         )
         em.set_author(name="Profile for {}".format(user.name), url=user.avatar_url)
         em.set_thumbnail(url=user.avatar_url)
@@ -267,8 +262,7 @@ class Leveler(commands.Cog):
     async def _is_mention(self, user):
         if await self.config.mention():
             return user.mention
-        else:
-            return user.name
+        return user.name
 
     @commands.command()
     @commands.guild_only()
@@ -1206,23 +1200,21 @@ class Leveler(commands.Cog):
                     f"{bg_price}{(await bank.get_currency_name(server))[0]}**"
                 )
                 return False
-            else:
-                await ctx.send(
-                    "**{}, you are about to buy a background for `{}`. Confirm by typing `yes`.**".format(
-                        await self._is_mention(user), bg_price
-                    )
+            await ctx.send(
+                "**{}, you are about to buy a background for `{}`. Confirm by typing `yes`.**".format(
+                    await self._is_mention(user), bg_price
                 )
-                pred = MessagePredicate.yes_or_no(ctx)
-                try:
-                    await self.bot.wait_for("message", timeout=15, check=pred)
-                except AsyncTimeoutError:
-                    pass
-                if not pred.result:
-                    await ctx.send("**Purchase canceled.**")
-                    return False
-                else:
-                    await bank.withdraw_credits(user, bg_price)
-                    return True
+            )
+            pred = MessagePredicate.yes_or_no(ctx)
+            try:
+                await self.bot.wait_for("message", timeout=15, check=pred)
+            except AsyncTimeoutError:
+                pass
+            if not pred.result:
+                await ctx.send("**Purchase canceled.**")
+                return False
+            await bank.withdraw_credits(user, bg_price)
+            return True
         else:
             return True
 
@@ -1542,28 +1534,26 @@ class Leveler(commands.Cog):
                         if not pred.result:
                             await ctx.send("**Purchase canceled.**")
                             return
-                        else:
-                            if badge_info["price"] <= await bank.get_balance(user):
-                                await bank.withdraw_credits(user, badge_info["price"])
-                                userinfo["badges"][
-                                    "{}_{}".format(name, str(serverid))
-                                ] = server_badges[name]
-                                db.users.update_one(
-                                    {"user_id": userinfo["user_id"]},
-                                    {"$set": {"badges": userinfo["badges"]}},
+                        if badge_info["price"] <= await bank.get_balance(user):
+                            await bank.withdraw_credits(user, badge_info["price"])
+                            userinfo["badges"][
+                                "{}_{}".format(name, str(serverid))
+                            ] = server_badges[name]
+                            db.users.update_one(
+                                {"user_id": userinfo["user_id"]},
+                                {"$set": {"badges": userinfo["badges"]}},
+                            )
+                            await ctx.send(
+                                "**You have bought the `{}` badge for `{}`.**".format(
+                                    name, badge_info["price"]
                                 )
-                                await ctx.send(
-                                    "**You have bought the `{}` badge for `{}`.**".format(
-                                        name, badge_info["price"]
-                                    )
+                            )
+                        elif await bank.get_balance(user) < badge_info["price"]:
+                            await ctx.send(
+                                "**Not enough money! Need `{}` more.**".format(
+                                    badge_info["price"] - await bank.get_balance(user)
                                 )
-                            elif await bank.get_balance(user) < badge_info["price"]:
-                                await ctx.send(
-                                    "**Not enough money! Need `{}` more.**".format(
-                                        badge_info["price"]
-                                        - await bank.get_balance(user)
-                                    )
-                                )
+                            )
                 else:
                     await ctx.send(
                         "**{}, you already have this badge!**".format(user.name)
@@ -1833,7 +1823,7 @@ class Leveler(commands.Cog):
         if name not in badges:
             await ctx.send("**That badge doesn't exist in this server!**")
             return
-        elif badge_name in badges.keys():
+        if badge_name in badges.keys():
             await ctx.send(
                 "**{} already has that badge!**".format(await self._is_mention(user))
             )
@@ -1911,25 +1901,22 @@ class Leveler(commands.Cog):
                 "**Please make sure the `{}` badge exists!**".format(badge_name)
             )
             return
+        server_linked_badges = db.badgelinks.find_one({"server_id": str(server.id)})
+        if not server_linked_badges:
+            new_server = {
+                "server_id": str(server.id),
+                "badges": {badge_name: str(level)},
+            }
+            db.badgelinks.insert_one(new_server)
         else:
-            server_linked_badges = db.badgelinks.find_one({"server_id": str(server.id)})
-            if not server_linked_badges:
-                new_server = {
-                    "server_id": str(server.id),
-                    "badges": {badge_name: str(level)},
-                }
-                db.badgelinks.insert_one(new_server)
-            else:
-                server_linked_badges["badges"][badge_name] = str(level)
-                db.badgelinks.update_one(
-                    {"server_id": str(server.id)},
-                    {"$set": {"badges": server_linked_badges["badges"]}},
-                )
-            await ctx.send(
-                "**The `{}` badge has been linked to level `{}`**".format(
-                    badge_name, level
-                )
+            server_linked_badges["badges"][badge_name] = str(level)
+            db.badgelinks.update_one(
+                {"server_id": str(server.id)},
+                {"$set": {"badges": server_linked_badges["badges"]}},
             )
+        await ctx.send(
+            "**The `{}` badge has been linked to level `{}`**".format(badge_name, level)
+        )
 
     @checks.admin_or_permissions(manage_roles=True)
     @badge.command(name="unlink")
@@ -2555,8 +2542,8 @@ class Leveler(commands.Cog):
             fill=exp_font_color,
         )  # Exp Text
 
-        credits = await bank.get_balance(user)
-        credit_txt = f"{credits}{(await bank.get_currency_name(server))[0]}"
+        bank_credits = await bank.get_balance(user)
+        credit_txt = f"{bank_credits}{(await bank.get_currency_name(server))[0]}"
         draw.text(
             (await self._center(200, 340, credit_txt, large_fnt), label_align - 27),
             self._truncate_text(credit_txt, 18),
@@ -2747,8 +2734,7 @@ class Leveler(commands.Cog):
         color2_ratio = self._contrast_ratio(bg_color, color2)
         if color1_ratio >= color2_ratio:
             return color1
-        else:
-            return color2
+        return color2
 
     def _luminance(self, color):
         # convert to greyscale
@@ -2763,19 +2749,17 @@ class Leveler(commands.Cog):
 
         if bg_lum > f_lum:
             return bg_lum / f_lum
-        else:
-            return f_lum / bg_lum
+        return f_lum / bg_lum
 
     # returns a string with possibly a nickname
     def _name(self, user, max_length):
         if user.name == user.display_name:
             return user.name
-        else:
-            return "{} ({})".format(
-                user.name,
-                self._truncate_text(user.display_name, max_length - len(user.name) - 3),
-                max_length,
-            )
+        return "{} ({})".format(
+            user.name,
+            self._truncate_text(user.display_name, max_length - len(user.name) - 3),
+            max_length,
+        )
 
     async def _add_dropshadow(
         self,
@@ -3041,8 +3025,8 @@ class Leveler(commands.Cog):
             font=large_fnt,
             fill=info_text_color,
         )  # Level
-        credits = await bank.get_balance(user)
-        credit_txt = f"{credits}{(await bank.get_currency_name(server))[0]}"
+        bank_credits = await bank.get_balance(user)
+        credit_txt = f"{bank_credits}{(await bank.get_currency_name(server))[0]}"
         draw.text(
             (await self._center(260, 360, credit_txt, large_fnt), v_label_align - 30),
             credit_txt,
