@@ -383,7 +383,7 @@ class Leveler(commands.Cog):
                 label = default_label
 
             msg += "{:<2}{:<2}{:<2} # {:<11}".format(
-                rank, label, "➤", self._truncate_text(single_user[0], 11)
+                rank, label, "➤", await self._truncate_text(single_user[0], 11)
             )
             msg += "{:>5}{:<2}{:<2}{:<5}\n".format(
                 " ", " ", " ", " {}: ".format(board_type) + str(single_user[1])
