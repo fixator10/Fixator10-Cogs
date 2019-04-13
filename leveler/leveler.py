@@ -3380,7 +3380,7 @@ class Leveler(commands.Cog):
         targetid = str(user.id)
         users = []
         for userinfo in db.users.find({}):
-            if "servers" in userinfo and server.id in userinfo["servers"]:
+            if "servers" in userinfo and str(server.id) in userinfo["servers"]:
                 users.append((userinfo["user_id"], userinfo["rep"]))
 
         sorted_list = sorted(users, key=operator.itemgetter(1), reverse=True)
