@@ -1,3 +1,4 @@
+import logging
 import math
 import operator
 import os
@@ -7,6 +8,7 @@ import re
 import textwrap
 import time
 from asyncio import TimeoutError as AsyncTimeoutError
+from io import BytesIO
 
 import aiohttp
 import discord
@@ -47,6 +49,8 @@ except Exception as e:
     raise RuntimeError(
         f"Can't load database: {e}\nFollow instructions on Git/online to install MongoDB."
     )
+
+log = logging.getLogger("red.fixator10-cogs.leveler")
 
 
 async def non_global_bank(ctx):
@@ -155,8 +159,8 @@ class Leveler(commands.Cog):
             )
             try:
                 os.remove(f"{cog_data_path(self)}/{user.id}_profile.png")
-            except:
-                pass
+            except Exception as exc:
+                log.warning(f"Unable to remove temp file {user.id}_profile.png: {exc}")
 
     async def profile_text(self, user, server, userinfo):
 
@@ -238,8 +242,8 @@ class Leveler(commands.Cog):
             )
             try:
                 os.remove(f"{cog_data_path(self)}/{user.id}_rank.png")
-            except:
-                pass
+            except Exception as exc:
+                log.warning(f"Unable to remove temp file {user.id}_rank.png: {exc}")
 
     async def rank_text(self, user, server, userinfo):
         em = discord.Embed(colour=user.colour)
@@ -284,7 +288,7 @@ class Leveler(commands.Cog):
             for userinfo in db.users.find({}):
                 try:
                     users.append((userinfo["username"], userinfo["rep"]))
-                except:
+                except KeyError:
                     users.append((userinfo["user_id"], userinfo["rep"]))
 
                 if str(user.id) == userinfo["user_id"]:
@@ -300,7 +304,7 @@ class Leveler(commands.Cog):
             for userinfo in db.users.find({}):
                 try:
                     users.append((userinfo["username"], userinfo["total_exp"]))
-                except:
+                except KeyError:
                     users.append((userinfo["user_id"], userinfo["total_exp"]))
 
                 if str(user.id) == userinfo["user_id"]:
@@ -317,7 +321,7 @@ class Leveler(commands.Cog):
                 if "servers" in userinfo and str(server.id) in userinfo["servers"]:
                     try:
                         users.append((userinfo["username"], userinfo["rep"]))
-                    except:
+                    except KeyError:
                         users.append((userinfo["user_id"], userinfo["rep"]))
 
                 if str(user.id) == userinfo["user_id"]:
@@ -339,10 +343,10 @@ class Leveler(commands.Cog):
                         server_exp += userinfo["servers"][str(server.id)]["current_exp"]
                         try:
                             users.append((userinfo["username"], server_exp))
-                        except:
+                        except KeyError:
                             users.append((userinfo["user_id"], server_exp))
-                except Exception as e:
-                    print(e)
+                except KeyError:
+                    pass
             board_type = "Points"
             footer_text = "Your Rank: {}                  {}: {}".format(
                 await self._find_server_rank(user, server),
@@ -362,13 +366,17 @@ class Leveler(commands.Cog):
                     page = int(str(option))
                 else:
                     await ctx.send(
-                        "**Please enter a valid page number! (1 - {})**".format(str(pages))
+                        "**Please enter a valid page number! (1 - {})**".format(
+                            str(pages)
+                        )
                     )
                     return
                 break
 
         msg = ""
-        msg += "Rank     Name                   (Page {}/{})     \n\n".format(page, pages)
+        msg += "Rank     Name                   (Page {}/{})     \n\n".format(
+            page, pages
+        )
         rank = 1 + per_page * (page - 1)
         start_index = per_page * page - per_page
         end_index = per_page * page
@@ -679,7 +687,6 @@ class Leveler(commands.Cog):
                 )
             await ctx.send("**Colors for profile set.**")
         else:
-            # print("update one")
             db.users.update_one(
                 {"user_id": str(user.id)}, {"$set": {section_name: set_color[0]}}
             )
@@ -1135,9 +1142,7 @@ class Leveler(commands.Cog):
         server = ctx.guild
 
         if currency < 0 or currency > 1000:
-            await ctx.send(
-                "**Please enter a valid number (0 - 1000)**"
-            )
+            await ctx.send("**Please enter a valid number (0 - 1000)**")
             return
 
         await self.config.guild(server).msg_credits.set(currency)
@@ -1300,12 +1305,10 @@ class Leveler(commands.Cog):
         try:
             async with self.session.get(url) as r:
                 image = await r.content.read()
-            with open(f"{cog_data_path(self)}/test.png", "wb") as f:
-                f.write(image)
-            Image.open(f"{cog_data_path(self)}/test.png").convert("RGBA")
-            os.remove(f"{cog_data_path(self)}/test.png")
+            image = BytesIO(image)
+            Image.open(image).convert("RGBA")
             return True
-        except:
+        except IOError:
             return False
 
     @checks.admin_or_permissions(manage_guild=True)
@@ -1414,7 +1417,11 @@ class Leveler(commands.Cog):
             msg = "None"
 
         pages = [
-            discord.Embed(title="Badges available", description=page, colour=await ctx.embed_color())
+            discord.Embed(
+                title="Badges available",
+                description=page,
+                colour=await ctx.embed_color(),
+            )
             for page in pagify(msg, page_length=2048)
         ]
         pagenum = 1
@@ -1719,8 +1726,10 @@ class Leveler(commands.Cog):
                             {"user_id": user["user_id"]},
                             {"$set": {"badges": userbadges}},
                         )
-                except:
-                    pass
+                except Exception as exc:
+                    log.error(
+                        f"Unable to update badge {name} for {user['user_id']}: {exc}"
+                    )
             await ctx.send("**The `{}` badge has been updated**".format(name))
 
     @checks.is_owner()
@@ -1785,8 +1794,10 @@ class Leveler(commands.Cog):
                             {"user_id": user_info_temp["user_id"]},
                             {"$set": {"badges": user_info_temp["badges"]}},
                         )
-                except:
-                    pass
+                except Exception as exc:
+                    log.error(
+                        f"Unable to delete badge {name} from {user_info_temp['user_id']}: {exc}"
+                    )
 
             await ctx.send("**The `{}` badge has been removed.**".format(name))
         else:
@@ -2311,7 +2322,6 @@ class Leveler(commands.Cog):
         self._badge_convert_dict(userinfo)
         userinfo = db.users.find_one({"user_id": str(user.id)})
         bg_url = userinfo["profile_background"]
-        profile_url = user.avatar_url
 
         # COLORS
         white_color = (240, 240, 240, 255)
@@ -2345,12 +2355,8 @@ class Leveler(commands.Cog):
             image = await r.content.read()
         with open(f"{cog_data_path(self)}/{user.id}_temp_profile_bg.png", "wb") as f:
             f.write(image)
-        try:
-            async with self.session.get(profile_url) as r:
-                image = await r.content.read()
-        except:
-            async with self.session.get(user.default_avatar_url) as r:
-                image = await r.content.read()
+        async with self.session.get(user.avatar_url) as r:
+            image = await r.content.read()
         with open(
             f"{cog_data_path(self)}/{user.id}_temp_profile_profile.png", "wb"
         ) as f:
@@ -2704,8 +2710,10 @@ class Leveler(commands.Cog):
                 # attempt to remove badge image
                 try:
                     os.remove(f"{cog_data_path(self)}/{user.id}_temp_badge.png")
-                except:
-                    pass
+                except Exception as exc:
+                    log.warning(
+                        f"Unable to remove temp file {user.id}_temp_badge.png: {exc}"
+                    )
 
         result = Image.alpha_composite(result, process)
         result = await self._add_corners(result, 25)
@@ -2714,12 +2722,16 @@ class Leveler(commands.Cog):
         # remove images
         try:
             os.remove(f"{cog_data_path(self)}/{user.id}_temp_profile_bg.png")
-        except:
-            pass
+        except Exception as exc:
+            log.warning(
+                f"Unable to remove temp file {user.id}_temp_profile_bg.png: {exc}"
+            )
         try:
             os.remove(f"{cog_data_path(self)}/{user.id}_temp_profile_profile.png")
-        except:
-            pass
+        except Exception as exc:
+            log.warning(
+                f"Unable to remove temp file {user.id}_temp_profile_profile.png: {exc}"
+            )
 
     # returns color that contrasts better in background
     def _contrast(self, bg_color, color1, color2):
@@ -2824,26 +2836,17 @@ class Leveler(commands.Cog):
         userinfo = db.users.find_one({"user_id": str(user.id)})
         # get urls
         bg_url = userinfo["rank_background"]
-        profile_url = user.avatar_url
 
         async with self.session.get(bg_url) as r:
             image = await r.content.read()
         with open(f"{cog_data_path(self)}/{user.id}_temp_rank_bg.png", "wb") as f:
             f.write(image)
-        try:
-            async with self.session.get(profile_url) as r:
-                image = await r.content.read()
-        except:
-            async with self.session.get(user.default_avatar_url) as r:
-                image = await r.content.read()
+        async with self.session.get(user.avatar_url) as r:
+            image = await r.content.read()
         with open(f"{cog_data_path(self)}/{user.id}_temp_rank_profile.png", "wb") as f:
             f.write(image)
-        try:
-            async with self.session.get(user.server_icon_url) as r:
-                image = await r.content.read()
-        except:
-            async with self.session.get(user.default_avatar_url) as r:
-                image = await r.content.read()
+        async with self.session.get(user.avatar_url) as r:
+            image = await r.content.read()
         with open(f"{cog_data_path(self)}/{user.id}_temp_server_icon.png", "wb") as f:
             f.write(image)
 
@@ -3064,18 +3067,13 @@ class Leveler(commands.Cog):
 
         # get urls
         bg_url = userinfo["levelup_background"]
-        profile_url = user.avatar_url
 
         async with self.session.get(bg_url) as r:
             image = await r.content.read()
         with open(f"{cog_data_path(self)}/{user.id}_temp_level_bg.png", "wb") as f:
             f.write(image)
-        try:
-            async with self.session.get(profile_url) as r:
-                image = await r.content.read()
-        except:
-            async with self.session.get(user.default_avatar_url) as r:
-                image = await r.content.read()
+        async with self.session.get(user.avatar_url) as r:
+            image = await r.content.read()
         with open(f"{cog_data_path(self)}/{user.id}_temp_level_profile.png", "wb") as f:
             f.write(image)
 
@@ -3226,9 +3224,8 @@ class Leveler(commands.Cog):
                 {"user_id": str(user.id)},
                 {"$set": {"total_exp": userinfo["total_exp"] + exp}},
             )
-        except:
-            pass
-        # print(userinfo["total_exp"] + exp)
+        except Exception as exc:
+            log.error(f"Unable to process xp for {user.id}: {exc}")
         if userinfo["servers"][str(server.id)]["current_exp"] + exp >= required:
             userinfo["servers"][str(server.id)]["level"] += 1
             db.users.update_one(
@@ -3330,8 +3327,8 @@ class Leveler(commands.Cog):
                                 {"user_id": str(user.id)},
                                 {"$set": {"badges": userinfo_db["badges"]}},
                             )
-        except:
-            await channel.send("Error. Badge was not given!")
+        except Exception as exc:
+            await channel.send(f"Error. Badge was not given: {exc}")
 
         if await self.config.guild(server).lvl_msg():  # if lvl msg is enabled
             if await self.config.guild(server).text_only():
@@ -3368,7 +3365,7 @@ class Leveler(commands.Cog):
                     server_exp += await self._required_exp(i)
                 server_exp += userinfo["servers"][str(server.id)]["current_exp"]
                 users.append((userid, server_exp))
-            except:
+            except KeyError as exc:
                 pass
 
         sorted_list = sorted(users, key=operator.itemgetter(1), reverse=True)
@@ -3403,7 +3400,7 @@ class Leveler(commands.Cog):
                 server_exp += await self._required_exp(i)
             server_exp += userinfo["servers"][str(server.id)]["current_exp"]
             return server_exp
-        except:
+        except KeyError:
             return server_exp
 
     async def _find_global_rank(self, user):
