@@ -5,7 +5,8 @@ import platform
 import random
 import re
 import textwrap
-from asyncio import TimeoutError
+import time
+from asyncio import TimeoutError as AsyncTimeoutError
 
 import aiohttp
 import discord
@@ -22,27 +23,30 @@ from redbot.core.utils.predicates import MessagePredicate
 try:
     import pymongo
     from pymongo import MongoClient
-except:
-    raise RuntimeError("Can't load pymongo. Do 'pip3 install pymongo'.")
+except Exception as e:
+    raise RuntimeError("Can't load pymongo:{e}\nInstall 'pymongo' package")
 try:
     import scipy
     import scipy.misc
     import scipy.cluster
-except:
-    pass
+except Exception as e:
+    print(
+        f"{__file__}: scipy is unable to import: {e}\nAutocolor feature will be unavailable"
+    )
 try:
     from PIL import Image, ImageDraw, ImageFont, ImageColor, ImageOps, ImageFilter
-except:
-    raise RuntimeError("Can't load pillow. Do 'pip3 install pillow'.")
-import time
+except Exception as e:
+    raise RuntimeError(f"Can't load pillow: {e}\nDo 'pip3 install pillow'.")
 
 from redbot.core import Config
 
 try:
     client = MongoClient()
     db = client["leveler"]
-except:
-    print("Can't load database. Follow instructions on Git/online to install MongoDB.")
+except Exception as e:
+    raise RuntimeError(
+        f"Can't load database: {e}\nFollow instructions on Git/online to install MongoDB."
+    )
 
 
 async def non_global_bank(ctx):
@@ -1211,7 +1215,7 @@ class Leveler(commands.Cog):
                 pred = MessagePredicate.yes_or_no(ctx)
                 try:
                     await self.bot.wait_for("message", timeout=15, check=pred)
-                except TimeoutError:
+                except AsyncTimeoutError:
                     pass
                 if not pred.result:
                     await ctx.send("**Purchase canceled.**")
@@ -1533,7 +1537,7 @@ class Leveler(commands.Cog):
                         pred = MessagePredicate.yes_or_no(ctx)
                         try:
                             await self.bot.wait_for("message", timeout=15, check=pred)
-                        except TimeoutError:
+                        except AsyncTimeoutError:
                             pass
                         if not pred.result:
                             await ctx.send("**Purchase canceled.**")
