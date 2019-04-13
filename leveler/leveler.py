@@ -339,7 +339,7 @@ class Leveler(commands.Cog):
                     if "servers" in userinfo and str(server.id) in userinfo["servers"]:
                         server_exp = 0
                         for i in range(userinfo["servers"][str(server.id)]["level"]):
-                            server_exp += self._required_exp(i)
+                            server_exp += await self._required_exp(i)
                         server_exp += userinfo["servers"][str(server.id)]["current_exp"]
                         try:
                             users.append((userinfo["username"], server_exp))
