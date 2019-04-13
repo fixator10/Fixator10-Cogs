@@ -1136,7 +1136,7 @@ class Leveler(commands.Cog):
 
         if currency < 0 or currency > 1000:
             await ctx.send(
-                "**Please enter a valid number (0 - 1000)**".format(channel.name)
+                "**Please enter a valid number (0 - 1000)**"
             )
             return
 
@@ -1181,7 +1181,7 @@ class Leveler(commands.Cog):
 
         if channel.id == await self.config.guild(server).lvl_msg_lock():
             await self.config.guild(server).lvl_msg_lock.set(None)
-            await ctx.send("**Level-up message lock disabled.**".format(channel.name))
+            await ctx.send("**Level-up message lock disabled.**")
         else:
             await self.config.guild(server).lvl_msg_lock.set(channel.id)
             await ctx.send("**Level-up messages locked to `#{}`**".format(channel.name))
