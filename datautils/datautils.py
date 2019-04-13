@@ -512,6 +512,9 @@ class DataUtils(commands.Cog):
             self, ctx, *, emoji: Union[discord.Emoji, discord.PartialEmoji, None]
     ):
         """Get info about emoji"""
+        if emoji is None:
+            await ctx.send_help()
+            return
         em = discord.Embed(
             title=chat.escape(emoji.name, formatting=True),
             color=await ctx.embed_color(),
