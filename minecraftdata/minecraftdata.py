@@ -316,7 +316,7 @@ class MinecraftData(commands.Cog):
             return
         try:
             async with self.session.get(
-                "https://api.mojang.com/user/" "profiles/{}/names".format(uuid)
+                "https://api.mojang.com/user/profiles/{}/names".format(uuid)
             ) as data:
                 data_history = await data.json()
             for nick in data_history:
