@@ -1398,7 +1398,7 @@ class Leveler(commands.Cog):
         em.set_author(name="{}".format(servername), icon_url=icon_url)
         msg = ""
         server_badge_info = db.badges.find_one({"server_id": str(serverid)})
-        if server_badge_info:
+        if server_badge_info and server_badge_info["badges"]:
             server_badges = server_badge_info["badges"]
             for badgename in server_badges:
                 badgeinfo = server_badges[badgename]
