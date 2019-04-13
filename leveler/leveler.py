@@ -2541,7 +2541,7 @@ class Leveler(commands.Cog):
         )  # Exp Text
 
         bank_credits = await bank.get_balance(user)
-        credit_txt = f"{bank_credits:.2E}{(await bank.get_currency_name(server))[0]}"
+        credit_txt = f"{bank_credits}{(await bank.get_currency_name(server))[0]}"
         draw.text(
             (await self._center(200, 340, credit_txt, large_fnt), label_align - 27),
             await self._truncate_text(credit_txt, 18),
@@ -2573,7 +2573,6 @@ class Leveler(commands.Cog):
             priority_badges, key=operator.itemgetter(1), reverse=True
         )
 
-        # TODO: simplify this. it shouldn't be this complicated... sacrifices conciseness for customizability
         if await self.config.badge_type() == "circles":
             # circles require antialiasing
             vert_pos = 172
