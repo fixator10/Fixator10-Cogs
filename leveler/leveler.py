@@ -385,7 +385,7 @@ class Leveler(commands.Cog):
                 label = default_label
 
             msg += "`{:<2}{:<2}{:<2}   # {:<22}".format(
-                rank, label, "➤", self._truncate_text(single_user[0], 20)
+                rank, label, "➤", await self._truncate_text(single_user[0], 20)
             )
             msg += "{:>5}{:<2}{:<2}{:<5}`\n".format(
                 " ", " ", " ", "Total {}: ".format(board_type) + str(single_user[1])
@@ -2434,7 +2434,7 @@ class Leveler(commands.Cog):
         # determine info text color
         info_text_color = self._contrast(info_fill, white_color, dark_color)
         await _write_unicode(
-            self._truncate_text(user.name, 22).upper(),
+            (await self._truncate_text(user.name, 22)).upper(),
             head_align,
             142,
             name_fnt,
@@ -2541,10 +2541,10 @@ class Leveler(commands.Cog):
         )  # Exp Text
 
         bank_credits = await bank.get_balance(user)
-        credit_txt = f"{bank_credits}{(await bank.get_currency_name(server))[0]}"
+        credit_txt = f"{bank_credits:.2E}{(await bank.get_currency_name(server))[0]}"
         draw.text(
             (await self._center(200, 340, credit_txt, large_fnt), label_align - 27),
-            self._truncate_text(credit_txt, 18),
+            await self._truncate_text(credit_txt, 18),
             font=large_fnt,
             fill=info_text_color,
         )  # Credits
@@ -2750,12 +2750,14 @@ class Leveler(commands.Cog):
         return f_lum / bg_lum
 
     # returns a string with possibly a nickname
-    def _name(self, user, max_length):
+    async def _name(self, user, max_length):
         if user.name == user.display_name:
             return user.name
         return "{} ({})".format(
             user.name,
-            self._truncate_text(user.display_name, max_length - len(user.name) - 3),
+            await self._truncate_text(
+                user.display_name, max_length - len(user.name) - 3
+            ),
             max_length,
         )
 
@@ -2958,7 +2960,7 @@ class Leveler(commands.Cog):
 
         # name
         await _write_unicode(
-            self._truncate_text(self._name(user, 20), 20),
+            await self._truncate_text(await self._name(user, 20), 20),
             100,
             0,
             name_fnt,
@@ -3497,13 +3499,9 @@ class Leveler(commands.Cog):
         except AttributeError:
             pass
 
-    def _truncate_text(self, text, max_length):
-        # TODO: Remove this
+    async def _truncate_text(self, text, max_length):
         if len(text) > max_length:
-            if text.strip("$").isdigit():
-                text = int(text.strip("$"))
-                return "${:.2E}".format(text)
-            return text[: max_length - 3] + "..."
+            return text[: max_length - 1] + "…"
         return text
 
     # finds the the pixel to center the text
