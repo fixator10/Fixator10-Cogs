@@ -53,6 +53,7 @@ except Exception as e:
 log = logging.getLogger("red.fixator10-cogs.leveler")
 
 
+# noinspection PyUnusedLocal
 async def non_global_bank(ctx):
     return not await bank.is_global()
 
@@ -1138,7 +1139,6 @@ class Leveler(commands.Cog):
         """Credits per message logged.
 
         Default = 0"""
-        channel = ctx.channel
         server = ctx.guild
 
         if currency < 0 or currency > 1000:
@@ -2418,9 +2418,6 @@ class Leveler(commands.Cog):
         border = int(total_gap / 2)
         profile_size = lvl_circle_dia - total_gap
         raw_length = profile_size * multiplier
-        output = ImageOps.fit(
-            profile_image, (raw_length, raw_length), centering=(0.5, 0.5)
-        )
         mask = mask.resize((profile_size, profile_size), Image.ANTIALIAS)
         profile_image = profile_image.resize(
             (profile_size, profile_size), Image.ANTIALIAS
@@ -2777,20 +2774,20 @@ class Leveler(commands.Cog):
         border=3,
         iterations=5,
     ):
-        totalWidth = image.size[0] + abs(offset[0]) + 2 * border
-        totalHeight = image.size[1] + abs(offset[1]) + 2 * border
-        back = Image.new(image.mode, (totalWidth, totalHeight), background)
+        total_width = image.size[0] + abs(offset[0]) + 2 * border
+        total_height = image.size[1] + abs(offset[1]) + 2 * border
+        back = Image.new(image.mode, (total_width, total_height), background)
 
         # Place the shadow, taking into account the offset from the image
-        shadowLeft = border + max(offset[0], 0)
-        shadowTop = border + max(offset[1], 0)
+        shadow_left = border + max(offset[0], 0)
+        shadow_top = border + max(offset[1], 0)
         back.paste(
             shadow,
             [
-                shadowLeft,
-                shadowTop,
-                shadowLeft + image.size[0],
-                shadowTop + image.size[1],
+                shadow_left,
+                shadow_top,
+                shadow_left + image.size[0],
+                shadow_top + image.size[1],
             ],
         )
 
@@ -2800,9 +2797,9 @@ class Leveler(commands.Cog):
             n += 1
 
         # Paste the input image onto the shadow backdrop
-        imageLeft = border - min(offset[0], 0)
-        imageTop = border - min(offset[1], 0)
-        back.paste(image, (imageLeft, imageTop))
+        image_left = border - min(offset[0], 0)
+        image_top = border - min(offset[1], 0)
+        back.paste(image, (image_left, image_top))
         return back
 
     async def draw_rank(self, user, server):
@@ -3365,7 +3362,7 @@ class Leveler(commands.Cog):
                     server_exp += await self._required_exp(i)
                 server_exp += userinfo["servers"][str(server.id)]["current_exp"]
                 users.append((userid, server_exp))
-            except KeyError as exc:
+            except KeyError:
                 pass
 
         sorted_list = sorted(users, key=operator.itemgetter(1), reverse=True)
