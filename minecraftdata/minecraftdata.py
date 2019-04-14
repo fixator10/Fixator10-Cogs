@@ -217,7 +217,7 @@ class MinecraftData(commands.Cog):
     @commands.cooldown(1, 30, commands.BucketType.member)
     async def server(self, ctx, server_ip: str):
         """Get info about server"""
-        server = await self.bot.loop.run_in_executor(None, MinecraftServer, server_ip)
+        server = await self.bot.loop.run_in_executor(None, MinecraftServer.lookup, server_ip)
         async with ctx.channel.typing():
             try:
                 status = await self.bot.loop.run_in_executor(None, server.status)
