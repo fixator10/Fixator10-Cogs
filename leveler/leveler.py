@@ -7,6 +7,7 @@ import re
 import textwrap
 import time
 from asyncio import TimeoutError as AsyncTimeoutError
+from collections import OrderedDict
 from io import BytesIO
 
 import aiohttp
@@ -1883,7 +1884,7 @@ class Leveler(commands.Cog):
     @badge.command(name="link")
     @commands.guild_only()
     async def linkbadge(self, ctx, badge_name: str, level: int):
-        """Associate a role with a level."""
+        """Associate a badge with a level."""
         server = ctx.guild
         serverbadges = db.badges.find_one({"server_id": str(server.id)})
 
@@ -1917,7 +1918,7 @@ class Leveler(commands.Cog):
     @badge.command(name="unlink")
     @commands.guild_only()
     async def unlinkbadge(self, ctx, badge_name: str):
-        """Delete a role/level association."""
+        """Delete a badge/level association."""
         server = ctx.guild
 
         server_linked_badges = db.badgelinks.find_one({"server_id": str(server.id)})
@@ -1942,7 +1943,7 @@ class Leveler(commands.Cog):
     @badge.command(name="listlinks")
     @commands.guild_only()
     async def listbadge(self, ctx):
-        """List level/role associations."""
+        """List level/badge associations."""
         server = ctx.guild
 
         server_badges = db.badgelinks.find_one({"server_id": str(server.id)})
@@ -1955,12 +1956,13 @@ class Leveler(commands.Cog):
 
         if (
             server_badges is None
-            or "badges" not in server_badges
-            or server_badges["badges"] == {}
+                or not server_badges.get("badges")
         ):
             msg = "None"
         else:
-            badges = server_badges["badges"]
+            sortorder = sorted(server_badges["badges"], key=lambda b: server_badges["badges"][b])
+            badges = OrderedDict(server_badges["badges"])
+            [badges.move_to_end(k) for k in sortorder]
             msg = "**Badge** → Level\n"
             for badge in badges.keys():
                 msg += "**• {} →** {}\n".format(badge, badges[badge])
@@ -2074,15 +2076,16 @@ class Leveler(commands.Cog):
 
         if (
             server_roles is None
-            or "roles" not in server_roles
-            or server_roles["roles"] == {}
+                or not server_roles.get("roles")
         ):
             msg = "None"
         else:
-            roles = server_roles["roles"]
+            sortorder = sorted(server_roles["roles"], key=lambda r: server_roles["roles"][r]["level"])
+            roles = OrderedDict(server_roles["roles"])
+            [roles.move_to_end(k) for k in sortorder]
             msg = "**Role** → Level\n"
             for role in roles:
-                if roles[role]["remove_role"] is not None:
+                if roles[role]["remove_role"]:
                     msg += "**• {} →** {} (Removes: {})\n".format(
                         role, roles[role]["level"], roles[role]["remove_role"]
                     )
