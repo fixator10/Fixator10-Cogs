@@ -1960,7 +1960,7 @@ class Leveler(commands.Cog):
         ):
             msg = "None"
         else:
-            sortorder = sorted(server_badges["badges"], key=lambda b: server_badges["badges"][b])
+            sortorder = sorted(server_badges["badges"], key=lambda b: int(server_badges["badges"][b]))
             badges = OrderedDict(server_badges["badges"])
             [badges.move_to_end(k) for k in sortorder]
             msg = "**Badge** → Level\n"
@@ -2080,7 +2080,7 @@ class Leveler(commands.Cog):
         ):
             msg = "None"
         else:
-            sortorder = sorted(server_roles["roles"], key=lambda r: server_roles["roles"][r]["level"])
+            sortorder = sorted(server_roles["roles"], key=lambda r: int(server_roles["roles"][r]["level"]))
             roles = OrderedDict(server_roles["roles"])
             [roles.move_to_end(k) for k in sortorder]
             msg = "**Role** → Level\n"
