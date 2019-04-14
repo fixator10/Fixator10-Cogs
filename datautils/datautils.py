@@ -346,7 +346,7 @@ class DataUtils(commands.Cog):
             em.add_field(name="NSFW", value=bool_emojify(channel.is_nsfw()))
             if (
                     channel.guild.me.permissions_in(channel).manage_webhooks
-                    and channel.webhooks()
+                    and await channel.webhooks()
             ):
                 em.add_field(
                     name="Webhooks count", value=str(len(await channel.webhooks()))
