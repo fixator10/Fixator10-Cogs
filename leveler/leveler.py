@@ -145,10 +145,7 @@ class Leveler(commands.Cog):
         else:
             async with ctx.channel.typing():
                 profile = await self.draw_profile(user, server)
-                file = discord.File(
-                    profile,
-                    filename="profile.png",
-                )
+                file = discord.File(profile, filename="profile.png")
                 await channel.send(
                     "**User profile for {}**".format(await self._is_mention(user)),
                     file=file,
@@ -223,9 +220,7 @@ class Leveler(commands.Cog):
         else:
             async with channel.typing():
                 rank = await self.draw_rank(user, server)
-                file = discord.File(
-                    rank, filename="rank.png"
-                )
+                file = discord.File(rank, filename="rank.png")
                 await channel.send(
                     "**Ranking & Statistics for {}**".format(
                         await self._is_mention(user)
@@ -1954,13 +1949,12 @@ class Leveler(commands.Cog):
             icon_url=server.icon_url,
         )
 
-        if (
-            server_badges is None
-                or not server_badges.get("badges")
-        ):
+        if server_badges is None or not server_badges.get("badges"):
             msg = "None"
         else:
-            sortorder = sorted(server_badges["badges"], key=lambda b: int(server_badges["badges"][b]))
+            sortorder = sorted(
+                server_badges["badges"], key=lambda b: int(server_badges["badges"][b])
+            )
             badges = OrderedDict(server_badges["badges"])
             [badges.move_to_end(k) for k in sortorder]
             msg = "**Badge** → Level\n"
@@ -2074,13 +2068,13 @@ class Leveler(commands.Cog):
             icon_url=server.icon_url,
         )
 
-        if (
-            server_roles is None
-                or not server_roles.get("roles")
-        ):
+        if server_roles is None or not server_roles.get("roles"):
             msg = "None"
         else:
-            sortorder = sorted(server_roles["roles"], key=lambda r: int(server_roles["roles"][r]["level"]))
+            sortorder = sorted(
+                server_roles["roles"],
+                key=lambda r: int(server_roles["roles"][r]["level"]),
+            )
             roles = OrderedDict(server_roles["roles"])
             [roles.move_to_end(k) for k in sortorder]
             msg = "**Role** → Level\n"
@@ -2689,7 +2683,6 @@ class Leveler(commands.Cog):
         result.save(file, "PNG", quality=100)
         return file.getvalue()
 
-
     # returns color that contrasts better in background
     def _contrast(self, bg_color, color1, color2):
         color1_ratio = self._contrast_ratio(bg_color, color1)
@@ -3287,10 +3280,7 @@ class Leveler(commands.Cog):
             else:
                 async with channel.typing():
                     levelup = await self.draw_levelup(user, server)
-                    file = discord.File(
-                        levelup,
-                        filename="levelup.png",
-                    )
+                    file = discord.File(levelup, filename="levelup.png")
                     await channel.send(
                         "**{} just gained a level{}!**".format(name, server_identifier),
                         file=file,
