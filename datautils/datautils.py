@@ -14,7 +14,7 @@ def rgb_to_hex(rgb_tuple):
 
 
 def bool_emojify(bool_var: bool) -> str:
-    return "✔" if bool_var else "❌"
+    return "✅" if bool_var else "❌"
 
 
 class DataUtils(commands.Cog):
@@ -205,7 +205,7 @@ class DataUtils(commands.Cog):
             if server.default_notifications == discord.NotificationLevel.only_mentions
             else "Unknown",
         )
-        em.add_field(name="2FA admins", value=server.mfa_level and "✔" or "❌")
+        em.add_field(name="2FA admins", value=bool_emojify(server.mfa_level))
         em.add_field(name="Member Count", value=server.member_count)
         em.add_field(name="Role Count", value=str(len(server.roles)))
         em.add_field(name="Channel Count", value=str(len(server.channels)))
@@ -216,11 +216,11 @@ class DataUtils(commands.Cog):
         if not inv_splash:
             em.add_field(name="Invite Splash", value="❌")
         elif not server.splash_url:
-            em.add_field(name="Invite Splash", value="✔")
+            em.add_field(name="Invite Splash", value="✅")
         else:
             em.add_field(
                 name="Invite Splash",
-                value="✔ [🔗](" + server.splash_url_as(format="png", size=2048) + ")",
+                value="✅ [🔗](" + server.splash_url_as(format="png", size=2048) + ")",
             )
         em.set_image(url=server.icon_url_as(format="png", size=2048))
         await ctx.send(embed=em)

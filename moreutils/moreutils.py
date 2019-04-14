@@ -34,7 +34,7 @@ def rgb_to_cmyk(r, g, b):
 
 
 def bool_emojify(bool_var: bool) -> str:
-    return "✔" if bool_var else "❌"
+    return "✅" if bool_var else "❌"
 
 
 class MoreUtils(commands.Cog):

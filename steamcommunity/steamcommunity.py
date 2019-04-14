@@ -14,7 +14,7 @@ from .steamuser import SteamUser
 
 
 def bool_emojify(bool_var: bool) -> str:
-    return "✔" if bool_var else "❌"
+    return "✅" if bool_var else "❌"
 
 
 def check_api(ctx):
