@@ -223,6 +223,7 @@ class MinecraftData(commands.Cog):
             )
         except Exception as e:
             await ctx.send(chat.error(f"Unable to resolve IP: {e}"))
+            return
         async with ctx.channel.typing():
             try:
                 status = await self.bot.loop.run_in_executor(None, server.status)
