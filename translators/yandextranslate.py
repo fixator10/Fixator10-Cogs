@@ -38,7 +38,7 @@ class YTranslateAPI:
         """Make request to Yandex.Translate API"""
         params.update({"key": self.apikey})
         async with self.session.get(
-                f"https://translate.yandex.net/api/v1.5/tr.json/{endpoint}", params=params
+            f"https://translate.yandex.net/api/v1.5/tr.json/{endpoint}", params=params
         ) as response:
             return await response.json()
 

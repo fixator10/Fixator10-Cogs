@@ -24,15 +24,15 @@ class DataUtils(commands.Cog):
     @commands.command()
     @checks.bot_has_permissions(embed_links=True)
     async def getuserinfo(self, ctx, user_id: int):
-        """Get info about any discord's user by ID"""
+        """Get info about any Discord's user by ID"""
         try:
             user = await self.bot.get_user_info(user_id)
-        except discord.errors.NotFound:
+        except discord.NotFound:
             await ctx.send(
                 chat.error("Discord user with ID `{}` not found").format(user_id)
             )
             return
-        except discord.errors.HTTPException:
+        except discord.HTTPException:
             await ctx.send(
                 chat.warning(
                     "Bot was unable to get data about user with ID `{}`. "
