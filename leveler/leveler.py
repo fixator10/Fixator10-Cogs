@@ -1,5 +1,4 @@
 import logging
-import math
 import operator
 import platform
 import random
@@ -12,6 +11,7 @@ from io import BytesIO
 
 import aiohttp
 import discord
+import math
 from discord.utils import find
 from fontTools.ttLib import TTFont
 from redbot.core import bank
@@ -193,7 +193,7 @@ class Leveler(commands.Cog):
     @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.command()
     @commands.guild_only()
-    async def rank(self, ctx, user: discord.Member = None):
+    async def rank(self, ctx, *, user: discord.Member = None):
         """Displays the rank of a user."""
         if user is None:
             user = ctx.message.author
@@ -397,7 +397,7 @@ class Leveler(commands.Cog):
     @commands.cooldown(1, 30, commands.BucketType.user)
     @commands.command()
     @commands.guild_only()
-    async def rep(self, ctx, user: discord.Member = None):
+    async def rep(self, ctx, *, user: discord.Member = None):
         """Gives a reputation point to a designated player."""
         org_user = ctx.author
         server = ctx.guild
@@ -451,7 +451,7 @@ class Leveler(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    async def lvlinfo(self, ctx, user: discord.Member = None):
+    async def lvlinfo(self, ctx, *, user: discord.Member = None):
         """Gives more specific details about user profile image."""
         if not user:
             user = ctx.author
