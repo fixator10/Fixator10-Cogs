@@ -308,10 +308,10 @@ class Translators(commands.Cog):
         encoded = encoded.encode()
         try:
             decoded = base64.standard_b64decode(encoded)
+            result = decoded.decode()
         except Exception as e:
             await ctx.send(e)
             return
-        result = decoded.decode()
         await ctx.send(chat.box(result))
 
     # noinspection PyPep8
