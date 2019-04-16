@@ -34,7 +34,7 @@ class Translators(commands.Cog):
             "To get Yandex.Translate API key:\n"
             "1. Login to your Yandex account\n"
             "1.1. Visit [API keys](https://translate.yandex.com/developers/keys) page\n"
-            "2. Press `Создать новый ключ`\n"
+            "2. Press `Create a new key`\n"
             "3. Enter description for key\n"
             "4. Copy `trnsl.*` key\n"
             "5. Use `{}set api yandex translate,<your_apikey>`"

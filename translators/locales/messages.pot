@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-04-16 16:53+0400\n"
+"POT-Creation-Date: 2019-04-16 17:28+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,23 +15,23 @@ msgstr ""
 "Generated-By: redgettext 2.2\n"
 
 
-#: translators.py:33
+#: translators.py:32
 #, docstring
 msgid "Set API key for Yandex.Translate"
 msgstr ""
 
-#: translators.py:34
+#: translators.py:33
 msgid ""
 "To get Yandex.Translate API key:\n"
 "1. Login to your Yandex account\n"
 "1.1. Visit [API keys](https://translate.yandex.com/developers/keys) page\n"
-"2. Press `Создать новый ключ`\n"
+"2. Press `Create a new key`\n"
 "3. Enter description for key\n"
 "4. Copy `trnsl.*` key\n"
 "5. Use `{}set api yandex translate,<your_apikey>`"
 msgstr ""
 
-#: translators.py:48
+#: translators.py:47
 #, docstring
 msgid ""
 "Translate text via Yandex\n"
@@ -40,35 +40,35 @@ msgid ""
 "        or \"en-ru\" (original text's language - target language)"
 msgstr ""
 
-#: translators.py:64
+#: translators.py:63
 msgid "An error has been occurred: Language {} is not supported or incorrect, check your formatting and try again"
 msgstr ""
 
-#: translators.py:74
+#: translators.py:73
 msgid "An error has been occurred: Text that you provided is too big to translate"
 msgstr ""
 
-#: translators.py:82
+#: translators.py:81
 msgid "API key is blocked. Bot owner needs to get new api key or unlock current."
 msgstr ""
 
-#: translators.py:89
+#: translators.py:88
 msgid "Daily requests limit reached. Try again later."
 msgstr ""
 
-#: translators.py:94
+#: translators.py:93
 msgid "An error has been occurred: Yandex.Translate is unable to translate your text"
 msgstr ""
 
-#: translators.py:100
+#: translators.py:99
 msgid "An error has been occured: {e}"
 msgstr ""
 
-#: translators.py:107
+#: translators.py:106
 msgid "Translated via Yandex.Translate"
 msgstr ""
 
-#: translators.py:115
+#: translators.py:114
 #, docstring
 msgid ""
 "Say something via Google Translate\n"
@@ -76,15 +76,15 @@ msgid ""
 "        If text contains more than 200 symbols, it will be cut"
 msgstr ""
 
-#: translators.py:132
+#: translators.py:131
 msgid "Google Translate returned code {}"
 msgstr ""
 
-#: translators.py:139
+#: translators.py:138
 msgid "Unable to get data from Google Translate TTS: {}"
 msgstr ""
 
-#: translators.py:149
+#: translators.py:148
 #, docstring
 msgid ""
 "Translates text (cyrillic/latin) to \"eciho\"\n"
@@ -94,7 +94,7 @@ msgid ""
 "        This is unusable shit, i know, but whatever"
 msgstr ""
 
-#: translators.py:175
+#: translators.py:174
 #, docstring
 msgid ""
 "Flips text upside-down\n"
@@ -102,47 +102,47 @@ msgid ""
 "        Based on https://unicode-table.com/en/tools/flip/"
 msgstr ""
 
-#: translators.py:192
+#: translators.py:191
 #, docstring
 msgid "Switches text to Ｆｕｌｌ－ｗｉｄｔｈ　ｃｈａｒａｃｔｅｒｓ"
 msgstr ""
 
-#: translators.py:209
+#: translators.py:208
 #, docstring
 msgid "Leet (1337) translation commands"
 msgstr ""
 
-#: translators.py:214
+#: translators.py:213
 #, docstring
 msgid "Translates provided text to 1337"
 msgstr ""
 
-#: translators.py:250
+#: translators.py:249
 #, docstring
 msgid "Translate cyrillic to 1337"
 msgstr ""
 
-#: translators.py:294
+#: translators.py:293
 #, docstring
 msgid "Base64 text converter"
 msgstr ""
 
-#: translators.py:299
+#: translators.py:298
 #, docstring
 msgid "Encode text to base64"
 msgstr ""
 
-#: translators.py:308
+#: translators.py:307
 #, docstring
 msgid "Decode text from base64"
 msgstr ""
 
-#: translators.py:317
+#: translators.py:316
 #, docstring
 msgid "emojify text"
 msgstr ""
 
-#: translators.py:344
+#: translators.py:343
 #, docstring
 msgid ""
 "Encode text to url-like format\n"
