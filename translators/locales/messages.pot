@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-04-16 17:28+0400\n"
+"POT-Creation-Date: 2019-04-16 17:51+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -129,17 +129,17 @@ msgstr ""
 
 #: translators.py:298
 #, docstring
-msgid "Encode text to base64"
+msgid "Encode text to Base64"
 msgstr ""
 
 #: translators.py:307
 #, docstring
-msgid "Decode text from base64"
+msgid "Decode text from Base64"
 msgstr ""
 
 #: translators.py:316
 #, docstring
-msgid "emojify text"
+msgid "Emojify text"
 msgstr ""
 
 #: translators.py:343

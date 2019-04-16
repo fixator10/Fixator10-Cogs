@@ -295,7 +295,7 @@ class Translators(commands.Cog):
 
     @_base64.command(name="encode")
     async def _tobase64(self, ctx, *, text: str):
-        """Encode text to base64"""
+        """Encode text to Base64"""
         text = text.encode()
         output = base64.standard_b64encode(text)
         result = output.decode()
@@ -304,7 +304,7 @@ class Translators(commands.Cog):
 
     @_base64.command(name="decode")
     async def _frombase64(self, ctx, *, encoded: str):
-        """Decode text from base64"""
+        """Decode text from Base64"""
         encoded = encoded.encode()
         decoded = base64.standard_b64decode(encoded)
         result = decoded.decode()
@@ -313,7 +313,7 @@ class Translators(commands.Cog):
     # noinspection PyPep8
     @commands.command()
     async def emojify(self, ctx, *, message: str):
-        """emojify text"""
+        """Emojify text"""
         char = "abcdefghijklmnopqrstuvwxyz↓↑←→—.!"
         tran = "🇦🇧🇨🇩🇪🇫🇬🇭🇮🇯🇰🇱🇲🇳🇴🇵🇶🇷🇸🇹🇺🇻🇼🇽🇾🇿⬇⬆⬅➡➖⏺ℹ"
         table = str.maketrans(char, tran)
