@@ -6,6 +6,7 @@ import discord
 import valve.source.a2s
 from redbot.core import checks
 from redbot.core import commands
+from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils import chat_formatting as chat
 from valve.steam.api import interface
 
@@ -29,6 +30,10 @@ def _check_api(ctx):
     return not check_api(ctx)
 
 
+_ = Translator("SteamCommunity", __file__)
+
+
+@cog_i18n(_)
 class SteamCommunity(commands.Cog):
     """SteamCommunity commands"""
 
@@ -71,7 +76,7 @@ class SteamCommunity(commands.Cog):
         if "ISteamUser" in list(self.steam._interfaces.keys()):
             await ctx.tick()
             return
-        message = (
+        message = _(
             "To get Steam Web API key:\n"
             "1. Login to your Steam account\n"
             "2. Visit [Register Steam Web API Key](https://steamcommunity.com/dev/apikey) page\n"
@@ -80,8 +85,8 @@ class SteamCommunity(commands.Cog):
             "5. Use `{}set api steam web,<your_apikey>`\n"
             "6. Use this command again\n\n"
             "Note: These tokens are sensitive and should only be used in a private channel\n"
-            "or in DM with the bot.".format(ctx.prefix)
-        )
+            "or in DM with the bot."
+        ).format(ctx.prefix)
         await ctx.maybe_send_embed(message)
 
     @steamcommunity.command(name="profile", aliases=["p"])
@@ -97,8 +102,10 @@ class SteamCommunity(commands.Cog):
         except IndexError:
             await ctx.send(
                 chat.error(
-                    "Unable to get profile for {}. "
-                    "Check your input or try again later.".format(steamid)
+                    _(
+                        "Unable to get profile for {}. "
+                        "Check your input or try again later."
+                    ).format(steamid)
                 )
             )
             return
@@ -110,28 +117,28 @@ class SteamCommunity(commands.Cog):
             color=profile.personastatecolor,
         )
         if profile.gameid:
-            em.description = "In game: [{}](http://store.steampowered.com/app/{})".format(
-                profile.gameextrainfo or "Unknown", profile.gameid
-            )
+            em.description = _(
+                "In game: [{}](http://store.steampowered.com/app/{})"
+            ).format(profile.gameextrainfo or "Unknown", profile.gameid)
             if profile.gameserver:
-                em.description += " on server {}".format(profile.gameserver)
+                em.description += _(" on server {}").format(profile.gameserver)
             if profile.shared_by:
-                em.description += "\nFamily Shared by [{}]({})".format(
+                em.description += _("\nFamily Shared by [{}]({})").format(
                     profile.shared_by.personaname, profile.shared_by.profileurl
                 )
         if profile.realname:
-            em.add_field(name="Real name", value=profile.realname, inline=False)
-        em.add_field(name="Level", value=profile.level or "0")
+            em.add_field(name=_("Real name"), value=profile.realname, inline=False)
+        em.add_field(name=_("Level"), value=profile.level or "0")
         if profile.country:
             em.add_field(
-                name="Country", value=":flag_{}:".format(profile.country.lower())
+                name=_("Country"), value=":flag_{}:".format(profile.country.lower())
             )
-        em.add_field(name="Visibility", value=profile.visibility)
+        em.add_field(name=_("Visibility"), value=profile.visibility)
         if profile.createdat:
             em.add_field(
-                name="Created at",
+                name=_("Created at"),
                 value=datetime.utcfromtimestamp(profile.createdat).strftime(
-                    "%d.%m.%Y %H:%M:%S"
+                    _("%d.%m.%Y %H:%M:%S")
                 ),
             )
         em.add_field(
@@ -139,28 +146,32 @@ class SteamCommunity(commands.Cog):
         )
         em.add_field(name="SteamID64", value=profile.steamid64)
         if any([profile.VACbanned, profile.gamebans]):
-            bansdescription = "Days since last ban: {}".format(profile.sincelastban)
+            bansdescription = _("Days since last ban: {}").format(profile.sincelastban)
         elif any([profile.communitybanned, profile.economyban]):
-            bansdescription = "Has one or more bans:"
+            bansdescription = _("Has one or more bans:")
         else:
-            bansdescription = "No bans on record"
-        em.add_field(name="🛡 Bans", value=bansdescription, inline=False)
-        em.add_field(name="Community ban", value=bool_emojify(profile.communitybanned))
+            bansdescription = _("No bans on record")
+        em.add_field(name=_("🛡 Bans"), value=bansdescription, inline=False)
         em.add_field(
-            name="Economy ban",
+            name=_("Community ban"), value=bool_emojify(profile.communitybanned)
+        )
+        em.add_field(
+            name=_("Economy ban"),
             value=profile.economyban.capitalize() if profile.economyban else "❌",
         )
         em.add_field(
-            name="VAC bans",
-            value="{} VAC bans".format(profile.VACbans) if profile.VACbans else "❌",
+            name=_("VAC bans"),
+            value=_("{} VAC bans").format(profile.VACbans) if profile.VACbans else "❌",
         )
         em.add_field(
-            name="Game bans",
-            value="{} game bans".format(profile.gamebans) if profile.gamebans else "❌",
+            name=_("Game bans"),
+            value=_("{} game bans").format(profile.gamebans)
+            if profile.gamebans
+            else "❌",
         )
         em.set_thumbnail(url=profile.avatar184)
         em.set_footer(
-            text="Powered by Steam • Last seen on",
+            text=_("Powered by Steam • Last seen on"),
             icon_url="https://steamstore-a.akamaihd.net/public/shared/images/responsive/share_steam_logo.png",
         )
         await ctx.send(embed=em)
@@ -177,7 +188,7 @@ class SteamCommunity(commands.Cog):
             try:
                 ip = gethostbyname_ex(serverc[0])[2][0]
             except Exception as e:
-                await ctx.send(f"The specified domain is not valid: {e}")
+                await ctx.send(_("The specified domain is not valid: {e}").format(e))
                 return
             servercheck = ip
             serverc = [str(ip), int(serverc[1])]
@@ -200,12 +211,14 @@ class SteamCommunity(commands.Cog):
         except valve.source.a2s.NoResponseError:
             await ctx.send(
                 chat.error(
-                    "Could not fetch Server or the Server is not on the Steam masterlist"
+                    _(
+                        "Could not fetch Server or the Server is not on the Steam masterlist"
+                    )
                 )
             )
             return
         except Exception as e:
-            await ctx.send(chat.error(f"An Error has been occurred: {e}"))
+            await ctx.send(chat.error(_("An Error has been occurred: {}").format(e)))
             return
 
         _map = info.values["map"]
@@ -232,29 +245,29 @@ class SteamCommunity(commands.Cog):
 
         em = discord.Embed(colour=await ctx.embed_color())
         em.add_field(
-            name="Game", value=f"[{game}](http://store.steampowered.com/app/{gameid})"
+            name=_("Game"),
+            value=f"[{game}](http://store.steampowered.com/app/{gameid})",
         )
-        em.add_field(name="Gamemode", value=gamemode)
-        em.add_field(name="Server name", value=servername, inline=False)
-        em.add_field(name="Map", value=_map, inline=False)
+        em.add_field(name=_("Gamemode"), value=gamemode)
+        em.add_field(name=_("Server name"), value=servername, inline=False)
+        em.add_field(name=_("Map"), value=_map, inline=False)
         em.add_field(name="IP", value=serverc[0])
-        em.add_field(name="Operating System", value=os)
-        em.add_field(name="Server type", value=servertype)
-        em.add_field(name="Version", value=version)
+        em.add_field(name=_("Operating System"), value=os)
+        em.add_field(name=_("Server type"), value=servertype)
+        em.add_field(name=_("Version"), value=version)
         em.add_field(name="VAC", value=bool_emojify(bool(info.values["vac_enabled"])))
         em.add_field(
-            name="Password", value=bool_emojify(bool(info.values["password_protected"]))
+            name=_("Password"),
+            value=bool_emojify(bool(info.values["password_protected"])),
         )
         if botnumber:
             em.add_field(
-                name="Players",
-                value="{}/{}\n{} Bot{}".format(
-                    playernumber, maxplayers, botnumber, botnumber > 1 and "s" or ""
-                ),
+                name=_("Players"),
+                value=_("{}/{}\nBots: {}").format(playernumber, maxplayers, botnumber),
             )
         else:
             em.add_field(
-                name="Players", value="{}/{}\n".format(playernumber, maxplayers)
+                name=_("Players"), value="{}/{}\n".format(playernumber, maxplayers)
             )
 
         await ctx.send(embed=em)

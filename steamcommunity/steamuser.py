@@ -1,4 +1,7 @@
+from redbot.core.i18n import Translator
 from valve.steam.api.interface import API
+
+_ = Translator("SteamCommunity", __file__)
 
 
 class SteamUser:
@@ -14,11 +17,11 @@ class SteamUser:
         self._bandata = self._user.GetPlayerBans(player_id)["players"][0]
         self._personastate = self._userdata.get("personastate", 0)
         visibilites = {
-            1: "Private",
-            2: "Friends only",
-            3: "Public",  # Friends of friends
-            4: "Users only",
-            5: "Public",
+            1: _("Private"),
+            2: _("Friends only"),
+            3: _("Public"),  # Friends of friends
+            4: _("Users only"),
+            5: _("Public"),
         }
         acctypes = ["I", "U", "M", "G", "A", "P", "C", "g", "T", "", "a"]
 
@@ -81,13 +84,13 @@ class SteamUser:
         """Get persona state
         :param string: Return string of state or id?"""
         stringnames = {
-            0: "Offline",
-            1: "Online",
-            2: "Busy",
-            3: "Away",
-            4: "Snooze",
-            5: "Looking to trade",
-            6: "Looking to play",
+            0: _("Offline"),
+            1: _("Online"),
+            2: _("Busy"),
+            3: _("Away"),
+            4: _("Snooze"),
+            5: _("Looking to trade"),
+            6: _("Looking to play"),
         }
         if string:
             return stringnames[self._personastate]
