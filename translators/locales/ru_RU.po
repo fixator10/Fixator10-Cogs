@@ -5,24 +5,24 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2019-04-16 16:53+0400\n"
-"PO-Revision-Date: 2019-04-16 17:53+0400\n"
+"POT-Creation-Date: 2019-04-16 17:51+0400\n"
+"PO-Revision-Date: 2019-04-16 18:00+0400\n"
+"Last-Translator: \n"
 "Language-Team: \n"
+"Language: ru_RU\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: redgettext 2.2\n"
 "X-Generator: Poedit 2.2.1\n"
-"Last-Translator: \n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
-"Language: ru_RU\n"
 
-#: translators.py:33
+#: translators.py:32
 msgid "Set API key for Yandex.Translate"
 msgstr "Установить ключ"
 
-#: translators.py:34
+#: translators.py:33
 msgid ""
 "To get Yandex.Translate API key:\n"
 "1. Login to your Yandex account\n"
@@ -41,7 +41,7 @@ msgstr ""
 "4. Скопируйте ключ вида `trnsl.*`\n"
 "5. Используйте команду `{}set api yandex translate,<ваш_API_ключ>"
 
-#: translators.py:48
+#: translators.py:47
 msgid ""
 "Translate text via Yandex\n"
 "\n"
@@ -54,7 +54,7 @@ msgstr ""
 "перевод)\n"
 "        или \"en-ru\" (язык текста - язык цель)"
 
-#: translators.py:64
+#: translators.py:63
 msgid ""
 "An error has been occurred: Language {} is not supported or incorrect, check "
 "your formatting and try again"
@@ -62,37 +62,37 @@ msgstr ""
 "Произошла ошибка: Язык {} не поддерживается или неверен, проверьте "
 "форматирование и попробуйте снова"
 
-#: translators.py:74
+#: translators.py:73
 msgid ""
 "An error has been occurred: Text that you provided is too big to translate"
 msgstr ""
 "Произошла ошибка: Текст, который вы предоставили слишком большой для перевода"
 
-#: translators.py:82
+#: translators.py:81
 msgid ""
 "API key is blocked. Bot owner needs to get new api key or unlock current."
 msgstr ""
 "Ключ API заблокирован. Владелец бота должен получить новый ключ или "
 "разблокировать текущий."
 
-#: translators.py:89
+#: translators.py:88
 msgid "Daily requests limit reached. Try again later."
 msgstr "Достигнут лимит суточных запросов. Попробуйте позже."
 
-#: translators.py:94
+#: translators.py:93
 msgid ""
 "An error has been occurred: Yandex.Translate is unable to translate your text"
 msgstr "Произошла ошибка: Яндекс.Переводчик не может перевести ваш текст"
 
-#: translators.py:100
+#: translators.py:99
 msgid "An error has been occured: {}"
 msgstr "Произошла ошибка: {}"
 
-#: translators.py:107
+#: translators.py:106
 msgid "Translated via Yandex.Translate"
 msgstr "Переведено сервисом «Яндекс.Переводчик»"
 
-#: translators.py:115
+#: translators.py:114
 msgid ""
 "Say something via Google Translate\n"
 "\n"
@@ -102,15 +102,15 @@ msgstr ""
 "\n"
 "        Если текст содержит более 200 символов, он будет обрезан"
 
-#: translators.py:132
+#: translators.py:131
 msgid "Google Translate returned code {}"
 msgstr "Переводчик Google вернул код {}"
 
-#: translators.py:139
+#: translators.py:138
 msgid "Unable to get data from Google Translate TTS: {}"
 msgstr "Невозможно получить информацию от переводчика Google: {}"
 
-#: translators.py:149
+#: translators.py:148
 msgid ""
 "Translates text (cyrillic/latin) to \"eciho\"\n"
 "\n"
@@ -124,7 +124,7 @@ msgstr ""
 "\n"
 "        Бесполезное дерьмо, но кому какая разница"
 
-#: translators.py:175
+#: translators.py:174
 msgid ""
 "Flips text upside-down\n"
 "\n"
@@ -134,39 +134,39 @@ msgstr ""
 "\n"
 "        Основано на https://unicode-table.com/ru/tools/flip/"
 
-#: translators.py:192
+#: translators.py:191
 msgid "Switches text to Ｆｕｌｌ－ｗｉｄｔｈ　ｃｈａｒａｃｔｅｒｓ"
 msgstr "Переводит текст в Ｆｕｌｌ－ｗｉｄｔｈ　ｃｈａｒａｃｔｅｒｓ"
 
-#: translators.py:209
+#: translators.py:208
 msgid "Leet (1337) translation commands"
 msgstr "Команды перевода в Leet (1337)"
 
-#: translators.py:214
+#: translators.py:213
 msgid "Translates provided text to 1337"
 msgstr "Переводит указанный текст в 1337"
 
-#: translators.py:250
+#: translators.py:249
 msgid "Translate cyrillic to 1337"
 msgstr "Переводит кириллицу в 1337"
 
-#: translators.py:294
+#: translators.py:293
 msgid "Base64 text converter"
 msgstr "Конвертер текста в/из Base64"
 
-#: translators.py:299
-msgid "Encode text to base64"
+#: translators.py:298
+msgid "Encode text to Base64"
 msgstr "Закодировать текст в Base64"
 
-#: translators.py:308
-msgid "Decode text from base64"
+#: translators.py:307
+msgid "Decode text from Base64"
 msgstr "Раскодировать текст из Base64"
 
-#: translators.py:317
+#: translators.py:316
 msgid "Emojify text"
 msgstr "Преобразовать текст в emoji"
 
-#: translators.py:344
+#: translators.py:343
 msgid ""
 "Encode text to url-like format\n"
 "        ('abc def') -> 'abc%20def'"
