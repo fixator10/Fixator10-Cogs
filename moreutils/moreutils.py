@@ -108,7 +108,7 @@ class MoreUtils(commands.Cog):
             "ヽ༼ ಠ益ಠ ༽ﾉ",
         ]
         smile = random.choice(smilies)
-        member = await self.random_channel_member(ctx.channel)
+        member = random.choice(ctx.channel.members)
         await ctx.send(
             "**@someone** {} ***{}*** {}".format(
                 smile,
@@ -156,10 +156,3 @@ class MoreUtils(commands.Cog):
                 value=component["status"].capitalize().replace("_", " "),
             )
         await ctx.send(embed=embed)
-
-    async def random_channel_member(self, channel: discord.TextChannel):
-        """Returns random member that has access to channel"""
-        randommember = random.choice(list(channel.guild.members))
-        if channel.permissions_for(randommember).read_messages:
-            return randommember
-        return await self.random_channel_member(channel)
