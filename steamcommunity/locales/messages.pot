@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-04-16 16:56+0400\n"
+"POT-Creation-Date: 2019-04-16 20:48+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -136,7 +136,7 @@ msgid "Get info about a gameserver"
 msgstr ""
 
 #: steamcommunity.py:191
-msgid "The specified domain is not valid: {e}"
+msgid "The specified domain is not valid: {}"
 msgstr ""
 
 #: steamcommunity.py:214
@@ -189,47 +189,47 @@ msgid ""
 "Bots: {}"
 msgstr ""
 
-#: steamuser.py:21
+#: steamuser.py:20
 msgid "Private"
 msgstr ""
 
-#: steamuser.py:22
+#: steamuser.py:21
 msgid "Friends only"
 msgstr ""
 
-#: steamuser.py:23 steamuser.py:25
+#: steamuser.py:22 steamuser.py:24
 msgid "Public"
 msgstr ""
 
-#: steamuser.py:24
+#: steamuser.py:23
 msgid "Users only"
 msgstr ""
 
-#: steamuser.py:88
+#: steamuser.py:87
 msgid "Offline"
 msgstr ""
 
-#: steamuser.py:89
+#: steamuser.py:88
 msgid "Online"
 msgstr ""
 
-#: steamuser.py:90
+#: steamuser.py:89
 msgid "Busy"
 msgstr ""
 
-#: steamuser.py:91
+#: steamuser.py:90
 msgid "Away"
 msgstr ""
 
-#: steamuser.py:92
+#: steamuser.py:91
 msgid "Snooze"
 msgstr ""
 
-#: steamuser.py:93
+#: steamuser.py:92
 msgid "Looking to trade"
 msgstr ""
 
-#: steamuser.py:94
+#: steamuser.py:93
 msgid "Looking to play"
 msgstr ""
 
