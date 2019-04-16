@@ -290,7 +290,11 @@ class Translators(commands.Cog):
     async def _frombase64(self, ctx, *, encoded: str):
         """Decode text from base64"""
         encoded = encoded.encode()
-        decoded = base64.standard_b64decode(encoded)
+        try:
+            decoded = base64.standard_b64decode(encoded)
+        except Exception as e:
+            await ctx.send(e)
+            return
         result = decoded.decode()
         await ctx.send(chat.box(result))
 
