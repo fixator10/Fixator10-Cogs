@@ -4,11 +4,15 @@ import aiohttp
 import discord
 from redbot.core import checks
 from redbot.core import commands
+from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils import chat_formatting as chat
 from redbot.core.utils.mod import get_audit_reason
 from redbot.core.utils.predicates import MessagePredicate
 
+_ = Translator("AdminUtils", __file__)
 
+
+@cog_i18n(_)
 class AdminUtils(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
@@ -26,18 +30,22 @@ class AdminUtils(commands.Cog):
         if days > 30:
             await ctx.send(
                 chat.info(
-                    "Due to Discord Restrictions, you cannot use more than 30 days for that cmd."
+                    _(
+                        "Due to Discord Restrictions, you cannot use more than 30 days for that cmd."
+                    )
                 )
             )
             days = 30
         elif days <= 0:
-            await ctx.send(chat.info('"days" arg cannot be less than 1...'))
+            await ctx.send(chat.info(_('"days" arg cannot be less than 1...')))
             days = 1
         to_kick = await ctx.guild.estimate_pruned_members(days=days)
         await ctx.send(
             chat.warning(
-                "You about to kick **{}** inactive for **{}** days members from this server. "
-                'Are you sure?\nTo agree, type "yes"'.format(to_kick, days)
+                _(
+                    "You about to kick **{to_kick}** inactive for **{days}** days members from this server. "
+                    'Are you sure?\nTo agree, type "yes"'
+                ).format(to_kick=to_kick, days=days)
             )
         )
         pred = MessagePredicate.yes_or_no(ctx)
@@ -51,12 +59,14 @@ class AdminUtils(commands.Cog):
             )
             await ctx.send(
                 chat.info(
-                    "**{}**/**{}** inactive members removed.\n"
-                    "(They was inactive for **{}** days)".format(cleanup, to_kick, days)
+                    _(
+                        "**{removed}**/**{all}** inactive members removed.\n"
+                        "(They was inactive for **{days}** days)"
+                    ).format(removed=cleanup, all=to_kick, days=days)
                 )
             )
         else:
-            await ctx.send(chat.error("Inactive members cleanup canceled."))
+            await ctx.send(chat.error(_("Inactive members cleanup canceled.")))
 
     @commands.command()
     @commands.guild_only()
@@ -70,15 +80,15 @@ class AdminUtils(commands.Cog):
         for user in server.members:
             try:
                 await user.edit(
-                    nick=nickname, reason=get_audit_reason(ctx.author, "Massnick")
+                    nick=nickname, reason=get_audit_reason(ctx.author, _("Massnick"))
                 )
             except discord.HTTPException:
                 counter += 1
                 continue
         await ctx.send(
-            "Finished nicknaming server. {} nicknames could not be completed.".format(
-                counter
-            )
+            _(
+                "Finished nicknaming server. {} nicknames could not be completed."
+            ).format(counter)
         )
 
     @commands.command()
@@ -92,11 +102,11 @@ class AdminUtils(commands.Cog):
         for user in server.members:
             try:
                 await user.edit(
-                    nickname=None, reason=get_audit_reason(ctx.author, "Reset nicks")
+                    nickname=None, reason=get_audit_reason(ctx.author, _("Reset nicks"))
                 )
             except discord.HTTPException:
                 continue
-        await ctx.send("Finished resetting server nicknames")
+        await ctx.send(_("Finished resetting server nicknames"))
 
     @commands.group()
     @commands.guild_only()
@@ -121,7 +131,7 @@ class AdminUtils(commands.Cog):
                 data = await r.read()
         except Exception as e:
             await ctx.send(
-                chat.error("Unable to get emoji from provided url: {}".format(e))
+                chat.error(_("Unable to get emoji from provided url: {}").format(e))
             )
             return
         try:
@@ -132,15 +142,17 @@ class AdminUtils(commands.Cog):
                 reason=get_audit_reason(
                     ctx.author,
                     (
-                        "Restricted to roles: "
-                        + ", ".join([f"{role.name}" for role in roles])
+                            _("Restricted to roles: ")
+                            + ", ".join([f"{role.name}" for role in roles])
                     )
                     if roles
                     else None,
                 ),
             )
         except discord.HTTPException as e:
-            await ctx.send(chat.error(f"An error occured on adding an emoji: {e}"))
+            await ctx.send(
+                chat.error(_("An error occured on adding an emoji: {}").format(e))
+            )
             return
         await ctx.tick()
 
@@ -163,8 +175,8 @@ class AdminUtils(commands.Cog):
             reason=get_audit_reason(
                 ctx.author,
                 (
-                    "Restricted to roles: "
-                    + ", ".join([f"{role.name}" for role in roles])
+                        _("Restricted to roles: ")
+                        + ", ".join([f"{role.name}" for role in roles])
                 )
                 if roles
                 else None,
