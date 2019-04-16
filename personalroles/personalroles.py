@@ -41,8 +41,8 @@ class PersonalRoles(commands.Cog):
         """Assign personal role to someone"""
         await self.config.member(user).role.set(role.id)
         await ctx.send(
-            _("Ok. I just assigned {} ({}) to role {} ({}).").format(
-                user.name, user.id, role.name, role.id
+            _("Ok. I just assigned {user.name} ({user.id}) to role {role.name} ({role.id}).").format(
+                user=user, role=role
             )
         )
 
@@ -52,8 +52,8 @@ class PersonalRoles(commands.Cog):
         """Unassign personal role from someone"""
         await self.config.member(user).role.clear()
         await ctx.send(
-            _("Ok. I just unassigned {} ({}) from his personal role.").format(
-                user.name, user.id
+            _("Ok. I just unassigned {user.name} ({user.id}) from his personal role.").format(
+                user=user
             )
         )
 
@@ -63,7 +63,8 @@ class PersonalRoles(commands.Cog):
         """Assigned roles list"""
         members_data = await self.config.all_members(ctx.guild)
         if not members_data:
-            await ctx.send(_("There is no assigned personal roles on this server"))
+            await ctx.send(chat.info(_("There is no assigned personal roles on this server")))
+            return
         assigned_roles = []
         for member, data in members_data.items():
             if not data["role"]:
@@ -160,8 +161,8 @@ class PersonalRoles(commands.Cog):
             )
         else:
             await ctx.send(
-                _("Changed color of {}'s personal role to {}").format(
-                    ctx.message.author.name, colour
+                _("Changed color of {user}'s personal role to {color}").format(
+                    user=ctx.message.author.name, color=colour
                 )
             )
 
@@ -171,7 +172,7 @@ class PersonalRoles(commands.Cog):
     @commands.check(has_assigned_role)
     async def name(self, ctx, *, name: str):
         """Change name of personal role
-        You cant use blacklisted names or control role names"""
+        You cant use blacklisted names"""
         role = await self.config.member(ctx.author).role()
         role = ctx.guild.get_role(role)
         name = name[:100]
@@ -193,8 +194,8 @@ class PersonalRoles(commands.Cog):
             )
         else:
             await ctx.send(
-                _("Changed name of {}'s personal role to {}").format(
-                    ctx.message.author.name, name
+                _("Changed name of {user}'s personal role to {name}").format(
+                    user=ctx.message.author.name, name=name
                 )
             )
 
