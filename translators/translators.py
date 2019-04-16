@@ -96,7 +96,7 @@ class Translators(commands.Cog):
                 )
             )
         except yandextranslate.Exceptions.UnknownException as e:
-            await ctx.send(chat.error(_("An error has been occured: {e}").format(e)))
+            await ctx.send(chat.error(_("An error has been occured: {}").format(e)))
         else:
             embed = discord.Embed(
                 description=f"**[{translation.lang.upper()}]**{chat.box(translation.text)}",
