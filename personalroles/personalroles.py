@@ -62,6 +62,8 @@ class PersonalRoles(commands.Cog):
     async def mr_list(self, ctx):
         """Assigned roles list"""
         members_data = await self.config.all_members(ctx.guild)
+        if not members_data:
+            await ctx.send(_("There is no assigned personal roles on this server"))
         assigned_roles = []
         for member, data in members_data.items():
             if not data["role"]:
