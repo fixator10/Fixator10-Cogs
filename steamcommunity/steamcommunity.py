@@ -188,7 +188,7 @@ class SteamCommunity(commands.Cog):
             try:
                 ip = gethostbyname_ex(serverc[0])[2][0]
             except Exception as e:
-                await ctx.send(_("The specified domain is not valid: {e}").format(e))
+                await ctx.send(_("The specified domain is not valid: {}").format(e))
                 return
             servercheck = ip
             serverc = [str(ip), int(serverc[1])]
