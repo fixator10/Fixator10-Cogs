@@ -7,7 +7,10 @@ import discord
 from dateutil.parser import parse
 from redbot.core import checks
 from redbot.core import commands
+from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils import chat_formatting as chat
+
+_ = Translator("MoreUtils", __file__)
 
 
 def rgb_to_cmyk(r, g, b):
@@ -37,6 +40,7 @@ def bool_emojify(bool_var: bool) -> str:
     return "✅" if bool_var else "❌"
 
 
+@cog_i18n(_)
 class MoreUtils(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
@@ -48,7 +52,7 @@ class MoreUtils(commands.Cog):
     @commands.command(name="thetime")
     async def _thetime(self, ctx):
         """Send bot's current time"""
-        await ctx.send(datetime.datetime.now().strftime("%d.%m.%Y %H:%M:%S %Z"))
+        await ctx.send(datetime.datetime.now().strftime(_("%d.%m.%Y %H:%M:%S %Z")))
 
     @commands.command(aliases=["HEX", "hex"])
     @checks.bot_has_permissions(embed_links=True)
@@ -76,9 +80,7 @@ class MoreUtils(commands.Cog):
                 coloryiq,
                 color.value,
             ),
-            url="http://www.color-hex.com/color/{}".format(
-                hex(color.value).lstrip("0x")
-            ),
+            url=f"http://www.color-hex.com/color/{hex(color.value).lstrip('0x')}",
             colour=color,
             timestamp=ctx.message.created_at,
         )
@@ -129,20 +131,22 @@ class MoreUtils(commands.Cog):
         except Exception as e:
             await ctx.send(
                 chat.error(
-                    f"Unable to get data from https://status.discordapp.com: {e}"
+                    _(
+                        "Unable to get data from https://status.discordapp.com: {}"
+                    ).format(e)
                 )
             )
             return
         status = response["status"]
         status_indicators = {
-            "none": "OK",
-            "minor": "Minor problems",
-            "major": "Major problems",
-            "critical": "Critical problems",
+            "none": _("OK"),
+            "minor": _("Minor problems"),
+            "major": _("Major problems"),
+            "critical": _("Critical problems"),
         }
         components = response["components"]
         embed = discord.Embed(
-            title="Discord Status",
+            title=_("Discord Status"),
             timestamp=parse(response["page"]["updated_at"]),
             color=await ctx.embed_color(),
             url="https://status.discordapp.com",

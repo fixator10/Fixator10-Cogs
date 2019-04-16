@@ -2,6 +2,7 @@ import discord
 from redbot.core import checks
 from redbot.core import commands
 from redbot.core.config import Config
+from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils import chat_formatting as chat
 from redbot.core.utils.mod import get_audit_reason
 
@@ -12,6 +13,10 @@ async def server_set(ctx):
     return ctx.guild.get_channel(channel)
 
 
+_ = Translator("GeneralChannel", __file__)
+
+
+@cog_i18n(_)
 class GeneralChannel(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -56,14 +61,16 @@ class GeneralChannel(commands.Cog):
         try:
             await channel.edit(
                 name=name,
-                reason=get_audit_reason(ctx.author, "General channel name change"),
+                reason=get_audit_reason(ctx.author, _("General channel name change")),
             )
         except discord.Forbidden:
             await ctx.send(
-                chat.error("Unable to change channel's name: Missing permissions")
+                chat.error(_("Unable to change channel's name: Missing permissions"))
             )
-        except discord.HTTPException:
-            await ctx.send(chat.error("Unable to change channel's name: Failed."))
+        except discord.HTTPException as e:
+            await ctx.send(
+                chat.error(_("Unable to change channel's name: Failed: {}").format(e))
+            )
         else:
             await ctx.tick()
 
@@ -88,13 +95,15 @@ class GeneralChannel(commands.Cog):
         try:
             await channel.edit(
                 topic=topic,
-                reason=get_audit_reason(ctx.author, "General channel topic change"),
+                reason=get_audit_reason(ctx.author, _("General channel topic change")),
             )
         except discord.Forbidden:
             await ctx.send(
-                chat.error("Unable to change channel's topic: Missing permissions")
+                chat.error(_("Unable to change channel's topic: Missing permissions"))
             )
-        except discord.HTTPException:
-            await ctx.send(chat.error("Unable to change channel's topic: Failed."))
+        except discord.HTTPException as e:
+            await ctx.send(
+                chat.error(_("Unable to change channel's topic: Failed: {}")).format(e)
+            )
         else:
             await ctx.tick()

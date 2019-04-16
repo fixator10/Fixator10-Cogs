@@ -1,0 +1,134 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2019-04-16 16:56+0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: redgettext 2.2\n"
+
+
+#: personalroles.py:21
+#, docstring
+msgid "Assign and edit personal roles"
+msgstr ""
+
+#: personalroles.py:36
+#, docstring
+msgid "Control of personal role"
+msgstr ""
+
+#: personalroles.py:42
+#, docstring
+msgid "Assign personal role to someone"
+msgstr ""
+
+#: personalroles.py:45
+msgid "Ok. I just assigned {} ({}) to role {} ({})."
+msgstr ""
+
+#: personalroles.py:53
+#, docstring
+msgid "Unassign personal role from someone"
+msgstr ""
+
+#: personalroles.py:56
+msgid "Ok. I just unassigned {} ({}) from his personal role."
+msgstr ""
+
+#: personalroles.py:64
+#, docstring
+msgid "Assigned roles list"
+msgstr ""
+
+#: personalroles.py:71
+msgid "User"
+msgstr ""
+
+#: personalroles.py:73
+msgid "Role"
+msgstr ""
+
+#: personalroles.py:88
+#, docstring
+msgid "Manage blacklisted names"
+msgstr ""
+
+#: personalroles.py:94
+#, docstring
+msgid ""
+"Add rolename to blacklist\n"
+"        Members will be not able to change name of role to blacklisted names"
+msgstr ""
+
+#: personalroles.py:100
+msgid "`{}` is already in blacklist"
+msgstr ""
+
+#: personalroles.py:106
+msgid "Added `{}` to blacklisted roles list"
+msgstr ""
+
+#: personalroles.py:113
+#, docstring
+msgid "Remove rolename from blacklist"
+msgstr ""
+
+#: personalroles.py:118
+msgid "`{}` is not blacklisted"
+msgstr ""
+
+#: personalroles.py:124
+msgid "Removed `{}` from blacklisted roles list"
+msgstr ""
+
+#: personalroles.py:131
+#, docstring
+msgid "List of blacklisted role names"
+msgstr ""
+
+#: personalroles.py:137
+msgid "There is no blacklisted roles"
+msgstr ""
+
+#: personalroles.py:144
+#, docstring
+msgid "Change color of personal role"
+msgstr ""
+
+#: personalroles.py:149 personalroles.py:182 personalroles.py:214
+msgid "Personal Role"
+msgstr ""
+
+#: personalroles.py:154 personalroles.py:187
+msgid ""
+"Unable to edit role.\n"
+"Role must be lower than my top role and i must have permission \"Manage Roles\""
+msgstr ""
+
+#: personalroles.py:162
+msgid "Changed color of {}'s personal role to {}"
+msgstr ""
+
+#: personalroles.py:172
+#, docstring
+msgid ""
+"Change name of personal role\n"
+"        You cant use blacklisted names or control role names"
+msgstr ""
+
+#: personalroles.py:178
+msgid "NONONO!!! This rolename is blacklisted."
+msgstr ""
+
+#: personalroles.py:195
+msgid "Changed name of {}'s personal role to {}"
+msgstr ""
+

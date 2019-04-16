@@ -6,12 +6,16 @@ import forecastio
 import geocoder
 from redbot.core import checks
 from redbot.core import commands
+from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils import chat_formatting as chat
 from requests.exceptions import (
     HTTPError,
     ConnectionError as RequestsConnectionError,
     Timeout,
 )
+
+_ = Translator("MinecraftData", __file__)
+
 
 WEATHER_STATES = {
     "clear-day": "\N{Black Sun with Rays}",
@@ -27,6 +31,7 @@ WEATHER_STATES = {
 }
 
 
+@cog_i18n(_)
 class Weather(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -35,12 +40,12 @@ class Weather(commands.Cog):
     @checks.is_owner()
     async def forecastapi(self, ctx):
         """Set API key for forecast.io"""
-        message = (
+        message = _(
             "To get forecast.io API key:\n"
             "1. Register/login at [DarkSky](https://darksky.net/dev/register)\n"
             '2. Copy ["Your Secret Key"](https://darksky.net/dev/account)\n'
-            "3. Use `{}set api forecastio secret,<your_apikey>`".format(ctx.prefix)
-        )
+            "3. Use `{}set api forecastio secret,<your_apikey>`"
+        ).format(ctx.prefix)
         await ctx.maybe_send_embed(message)
 
     @commands.command()
@@ -52,7 +57,9 @@ class Weather(commands.Cog):
         )
         g = await self.bot.loop.run_in_executor(None, geocoder.komoot, place)
         if not g.latlng:
-            await ctx.send(chat.error(f"Cannot find a place {chat.inline(place)}"))
+            await ctx.send(
+                chat.error(_("Cannot find a place {}").format(chat.inline(place)))
+            )
             return
         try:
             forecast = await self.bot.loop.run_in_executor(
@@ -68,28 +75,25 @@ class Weather(commands.Cog):
         except HTTPError:
             await ctx.send(
                 chat.error(
-                    "This command requires API key. "
-                    f"Use {ctx.prefix}forecastapi to get more information"
+                    _(
+                        "This command requires API key. "
+                        "Use {}forecastapi to get more information"
+                    ).format(ctx.prefix)
                 )
             )
             return
         except (RequestsConnectionError, Timeout):
-            await ctx.send(chat.error("Unable to get data from forecast.io"))
+            await ctx.send(chat.error(_("Unable to get data from forecast.io")))
             return
         by_hour = forecast.currently()
         place = [place for place in [g.city, g.state, g.country] if place]
         place = ", ".join(place)
 
-        content = (
-            "Weather in {}:\n"
-            "{}\n"
-            "{}˚C\n"
-            "{}\n".format(
-                place,
-                by_hour.summary,
-                by_hour.temperature,
-                WEATHER_STATES.get(by_hour.icon, "\N{Black Sun with Rays}"),
-            )
+        content = _("Weather in {}:\n" "{}\n" "{}˚C\n" "{}\n").format(
+            place,
+            by_hour.summary,
+            by_hour.temperature,
+            WEATHER_STATES.get(by_hour.icon, "\N{Black Sun with Rays}"),
         )
         em = discord.Embed(
             description=content, color=await ctx.embed_color(), timestamp=by_hour.time
@@ -108,7 +112,7 @@ class Weather(commands.Cog):
         )
         g = await self.bot.loop.run_in_executor(None, geocoder.komoot, place)
         if not g.latlng:
-            await ctx.send(f"Cannot find a place {chat.inline(place)}")
+            await ctx.send(_("Cannot find a place {}").format(chat.inline(place)))
             return
         try:
             forecast = await self.bot.loop.run_in_executor(
@@ -124,19 +128,21 @@ class Weather(commands.Cog):
         except HTTPError:
             await ctx.send(
                 chat.error(
-                    "This command requires API key. "
-                    f"Use {ctx.prefix}forecastapi to get more information"
+                    _(
+                        "This command requires API key. "
+                        "Use {}forecastapi to get more information"
+                    ).format(ctx.prefix)
                 )
             )
             return
         except (RequestsConnectionError, Timeout):
-            await ctx.send(chat.error("Unable to get data from forecast.io"))
+            await ctx.send(chat.error(_("Unable to get data from forecast.io")))
             return
         by_hour = forecast.daily()
         place = [place for place in [g.city, g.state, g.country] if place]
         place = ", ".join(place)
 
-        content = f"Weather in {place}:\n"
+        content = _("Weather in {}:\n").format(place)
         for i in range(0, 7):
             content = content + "__**{}**__:       {} - {}˚C       {}\n".format(
                 by_hour.data[i].time.strftime("%d.%m"),

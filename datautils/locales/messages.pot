@@ -1,0 +1,415 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2019-04-16 17:00+0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: redgettext 2.2\n"
+
+
+#: datautils.py:28
+msgid "%d.%m.%Y %H:%M:%S %Z"
+msgstr ""
+
+#: datautils.py:33
+#, docstring
+msgid "Get info about any Discord's user by ID"
+msgstr ""
+
+#: datautils.py:38
+msgid "Discord user with ID `{}` not found"
+msgstr ""
+
+#: datautils.py:44
+msgid "Bot was unable to get data about user with ID `{}`. Try again later"
+msgstr ""
+
+#: datautils.py:55 datautils.py:309 datautils.py:416 datautils.py:468
+#: datautils.py:511
+msgid "ID"
+msgstr ""
+
+#: datautils.py:56 datautils.py:104
+msgid "Bot?"
+msgstr ""
+
+#: datautils.py:57 datautils.py:112 datautils.py:335 datautils.py:433
+msgid "Mention"
+msgstr ""
+
+#: datautils.py:59
+msgid "Default avatar"
+msgstr ""
+
+#: datautils.py:64
+msgid "Avatar"
+msgstr ""
+
+#: datautils.py:69
+msgid "Created at"
+msgstr ""
+
+#: datautils.py:76
+#, docstring
+msgid "Information on a user"
+msgstr ""
+
+#: datautils.py:83 datautils.py:157 datautils.py:468
+msgid "Name"
+msgstr ""
+
+#: datautils.py:85
+msgid "Client"
+msgstr ""
+
+#: datautils.py:95
+msgid "Joined server"
+msgstr ""
+
+#: datautils.py:99 datautils.py:321 datautils.py:424 datautils.py:515
+msgid "Has existed since"
+msgstr ""
+
+#: datautils.py:103 datautils.py:430
+msgid "Color"
+msgstr ""
+
+#: datautils.py:106
+msgid "Server permissions"
+msgstr ""
+
+#: datautils.py:115 datautils.py:525
+msgid "Roles"
+msgstr ""
+
+#: datautils.py:137
+#, docstring
+msgid "Shows server information"
+msgstr ""
+
+#: datautils.py:143 datautils.py:239 datautils.py:265 datautils.py:377
+#: datautils.py:464
+msgid "Failed to get server with provided ID"
+msgstr ""
+
+#: datautils.py:152
+msgid "Server info"
+msgstr ""
+
+#: datautils.py:158
+msgid "Server ID"
+msgstr ""
+
+#: datautils.py:159
+msgid "Region"
+msgstr ""
+
+#: datautils.py:161
+msgid "Existed since"
+msgstr ""
+
+#: datautils.py:164
+msgid "Owner"
+msgstr ""
+
+#: datautils.py:167
+msgid "AFK Timeout and Channel"
+msgstr ""
+
+#: datautils.py:168
+msgid "{} min in {}"
+msgstr ""
+
+#: datautils.py:173
+msgid "New member messages channel"
+msgstr ""
+
+#: datautils.py:177
+msgid "Verification level"
+msgstr ""
+
+#: datautils.py:178
+msgid "None"
+msgstr ""
+
+#: datautils.py:180
+msgid "Low"
+msgstr ""
+
+#: datautils.py:182
+msgid "Medium"
+msgstr ""
+
+#: datautils.py:184
+msgid "(╯°□°）╯︵ ┻━┻"
+msgstr ""
+
+#: datautils.py:186
+msgid "┻━┻ ﾐヽ(ಠ益ಠ)ノ彡┻━┻"
+msgstr ""
+
+#: datautils.py:188 datautils.py:198 datautils.py:206
+msgid "Unknown"
+msgstr ""
+
+#: datautils.py:191
+msgid "Explicit content filter"
+msgstr ""
+
+#: datautils.py:192
+msgid "Don't scan any messages."
+msgstr ""
+
+#: datautils.py:194
+msgid "Scan messages from members without a role."
+msgstr ""
+
+#: datautils.py:196
+msgid "Scan messages sent by all members."
+msgstr ""
+
+#: datautils.py:201
+msgid "Default notifications"
+msgstr ""
+
+#: datautils.py:202
+msgid "All messages"
+msgstr ""
+
+#: datautils.py:204
+msgid "Only @mentions"
+msgstr ""
+
+#: datautils.py:208
+msgid "2FA admins"
+msgstr ""
+
+#: datautils.py:209
+msgid "Member Count"
+msgstr ""
+
+#: datautils.py:210
+msgid "Role Count"
+msgstr ""
+
+#: datautils.py:211
+msgid "Channel Count"
+msgstr ""
+
+#: datautils.py:212
+msgid "VIP Voice Regions"
+msgstr ""
+
+#: datautils.py:213
+msgid "Vanity URL"
+msgstr ""
+
+#: datautils.py:214
+msgid "Verified"
+msgstr ""
+
+#: datautils.py:215
+msgid "Extended emoji limit"
+msgstr ""
+
+#: datautils.py:217 datautils.py:219 datautils.py:222
+msgid "Invite Splash"
+msgstr ""
+
+#: datautils.py:233
+#, docstring
+msgid "Get bans from server by id"
+msgstr ""
+
+#: datautils.py:243
+msgid "I need permission \"Ban Members\" to access banned members on server"
+msgstr ""
+
+#: datautils.py:252
+msgid "Banlist is empty!"
+msgstr ""
+
+#: datautils.py:259
+#, docstring
+msgid "Get invites from server by id"
+msgstr ""
+
+#: datautils.py:269
+msgid "I need permission \"Manage Server\" to access list of invites on server"
+msgstr ""
+
+#: datautils.py:279
+msgid "There is no invites for this server"
+msgstr ""
+
+#: datautils.py:292
+#, docstring
+msgid "Get info about channel"
+msgstr ""
+
+#: datautils.py:311
+msgid "Type"
+msgstr ""
+
+#: datautils.py:325
+msgid "Category"
+msgstr ""
+
+#: datautils.py:327
+msgid "Not in category"
+msgstr ""
+
+#: datautils.py:329 datautils.py:429
+msgid "Position"
+msgstr ""
+
+#: datautils.py:331
+msgid "Changed roles permissions"
+msgstr ""
+
+#: datautils.py:332
+msgid "Not set"
+msgstr ""
+
+#: datautils.py:341
+msgid "Slowmode delay"
+msgstr ""
+
+#: datautils.py:342
+msgid "{} seconds"
+msgstr ""
+
+#: datautils.py:344 datautils.py:363
+msgid "NSFW"
+msgstr ""
+
+#: datautils.py:350
+msgid "Webhooks count"
+msgstr ""
+
+#: datautils.py:354
+msgid "Bitrate"
+msgstr ""
+
+#: datautils.py:354
+msgid "{}kbps"
+msgstr ""
+
+#: datautils.py:357
+msgid "Users"
+msgstr ""
+
+#: datautils.py:371
+#, docstring
+msgid "Get all channels on server"
+msgstr ""
+
+#: datautils.py:381
+msgid "No categories"
+msgstr ""
+
+#: datautils.py:384
+msgid "No text channels"
+msgstr ""
+
+#: datautils.py:387
+msgid "No voice channels"
+msgstr ""
+
+#: datautils.py:388
+msgid "Channels list"
+msgstr ""
+
+#: datautils.py:389
+msgid "Categories:"
+msgstr ""
+
+#: datautils.py:390
+msgid "Text channels:"
+msgstr ""
+
+#: datautils.py:391
+msgid "Voice channels:"
+msgstr ""
+
+#: datautils.py:393
+msgid "Total count of channels: {} • Categories: {} • Text Channels: {} • Voice Channels: {}"
+msgstr ""
+
+#: datautils.py:411
+#, docstring
+msgid "Get info about role"
+msgstr ""
+
+#: datautils.py:418
+msgid "Permissions"
+msgstr ""
+
+#: datautils.py:427
+msgid "Hoist"
+msgstr ""
+
+#: datautils.py:428
+msgid "Members"
+msgstr ""
+
+#: datautils.py:431 datautils.py:521
+msgid "Managed"
+msgstr ""
+
+#: datautils.py:432
+msgid "Mentionable"
+msgstr ""
+
+#: datautils.py:442
+#, docstring
+msgid "Get list of members that has provided role"
+msgstr ""
+
+#: datautils.py:450
+msgid "Page {}/{}"
+msgstr ""
+
+#: datautils.py:458
+#, docstring
+msgid "Get all roles on server"
+msgstr ""
+
+#: datautils.py:486
+#, docstring
+msgid "Check user's permission for current or provided channel"
+msgstr ""
+
+#: datautils.py:503
+#, docstring
+msgid "Get info about emoji"
+msgstr ""
+
+#: datautils.py:512
+msgid "Animated"
+msgstr ""
+
+#: datautils.py:519
+msgid "\":\" required"
+msgstr ""
+
+#: datautils.py:522
+msgid "Server"
+msgstr ""
+
+#: datautils.py:529
+msgid "Custom emoji"
+msgstr ""
+
+#: datautils.py:532
+msgid "Unicode emoji"
+msgstr ""
+
