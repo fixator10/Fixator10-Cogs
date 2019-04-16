@@ -85,8 +85,8 @@ msgid ""
 msgstr "Произошла ошибка: Яндекс.Переводчик не может перевести ваш текст"
 
 #: translators.py:100
-msgid "An error has been occured: {e}"
-msgstr "Произошла ошибка: {e}"
+msgid "An error has been occured: {}"
+msgstr "Произошла ошибка: {}"
 
 #: translators.py:107
 msgid "Translated via Yandex.Translate"

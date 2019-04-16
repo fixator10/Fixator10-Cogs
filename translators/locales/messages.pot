@@ -61,7 +61,7 @@ msgid "An error has been occurred: Yandex.Translate is unable to translate your 
 msgstr ""
 
 #: translators.py:99
-msgid "An error has been occured: {e}"
+msgid "An error has been occured: {}"
 msgstr ""
 
 #: translators.py:106
