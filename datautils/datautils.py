@@ -328,10 +328,7 @@ class DataUtils(commands.Cog):
         )
         em.add_field(name=_("Position"), value=channel.position)
         if isinstance(channel, discord.TextChannel):
-            em.add_field(
-                name=_("Users"),
-                value=str(len(channel.members)),
-            )
+            em.add_field(name=_("Users"), value=str(len(channel.members)))
         em.add_field(
             name=_("Changed roles permissions"),
             value="\n".join([str(x) for x in changed_roles]) or _("Not set"),

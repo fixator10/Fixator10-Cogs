@@ -41,9 +41,9 @@ class PersonalRoles(commands.Cog):
         """Assign personal role to someone"""
         await self.config.member(user).role.set(role.id)
         await ctx.send(
-            _("Ok. I just assigned {user.name} ({user.id}) to role {role.name} ({role.id}).").format(
-                user=user, role=role
-            )
+            _(
+                "Ok. I just assigned {user.name} ({user.id}) to role {role.name} ({role.id})."
+            ).format(user=user, role=role)
         )
 
     @myrole.command()
@@ -52,9 +52,9 @@ class PersonalRoles(commands.Cog):
         """Unassign personal role from someone"""
         await self.config.member(user).role.clear()
         await ctx.send(
-            _("Ok. I just unassigned {user.name} ({user.id}) from his personal role.").format(
-                user=user
-            )
+            _(
+                "Ok. I just unassigned {user.name} ({user.id}) from his personal role."
+            ).format(user=user)
         )
 
     @myrole.command(name="list")
@@ -63,7 +63,9 @@ class PersonalRoles(commands.Cog):
         """Assigned roles list"""
         members_data = await self.config.all_members(ctx.guild)
         if not members_data:
-            await ctx.send(chat.info(_("There is no assigned personal roles on this server")))
+            await ctx.send(
+                chat.info(_("There is no assigned personal roles on this server"))
+            )
             return
         assigned_roles = []
         for member, data in members_data.items():

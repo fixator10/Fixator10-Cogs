@@ -82,7 +82,8 @@ class AdminUtils(commands.Cog):
             for user in server.members:
                 try:
                     await user.edit(
-                        nick=nickname, reason=get_audit_reason(ctx.author, _("Massnick"))
+                        nick=nickname,
+                        reason=get_audit_reason(ctx.author, _("Massnick")),
                     )
                     await sleep(1)
                 except discord.HTTPException:
@@ -113,7 +114,11 @@ class AdminUtils(commands.Cog):
                 except discord.HTTPException:
                     counter += 1
                     continue
-        await ctx.send(_("Finished resetting server nicknames. Unable to reset {} nicknames.").format(counter))
+        await ctx.send(
+            _(
+                "Finished resetting server nicknames. Unable to reset {} nicknames."
+            ).format(counter)
+        )
 
     @commands.group()
     @commands.guild_only()
