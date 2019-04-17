@@ -107,7 +107,7 @@ class AdminUtils(commands.Cog):
             for user in server.members:
                 try:
                     await user.edit(
-                        nickname=None, reason=get_audit_reason(ctx.author, _("Reset nicks"))
+                        nick=None, reason=get_audit_reason(ctx.author, _("Reset nicks"))
                     )
                     await sleep(1)
                 except discord.HTTPException:
