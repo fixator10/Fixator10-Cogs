@@ -156,12 +156,16 @@ class AdminUtils(commands.Cog):
                     else None,
                 ),
             )
+        except discord.InvalidArgument:
+            await ctx.send(
+                chat.error(_("This image type is unsupported, or link is incorrect"))
+            )
         except discord.HTTPException as e:
             await ctx.send(
                 chat.error(_("An error occured on adding an emoji: {}").format(e))
             )
-            return
-        await ctx.tick()
+        else:
+            await ctx.tick()
 
     @emoji.command(name="rename")
     async def emoji_rename(
