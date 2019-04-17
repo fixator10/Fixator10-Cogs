@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2019-04-17 13:53+0400\n"
-"PO-Revision-Date: 2019-04-17 13:53+0400\n"
+"PO-Revision-Date: 2019-04-17 13:56+0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -114,7 +114,7 @@ msgid "Restricted to roles: "
 msgstr "Ограничено для ролей: "
 
 #: adminutils.py:161
-msgid "This image type is unsupported, or link incorrect"
+msgid "This image type is unsupported, or link is incorrect"
 msgstr "Данный тип изображений не поддерживается, или указана неверная ссылка"
 
 #: adminutils.py:165
