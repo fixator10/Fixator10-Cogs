@@ -10,6 +10,8 @@ Cogs from [my edition of DiNitride's selfbot](https://github.com/fixator10/Disco
 
 Some of cogs requires `V3/develop` branch of Red for now (mostly cogs thats requires API-keys setup)
 
+For support visit my [personal server](https://invite.gg/fixator10) or find me (Fixator10#7133) on [Red - Cog Support server](https://discord.gg/GET4DVk)
+
 # Installation
 `[p]repo add Fixator10-Cogs https://github.com/fixator10/Fixator10-Cogs V3`
 
