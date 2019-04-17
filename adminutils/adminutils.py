@@ -113,7 +113,7 @@ class AdminUtils(commands.Cog):
                 except discord.HTTPException:
                     counter += 1
                     continue
-        await ctx.send(_("Finished resetting server nicknames. Unable to reset {} nicknames."))
+        await ctx.send(_("Finished resetting server nicknames. Unable to reset {} nicknames.").format(counter))
 
     @commands.group()
     @commands.guild_only()
