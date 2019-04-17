@@ -102,6 +102,7 @@ class AdminUtils(commands.Cog):
     async def resetnicks(self, ctx):
         """Resets nicknames on the server"""
         server = ctx.guild
+        counter = 0
         async with ctx.typing():
             for user in server.members:
                 try:
@@ -110,8 +111,9 @@ class AdminUtils(commands.Cog):
                     )
                     await sleep(1)
                 except discord.HTTPException:
+                    counter += 1
                     continue
-        await ctx.send(_("Finished resetting server nicknames"))
+        await ctx.send(_("Finished resetting server nicknames. Unable to reset {} nicknames."))
 
     @commands.group()
     @commands.guild_only()

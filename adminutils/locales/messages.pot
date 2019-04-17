@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-04-17 13:36+0400\n"
+"POT-Creation-Date: 2019-04-17 13:39+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -62,20 +62,20 @@ msgstr ""
 msgid "Resets nicknames on the server"
 msgstr ""
 
-#: adminutils.py:109
+#: adminutils.py:110
 msgid "Reset nicks"
 msgstr ""
 
-#: adminutils.py:114
-msgid "Finished resetting server nicknames"
+#: adminutils.py:116
+msgid "Finished resetting server nicknames. Unable to reset {} nicknames."
 msgstr ""
 
-#: adminutils.py:121
+#: adminutils.py:123
 #, docstring
 msgid "Manage emoji"
 msgstr ""
 
-#: adminutils.py:126
+#: adminutils.py:128
 #, docstring
 msgid ""
 "Create custom emoji\n"
@@ -88,19 +88,19 @@ msgid ""
 "        "
 msgstr ""
 
-#: adminutils.py:139
+#: adminutils.py:141
 msgid "Unable to get emoji from provided url: {}"
 msgstr ""
 
-#: adminutils.py:150 adminutils.py:183
+#: adminutils.py:152 adminutils.py:185
 msgid "Restricted to roles: "
 msgstr ""
 
-#: adminutils.py:159
+#: adminutils.py:161
 msgid "An error occured on adding an emoji: {}"
 msgstr ""
 
-#: adminutils.py:168
+#: adminutils.py:170
 #, docstring
 msgid ""
 "Rename emoji and restrict to certain roles\n"
@@ -114,7 +114,7 @@ msgid ""
 "        "
 msgstr ""
 
-#: adminutils.py:194
+#: adminutils.py:196
 #, docstring
 msgid "Remove emoji from server"
 msgstr ""
