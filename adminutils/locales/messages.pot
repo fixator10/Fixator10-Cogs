@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-04-16 17:02+0400\n"
+"POT-Creation-Date: 2019-04-17 13:36+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,67 +15,67 @@ msgstr ""
 "Generated-By: redgettext 2.2\n"
 
 
-#: adminutils.py:29
+#: adminutils.py:30
 #, docstring
 msgid "Cleanup inactive server members"
 msgstr ""
 
-#: adminutils.py:33
+#: adminutils.py:34
 msgid "Due to Discord Restrictions, you cannot use more than 30 days for that cmd."
 msgstr ""
 
-#: adminutils.py:40
+#: adminutils.py:41
 msgid "\"days\" arg cannot be less than 1..."
 msgstr ""
 
-#: adminutils.py:45
+#: adminutils.py:46
 msgid ""
 "You about to kick **{to_kick}** inactive for **{days}** days members from this server. Are you sure?\n"
 "To agree, type \"yes\""
 msgstr ""
 
-#: adminutils.py:62
+#: adminutils.py:63
 msgid ""
 "**{removed}**/**{all}** inactive members removed.\n"
 "(They was inactive for **{days}** days)"
 msgstr ""
 
-#: adminutils.py:69
+#: adminutils.py:70
 msgid "Inactive members cleanup canceled."
 msgstr ""
 
-#: adminutils.py:77
+#: adminutils.py:78
 #, docstring
 msgid "Mass nicknames everyone on the server"
 msgstr ""
 
-#: adminutils.py:83
+#: adminutils.py:85
 msgid "Massnick"
 msgstr ""
 
-#: adminutils.py:89
+#: adminutils.py:92
 msgid "Finished nicknaming server. {} nicknames could not be completed."
 msgstr ""
 
-#: adminutils.py:100
+#: adminutils.py:103
 #, docstring
 msgid "Resets nicknames on the server"
 msgstr ""
 
-#: adminutils.py:105
+#: adminutils.py:109
 msgid "Reset nicks"
 msgstr ""
 
-#: adminutils.py:109
+#: adminutils.py:114
 msgid "Finished resetting server nicknames"
 msgstr ""
 
-#: adminutils.py:116
+#: adminutils.py:121
 #, docstring
 msgid "Manage emoji"
 msgstr ""
 
-#: adminutils.py:121
+#: adminutils.py:126
 #, docstring
 msgid ""
 "Create custom emoji\n"
@@ -88,19 +88,19 @@ msgid ""
 "        "
 msgstr ""
 
-#: adminutils.py:134
+#: adminutils.py:139
 msgid "Unable to get emoji from provided url: {}"
 msgstr ""
 
-#: adminutils.py:145 adminutils.py:178
+#: adminutils.py:150 adminutils.py:183
 msgid "Restricted to roles: "
 msgstr ""
 
-#: adminutils.py:154
+#: adminutils.py:159
 msgid "An error occured on adding an emoji: {}"
 msgstr ""
 
-#: adminutils.py:163
+#: adminutils.py:168
 #, docstring
 msgid ""
 "Rename emoji and restrict to certain roles\n"
@@ -114,7 +114,7 @@ msgid ""
 "        "
 msgstr ""
 
-#: adminutils.py:189
+#: adminutils.py:194
 #, docstring
 msgid "Remove emoji from server"
 msgstr ""
