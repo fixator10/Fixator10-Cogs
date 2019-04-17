@@ -1,0 +1,192 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2019-04-16 22:30+0400\n"
+"PO-Revision-Date: 2019-04-16 22:31+0400\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ru_RU\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: redgettext 2.2\n"
+"X-Generator: Poedit 2.2.1\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+
+#: converters.py:29
+msgid "Unable to get data from Minecraft API: {}"
+msgstr "Невозможно получить информацию от Minecraft API: {}"
+
+#: converters.py:31
+msgid "{} not found on Mojang servers"
+msgstr "{} не найден на серверах Mojang"
+
+#: minecraftdata.py:24
+msgid "Minecraft-Related data"
+msgstr "Информация связанная с Minecraft"
+
+#: minecraftdata.py:35
+msgid "Get Minecraft-Related data"
+msgstr "Получить информацию связанную с Minecraft"
+
+#: minecraftdata.py:41
+msgid "Get minecraft skin by nickname"
+msgstr "Получить скин по никнейму"
+
+#: minecraftdata.py:44 minecraftdata.py:109 minecraftdata.py:141
+#: minecraftdata.py:165 minecraftdata.py:192 minecraftdata.py:331
+msgid "This player not found"
+msgstr "Такого игрока не найдено"
+
+#: minecraftdata.py:81
+msgid "Provided by Crafatar"
+msgstr "Предоставлено Crafatar"
+
+#: minecraftdata.py:87
+msgid "Get minecraft cape by nickname"
+msgstr "Получить плащ Minecraft по никнейму"
+
+#: minecraftdata.py:93
+msgid "Get optifine cape by nickname"
+msgstr "Получить плащ Optifine по никнейму"
+
+#: minecraftdata.py:106
+msgid "Get LabyMod cape by nickname"
+msgstr "Получить плащ LabyMod по никнейму"
+
+#: minecraftdata.py:117
+msgid "404. Player not found on LabyMod's servers."
+msgstr "404. Игрок не найден на серверах LabyMod."
+
+#: minecraftdata.py:124
+msgid ""
+"Data is not found. (Or LabyMod capes server is down)\n"
+"{}"
+msgstr ""
+"Информации не обнаружено (Или сервер плащей LabyMod упал)\n"
+"{}"
+
+#: minecraftdata.py:138
+msgid "Get MinecraftCapes.co.uk cape by nickname"
+msgstr "Получить плащ MinecraftCapes.co.uk по никнейму"
+
+#: minecraftdata.py:157 minecraftdata.py:162
+msgid "Get 5zig cape by nickname"
+msgstr "Получить плащ 5zig по никнейму"
+
+#: minecraftdata.py:176 minecraftdata.py:208
+msgid ""
+"Data is not found. (Or 5zig texture server is down)\n"
+"{}"
+msgstr ""
+"Информации не обнаружено (Или сервер текстур 5zig упал)\n"
+"{}"
+
+#: minecraftdata.py:189
+msgid "Get 5zig animated cape by nickname"
+msgstr "Получить анимированный плащ 5zig по никнейму"
+
+#: minecraftdata.py:201
+msgid "{} doesn't have animated cape"
+msgstr "{} не имеет анимированного плаща"
+
+#: minecraftdata.py:223
+msgid "Get info about server"
+msgstr "Получить информацию о сервере"
+
+#: minecraftdata.py:229
+msgid "Unable to resolve IP: {}"
+msgstr "Невозможно преобразовать IP адрес: {}"
+
+#: minecraftdata.py:236
+msgid "Unable to get server's status: {}"
+msgstr "Невозможно получить информацию о состоянии сервера: {}"
+
+#: minecraftdata.py:264
+msgid "Latency"
+msgstr "Задержка"
+
+#: minecraftdata.py:266
+msgid "Players"
+msgstr "Игроков"
+
+#: minecraftdata.py:280
+msgid "Version"
+msgstr "Версия"
+
+#: minecraftdata.py:281
+msgid ""
+"{}\n"
+"Protocol: {}"
+msgstr ""
+"{}\n"
+"Протокол: {}"
+
+#: minecraftdata.py:286
+msgid "World"
+msgstr "Мир"
+
+#: minecraftdata.py:288
+msgid "Software"
+msgstr "ПО"
+
+#: minecraftdata.py:289
+msgid ""
+"{}\n"
+"Version: {}"
+msgstr ""
+"{}\n"
+"Версия: {}"
+
+#: minecraftdata.py:299
+msgid "Get status of minecraft services"
+msgstr "Получить статус сервисов Minecraft"
+
+#: minecraftdata.py:304
+msgid "Status of minecraft services"
+msgstr "Статус сервисов Minecraft"
+
+#: minecraftdata.py:312
+msgid "💔 **UNAVAILABLE**"
+msgstr "💔 **НЕДОСТУПЕН**"
+
+#: minecraftdata.py:313
+msgid "💛 **SOME ISSUES**"
+msgstr "💛 **НЕКОТОРЫЕ ПРОБЛЕМЫ**"
+
+#: minecraftdata.py:314
+msgid "💚 **OK**"
+msgstr "💚 **OK**"
+
+#: minecraftdata.py:320
+msgid "Unable to check. An error has been occurred: {}"
+msgstr "Невозможно проверить. Произошла ошибка: {}"
+
+#: minecraftdata.py:328
+msgid "Check history of player's nicks"
+msgstr "Получить историю ников игрока"
+
+#: minecraftdata.py:342
+msgid "%d.%m.%Y %H:%M:%S"
+msgstr ""
+
+#: minecraftdata.py:348
+msgid "Nickname"
+msgstr "Никнейм"
+
+#: minecraftdata.py:349
+msgid "Changed to at... (UTC)"
+msgstr "Изменено в... (UTC)"
+
+#: minecraftdata.py:358
+msgid ""
+"Unable to check name history.\n"
+"An error has been occurred: "
+msgstr ""
+"Невозможно получить историю ников.\n"
+"Произошла ошибка: "

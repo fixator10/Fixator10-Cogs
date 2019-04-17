@@ -10,12 +10,16 @@ import tabulate
 from mcstatus import MinecraftServer
 from redbot.core import checks
 from redbot.core import commands
+from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils import chat_formatting as chat
 from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
 
 from .converters import MCNickname
 
+_ = Translator("MinecraftData", __file__)
 
+
+@cog_i18n(_)
 class MinecraftData(commands.Cog):
     """Minecraft-Related data"""
 
@@ -37,7 +41,7 @@ class MinecraftData(commands.Cog):
         """Get minecraft skin by nickname"""
         uuid = nickname.uuid
         if uuid is None:
-            await ctx.send(chat.error("This player not found"))
+            await ctx.send(chat.error(_("This player not found")))
             return
         files = []
         async with ctx.channel.typing():
@@ -69,12 +73,12 @@ class MinecraftData(commands.Cog):
         em.set_author(
             name=nickname.name,
             icon_url=f"attachment://{nickname.name}_head.png",
-            url="https://crafatar.com/skins/{}".format(uuid),
+            url=f"https://crafatar.com/skins/{uuid}",
         )
         em.set_thumbnail(url=f"attachment://{nickname.name}.png")
         em.set_image(url=f"attachment://{nickname.name}_body.png")
         em.set_footer(
-            text="Provided by Crafatar", icon_url="https://crafatar.com/logo.png"
+            text=_("Provided by Crafatar"), icon_url="https://crafatar.com/logo.png"
         )
         await ctx.send(embed=em, files=files)
 
@@ -102,7 +106,7 @@ class MinecraftData(commands.Cog):
         """Get LabyMod cape by nickname"""
         uuid = nickname.dashed_uuid
         if uuid is None:
-            await ctx.send(chat.error("This player not found"))
+            await ctx.send(chat.error(_("This player not found")))
             return
         try:
             async with self.session.get(
@@ -110,16 +114,16 @@ class MinecraftData(commands.Cog):
             ) as data:
                 if data.status == 404:
                     await ctx.send(
-                        chat.error("404. Player not found on LabyMod's servers.")
+                        chat.error(_("404. Player not found on LabyMod's servers."))
                     )
                     return
                 cape = await data.read()
         except Exception as e:
             await ctx.send(
                 chat.error(
-                    "Data is not found. (Or LabyMod capes server is down)\n{}".format(
-                        chat.inline(str(e))
-                    )
+                    _(
+                        "Data is not found. (Or LabyMod capes server is down)\n{}"
+                    ).format(chat.inline(str(e)))
                 )
             )
             return
@@ -134,7 +138,7 @@ class MinecraftData(commands.Cog):
         """Get MinecraftCapes.co.uk cape by nickname"""
         uuid = nickname.uuid
         if uuid is None:
-            await ctx.send(chat.error("This player not found"))
+            await ctx.send(chat.error(_("This player not found")))
             return
         em = discord.Embed(
             timestamp=ctx.message.created_at, color=await ctx.embed_color()
@@ -158,7 +162,7 @@ class MinecraftData(commands.Cog):
         """Get 5zig cape by nickname"""
         uuid = nickname.uuid
         if uuid is None:
-            await ctx.send(chat.error("This player not found"))
+            await ctx.send(chat.error(_("This player not found")))
             return
         try:
             async with self.session.get(
@@ -169,7 +173,7 @@ class MinecraftData(commands.Cog):
         except Exception as e:
             await ctx.send(
                 chat.error(
-                    "Data is not found. (Or 5zig texture server is down)\n{}".format(
+                    _("Data is not found. (Or 5zig texture server is down)\n{}").format(
                         chat.inline(str(e))
                     )
                 )
@@ -185,7 +189,7 @@ class MinecraftData(commands.Cog):
         """Get 5zig animated cape by nickname"""
         uuid = nickname.uuid
         if uuid is None:
-            await ctx.send(chat.error("This player not found"))
+            await ctx.send(chat.error(_("This player not found")))
             return
         try:
             async with self.session.get(
@@ -194,14 +198,14 @@ class MinecraftData(commands.Cog):
                 response_data = await data.json(content_type=None)
             if "animatedCape" not in response_data:
                 await ctx.send(
-                    chat.error("{} doesn't have animated cape").format(nickname.name)
+                    chat.error(_("{} doesn't have animated cape")).format(nickname.name)
                 )
                 return
             cape = response_data["animatedCape"]
         except Exception as e:
             await ctx.send(
                 chat.error(
-                    "Data is not found. (Or 5zig texture server is down)\n{}".format(
+                    _("Data is not found. (Or 5zig texture server is down)\n{}").format(
                         chat.inline(str(e))
                     )
                 )
@@ -222,13 +226,15 @@ class MinecraftData(commands.Cog):
                 None, MinecraftServer.lookup, server_ip
             )
         except Exception as e:
-            await ctx.send(chat.error(f"Unable to resolve IP: {e}"))
+            await ctx.send(chat.error(_("Unable to resolve IP: {}").format(e)))
             return
         async with ctx.channel.typing():
             try:
                 status = await self.bot.loop.run_in_executor(None, server.status)
             except OSError as e:
-                await ctx.send(chat.error(f"Unable to get server's status: {e}"))
+                await ctx.send(
+                    chat.error(_("Unable to get server's status: {}").format(e))
+                )
                 return
             try:
                 query = await self.bot.loop.run_in_executor(None, server.query)
@@ -255,9 +261,9 @@ class MinecraftData(commands.Cog):
         )
         if icon:
             embed.set_thumbnail(url="attachment://icon.png")
-        embed.add_field(name="Latency", value=f"{status.latency} ms")
+        embed.add_field(name=_("Latency"), value=f"{status.latency} ms")
         embed.add_field(
-            name="Players",
+            name=_("Players"),
             value="{0.players.online}/{0.players.max}\n{1}".format(
                 status,
                 status.players.sample
@@ -271,14 +277,18 @@ class MinecraftData(commands.Cog):
             ),
         )
         embed.add_field(
-            name="Version",
-            value=f"{status.version.name}\n" f"Protocol: {status.version.protocol}",
+            name=_("Version"),
+            value=_("{}\nProtocol: {}").format(
+                status.version.name, status.version.protocol
+            ),
         )
         if query:
-            embed.add_field(name="World", value=f"{query.map}")
+            embed.add_field(name=_("World"), value=f"{query.map}")
             embed.add_field(
-                name="Software",
-                value=f"{query.software.brand}\n" f"Version: {query.software.version}\n"
+                name=_("Software"),
+                value=_("{}\nVersion: {}").format(
+                    query.software.brand, query.software.version
+                )
                 # f"Plugins: {query.software.plugins}"
             )
         await ctx.send(file=icon, embed=embed)
@@ -291,7 +301,7 @@ class MinecraftData(commands.Cog):
             async with self.session.get("https://status.mojang.com/check") as data:
                 data = await data.json()
             em = discord.Embed(
-                title="Status of minecraft services",
+                title=_("Status of minecraft services"),
                 timestamp=ctx.message.created_at,
                 color=await ctx.embed_color(),
             )
@@ -299,15 +309,15 @@ class MinecraftData(commands.Cog):
                 for entry, status in service.items():
                     em.add_field(
                         name=entry,
-                        value=status.replace("red", "💔 **UNAVAILABLE**")
-                        .replace("yellow", "💛 **SOME ISSUES**")
-                        .replace("green", "💚 **OK**"),
+                        value=status.replace("red", _("💔 **UNAVAILABLE**"))
+                            .replace("yellow", _("💛 **SOME ISSUES**"))
+                            .replace("green", _("💚 **OK**")),
                     )
             await ctx.send(embed=em)
         except Exception as e:
             await ctx.send(
                 chat.error(
-                    "Unable to check. An error has been occurred: {}".format(
+                    _("Unable to check. An error has been occurred: {}").format(
                         chat.inline(str(e))
                     )
                 )
@@ -315,10 +325,10 @@ class MinecraftData(commands.Cog):
 
     @minecraft.command(aliases=["nicknames", "nickhistory"])
     async def nicks(self, ctx, current_nick: MCNickname):
-        """Check history of user's nicks"""
+        """Check history of player's nicks"""
         uuid = current_nick.uuid
         if uuid is None:
-            await ctx.send(chat.error("This player not found"))
+            await ctx.send(chat.error(_("This player not found")))
             return
         try:
             async with self.session.get(
@@ -329,12 +339,15 @@ class MinecraftData(commands.Cog):
                 try:
                     nick["changedToAt"] = datetime.utcfromtimestamp(
                         nick["changedToAt"] / 1000
-                    ).strftime("%d.%m.%Y %H:%M:%S")
+                    ).strftime(_("%d.%m.%Y %H:%M:%S"))
                 except KeyError:
                     nick["changedToAt"] = "Initial"
             table = tabulate.tabulate(
                 data_history,
-                headers={"name": "Nickname", "changedToAt": "Changed to at... (UTC)"},
+                headers={
+                    "name": _("Nickname"),
+                    "changedToAt": _("Changed to at... (UTC)"),
+                },
                 tablefmt="orgtbl",
             )
             pages = [chat.box(page) for page in list(chat.pagify(table))]
@@ -342,7 +355,7 @@ class MinecraftData(commands.Cog):
         except Exception as e:
             await ctx.send(
                 chat.error(
-                    "Unable to check name history.\nAn error has been occurred: "
+                    _("Unable to check name history.\nAn error has been occurred: ")
                     + chat.inline(str(e))
                 )
             )

@@ -1,13 +1,16 @@
 from redbot.core.commands import BadArgument
 from redbot.core.commands import Converter
+from redbot.core.i18n import Translator
 from valve.steam.id import SteamID
+
+_ = Translator("SteamCommunity", __file__)
 
 
 class SteamID(Converter):
     async def convert(self, ctx, argument) -> str:
         steam = ctx.cog.steam
         if "ISteamUser" not in list(steam._interfaces.keys()):
-            raise BadArgument("ApiKey not set or incorrect.")
+            raise BadArgument(_("ApiKey not set or incorrect."))
         userapi = steam["ISteamUser"]
         if argument.startswith("http"):
             argument = argument.strip("/")
@@ -20,5 +23,5 @@ class SteamID(Converter):
             else:
                 id64 = userapi.ResolveVanityURL(argument)["response"].get("steamid", "")
         if not id64.isnumeric():
-            raise BadArgument("User with SteamID {} not found.".format(argument))
+            raise BadArgument(_("User with SteamID {} not found.").format(argument))
         return id64
