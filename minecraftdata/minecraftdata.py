@@ -325,7 +325,7 @@ class MinecraftData(commands.Cog):
 
     @minecraft.command(aliases=["nicknames", "nickhistory"])
     async def nicks(self, ctx, current_nick: MCNickname):
-        """Check history of user's nicks"""
+        """Check history of player's nicks"""
         uuid = current_nick.uuid
         if uuid is None:
             await ctx.send(chat.error(_("This player not found")))
