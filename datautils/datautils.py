@@ -42,7 +42,7 @@ class DataUtils(commands.Cog):
             await ctx.send(
                 chat.warning(
                     _(
-                        "Bot was unable to get data about user with ID `{}`. Try again later"
+                        "I was unable to get data about user with ID `{}`. Try again later"
                     ).format(user_id)
                 )
             )
@@ -327,6 +327,11 @@ class DataUtils(commands.Cog):
                   or chat.inline(_("Not in category")),
         )
         em.add_field(name=_("Position"), value=channel.position)
+        if isinstance(channel, discord.TextChannel):
+            em.add_field(
+                name=_("Users"),
+                value=str(len(channel.members)),
+            )
         em.add_field(
             name=_("Changed roles permissions"),
             value="\n".join([str(x) for x in changed_roles]) or _("Not set"),
