@@ -1,7 +1,9 @@
-[![Discord](https://img.shields.io/discord/221158719025709056.svg?style=for-the-badge)](https://invite.gg/fixator10)
+[![Discord](https://img.shields.io/discord/221158719025709056.svg?style=for-the-badge&logo=discord)](https://invite.gg/fixator10)
 [![Red](https://img.shields.io/badge/Red-DiscordBot-red.svg?style=for-the-badge)](https://github.com/Cog-Creators/Red-DiscordBot)
 [![CodeFactor](https://www.codefactor.io/repository/github/fixator10/fixator10-cogs/badge?style=for-the-badge)](https://www.codefactor.io/repository/github/fixator10/fixator10-cogs)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg?style=for-the-badge)](https://github.com/ambv/black)
+[![Help translate](https://img.shields.io/badge/Translate-on%20poedit-brightgreen.svg?style=for-the-badge)](https://poeditor.com/join/project/sZBG4IoZ01)
+
 
 # Fixator10-Cogs
 Cogs from [my edition of DiNitride's selfbot](https://github.com/fixator10/Discord-Self-Bot) and moar
