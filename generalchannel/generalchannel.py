@@ -103,7 +103,7 @@ class GeneralChannel(commands.Cog):
             )
         except discord.HTTPException as e:
             await ctx.send(
-                chat.error(_("Unable to change channel's topic: Failed: {}")).format(e)
+                chat.error(_("Unable to change channel's topic: Failed: {}").format(e))
             )
         else:
             await ctx.tick()
