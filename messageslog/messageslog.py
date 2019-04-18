@@ -176,7 +176,10 @@ class MessagesLog(commands.Cog):
         embed.set_author(name=message.author, icon_url=message.author.avatar_url)
         embed.set_footer(text=_("ID: {} • Sent at").format(message.id))
         embed.add_field(name=_("Channel"), value=message.channel.mention)
-        await logchannel.send(embed=embed)
+        try:
+            await logchannel.send(embed=embed)
+        except discord.Forbidden:
+            pass
 
     async def message_redacted(self, before: discord.Message, after: discord.Message):
         if not before.guild:
@@ -222,7 +225,10 @@ class MessagesLog(commands.Cog):
             )
         embed.set_author(name=before.author, icon_url=before.author.avatar_url)
         embed.set_footer(text=_("ID: {} • Sent at").format(before.id))
-        await logchannel.send(embed=embed)
+        try:
+            await logchannel.send(embed=embed)
+        except discord.Forbidden:
+            pass
 
         embed = discord.Embed(
             title=_("Message redacted (After)"),
@@ -240,4 +246,7 @@ class MessagesLog(commands.Cog):
         embed.set_author(name=after.author, icon_url=after.author.avatar_url)
         embed.set_footer(text=_("ID: {} • Redacted at").format(after.id))
         embed.add_field(name=_("Channel"), value=after.channel.mention)
-        await logchannel.send(embed=embed)
+        try:
+            await logchannel.send(embed=embed)
+        except discord.Forbidden:
+            pass
