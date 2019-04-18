@@ -7,7 +7,9 @@ import textwrap
 import time
 from asyncio import TimeoutError as AsyncTimeoutError
 from collections import OrderedDict
+from datetime import timedelta
 from io import BytesIO
+from typing import Union
 
 import aiohttp
 import discord
@@ -1273,6 +1275,36 @@ class Leveler(commands.Cog):
             )
         )
         await self._handle_levelup(user, userinfo, server, channel)
+
+    @checks.is_owner()
+    @lvladmin.command()
+    @commands.guild_only()
+    async def xpban(self, ctx, days: int, *, user: Union[discord.Member, int, None]):
+        """Ban user from getting experience"""
+        if isinstance(user, int):
+            try:
+                user = await self.bot.get_user_info(user)
+            except (discord.HTTPException, discord.NotFound):
+                user = None
+        if user is None:
+            await ctx.send_help()
+            return
+        chat_block = time.time() + timedelta(days=days).total_seconds()
+        try:
+            db.users.update_one(
+                {"user_id": str(user.id)},
+                {
+                    "$set": {
+                        "chat_block": chat_block,
+                    }
+                },
+            )
+        except Exception as exc:
+            await ctx.send("Unable to add chat block: {}".format(exc))
+        else:
+            await ctx.tick()
+
+
 
     @checks.is_owner()
     @lvladmin.command()
@@ -3163,6 +3195,7 @@ class Leveler(commands.Cog):
                 {"user_id": str(user.id)},
                 {"$set": {"total_exp": userinfo["total_exp"] + exp}},
             )
+            self.bot.dispatch("leveler_process_exp", message, exp)
         except Exception as exc:
             log.error(f"Unable to process xp for {user.id}: {exc}")
         if userinfo["servers"][str(server.id)]["current_exp"] + exp >= required:
