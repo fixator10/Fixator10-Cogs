@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2019-04-17 13:09+0400\n"
-"PO-Revision-Date: 2019-04-17 13:13+0400\n"
+"POT-Creation-Date: 2019-04-18 18:19+0400\n"
+"PO-Revision-Date: 2019-04-18 18:20+0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -35,7 +35,7 @@ msgid "I was unable to get data about user with ID `{}`. Try again later"
 msgstr ""
 "Я не смог получить информацию о пользователе с ID `{}`. Попробуйте позже"
 
-#: datautils.py:55 datautils.py:309 datautils.py:421 datautils.py:473
+#: datautils.py:55 datautils.py:309 datautils.py:418 datautils.py:473
 #: datautils.py:516
 msgid "ID"
 msgstr "ID"
@@ -44,7 +44,7 @@ msgstr "ID"
 msgid "Bot?"
 msgstr "Бот?"
 
-#: datautils.py:57 datautils.py:112 datautils.py:340 datautils.py:438
+#: datautils.py:57 datautils.py:112 datautils.py:337 datautils.py:435
 msgid "Mention"
 msgstr "Упоминание"
 
@@ -76,11 +76,11 @@ msgstr "Клиент"
 msgid "Joined server"
 msgstr "Присоединился к серверу"
 
-#: datautils.py:99 datautils.py:321 datautils.py:429 datautils.py:520
+#: datautils.py:99 datautils.py:321 datautils.py:426 datautils.py:520
 msgid "Has existed since"
 msgstr "Существует с"
 
-#: datautils.py:103 datautils.py:435
+#: datautils.py:103 datautils.py:432
 msgid "Color"
 msgstr "Цвет"
 
@@ -96,7 +96,7 @@ msgstr "Роли"
 msgid "Shows server information"
 msgstr "Показывает информацию о сервере"
 
-#: datautils.py:143 datautils.py:239 datautils.py:265 datautils.py:382
+#: datautils.py:143 datautils.py:239 datautils.py:265 datautils.py:379
 #: datautils.py:469
 msgid "Failed to get server with provided ID"
 msgstr "Невозможно получить сервер с предоставленным ID"
@@ -269,79 +269,79 @@ msgstr "Категория"
 msgid "Not in category"
 msgstr "Вне категории"
 
-#: datautils.py:329 datautils.py:434
+#: datautils.py:329 datautils.py:431
 msgid "Position"
 msgstr "Позиция"
 
-#: datautils.py:332 datautils.py:362
+#: datautils.py:331 datautils.py:359
 msgid "Users"
 msgstr "Пользователей"
 
-#: datautils.py:336
+#: datautils.py:333
 msgid "Changed roles permissions"
 msgstr "Изменённые настройки прав"
 
-#: datautils.py:337
+#: datautils.py:334
 msgid "Not set"
 msgstr "Не настроено"
 
-#: datautils.py:346
+#: datautils.py:343
 msgid "Slowmode delay"
 msgstr "Задержка сообщений"
 
-#: datautils.py:347
+#: datautils.py:344
 msgid "{} seconds"
 msgstr "{} секунд"
 
-#: datautils.py:349 datautils.py:368
+#: datautils.py:346 datautils.py:365
 msgid "NSFW"
 msgstr ""
 
-#: datautils.py:355
+#: datautils.py:352
 msgid "Webhooks count"
 msgstr "Количество вебхуков"
 
-#: datautils.py:359
+#: datautils.py:356
 msgid "Bitrate"
 msgstr "Битрейт"
 
-#: datautils.py:359
+#: datautils.py:356
 msgid "{}kbps"
 msgstr ""
 
-#: datautils.py:376
+#: datautils.py:373
 msgid "Get all channels on server"
 msgstr "Получить список каналов на сервере"
 
-#: datautils.py:386
+#: datautils.py:383
 msgid "No categories"
 msgstr "Нет категорий"
 
-#: datautils.py:389
+#: datautils.py:386
 msgid "No text channels"
 msgstr "Нет текстовых каналов"
 
-#: datautils.py:392
+#: datautils.py:389
 msgid "No voice channels"
 msgstr "Нет голосовых каналов"
 
-#: datautils.py:393
+#: datautils.py:390
 msgid "Channels list"
 msgstr "Список каналов"
 
-#: datautils.py:394
+#: datautils.py:391
 msgid "Categories:"
 msgstr "Категории:"
 
-#: datautils.py:395
+#: datautils.py:392
 msgid "Text channels:"
 msgstr "Текстовые каналы:"
 
-#: datautils.py:396
+#: datautils.py:393
 msgid "Voice channels:"
 msgstr "Голосовые каналы:"
 
-#: datautils.py:398
+#: datautils.py:395
 msgid ""
 "Total count of channels: {} • Categories: {} • Text Channels: {} • Voice "
 "Channels: {}"
@@ -349,33 +349,37 @@ msgstr ""
 "Всего каналов: {} • Категорий: {} • Текстовых каналов: {} • Голосовых "
 "каналов: {}"
 
-#: datautils.py:416
+#: datautils.py:413
 msgid "Get info about role"
 msgstr "Получить информацию о роли"
 
-#: datautils.py:423
+#: datautils.py:420
 msgid "Permissions"
 msgstr "Права"
 
-#: datautils.py:432
+#: datautils.py:429
 msgid "Hoist"
 msgstr "Показывать отдельно"
 
-#: datautils.py:433
+#: datautils.py:430
 msgid "Members"
 msgstr "Участников"
 
-#: datautils.py:436 datautils.py:526
+#: datautils.py:433 datautils.py:526
 msgid "Managed"
 msgstr "Интеграция"
 
-#: datautils.py:437
+#: datautils.py:434
 msgid "Mentionable"
 msgstr "Упоминаемая"
 
-#: datautils.py:447
+#: datautils.py:444
 msgid "Get list of members that has provided role"
 msgstr "Получить список пользователей, имеющих указанную роль"
+
+#: datautils.py:447
+msgid "There is no members in this role"
+msgstr "Нет пользователей с этой ролью"
 
 #: datautils.py:455
 msgid "Page {}/{}"

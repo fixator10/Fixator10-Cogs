@@ -443,6 +443,9 @@ class DataUtils(commands.Cog):
     async def rolemembers(self, ctx, *, role: discord.Role):
         """Get list of members that has provided role"""
         memberslist = [str(m) for m in sorted(role.members, key=lambda m: m.joined_at)]
+        if not memberslist:
+            await ctx.send(chat.error(_("There is no members in this role")))
+            return
         pages = [
             discord.Embed(description=p, color=await ctx.embed_color())
             for p in chat.pagify("\n".join(memberslist), page_length=2048)
