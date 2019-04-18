@@ -1,0 +1,12 @@
+{
+  "author": [
+    "Fixator10"
+  ],
+  "install_msg": "Thanks for install.",
+  "short": "Log deleted and redacted messages in defined channel",
+  "description": "Log deleted and redacted messages in defined channel",
+  "tags": [
+    "messages",
+    "logs"
+  ]
+}
