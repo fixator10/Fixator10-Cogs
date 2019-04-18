@@ -1,0 +1,117 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2019-04-18 20:58+0400\n"
+"PO-Revision-Date: 2019-04-18 20:59+0400\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: ru_RU\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: redgettext 2.2\n"
+"X-Generator: Poedit 2.2.1\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+
+#: messageslog.py:20
+msgid "Log deleted and redacted messages to the defined channel"
+msgstr ""
+"Записывает удалённые и отредактированные сообщения в установленный канал"
+
+#: messageslog.py:39
+msgid "Manage message logging"
+msgstr "Управление логированием сообщений"
+
+#: messageslog.py:44
+msgid ""
+"Set the channel for logs\n"
+"\n"
+"        If channel is not provided, then logging will be disabled"
+msgstr ""
+"Устанавливает канал для логов\n"
+"\n"
+"        Если канал не указан, логирование будет отключено"
+
+#: messageslog.py:53
+msgid "Toggle logging of message deletion"
+msgstr "Переключает логирование удалённых сообщений"
+
+#: messageslog.py:57 messageslog.py:70
+msgid "enabled"
+msgstr "включено"
+
+#: messageslog.py:59 messageslog.py:72
+msgid "disabled"
+msgstr "выключено"
+
+#: messageslog.py:61
+msgid "Message deletion logging {}"
+msgstr "Логирование удалённых сообщений {}"
+
+#: messageslog.py:66
+msgid "Toggle logging of message editing"
+msgstr "Переключает логирование отредактированных сообщений"
+
+#: messageslog.py:74
+msgid "Message editing logging {}"
+msgstr "Логирование редактирований сообщений {}"
+
+#: messageslog.py:79
+msgid "Manage message logging blacklist"
+msgstr "Управление черным списком логов сообщений"
+
+#: messageslog.py:84
+msgid "Ignore channel(s) in message logging"
+msgstr "Игнорировать канал(ы) при логировании сообщений"
+
+#: messageslog.py:97
+msgid "Ignore member(s) in message logging"
+msgstr "Игнорировать участника(ов) при логировании сообщений"
+
+#: messageslog.py:108
+msgid "Shows ignored channels and members list"
+msgstr "Показывает список игнорируемых каналов и участников"
+
+#: messageslog.py:120
+msgid "Nothing is ignored"
+msgstr "Ничего не игнорируется"
+
+#: messageslog.py:126
+msgid "Ignored users"
+msgstr "Игнорируемые пользователи"
+
+#: messageslog.py:130
+msgid "Ignored channels"
+msgstr "Игнорируемые каналы"
+
+#: messageslog.py:163
+msgid "Message deleted"
+msgstr "Сообщение удалено"
+
+#: messageslog.py:170 messageslog.py:214 messageslog.py:231
+msgid "Attachments"
+msgstr "Вложения"
+
+#: messageslog.py:176 messageslog.py:220
+msgid "ID: {} • Sent at"
+msgstr "ID: {} • Отправлено в"
+
+#: messageslog.py:207
+msgid "Message redacted (Before)"
+msgstr "Сообщение отредактировано (До)"
+
+#: messageslog.py:224
+msgid "Message redacted (After)"
+msgstr "Сообщение отредактировано (После)"
+
+#: messageslog.py:237
+msgid "ID: {} • Redacted at"
+msgstr "ID: {} • Отредактировано в"
+
+#~ msgid "Sent at"
+#~ msgstr "Отправлено в"
