@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-04-18 20:58+0400\n"
+"POT-Creation-Date: 2019-04-18 21:22+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -91,27 +91,31 @@ msgstr ""
 msgid "Ignored channels"
 msgstr ""
 
-#: messageslog.py:163
+#: messageslog.py:164
 msgid "Message deleted"
 msgstr ""
 
-#: messageslog.py:170 messageslog.py:214 messageslog.py:231
+#: messageslog.py:171 messageslog.py:218 messageslog.py:235
 msgid "Attachments"
 msgstr ""
 
-#: messageslog.py:176 messageslog.py:220
+#: messageslog.py:177 messageslog.py:224
 msgid "ID: {} • Sent at"
 msgstr ""
 
-#: messageslog.py:207
+#: messageslog.py:178 messageslog.py:242
+msgid "Channel"
+msgstr ""
+
+#: messageslog.py:211
 msgid "Message redacted (Before)"
 msgstr ""
 
-#: messageslog.py:224
+#: messageslog.py:228
 msgid "Message redacted (After)"
 msgstr ""
 
-#: messageslog.py:237
+#: messageslog.py:241
 msgid "ID: {} • Redacted at"
 msgstr ""
 

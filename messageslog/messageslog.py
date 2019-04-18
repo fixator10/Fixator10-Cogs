@@ -154,6 +154,7 @@ class MessagesLog(commands.Cog):
                     in await self.config.guild(message.guild).ignored_channels(),
                     message.author.id
                     in await self.config.guild(message.guild).ignored_users(),
+                    not message.content,
                     message.author.bot,
                     message.channel.nsfw and not logchannel.nsfw,
                 ]
@@ -174,6 +175,7 @@ class MessagesLog(commands.Cog):
             )
         embed.set_author(name=message.author, icon_url=message.author.avatar_url)
         embed.set_footer(text=_("ID: {} • Sent at").format(message.id))
+        embed.add_field(name=_("Channel"), value=message.channel.mention)
         await logchannel.send(embed=embed)
 
     async def message_redacted(self, before: discord.Message, after: discord.Message):
@@ -198,6 +200,8 @@ class MessagesLog(commands.Cog):
                     in await self.config.guild(before.guild).ignored_channels(),
                     before.author.id
                     in await self.config.guild(before.guild).ignored_users(),
+                    not after.content,
+                    before.content == after.content,
                     before.author.bot,
                     before.channel.nsfw and not logchannel.nsfw,
                 ]
@@ -235,4 +239,5 @@ class MessagesLog(commands.Cog):
             )
         embed.set_author(name=after.author, icon_url=after.author.avatar_url)
         embed.set_footer(text=_("ID: {} • Redacted at").format(after.id))
+        embed.add_field(name=_("Channel"), value=after.channel.mention)
         await logchannel.send(embed=embed)
