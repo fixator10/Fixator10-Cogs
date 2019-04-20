@@ -125,6 +125,7 @@ class Leveler(commands.Cog):
         if user is None:
             user = ctx.message.author
         if user.bot:
+            ctx.command.reset_cooldown(ctx)
             await ctx.send_help()
             return
         channel = ctx.message.channel
@@ -200,6 +201,7 @@ class Leveler(commands.Cog):
         if user is None:
             user = ctx.message.author
         if user.bot:
+            ctx.command.reset_cooldown(ctx)
             await ctx.send_help()
             return
         channel = ctx.message.channel
