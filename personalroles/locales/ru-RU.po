@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2019-04-20 18:30+0400\n"
-"PO-Revision-Date: 2019-04-20 18:34+0400\n"
+"POT-Creation-Date: 2019-04-20 17:47+0400\n"
+"PO-Revision-Date: 2019-04-20 17:58+0400\n"
 "Last-Translator: Максим Невзоров\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -46,38 +46,26 @@ msgid "Ok. I just unassigned {user.name} ({user.id}) from his personal role."
 msgstr "Ок. Я отменил привязку роли пользователя {user.name} ({user.id})"
 
 #: personalroles.py:63
-msgid "Unassign roles from left users"
-msgstr "Отменить привязку ролей к пользователям, покинувшим сервер"
-
-#: personalroles.py:64
-msgid "Unassigned roles from users:"
-msgstr "Привязка ролей отменена для следующих пользователей:"
-
-#: personalroles.py:73
-msgid "No users was unassigned from their roles"
-msgstr "Никакие привязки ролей не были отменены"
-
-#: personalroles.py:78
 msgid "Assigned roles list"
 msgstr "Список назначенных ролей"
 
-#: personalroles.py:82
+#: personalroles.py:67
 msgid "There is no assigned personal roles on this server"
 msgstr "На данном сервере нет назначенных ролей"
 
-#: personalroles.py:90
+#: personalroles.py:75
 msgid "User"
 msgstr "Пользователь"
 
-#: personalroles.py:92
+#: personalroles.py:77
 msgid "Role"
 msgstr "Роль"
 
-#: personalroles.py:107
+#: personalroles.py:92
 msgid "Manage blacklisted names"
 msgstr "Управление запрещенными именами"
 
-#: personalroles.py:113
+#: personalroles.py:98
 msgid ""
 "Add rolename to blacklist\n"
 "        Members will be not able to change name of role to blacklisted names"
@@ -86,43 +74,43 @@ msgstr ""
 "        Пользователи не смогут сменить имя своей роли на имя из чёрного "
 "списка"
 
-#: personalroles.py:119
+#: personalroles.py:104
 msgid "`{}` is already in blacklist"
 msgstr "`{}` уже в чёрном списке"
 
-#: personalroles.py:125
+#: personalroles.py:110
 msgid "Added `{}` to blacklisted roles list"
 msgstr "`{}` добавлено в чёрный список"
 
-#: personalroles.py:132
+#: personalroles.py:117
 msgid "Remove rolename from blacklist"
 msgstr "Убрать роль из чёрного списка"
 
-#: personalroles.py:137
+#: personalroles.py:122
 msgid "`{}` is not blacklisted"
 msgstr "`{}` не в чёрном списке"
 
-#: personalroles.py:143
+#: personalroles.py:128
 msgid "Removed `{}` from blacklisted roles list"
 msgstr "`{}` удалено из чёрного списка"
 
-#: personalroles.py:150
+#: personalroles.py:135
 msgid "List of blacklisted role names"
 msgstr "Чёрный список названия ролей"
 
-#: personalroles.py:156
+#: personalroles.py:141
 msgid "There is no blacklisted roles"
 msgstr "В чёрном списке нет запрещенных названий"
 
-#: personalroles.py:163
+#: personalroles.py:148
 msgid "Change color of personal role"
 msgstr "Сменить цвет персональной роли"
 
-#: personalroles.py:168 personalroles.py:205 personalroles.py:241
+#: personalroles.py:153 personalroles.py:196 personalroles.py:238
 msgid "Personal Role"
 msgstr "Персональная роль"
 
-#: personalroles.py:174 personalroles.py:211
+#: personalroles.py:159 personalroles.py:202
 msgid ""
 "Unable to edit role.\n"
 "Role must be lower than my top role and i must have permission \"Manage Roles"
@@ -132,15 +120,15 @@ msgstr ""
 "Роль должна быть ниже моей высшей роли и я должен иметь права \"Управление "
 "ролями\""
 
-#: personalroles.py:182 personalroles.py:219
+#: personalroles.py:169 personalroles.py:212
 msgid "Unable to edit role: {}"
 msgstr "Невозможно изменить роль: {}"
 
-#: personalroles.py:185
+#: personalroles.py:176
 msgid "Changed color of {user}'s personal role to {color}"
 msgstr "Цвет персональной роли {user} изменен на {color}"
 
-#: personalroles.py:195
+#: personalroles.py:186
 msgid ""
 "Change name of personal role\n"
 "        You cant use blacklisted names"
@@ -148,10 +136,10 @@ msgstr ""
 "Изменить название персональной роли\n"
 "        Вы не можете использовать названия ролей из черного списка"
 
-#: personalroles.py:201
+#: personalroles.py:192
 msgid "NONONO!!! This rolename is blacklisted."
 msgstr "НЕНЕНЕ!!! Это название роли в чёрном списке."
 
-#: personalroles.py:222
+#: personalroles.py:219
 msgid "Changed name of {user}'s personal role to {name}"
 msgstr "Название персональной роли {user} изменено на {name}"

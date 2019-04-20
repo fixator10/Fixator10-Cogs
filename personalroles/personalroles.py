@@ -57,21 +57,6 @@ class PersonalRoles(commands.Cog):
             ).format(user=user)
         )
 
-    @myrole.command()
-    @checks.admin_or_permissions(manage_roles=True)
-    async def cleanup(self, ctx):
-        """Unassign roles from left users"""
-        deleted = [_("Unassigned roles from users:")]
-        async with self.config.all_members(ctx.guild) as members:
-            for member in members.keys():
-                if not ctx.guild.get_member:
-                    deleted.append(str(await self.bot.get_user_info(member)))
-                    del members[member]
-        if len(deleted) > 1:
-            await ctx.send_interactive(chat.pagify("\n".join(deleted)))
-        else:
-            await ctx.send(chat.info(_("No users was unassigned from their roles")))
-
     @myrole.command(name="list")
     @checks.admin_or_permissions(manage_roles=True)
     async def mr_list(self, ctx):
