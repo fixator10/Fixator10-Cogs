@@ -68,6 +68,7 @@ class GeneralChannel(commands.Cog):
                 chat.error(_("Unable to change channel's name: Missing permissions"))
             )
         except discord.HTTPException as e:
+            ctx.command.reset_cooldown(ctx)
             await ctx.send(
                 chat.error(_("Unable to change channel's name: Failed: {}").format(e))
             )
@@ -102,6 +103,7 @@ class GeneralChannel(commands.Cog):
                 chat.error(_("Unable to change channel's topic: Missing permissions"))
             )
         except discord.HTTPException as e:
+            ctx.command.reset_cooldown(ctx)
             await ctx.send(
                 chat.error(_("Unable to change channel's topic: Failed: {}").format(e))
             )

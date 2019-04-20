@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2019-04-20 17:07+0400\n"
-"PO-Revision-Date: 2019-04-20 17:11+0400\n"
+"POT-Creation-Date: 2019-04-20 17:54+0400\n"
+"PO-Revision-Date: 2019-04-20 17:54+0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -48,11 +48,11 @@ msgstr "Изменение названия основного канала"
 msgid "Unable to change channel's name: Missing permissions"
 msgstr "Невозможно изменить название канала: Недостаточно прав"
 
-#: generalchannel.py:72
+#: generalchannel.py:73
 msgid "Unable to change channel's name: Failed: {}"
 msgstr "Невозможно изменить название канала: Произошла ошибка: {}"
 
-#: generalchannel.py:81
+#: generalchannel.py:82
 msgid ""
 "Change topic of #general\n"
 "\n"
@@ -64,14 +64,14 @@ msgstr ""
 "        Используйте `[p]generalchannel topic +<текст> для \n"
 "        добавления текста в конец заголовка"
 
-#: generalchannel.py:98
+#: generalchannel.py:99
 msgid "General channel topic change"
 msgstr "Изменение заголовка основного канала"
 
-#: generalchannel.py:102
+#: generalchannel.py:103
 msgid "Unable to change channel's topic: Missing permissions"
 msgstr "Невозможно изменить заголовок канала: Недостаточно прав"
 
-#: generalchannel.py:106
+#: generalchannel.py:108
 msgid "Unable to change channel's topic: Failed: {}"
 msgstr "Невозможно изменить заголовок канала: Произошла ошибка: {}"
