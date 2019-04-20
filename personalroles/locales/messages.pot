@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-04-20 17:09+0400\n"
+"POT-Creation-Date: 2019-04-20 17:47+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -107,32 +107,36 @@ msgstr ""
 msgid "Change color of personal role"
 msgstr ""
 
-#: personalroles.py:153 personalroles.py:186 personalroles.py:218
+#: personalroles.py:153 personalroles.py:196 personalroles.py:238
 msgid "Personal Role"
 msgstr ""
 
-#: personalroles.py:158 personalroles.py:191
+#: personalroles.py:159 personalroles.py:202
 msgid ""
 "Unable to edit role.\n"
 "Role must be lower than my top role and i must have permission \"Manage Roles\""
 msgstr ""
 
-#: personalroles.py:166
-msgid "Changed color of {user}'s personal role to {color}"
+#: personalroles.py:169 personalroles.py:212
+msgid "Unable to edit role: {}"
 msgstr ""
 
 #: personalroles.py:176
+msgid "Changed color of {user}'s personal role to {color}"
+msgstr ""
+
+#: personalroles.py:186
 #, docstring
 msgid ""
 "Change name of personal role\n"
 "        You cant use blacklisted names"
 msgstr ""
 
-#: personalroles.py:182
+#: personalroles.py:192
 msgid "NONONO!!! This rolename is blacklisted."
 msgstr ""
 
-#: personalroles.py:199
+#: personalroles.py:219
 msgid "Changed name of {user}'s personal role to {name}"
 msgstr ""
 
