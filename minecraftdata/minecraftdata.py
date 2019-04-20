@@ -224,7 +224,7 @@ class MinecraftData(commands.Cog):
 
     @minecraft.command()
     @checks.bot_has_permissions(embed_links=True)
-    @commands.cooldown(1, 30, commands.BucketType.member)
+    @commands.cooldown(1, 30, commands.BucketType.user)
     async def server(self, ctx, server_ip: str):
         """Get info about server"""
         try:
