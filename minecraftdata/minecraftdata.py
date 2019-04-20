@@ -18,6 +18,12 @@ from .converters import MCNickname
 
 _ = Translator("MinecraftData", __file__)
 
+SERVICE_STATUS = {
+    "red": _("💔 **UNAVAILABLE**"),
+    "yellow": _("💛 **SOME ISSUES**"),
+    "green": _("💚 **OK**"),
+}
+
 
 @cog_i18n(_)
 class MinecraftData(commands.Cog):
@@ -307,12 +313,7 @@ class MinecraftData(commands.Cog):
             )
             for service in data:
                 for entry, status in service.items():
-                    em.add_field(
-                        name=entry,
-                        value=status.replace("red", _("💔 **UNAVAILABLE**"))
-                            .replace("yellow", _("💛 **SOME ISSUES**"))
-                            .replace("green", _("💚 **OK**")),
-                    )
+                    em.add_field(name=entry, value=SERVICE_STATUS.get(status, status))
             await ctx.send(embed=em)
         except Exception as e:
             await ctx.send(
