@@ -20,7 +20,7 @@ class MCNickname(Converter):
         session = ctx.cog.session
         try:
             async with session.get(
-                    f"https://api.mojang.com/users/profiles/minecraft/{argument}"
+                f"https://api.mojang.com/users/profiles/minecraft/{argument}"
             ) as data:
                 response_data = await data.json()
         except ContentTypeError:

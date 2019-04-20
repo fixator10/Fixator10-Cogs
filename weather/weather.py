@@ -16,7 +16,6 @@ from requests.exceptions import (
 
 _ = Translator("MinecraftData", __file__)
 
-
 WEATHER_STATES = {
     "clear-day": "\N{Black Sun with Rays}",
     "clear-night": "\N{Night with Stars}",

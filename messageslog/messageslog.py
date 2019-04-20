@@ -141,23 +141,23 @@ class MessagesLog(commands.Cog):
         if not logchannel:
             return
         if any(
-                [
-                    not await self.config.guild(message.guild).deletion(),
-                    not message.guild.get_channel(
-                        await self.config.guild(message.guild).channel()
-                    ),
-                    any(
-                        message.content.startswith(prefix)
-                        for prefix in await self.bot.get_prefix(message)
-                    ),
-                    message.channel.id
-                    in await self.config.guild(message.guild).ignored_channels(),
-                    message.author.id
-                    in await self.config.guild(message.guild).ignored_users(),
-                    not message.content,
-                    message.author.bot,
-                    message.channel.nsfw and not logchannel.nsfw,
-                ]
+            [
+                not await self.config.guild(message.guild).deletion(),
+                not message.guild.get_channel(
+                    await self.config.guild(message.guild).channel()
+                ),
+                any(
+                    message.content.startswith(prefix)
+                    for prefix in await self.bot.get_prefix(message)
+                ),
+                message.channel.id
+                in await self.config.guild(message.guild).ignored_channels(),
+                message.author.id
+                in await self.config.guild(message.guild).ignored_users(),
+                not message.content,
+                message.author.bot,
+                message.channel.nsfw and not logchannel.nsfw,
+            ]
         ):
             return
         embed = discord.Embed(
@@ -190,24 +190,24 @@ class MessagesLog(commands.Cog):
         if not logchannel:
             return
         if any(
-                [
-                    not await self.config.guild(before.guild).deletion(),
-                    not before.guild.get_channel(
-                        await self.config.guild(before.guild).channel()
-                    ),
-                    any(
-                        before.content.startswith(prefix)
-                        for prefix in await self.bot.get_prefix(before)
-                    ),
-                    before.channel.id
-                    in await self.config.guild(before.guild).ignored_channels(),
-                    before.author.id
-                    in await self.config.guild(before.guild).ignored_users(),
-                    not after.content,
-                    before.content == after.content,
-                    before.author.bot,
-                    before.channel.nsfw and not logchannel.nsfw,
-                ]
+            [
+                not await self.config.guild(before.guild).deletion(),
+                not before.guild.get_channel(
+                    await self.config.guild(before.guild).channel()
+                ),
+                any(
+                    before.content.startswith(prefix)
+                    for prefix in await self.bot.get_prefix(before)
+                ),
+                before.channel.id
+                in await self.config.guild(before.guild).ignored_channels(),
+                before.author.id
+                in await self.config.guild(before.guild).ignored_users(),
+                not after.content,
+                before.content == after.content,
+                before.author.bot,
+                before.channel.nsfw and not logchannel.nsfw,
+            ]
         ):
             return
         embed = discord.Embed(

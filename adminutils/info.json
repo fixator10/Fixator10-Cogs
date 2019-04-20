@@ -1,15 +1,15 @@
 {
-    "author": [
-        "Fixator10",
-        "DiNitride"
-    ],
-    "install_msg": "Thanks for install.\nThis cog contains some useful commands for server administrators.",
-    "short": "Useful commands for server administrators.",
-    "description": "Useful commands for server administrators.",
-    "tags": [
-        "admin",
-        "emoj",
-        "purge",
-        "massnick"
-    ]
+  "author": [
+    "Fixator10",
+    "DiNitride"
+  ],
+  "install_msg": "Thanks for install.\nThis cog contains some useful commands for server administrators.",
+  "short": "Useful commands for server administrators.",
+  "description": "Useful commands for server administrators.",
+  "tags": [
+    "admin",
+    "emoj",
+    "purge",
+    "massnick"
+  ]
 }

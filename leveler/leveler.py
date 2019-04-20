@@ -1292,19 +1292,12 @@ class Leveler(commands.Cog):
         chat_block = time.time() + timedelta(days=days).total_seconds()
         try:
             db.users.update_one(
-                {"user_id": str(user.id)},
-                {
-                    "$set": {
-                        "chat_block": chat_block,
-                    }
-                },
+                {"user_id": str(user.id)}, {"$set": {"chat_block": chat_block}}
             )
         except Exception as exc:
             await ctx.send("Unable to add chat block: {}".format(exc))
         else:
             await ctx.tick()
-
-
 
     @checks.is_owner()
     @lvladmin.command()
