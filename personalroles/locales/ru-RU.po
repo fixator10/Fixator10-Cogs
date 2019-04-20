@@ -5,9 +5,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2019-04-20 17:09+0400\n"
-"PO-Revision-Date: 2019-04-20 17:12+0400\n"
-"Last-Translator: \n"
+"POT-Creation-Date: 2019-04-20 17:47+0400\n"
+"PO-Revision-Date: 2019-04-20 17:58+0400\n"
+"Last-Translator: Максим Невзоров\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
 "MIME-Version: 1.0\n"
@@ -106,11 +106,11 @@ msgstr "В чёрном списке нет запрещенных назван�
 msgid "Change color of personal role"
 msgstr "Сменить цвет персональной роли"
 
-#: personalroles.py:153 personalroles.py:186 personalroles.py:218
+#: personalroles.py:153 personalroles.py:196 personalroles.py:238
 msgid "Personal Role"
 msgstr "Персональная роль"
 
-#: personalroles.py:158 personalroles.py:191
+#: personalroles.py:159 personalroles.py:202
 msgid ""
 "Unable to edit role.\n"
 "Role must be lower than my top role and i must have permission \"Manage Roles"
@@ -120,11 +120,15 @@ msgstr ""
 "Роль должна быть ниже моей высшей роли и я должен иметь права \"Управление "
 "ролями\""
 
-#: personalroles.py:166
+#: personalroles.py:169 personalroles.py:212
+msgid "Unable to edit role: {}"
+msgstr "Невозможно изменить роль: {}"
+
+#: personalroles.py:176
 msgid "Changed color of {user}'s personal role to {color}"
 msgstr "Цвет персональной роли {user} изменен на {color}"
 
-#: personalroles.py:176
+#: personalroles.py:186
 msgid ""
 "Change name of personal role\n"
 "        You cant use blacklisted names"
@@ -132,10 +136,10 @@ msgstr ""
 "Изменить название персональной роли\n"
 "        Вы не можете использовать названия ролей из черного списка"
 
-#: personalroles.py:182
+#: personalroles.py:192
 msgid "NONONO!!! This rolename is blacklisted."
 msgstr "НЕНЕНЕ!!! Это название роли в чёрном списке."
 
-#: personalroles.py:199
+#: personalroles.py:219
 msgid "Changed name of {user}'s personal role to {name}"
 msgstr "Название персональной роли {user} изменено на {name}"
