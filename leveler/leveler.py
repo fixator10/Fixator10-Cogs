@@ -398,7 +398,6 @@ class Leveler(commands.Cog):
 
         await ctx.send(embed=em)
 
-    @commands.cooldown(1, 30, commands.BucketType.user)
     @commands.command()
     @commands.guild_only()
     async def rep(self, ctx, *, user: discord.Member = None):
