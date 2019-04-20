@@ -5,23 +5,24 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2019-04-16 16:41+0400\n"
-"PO-Revision-Date: 2019-04-16 17:16+0400\n"
+"POT-Creation-Date: 2019-04-20 17:13+0400\n"
+"PO-Revision-Date: 2019-04-20 17:15+0400\n"
+"Last-Translator: \n"
 "Language-Team: \n"
+"Language: ru_RU\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: redgettext 2.2\n"
 "X-Generator: Poedit 2.2.1\n"
-"Last-Translator: \n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
-"Language: ru_RU\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
 
-#: weather.py:42
+#: weather.py:41
 msgid "Set API key for forecast.io"
 msgstr "Добавить ключ для forecast.io"
 
-#: weather.py:43
+#: weather.py:42
 msgid ""
 "To get forecast.io API key:\n"
 "1. Register/login at [DarkSky](https://darksky.net/dev/register)\n"
@@ -30,26 +31,30 @@ msgid ""
 msgstr ""
 "Для получения ключа forecast.io:\n"
 "1. Зарегистрируйтесь на [DarkSky](https://darksky.net/dev/register)\n"
-"2. Скопируйте ваш секретный ключ: [\"Your Secret Key\"](https://darksky.net/dev/account)\n"
+"2. Скопируйте ваш секретный ключ: [\"Your Secret Key\"](https://darksky.net/"
+"dev/account)\n"
 "3. Используйте команду `{}set api forecastio secret,<ваш_API_ключ>`"
 
-#: weather.py:54
+#: weather.py:53
 msgid "Shows weather in provided place"
 msgstr "Показывает погоду в указанном месте"
 
-#: weather.py:61 weather.py:115
+#: weather.py:60 weather.py:114
 msgid "Cannot find a place {}"
 msgstr "Невозможно найти место {}"
 
-#: weather.py:78 weather.py:131
-msgid "This command requires API key. Use {}forecastapi to get more information"
-msgstr "Эта команда требует API-ключа. Используйте {}forecastapi для получения большей информации"
+#: weather.py:77 weather.py:130
+msgid ""
+"This command requires API key. Use {}forecastapi to get more information"
+msgstr ""
+"Эта команда требует API-ключа. Используйте {}forecastapi для получения "
+"большей информации"
 
-#: weather.py:86 weather.py:139
+#: weather.py:85 weather.py:138
 msgid "Unable to get data from forecast.io"
 msgstr "Невозможно получить информацию с forecast.io"
 
-#: weather.py:92
+#: weather.py:91
 msgid ""
 "Weather in {}:\n"
 "{}\n"
@@ -61,10 +66,10 @@ msgstr ""
 "{}˚C\n"
 "{}\n"
 
-#: weather.py:109
+#: weather.py:108
 msgid "Shows 7 days forecast for provided place"
 msgstr "Показывает прогноз погоды на 7 дней в указанном месте"
 
-#: weather.py:145
+#: weather.py:144
 msgid "Weather in {}:\n"
 msgstr "Погода в {}:\n"

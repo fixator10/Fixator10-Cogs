@@ -5,31 +5,32 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2019-04-16 16:58+0400\n"
-"PO-Revision-Date: 2019-04-16 22:16+0400\n"
+"POT-Creation-Date: 2019-04-20 17:08+0400\n"
+"PO-Revision-Date: 2019-04-20 17:11+0400\n"
+"Last-Translator: \n"
 "Language-Team: \n"
+"Language: ru_RU\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: redgettext 2.2\n"
 "X-Generator: Poedit 2.2.1\n"
-"Last-Translator: \n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
-"Language: ru_RU\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
 
-#: moreutils.py:55
+#: moreutils.py:54
 msgid "Send bot's current time"
 msgstr "Отправляет текущее время бота"
 
-#: moreutils.py:56
+#: moreutils.py:55
 msgid "%d.%m.%Y %H:%M:%S %Z"
 msgstr ""
 
-#: moreutils.py:61
+#: moreutils.py:60
 msgid "Shows some info about provided color"
 msgstr "Показывает информацию о предоставленном цвете"
 
-#: moreutils.py:97
+#: moreutils.py:96
 msgid ""
 "Help I've fallen and I need @someone.\n"
 "\n"
@@ -39,30 +40,30 @@ msgstr ""
 "\n"
 "        Первоапрельская шутка Discord 2018"
 
-#: moreutils.py:126
+#: moreutils.py:125
 msgid "Get current discord status from status.discordapp.com"
 msgstr "Получить текущее состояние Discord со страницы status.discordapp.com"
 
-#: moreutils.py:135
+#: moreutils.py:134
 msgid "Unable to get data from https://status.discordapp.com: {}"
 msgstr "Невозможно получить информацию от https://status.discordapp.com: {}"
 
-#: moreutils.py:143
+#: moreutils.py:142
 msgid "OK"
 msgstr "ОК"
 
-#: moreutils.py:144
+#: moreutils.py:143
 msgid "Minor problems"
 msgstr "Небольшие проблемы"
 
-#: moreutils.py:145
+#: moreutils.py:144
 msgid "Major problems"
 msgstr "Большие проблемы"
 
-#: moreutils.py:146
+#: moreutils.py:145
 msgid "Critical problems"
 msgstr "Критические проблемы"
 
-#: moreutils.py:150
+#: moreutils.py:149
 msgid "Discord Status"
 msgstr "Статус Discord"

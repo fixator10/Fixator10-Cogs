@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2019-04-17 13:53+0400\n"
-"PO-Revision-Date: 2019-04-17 13:56+0400\n"
+"POT-Creation-Date: 2019-04-20 17:06+0400\n"
+"PO-Revision-Date: 2019-04-20 17:10+0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -59,31 +59,31 @@ msgstr "Очистка неактивных участников отменен�
 msgid "Mass nicknames everyone on the server"
 msgstr "Массово устанавливает ники всем на сервере"
 
-#: adminutils.py:85
+#: adminutils.py:86
 msgid "Massnick"
 msgstr "Массовая установка ников"
 
-#: adminutils.py:92
+#: adminutils.py:93
 msgid "Finished nicknaming server. {} nicknames could not be completed."
 msgstr "Изменение никнеймов завершено. {} никнеймов не удалось изменить."
 
-#: adminutils.py:103
+#: adminutils.py:104
 msgid "Resets nicknames on the server"
 msgstr "Сбрасывает никнеймы на сервере"
 
-#: adminutils.py:110
+#: adminutils.py:111
 msgid "Reset nicks"
 msgstr "Сброс никнеймов"
 
-#: adminutils.py:116
+#: adminutils.py:118
 msgid "Finished resetting server nicknames. Unable to reset {} nicknames."
 msgstr "Сброс серверных никнеймов завершен. {} никнеймов не удалось сбросить."
 
-#: adminutils.py:123
+#: adminutils.py:128
 msgid "Manage emoji"
 msgstr "Управление эмодзи"
 
-#: adminutils.py:128
+#: adminutils.py:133
 msgid ""
 "Create custom emoji\n"
 "\n"
@@ -105,23 +105,23 @@ msgstr ""
 "РольДляЭмодзи \"Тестовое Изображение\"`\n"
 "        "
 
-#: adminutils.py:141
+#: adminutils.py:146
 msgid "Unable to get emoji from provided url: {}"
 msgstr "Невозможно получить эмодзи по предоставленному адресу: {}"
 
-#: adminutils.py:152 adminutils.py:189
-msgid "Restricted to roles: "
-msgstr "Ограничено для ролей: "
+#: adminutils.py:156
+msgid "Restricted to roles: {}"
+msgstr "Ограничено для ролей: {}"
 
-#: adminutils.py:161
+#: adminutils.py:165
 msgid "This image type is unsupported, or link is incorrect"
 msgstr "Данный тип изображений не поддерживается, или указана неверная ссылка"
 
-#: adminutils.py:165
+#: adminutils.py:169
 msgid "An error occured on adding an emoji: {}"
 msgstr "Произошла ошибка при добавлении эмодзи: {}"
 
-#: adminutils.py:174
+#: adminutils.py:178
 msgid ""
 "Rename emoji and restrict to certain roles\n"
 "        Only this roles will be able to use this emoji\n"
@@ -145,6 +145,10 @@ msgstr ""
 "роль\"`\n"
 "        "
 
-#: adminutils.py:200
+#: adminutils.py:192
+msgid "Restricted to roles: "
+msgstr "Ограничено для ролей: "
+
+#: adminutils.py:203
 msgid "Remove emoji from server"
 msgstr "Удалить эмодзи с сервера"

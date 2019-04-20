@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2019-04-18 21:22+0400\n"
-"PO-Revision-Date: 2019-04-18 21:22+0400\n"
+"POT-Creation-Date: 2019-04-20 17:07+0400\n"
+"PO-Revision-Date: 2019-04-20 17:11+0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -93,29 +93,26 @@ msgstr "Игнорируемые каналы"
 msgid "Message deleted"
 msgstr "Сообщение удалено"
 
-#: messageslog.py:171 messageslog.py:218 messageslog.py:235
+#: messageslog.py:171 messageslog.py:221 messageslog.py:241
 msgid "Attachments"
 msgstr "Вложения"
 
-#: messageslog.py:177 messageslog.py:224
+#: messageslog.py:177 messageslog.py:227
 msgid "ID: {} • Sent at"
 msgstr "ID: {} • Отправлено в"
 
-#: messageslog.py:178 messageslog.py:242
+#: messageslog.py:178 messageslog.py:248
 msgid "Channel"
 msgstr "Канал"
 
-#: messageslog.py:211
+#: messageslog.py:214
 msgid "Message redacted (Before)"
 msgstr "Сообщение отредактировано (До)"
 
-#: messageslog.py:228
+#: messageslog.py:234
 msgid "Message redacted (After)"
 msgstr "Сообщение отредактировано (После)"
 
-#: messageslog.py:241
+#: messageslog.py:247
 msgid "ID: {} • Redacted at"
 msgstr "ID: {} • Отредактировано в"
-
-#~ msgid "Sent at"
-#~ msgstr "Отправлено в"

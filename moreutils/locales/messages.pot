@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-04-16 16:58+0400\n"
+"POT-Creation-Date: 2019-04-20 17:08+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,21 +15,21 @@ msgstr ""
 "Generated-By: redgettext 2.2\n"
 
 
-#: moreutils.py:55
+#: moreutils.py:54
 #, docstring
 msgid "Send bot's current time"
 msgstr ""
 
-#: moreutils.py:56
+#: moreutils.py:55
 msgid "%d.%m.%Y %H:%M:%S %Z"
 msgstr ""
 
-#: moreutils.py:61
+#: moreutils.py:60
 #, docstring
 msgid "Shows some info about provided color"
 msgstr ""
 
-#: moreutils.py:97
+#: moreutils.py:96
 #, docstring
 msgid ""
 "Help I've fallen and I need @someone.\n"
@@ -37,32 +37,32 @@ msgid ""
 "        Discord 2018 April Fools"
 msgstr ""
 
-#: moreutils.py:126
+#: moreutils.py:125
 #, docstring
 msgid "Get current discord status from status.discordapp.com"
 msgstr ""
 
-#: moreutils.py:135
+#: moreutils.py:134
 msgid "Unable to get data from https://status.discordapp.com: {}"
 msgstr ""
 
-#: moreutils.py:143
+#: moreutils.py:142
 msgid "OK"
 msgstr ""
 
-#: moreutils.py:144
+#: moreutils.py:143
 msgid "Minor problems"
 msgstr ""
 
-#: moreutils.py:145
+#: moreutils.py:144
 msgid "Major problems"
 msgstr ""
 
-#: moreutils.py:146
+#: moreutils.py:145
 msgid "Critical problems"
 msgstr ""
 
-#: moreutils.py:150
+#: moreutils.py:149
 msgid "Discord Status"
 msgstr ""
 
