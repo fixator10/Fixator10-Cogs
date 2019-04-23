@@ -342,7 +342,7 @@ class MinecraftData(commands.Cog):
                         nick["changedToAt"] / 1000
                     ).strftime(_("%d.%m.%Y %H:%M:%S"))
                 except KeyError:
-                    nick["changedToAt"] = "Initial"
+                    nick["changedToAt"] = _("Initial")
             table = tabulate.tabulate(
                 data_history,
                 headers={
