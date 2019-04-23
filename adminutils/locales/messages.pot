@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-04-20 17:06+0400\n"
+"POT-Creation-Date: 2019-04-23 18:04+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -118,11 +118,11 @@ msgid ""
 "        "
 msgstr ""
 
-#: adminutils.py:192
+#: adminutils.py:195
 msgid "Restricted to roles: "
 msgstr ""
 
-#: adminutils.py:203
+#: adminutils.py:206
 #, docstring
 msgid "Remove emoji from server"
 msgstr ""

@@ -184,6 +184,9 @@ class AdminUtils(commands.Cog):
             `[p]emoji rename emoji NewEmojiName`
             `[p]emoji rename emoji NewEmojiName Administrator "Allowed role"`
         """
+        if emoji.guild != ctx.guild:
+            await ctx.send_help()
+            return
         await emoji.edit(
             name=name,
             roles=roles,
@@ -201,5 +204,8 @@ class AdminUtils(commands.Cog):
     @emoji.command(name="remove")
     async def emoji_remove(self, ctx, *, emoji: discord.Emoji):
         """Remove emoji from server"""
+        if emoji.guild != ctx.guild:
+            await ctx.send_help()
+            return
         await emoji.delete(reason=get_audit_reason(ctx.author))
         await ctx.tick()
