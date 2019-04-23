@@ -5,9 +5,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2019-04-20 17:07+0400\n"
-"PO-Revision-Date: 2019-04-20 17:11+0400\n"
-"Last-Translator: \n"
+"POT-Creation-Date: 2019-04-23 12:43+0400\n"
+"PO-Revision-Date: 2019-04-23 12:50+0400\n"
+"Last-Translator: Максим Невзоров\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
 "MIME-Version: 1.0\n"
@@ -174,6 +174,10 @@ msgstr "Получить историю ников игрока"
 #: minecraftdata.py:343
 msgid "%d.%m.%Y %H:%M:%S"
 msgstr ""
+
+#: minecraftdata.py:345
+msgid "Initial"
+msgstr "Изначальный"
 
 #: minecraftdata.py:349
 msgid "Nickname"
