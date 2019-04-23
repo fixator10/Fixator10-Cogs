@@ -25,7 +25,7 @@ def check_api(ctx):
     return False
 
 
-def _check_api(ctx):
+def check_not_api(ctx):
     """Opposite to check_api(ctx)"""
     return not check_api(ctx)
 
@@ -68,7 +68,7 @@ class SteamCommunity(commands.Cog):
         pass
 
     @steamcommunity.command()
-    @commands.check(_check_api)
+    @commands.check(check_not_api)
     @checks.is_owner()
     async def apikey(self, ctx):
         """Set API key for Steam Web API"""
