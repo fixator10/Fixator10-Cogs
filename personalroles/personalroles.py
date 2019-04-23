@@ -11,8 +11,8 @@ from tabulate import tabulate
 _ = Translator("PersonalRoles", __file__)
 
 
-def has_assigned_role(ctx):
-    return ctx.cog.config.member(ctx.author).role()
+async def has_assigned_role(ctx):
+    return ctx.guild.get_role(await ctx.cog.config.member(ctx.author).role())
 
 
 @cog_i18n(_)
