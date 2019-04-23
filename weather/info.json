@@ -1,6 +1,7 @@
 {
   "author": [
-    "Romashkoo, Fixator10"
+    "Romashkoo",
+    "Fixator10"
   ],
   "install_msg": "Thanks for install.\nDon't forget to set api key (`[p]forecastapi`)",
   "short": "Weather forecast",
