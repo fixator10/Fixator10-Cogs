@@ -187,7 +187,7 @@ class Leveler(commands.Cog):
         em.add_field(name="Info: ", value=userinfo["info"] or None)
         em.add_field(
             name="Badges: ",
-            value=(", ".join(userinfo["badges"]) or None).replace("_", " "),
+            value=(", ".join(userinfo["badges"]).replace("_", " ") or None),
         )
         em.set_author(name="Profile for {}".format(user.name), url=user.avatar_url)
         em.set_thumbnail(url=user.avatar_url)
