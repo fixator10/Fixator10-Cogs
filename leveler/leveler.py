@@ -2708,6 +2708,7 @@ class Leveler(commands.Cog):
         result = await self._add_corners(result, 25)
         file = BytesIO()
         result.save(file, "PNG", quality=100)
+        file.seek(0)
         return file
 
     # returns color that contrasts better in background
@@ -3008,6 +3009,7 @@ class Leveler(commands.Cog):
         result = Image.alpha_composite(result, process)
         file = BytesIO()
         result.save(file, "PNG", quality=100)
+        file.seek(0)
         return file
 
     async def _add_corners(self, im, rad, multiplier=6):
@@ -3135,6 +3137,7 @@ class Leveler(commands.Cog):
         result = await self._add_corners(result, int(height / 2))
         file = BytesIO()
         result.save(file, "PNG", quality=100)
+        file.seek(0)
         return file
 
     @commands.Cog.listener("on_message")
