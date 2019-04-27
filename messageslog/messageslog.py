@@ -132,6 +132,7 @@ class MessagesLog(commands.Cog):
         pages = users_pages + channels_pages
         await menu(ctx, pages, DEFAULT_CONTROLS)
 
+    @commands.Cog.listener("on_message_delete")
     async def message_deleted(self, message: discord.Message):
         if not message.guild:
             return
@@ -181,6 +182,7 @@ class MessagesLog(commands.Cog):
         except discord.Forbidden:
             pass
 
+    @commands.Cog.listener("on_message_edit")
     async def message_redacted(self, before: discord.Message, after: discord.Message):
         if not before.guild:
             return
