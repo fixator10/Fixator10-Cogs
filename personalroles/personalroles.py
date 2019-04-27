@@ -73,7 +73,7 @@ class PersonalRoles(commands.Cog):
                 continue
             dic = {
                 _("User"): ctx.guild.get_member(member)
-                or f"[X] {await self.bot.get_user_info(member)}",
+                           or f"[X] {await self.bot.fetch_user(member)}",
                 _("Role"): await self.smart_truncate(
                     ctx.guild.get_role(data["role"]) or "[X] {}".format(data["role"])
                 ),
