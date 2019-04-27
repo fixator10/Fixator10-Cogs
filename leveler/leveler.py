@@ -1284,7 +1284,7 @@ class Leveler(commands.Cog):
         """Ban user from getting experience"""
         if isinstance(user, int):
             try:
-                user = await self.bot.get_user_info(user)
+                user = await self.bot.fetch_user(user)
             except (discord.HTTPException, discord.NotFound):
                 user = None
         if user is None:
@@ -2369,9 +2369,8 @@ class Leveler(commands.Cog):
         async with self.session.get(bg_url) as r:
             image = await r.content.read()
             profile_background = BytesIO(image)
-        async with self.session.get(user.avatar_url) as r:
-            image = await r.content.read()
-            profile_avatar = BytesIO(image)
+        profile_avatar = BytesIO()
+        await user.avatar_url.save(profile_avatar, seek_begin=True)
 
         bg_image = Image.open(profile_background).convert("RGBA")
         profile_image = Image.open(profile_avatar).convert("RGBA")
@@ -2818,9 +2817,8 @@ class Leveler(commands.Cog):
         async with self.session.get(bg_url) as r:
             image = await r.content.read()
         rank_background = BytesIO(image)
-        async with self.session.get(user.avatar_url) as r:
-            image = await r.content.read()
-        rank_avatar = BytesIO(image)
+        rank_avatar = BytesIO()
+        await user.avatar_url.save(rank_avatar, seek_begin=True)
 
         bg_image = Image.open(rank_background).convert("RGBA")
         profile_image = Image.open(rank_avatar).convert("RGBA")
@@ -3041,9 +3039,8 @@ class Leveler(commands.Cog):
         async with self.session.get(bg_url) as r:
             image = await r.content.read()
         level_background = BytesIO(image)
-        async with self.session.get(user.avatar_url) as r:
-            image = await r.content.read()
-        level_avatar = BytesIO(image)
+        level_avatar = BytesIO()
+        await user.avatar_url.save(level_avatar, seek_begin=True)
 
         bg_image = Image.open(level_background).convert("RGBA")
         profile_image = Image.open(level_avatar).convert("RGBA")
@@ -3140,6 +3137,7 @@ class Leveler(commands.Cog):
         result.save(file, "PNG", quality=100)
         return file.getvalue()
 
+    @commands.Cog.listener("on_message")
     async def _handle_on_message(self, message):
         text = message.content
         server = message.guild
