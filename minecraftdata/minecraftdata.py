@@ -58,13 +58,17 @@ class MinecraftData(commands.Cog):
                 )
             ) as s:
                 files.append(
-                    discord.File(BytesIO(await s.read()), filename=f"{nickname.name}_head.png")
+                    discord.File(
+                        BytesIO(await s.read()), filename=f"{nickname.name}_head.png"
+                    )
                 )
             async with self.session.get(
                 "https://crafatar.com/skins/{}".format(uuid)
             ) as s:
                 files.append(
-                    discord.File(BytesIO(await s.read()), filename=f"{nickname.name}.png")
+                    discord.File(
+                        BytesIO(await s.read()), filename=f"{nickname.name}.png"
+                    )
                 )
             async with self.session.get(
                 "https://crafatar.com/renders/body/{}.png{}".format(
@@ -72,7 +76,9 @@ class MinecraftData(commands.Cog):
                 )
             ) as s:
                 files.append(
-                    discord.File(BytesIO(await s.read()), filename=f"{nickname.name}_body.png")
+                    discord.File(
+                        BytesIO(await s.read()), filename=f"{nickname.name}_body.png"
+                    )
                 )
         em = discord.Embed(
             timestamp=ctx.message.created_at, color=await ctx.embed_color()
