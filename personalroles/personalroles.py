@@ -216,6 +216,7 @@ class PersonalRoles(commands.Cog):
             return content
         return " ".join(content_str[: length + 1].split(" ")[0:-1]) + suffix
 
+    @commands.Cog.listener("on_member_join")
     async def role_persistance(self, member):
         """Automatically give already assigned roles on join"""
         role = await self.config.member(member).role()
