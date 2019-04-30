@@ -253,15 +253,6 @@ class MinecraftData(commands.Cog):
                 query = await self.bot.loop.run_in_executor(None, server.query)
             except (ConnectionResetError, OSError):
                 query = None
-        if isinstance(status.description, dict):
-            description = ""
-            async for text in self.gen_dict_extract("text", status.description):
-                description += text
-            motd = re.sub(r"\xA7[0-9A-FK-OR]", "", description, flags=re.IGNORECASE)
-        else:
-            motd = re.sub(
-                r"\xA7[0-9A-FK-OR]", "", status.description, flags=re.IGNORECASE
-            )
         icon = (
             discord.File(
                 BytesIO(b64decode(status.favicon.split(",", 1)[1])), filename="icon.png"
@@ -270,7 +261,9 @@ class MinecraftData(commands.Cog):
             else None
         )
         embed = discord.Embed(
-            title=server_ip, description=motd, color=await ctx.embed_color()
+            title=f"{server.host}:{server.port}",
+            description=await self.clear_mcformatting(status.description),
+            color=await ctx.embed_color(),
         )
         if icon:
             embed.set_thumbnail(url="attachment://icon.png")
@@ -282,8 +275,10 @@ class MinecraftData(commands.Cog):
                 status.players.sample
                 and list(
                     chat.pagify(
-                        "\n".join([p.name for p in status.players.sample]),
-                        page_length=1024,
+                        await self.clear_mcformatting(
+                            "\n".join([p.name for p in status.players.sample])
+                        ),
+                        page_length=1000,
                     )
                 )[0]
                 or "",
@@ -367,6 +362,17 @@ class MinecraftData(commands.Cog):
                     + chat.inline(str(e))
                 )
             )
+
+    async def clear_mcformatting(self, formatted_str) -> str:
+        """Remove Minecraft-formatting"""
+        if isinstance(formatted_str, dict):
+            clean = ""
+            async for text in self.gen_dict_extract("text", formatted_str):
+                clean += text
+            clean = re.sub(r"\xA7[0-9A-FK-OR]", "", clean, flags=re.IGNORECASE)
+        else:
+            clean = re.sub(r"\xA7[0-9A-FK-OR]", "", formatted_str, flags=re.IGNORECASE)
+        return clean
 
     async def gen_dict_extract(self, key, var):
         if hasattr(var, "items"):
