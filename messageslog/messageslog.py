@@ -35,7 +35,9 @@ class MessagesLog(commands.Cog):
         }
         self.config.register_guild(**default_guild)
 
-    @commands.group(autohelp=True)
+    @commands.group(
+        autohelp=True, aliases=["messagelog", "messageslogs", "messagelogs"]
+    )
     @checks.admin_or_permissions(manage_guild=True)
     async def messageslog(self, ctx):
         """Manage message logging"""
@@ -87,7 +89,9 @@ class MessagesLog(commands.Cog):
             users = await self.config.guild(ctx.guild).ignored_users()
             channels = await self.config.guild(ctx.guild).ignored_channels()
             users = [
-                ctx.guild.get_member(m).mention for m in users if ctx.guild.get_member(m)
+                ctx.guild.get_member(m).mention
+                for m in users
+                if ctx.guild.get_member(m)
             ]
             channels = [
                 ctx.guild.get_channel(m).mention
@@ -127,9 +131,7 @@ class MessagesLog(commands.Cog):
 
     async def ignore_config_add(self, config: list, item):
         """Adds item to provided config list"""
-        config.append(
-            item.id
-        ) if item.id not in config else config.remove(item.id)
+        config.append(item.id) if item.id not in config else config.remove(item.id)
 
     @commands.Cog.listener("on_message_delete")
     async def message_deleted(self, message: discord.Message):
@@ -217,7 +219,9 @@ class MessagesLog(commands.Cog):
             timestamp=before.created_at,
             color=before.author.color,
         )
-        embed.add_field(name=_("Now"), value=_("[View message]({})").format(after.jump_url))
+        embed.add_field(
+            name=_("Now"), value=_("[View message]({})").format(after.jump_url)
+        )
         if before.attachments:
             embed.add_field(
                 name=_("Attachments"),
