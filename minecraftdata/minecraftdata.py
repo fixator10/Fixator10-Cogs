@@ -119,12 +119,12 @@ class MinecraftData(commands.Cog):
                     f"http://capes.labymod.net/capes/{uuid}", raise_for_status=True
             ) as data:
                 cape = await data.read()
-        except Exception as e:
+        except aiohttp.ClientResponseError as e:
             await ctx.send(
                 chat.error(
-                    _(
-                        "Data is not found. (Or LabyMod capes server is down)\n{}"
-                    ).format(chat.inline(str(e)))
+                    _("Unable to get data: {message} ({status})").format(
+                        status=e.status, message=e.message
+                    )
                 )
             )
             return
@@ -163,11 +163,11 @@ class MinecraftData(commands.Cog):
             ) as data:
                 response_data = await data.json(content_type=None)
             cape = response_data["cape"]
-        except Exception as e:
+        except aiohttp.ClientResponseError as e:
             await ctx.send(
                 chat.error(
-                    _("Data is not found. (Or 5zig texture server is down)\n{}").format(
-                        chat.inline(str(e))
+                    _("Unable to get data: {message} ({status})").format(
+                        status=e.status, message=e.message
                     )
                 )
             )
@@ -192,11 +192,11 @@ class MinecraftData(commands.Cog):
                 )
                 return
             cape = response_data["animatedCape"]
-        except Exception as e:
+        except aiohttp.ClientResponseError as e:
             await ctx.send(
                 chat.error(
-                    _("Data is not found. (Or 5zig texture server is down)\n{}").format(
-                        chat.inline(str(e))
+                    _("Unable to get data: {message} ({status})").format(
+                        status=e.status, message=e.message
                     )
                 )
             )
