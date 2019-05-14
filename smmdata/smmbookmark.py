@@ -33,24 +33,38 @@ class SMMB:
             self.creator_img = data.select_one(
                 ".mii-wrapper.creator > .link > img"
             ).get("src")
-            self.best_player = data.select_one(
-                ".fastest-time-wrapper > .user-wrapper > .user-info > .name"
-            ).string
-            self.best_player_url = BASE_URL + data.select_one(
-                ".fastest-time-wrapper > .user-wrapper > .mii-wrapper > .link"
-            ).get("href")
-            self.best_player_img = data.select_one(
-                ".fastest-time-wrapper > .user-wrapper > .mii-wrapper > .link > img"
-            ).get("src")
-            self.first_clear_name = data.select_one(
-                ".first-user > .body > .user-wrapper > .user-info > .name"
-            ).string
-            self.first_clear_url = BASE_URL + data.select_one(
-                ".first-user > .body > .user-wrapper > .mii-wrapper > .link"
-            ).get("href")
-            self.first_clear_img = data.select_one(
-                ".first-user > .body > .user-wrapper > .mii-wrapper > .link > img"
-            ).get("src")
+            if data.select_one(
+                    ".fastest-time-wrapper > .user-wrapper > .mii-wrapper > .link"
+            ):
+                self.best_player_name = data.select_one(
+                    ".fastest-time-wrapper > .user-wrapper > .user-info > .name"
+                ).string
+                self.best_player_url = BASE_URL + data.select_one(
+                    ".fastest-time-wrapper > .user-wrapper > .mii-wrapper > .link"
+                ).get("href")
+                self.best_player_img = data.select_one(
+                    ".fastest-time-wrapper > .user-wrapper > .mii-wrapper > .link > img"
+                ).get("src")
+            else:
+                self.best_player_name = None
+                self.best_player_url = None
+                self.best_player_img = None
+            if data.select_one(
+                    ".first-user > .body > .user-wrapper > .mii-wrapper > .link"
+            ):
+                self.first_clear_name = data.select_one(
+                    ".first-user > .body > .user-wrapper > .user-info > .name"
+                ).string
+                self.first_clear_url = BASE_URL + data.select_one(
+                    ".first-user > .body > .user-wrapper > .mii-wrapper > .link"
+                ).get("href")
+                self.first_clear_img = data.select_one(
+                    ".first-user > .body > .user-wrapper > .mii-wrapper > .link > img"
+                ).get("src")
+            else:
+                self.first_clear_name = None
+                self.first_clear_url = None
+                self.first_clear_img = None
 
         @property
         def created_at(self):

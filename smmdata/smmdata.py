@@ -39,18 +39,20 @@ class SMMData(commands.Cog):
         embed.add_field(
             name=_("Clears"), value=f"{lvl.clears}/{lvl.attempts} ({lvl.clear_rate}%)"
         )
-        embed.add_field(
-            name=_("First clear"),
-            value=f"[{lvl.first_clear_name}]({lvl.first_clear_url})",
-        )
-        embed.add_field(
-            name=_("World record"),
-            value=_("{time} by [{player}]({url})").format(
-                time=lvl.best_player_time,
-                player=lvl.best_player,
-                url=lvl.best_player_url,
-            ),
-        )
+        if lvl.first_clear_name:
+            embed.add_field(
+                name=_("First clear"),
+                value=f"[{lvl.first_clear_name}]({lvl.first_clear_url})",
+            )
+        if lvl.best_player_name:
+            embed.add_field(
+                name=_("World record"),
+                value=_("{time} by [{player}]({url})").format(
+                    time=lvl.best_player_time,
+                    player=lvl.best_player_name,
+                    url=lvl.best_player_url,
+                ),
+            )
         embed.set_thumbnail(url=lvl.preview)
         embed.set_image(url=lvl.map)
         embed.set_author(
