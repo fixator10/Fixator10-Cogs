@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-04-20 17:09+0400\n"
+"POT-Creation-Date: 2019-05-14 12:00+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,25 +15,12 @@ msgstr ""
 "Generated-By: redgettext 2.2\n"
 
 
-#: converters.py:13
-msgid "ApiKey not set or incorrect."
-msgstr ""
-
-#: converters.py:26
-msgid "User with SteamID {} not found."
-msgstr ""
-
-#: steamcommunity.py:38 steamcommunity.py:67
-#, docstring
 msgid "SteamCommunity commands"
 msgstr ""
 
-#: steamcommunity.py:74
-#, docstring
 msgid "Set API key for Steam Web API"
 msgstr ""
 
-#: steamcommunity.py:79
 msgid ""
 "To get Steam Web API key:\n"
 "1. Login to your Steam account\n"
@@ -47,197 +34,154 @@ msgid ""
 "or in DM with the bot."
 msgstr ""
 
-#: steamcommunity.py:97
-#, docstring
 msgid "Get steam user's steamcommunity profile"
 msgstr ""
 
-#: steamcommunity.py:105
-msgid "Unable to get profile for {}. Check your input or try again later."
-msgstr ""
-
-#: steamcommunity.py:120
 msgid "In game: [{}](http://store.steampowered.com/app/{})"
 msgstr ""
 
-#: steamcommunity.py:124
 msgid " on server {}"
 msgstr ""
 
-#: steamcommunity.py:126
 msgid ""
 "\n"
 "Family Shared by [{}]({})"
 msgstr ""
 
-#: steamcommunity.py:130
 msgid "Real name"
 msgstr ""
 
-#: steamcommunity.py:131
 msgid "Level"
 msgstr ""
 
-#: steamcommunity.py:134
 msgid "Country"
 msgstr ""
 
-#: steamcommunity.py:136
 msgid "Visibility"
 msgstr ""
 
-#: steamcommunity.py:139
 msgid "Created at"
 msgstr ""
 
-#: steamcommunity.py:141
 msgid "%d.%m.%Y %H:%M:%S"
 msgstr ""
 
-#: steamcommunity.py:149
 msgid "Days since last ban: {}"
 msgstr ""
 
-#: steamcommunity.py:151
 msgid "Has one or more bans:"
 msgstr ""
 
-#: steamcommunity.py:153
 msgid "No bans on record"
 msgstr ""
 
-#: steamcommunity.py:154
 msgid "🛡 Bans"
 msgstr ""
 
-#: steamcommunity.py:156
 msgid "Community ban"
 msgstr ""
 
-#: steamcommunity.py:159
 msgid "Economy ban"
 msgstr ""
 
-#: steamcommunity.py:163
 msgid "VAC bans"
 msgstr ""
 
-#: steamcommunity.py:164
 msgid "{} VAC bans"
 msgstr ""
 
-#: steamcommunity.py:167
 msgid "Game bans"
 msgstr ""
 
-#: steamcommunity.py:168
 msgid "{} game bans"
 msgstr ""
 
-#: steamcommunity.py:174
 msgid "Powered by Steam • Last seen on"
 msgstr ""
 
-#: steamcommunity.py:181
-#, docstring
 msgid "Get info about a gameserver"
 msgstr ""
 
-#: steamcommunity.py:191
 msgid "The specified domain is not valid: {}"
 msgstr ""
 
-#: steamcommunity.py:214
 msgid "Could not fetch Server or the Server is not on the Steam masterlist"
 msgstr ""
 
-#: steamcommunity.py:221
 msgid "An Error has been occurred: {}"
 msgstr ""
 
-#: steamcommunity.py:248
 msgid "Game"
 msgstr ""
 
-#: steamcommunity.py:251
 msgid "Gamemode"
 msgstr ""
 
-#: steamcommunity.py:252
 msgid "Server name"
 msgstr ""
 
-#: steamcommunity.py:253
 msgid "Map"
 msgstr ""
 
-#: steamcommunity.py:255
 msgid "Operating System"
 msgstr ""
 
-#: steamcommunity.py:256
 msgid "Server type"
 msgstr ""
 
-#: steamcommunity.py:257
 msgid "Version"
 msgstr ""
 
-#: steamcommunity.py:260
 msgid "Password"
 msgstr ""
 
-#: steamcommunity.py:265 steamcommunity.py:270
 msgid "Players"
 msgstr ""
 
-#: steamcommunity.py:266
 msgid ""
 "{}/{}\n"
 "Bots: {}"
 msgstr ""
 
-#: steamuser.py:20
 msgid "Private"
 msgstr ""
 
-#: steamuser.py:21
 msgid "Friends only"
 msgstr ""
 
-#: steamuser.py:22 steamuser.py:24
 msgid "Public"
 msgstr ""
 
-#: steamuser.py:23
 msgid "Users only"
 msgstr ""
 
-#: steamuser.py:87
+msgid "ApiKey not set or incorrect."
+msgstr ""
+
+msgid "User with SteamID {} not found."
+msgstr ""
+
+msgid "Unable to get profile for {} ({}). Check your input or try again later."
+msgstr ""
+
 msgid "Offline"
 msgstr ""
 
-#: steamuser.py:88
 msgid "Online"
 msgstr ""
 
-#: steamuser.py:89
 msgid "Busy"
 msgstr ""
 
-#: steamuser.py:90
 msgid "Away"
 msgstr ""
 
-#: steamuser.py:91
 msgid "Snooze"
 msgstr ""
 
-#: steamuser.py:92
 msgid "Looking to trade"
 msgstr ""
 
-#: steamuser.py:93
 msgid "Looking to play"
 msgstr ""
 

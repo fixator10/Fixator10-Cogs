@@ -10,7 +10,6 @@ from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils import chat_formatting as chat
 from valve.steam.api import interface
 
-from .converters import SteamID
 from .steamuser import SteamUser
 
 
@@ -93,22 +92,8 @@ class SteamCommunity(commands.Cog):
     @commands.bot_has_permissions(embed_links=True)
     @commands.cooldown(1, 15, commands.BucketType.user)
     @commands.check(check_api)
-    async def steamprofile(self, ctx, steamid: SteamID):
+    async def steamprofile(self, ctx, profile: SteamUser):
         """Get steam user's steamcommunity profile"""
-        try:
-            profile = await self.bot.loop.run_in_executor(
-                None, SteamUser, self.steam, steamid
-            )
-        except IndexError:
-            await ctx.send(
-                chat.error(
-                    _(
-                        "Unable to get profile for {}. "
-                        "Check your input or try again later."
-                    ).format(steamid)
-                )
-            )
-            return
         em = discord.Embed(
             title=profile.personaname,
             description=profile.personastate(),
