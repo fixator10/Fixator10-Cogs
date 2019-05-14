@@ -2,21 +2,19 @@ from uuid import UUID
 
 from aiohttp import ContentTypeError
 from redbot.core.commands import BadArgument
-from redbot.core.commands import Converter
 from redbot.core.i18n import Translator
 
 _ = Translator("MinecraftData", __file__)
 
 
-class MCUUID:
+class MCPlayer:
     def __init__(self, nickname, uuid):
         self.name = nickname
         self.uuid = uuid
         self.dashed_uuid = str(UUID(hex=uuid))
 
-
-class MCNickname(Converter):
-    async def convert(self, ctx, argument):
+    @classmethod
+    async def convert(cls, ctx, argument):
         session = ctx.cog.session
         try:
             async with session.get(
@@ -31,4 +29,4 @@ class MCNickname(Converter):
             raise BadArgument(_("{} not found on Mojang servers").format(argument))
         uuid = str(response_data["id"])
         name = str(response_data["name"])
-        return MCUUID(name, uuid)
+        return cls(name, uuid)
