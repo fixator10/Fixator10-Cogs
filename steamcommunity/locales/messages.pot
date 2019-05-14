@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-05-14 12:00+0400\n"
+"POT-Creation-Date: 2019-05-14 12:15+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -156,6 +156,9 @@ msgid "Users only"
 msgstr ""
 
 msgid "ApiKey not set or incorrect."
+msgstr ""
+
+msgid "Incorrect SteamID32 provided."
 msgstr ""
 
 msgid "User with SteamID {} not found."

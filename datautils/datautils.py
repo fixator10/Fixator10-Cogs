@@ -222,6 +222,13 @@ class DataUtils(commands.Cog):
                 name=_("Invite Splash"),
                 value=f"✅ [🔗]({server.splash_url_as(format='png', size=2048)})",
             )
+        if server.banner:
+            em.add_field(
+                name=_("Banner"),
+                value=f"✅ [🔗]({server.banner_url_as(format='png', size=2048)})",
+            )
+        else:
+            em.add_field(name=_("Banner"), value="❌")
         em.set_image(url=server.icon_url_as(format="png", size=2048))
         await ctx.send(embed=em)
 

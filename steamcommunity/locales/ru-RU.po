@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2019-05-14 12:00+0400\n"
-"PO-Revision-Date: 2019-05-14 12:01+0400\n"
+"POT-Creation-Date: 2019-05-14 12:15+0400\n"
+"PO-Revision-Date: 2019-05-14 12:16+0400\n"
 "Last-Translator: Максим Невзоров\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -177,6 +177,9 @@ msgstr "Только пользователи"
 
 msgid "ApiKey not set or incorrect."
 msgstr "API ключ не установлен или неверен."
+
+msgid "Incorrect SteamID32 provided."
+msgstr "Указан неверный SteamID32."
 
 msgid "User with SteamID {} not found."
 msgstr "Пользователь с SteamID {} не найден."
