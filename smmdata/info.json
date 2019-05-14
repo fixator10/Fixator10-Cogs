@@ -1,0 +1,16 @@
+{
+  "author": [
+    "Fixator10"
+  ],
+  "install_msg": "Thanks for install.",
+  "short": "This cog shows SMM-related data",
+  "description": "This cog shows Super Mario Maker-related data. Currently only levels supported",
+  "tags": [
+    "mario",
+    "smm",
+    "super mario maker"
+  ],
+  "requirements": [
+    "beautifulsoup4"
+  ]
+}

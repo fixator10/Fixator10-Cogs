@@ -1,0 +1,52 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2019-05-14 17:14+0400\n"
+"PO-Revision-Date: 2019-05-14 17:14+0400\n"
+"Last-Translator: Максим Невзоров\n"
+"Language-Team: \n"
+"Language: ru_RU\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: redgettext 2.2\n"
+"X-Generator: Poedit 2.2.1\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+
+msgid "Unable to find level {level}: {status}"
+msgstr "Невозможно найти уровень {level}: {status}"
+
+msgid "Super Mario Maker-related data"
+msgstr "Информация связанная с Super Mario Maker"
+
+msgid "Get Super Mario Maker-related data"
+msgstr "Получить информацию связанную с Super Mario Maker"
+
+msgid "Get info about SMM level"
+msgstr "Получить информацию о уровне SMM"
+
+msgid "Stars"
+msgstr "Звёзд"
+
+msgid "Unique Players"
+msgstr "Уникальных игроков"
+
+msgid "Share count"
+msgstr "Поделились"
+
+msgid "Clears"
+msgstr "Пройдено"
+
+msgid "First clear"
+msgstr "Первым прошёл"
+
+msgid "World record"
+msgstr "Рекорд"
+
+msgid "{time} by [{player}]({url})"
+msgstr "[{player}]/({url}) за {time}"
