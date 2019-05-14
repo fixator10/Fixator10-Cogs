@@ -1,5 +1,5 @@
 import aiohttp
-import discord
+from discord import Embed
 from redbot.core import commands
 from redbot.core.i18n import Translator, cog_i18n
 
@@ -31,7 +31,7 @@ class SMMData(commands.Cog):
     @smm.command(usage="<level ID>")
     async def level(self, ctx, lvl: Level):
         """Get info about SMM level"""
-        embed = discord.Embed(
+        embed = Embed(
             title=lvl.title,
             color=lvl.difficulty_color,
             description=lvl.difficulty,
@@ -62,5 +62,5 @@ class SMMData(commands.Cog):
         embed.set_author(
             name=lvl.creator, url=lvl.creator_url, icon_url=lvl.creator_img
         )
-        embed.set_footer(text=lvl.tag, icon_url=BOOKMARKS_ICON_URL)
+        embed.set_footer(text=lvl.tag or Embed.Empty, icon_url=BOOKMARKS_ICON_URL)
         await ctx.send(embed=embed)
