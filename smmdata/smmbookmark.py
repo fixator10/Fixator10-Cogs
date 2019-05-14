@@ -93,7 +93,7 @@ class SMMB:
                     clear_rate += "."
             if clear_rate:
                 clear_rate = float(clear_rate)
-            return clear_rate or None
+            return clear_rate or 0.
 
         @property
         def best_player_time(self):
