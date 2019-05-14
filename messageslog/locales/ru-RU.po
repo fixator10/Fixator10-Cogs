@@ -5,9 +5,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2019-04-20 17:07+0400\n"
-"PO-Revision-Date: 2019-04-20 17:11+0400\n"
-"Last-Translator: \n"
+"POT-Creation-Date: 2019-05-14 13:13+0400\n"
+"PO-Revision-Date: 2019-05-14 13:14+0400\n"
+"Last-Translator: Максим Невзоров\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
 "MIME-Version: 1.0\n"
@@ -18,16 +18,13 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
 "%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
 
-#: messageslog.py:20
 msgid "Log deleted and redacted messages to the defined channel"
 msgstr ""
 "Записывает удалённые и отредактированные сообщения в установленный канал"
 
-#: messageslog.py:39
 msgid "Manage message logging"
 msgstr "Управление логированием сообщений"
 
-#: messageslog.py:44
 msgid ""
 "Set the channel for logs\n"
 "\n"
@@ -37,82 +34,81 @@ msgstr ""
 "\n"
 "        Если канал не указан, логирование будет отключено"
 
-#: messageslog.py:53
 msgid "Toggle logging of message deletion"
 msgstr "Переключает логирование удалённых сообщений"
 
-#: messageslog.py:57 messageslog.py:70
 msgid "enabled"
 msgstr "включено"
 
-#: messageslog.py:59 messageslog.py:72
 msgid "disabled"
 msgstr "выключено"
 
-#: messageslog.py:61
 msgid "Message deletion logging {}"
 msgstr "Логирование удалённых сообщений {}"
 
-#: messageslog.py:66
 msgid "Toggle logging of message editing"
 msgstr "Переключает логирование отредактированных сообщений"
 
-#: messageslog.py:74
 msgid "Message editing logging {}"
 msgstr "Логирование редактирований сообщений {}"
 
-#: messageslog.py:79
-msgid "Manage message logging blacklist"
-msgstr "Управление черным списком логов сообщений"
+msgid ""
+"Manage message logging blacklist\n"
+"\n"
+"        Shows blacklist if no arguments provided\n"
+"        You can ignore text channels and members\n"
+"        If member/channel in blacklist, removes it"
+msgstr ""
+"Управление чёрным списком логов сообщений\n"
+"\n"
+"        Показывает чёрный список, если не указано никаких аргументов\n"
+"        Вы можете игнорировать текстовые каналы и участников\n"
+"        Если участник/канал в чёрном списке, убирает его"
 
-#: messageslog.py:84
-msgid "Ignore channel(s) in message logging"
-msgstr "Игнорировать канал(ы) при логировании сообщений"
-
-#: messageslog.py:97
-msgid "Ignore member(s) in message logging"
-msgstr "Игнорировать участника(ов) при логировании сообщений"
-
-#: messageslog.py:108
-msgid "Shows ignored channels and members list"
-msgstr "Показывает список игнорируемых каналов и участников"
-
-#: messageslog.py:120
 msgid "Nothing is ignored"
 msgstr "Ничего не игнорируется"
 
-#: messageslog.py:126
 msgid "Ignored users"
 msgstr "Игнорируемые пользователи"
 
-#: messageslog.py:130
 msgid "Ignored channels"
 msgstr "Игнорируемые каналы"
 
-#: messageslog.py:164
+msgid "Ignore channel(s) in message logging"
+msgstr "Игнорировать канал(ы) при логировании сообщений"
+
+msgid "Ignore member(s) in message logging"
+msgstr "Игнорировать участника(ов) при логировании сообщений"
+
 msgid "Message deleted"
 msgstr "Сообщение удалено"
 
-#: messageslog.py:171 messageslog.py:221 messageslog.py:241
 msgid "Attachments"
 msgstr "Вложения"
 
-#: messageslog.py:177 messageslog.py:227
 msgid "ID: {} • Sent at"
 msgstr "ID: {} • Отправлено в"
 
-#: messageslog.py:178 messageslog.py:248
 msgid "Channel"
 msgstr "Канал"
 
-#: messageslog.py:214
 msgid "Message redacted (Before)"
 msgstr "Сообщение отредактировано (До)"
 
-#: messageslog.py:234
-msgid "Message redacted (After)"
-msgstr "Сообщение отредактировано (После)"
+msgid "Now"
+msgstr "Сейчас"
 
-#: messageslog.py:247
-msgid "ID: {} • Redacted at"
-msgstr "ID: {} • Отредактировано в"
+msgid "[View message]({})"
+msgstr "[Просмотреть сообщение]({})"
+
+#~ msgid "Manage message logging blacklist"
+#~ msgstr "Управление черным списком логов сообщений"
+
+#~ msgid "Shows ignored channels and members list"
+#~ msgstr "Показывает список игнорируемых каналов и участников"
+
+#~ msgid "Message redacted (After)"
+#~ msgstr "Сообщение отредактировано (После)"
+
+#~ msgid "ID: {} • Redacted at"
+#~ msgstr "ID: {} • Отредактировано в"
