@@ -3,9 +3,13 @@ import discord
 from redbot.core import commands
 from redbot.core.i18n import Translator, cog_i18n
 
-from .smmbookmark import SMMB
+from .smmbookmark import Level, SMMB_BASE_URL
 
 _ = Translator("SMMData", __file__)
+
+BOOKMARKS_ICON_URL = (
+    f"{SMMB_BASE_URL}/assets/favicon/icon76-08f927f066250b84f628e92e0b94f58d.png"
+)
 
 
 @cog_i18n(_)
@@ -25,7 +29,7 @@ class SMMData(commands.Cog):
         pass
 
     @smm.command(usage="<level ID>")
-    async def level(self, ctx, lvl: SMMB.Level):
+    async def level(self, ctx, lvl: Level):
         """Get info about SMM level"""
         embed = discord.Embed(
             title=lvl.title,
@@ -58,4 +62,5 @@ class SMMData(commands.Cog):
         embed.set_author(
             name=lvl.creator, url=lvl.creator_url, icon_url=lvl.creator_img
         )
+        embed.set_footer(text=lvl.tag, icon_url=BOOKMARKS_ICON_URL)
         await ctx.send(embed=embed)
