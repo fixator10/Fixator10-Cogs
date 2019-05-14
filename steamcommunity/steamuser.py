@@ -2,6 +2,7 @@ from redbot.core.commands import BadArgument
 from redbot.core.i18n import Translator
 from valve.steam.api.interface import API
 from valve.steam.id import SteamID
+from valve.steam.id import SteamIDError
 
 _ = Translator("SteamCommunity", __file__)
 
@@ -94,7 +95,10 @@ class SteamUser:
             id64 = argument
         else:
             if argument.startswith("STEAM_"):
-                id64 = SteamID.from_text(argument).as_64()
+                try:
+                    id64 = SteamID.from_text(argument).as_64()
+                except SteamIDError:
+                    raise BadArgument(_("Incorrect SteamID32 provided."))
             else:
                 id64 = userapi.ResolveVanityURL(argument)["response"].get("steamid", "")
         if not id64.isnumeric():
