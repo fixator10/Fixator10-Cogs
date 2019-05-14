@@ -143,6 +143,7 @@ class SMMB:
                 return 0xEA348B
             if self.difficulty == "Super Expert":
                 return 0xFF4545
+            return 0xf9cf00
 
         @classmethod
         async def convert(cls, ctx, argument):
