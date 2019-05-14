@@ -91,8 +91,9 @@ class SMMB:
                     clear_rate += char
                 elif char == "second":
                     clear_rate += "."
-            clear_rate = float(clear_rate)
-            return clear_rate
+            if clear_rate:
+                clear_rate = float(clear_rate)
+            return clear_rate or None
 
         @property
         def best_player_time(self):
