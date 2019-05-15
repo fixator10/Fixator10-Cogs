@@ -30,6 +30,7 @@ SERVICE_STATUS = {
 class MinecraftData(commands.Cog):
     """Minecraft-Related data"""
 
+    # noinspection PyMissingConstructor
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.session = aiohttp.ClientSession(loop=self.bot.loop)
@@ -44,49 +45,59 @@ class MinecraftData(commands.Cog):
 
     @minecraft.command()
     @checks.bot_has_permissions(embed_links=True)
-    async def skin(self, ctx, nickname: MCPlayer, helm_layer: bool = True):
+    async def skin(self, ctx, player: MCPlayer, helm_layer: bool = True):
         """Get minecraft skin by nickname"""
-        uuid = nickname.uuid
+        uuid = player.uuid
+        stripname = player.name.strip('_')
         files = []
         async with ctx.channel.typing():
-            async with self.session.get(
-                "https://crafatar.com/renders/head/{}{}".format(
-                    uuid, "?overlay" if helm_layer else ""
-                )
-            ) as s:
-                files.append(
-                    discord.File(
-                        BytesIO(await s.read()), filename=f"{nickname.name}_head.png"
+            try:
+                async with self.session.get(
+                        "https://crafatar.com/renders/head/{}{}".format(
+                            uuid, "?overlay" if helm_layer else ""
+                        )
+                ) as s:
+                    files.append(
+                        discord.File(
+                            BytesIO(await s.read()),
+                            filename=f"{stripname}_head.png",
+                        )
                     )
-                )
-            async with self.session.get(
-                "https://crafatar.com/skins/{}".format(uuid)
-            ) as s:
-                files.append(
-                    discord.File(
-                        BytesIO(await s.read()), filename=f"{nickname.name}.png"
+                async with self.session.get(
+                        "https://crafatar.com/skins/{}".format(uuid)
+                ) as s:
+                    files.append(
+                        discord.File(
+                            BytesIO(await s.read()),
+                            filename=f"{stripname}.png",
+                        )
                     )
-                )
-            async with self.session.get(
-                "https://crafatar.com/renders/body/{}.png{}".format(
-                    uuid, "?overlay" if helm_layer else ""
-                )
-            ) as s:
-                files.append(
-                    discord.File(
-                        BytesIO(await s.read()), filename=f"{nickname.name}_body.png"
+                async with self.session.get(
+                        "https://crafatar.com/renders/body/{}.png{}".format(
+                            uuid, "?overlay" if helm_layer else ""
+                        )
+                ) as s:
+                    files.append(
+                        discord.File(
+                            BytesIO(await s.read()),
+                            filename=f"{stripname}_body.png",
+                        )
                     )
+            except aiohttp.ClientResponseError as e:
+                await ctx.send(
+                    _("Unable to get data from Crafatar: {}").format(e.message)
                 )
+                return
         em = discord.Embed(
             timestamp=ctx.message.created_at, color=await ctx.embed_color()
         )
         em.set_author(
-            name=nickname.name,
-            icon_url=f"attachment://{nickname.name}_head.png",
+            name=player.name,
+            icon_url=f"attachment://{stripname}_head.png",
             url=f"https://crafatar.com/skins/{uuid}",
         )
-        em.set_thumbnail(url=f"attachment://{nickname.name}.png")
-        em.set_image(url=f"attachment://{nickname.name}_body.png")
+        em.set_thumbnail(url=f"attachment://{stripname}.png")
+        em.set_image(url=f"attachment://{stripname}_body.png")
         em.set_footer(
             text=_("Provided by Crafatar"), icon_url="https://crafatar.com/logo.png"
         )
@@ -94,26 +105,37 @@ class MinecraftData(commands.Cog):
 
     @minecraft.group(autohelp=True)
     async def cape(self, ctx):
-        """Get minecraft cape by nickname"""
+        """Get minecraft capes by nickname"""
         pass
 
     @cape.command(aliases=["of"])
     @checks.bot_has_permissions(embed_links=True)
-    async def optifine(self, ctx, nickname: MCPlayer):
+    async def optifine(self, ctx, player: MCPlayer):
         """Get optifine cape by nickname"""
+        try:
+            await self.session.get(
+                f"http://s.optifine.net/capes/{player.name}.png", raise_for_status=True
+            )
+        except aiohttp.ClientResponseError as e:
+            await ctx.send(
+                _("Unable to get {player}'s optifine cape: {message}").format(
+                    player=player.name, message=e.message
+                )
+            )
+            return
         em = discord.Embed(
             timestamp=ctx.message.created_at, color=await ctx.embed_color()
         )
         em.set_author(
-            name=nickname.name, url=f"http://s.optifine.net/capes/{nickname.name}.png"
+            name=player.name, url=f"http://s.optifine.net/capes/{player.name}.png"
         )
-        em.set_image(url=f"http://s.optifine.net/capes/{nickname.name}.png")
+        em.set_image(url=f"http://s.optifine.net/capes/{player.name}.png")
         await ctx.send(embed=em)
 
     @cape.command()
-    async def labymod(self, ctx, nickname: MCPlayer):
+    async def labymod(self, ctx, player: MCPlayer):
         """Get LabyMod cape by nickname"""
-        uuid = nickname.dashed_uuid
+        uuid = player.dashed_uuid
         try:
             async with self.session.get(
                     f"http://capes.labymod.net/capes/{uuid}", raise_for_status=True
@@ -129,34 +151,29 @@ class MinecraftData(commands.Cog):
             )
             return
         cape = io.BytesIO(cape)
-        file = discord.File(cape, filename="{}.png".format(nickname))
+        file = discord.File(cape, filename="{}.png".format(player))
         await ctx.send(file=file)
         cape.close()
 
     @cape.command(aliases=["minecraftcapes", "couk"])
     @checks.bot_has_permissions(embed_links=True)
-    async def mccapes(self, ctx, nickname: MCPlayer):
+    async def mccapes(self, ctx, player: MCPlayer):
         """Get MinecraftCapes.co.uk cape by nickname"""
-        uuid = nickname.uuid
+        uuid = player.uuid
         em = discord.Embed(
             timestamp=ctx.message.created_at, color=await ctx.embed_color()
         )
         em.set_author(
-            name=nickname.name,
+            name=player.name,
             url=f"https://www.minecraftcapes.co.uk/getCape.php?uuid={uuid}",
         )
         em.set_image(url=f"https://www.minecraftcapes.co.uk/getCape.php?uuid={uuid}")
         await ctx.send(embed=em)
 
     @cape.group(name="5zig", aliases=["fivezig"], invoke_without_command=True)
-    async def fivezig(self, ctx, nickname: MCPlayer):
+    async def fivezig(self, ctx, player: MCPlayer):
         """Get 5zig cape by nickname"""
-        await ctx.invoke(self._fivezig_cape, nickname=nickname)
-
-    @fivezig.command(name="cape")
-    async def _fivezig_cape(self, ctx, nickname: MCPlayer):
-        """Get 5zig cape by nickname"""
-        uuid = nickname.uuid
+        uuid = player.uuid
         try:
             async with self.session.get(
                     f"http://textures.5zig.net/textures/2/{uuid}", raise_for_status=True
@@ -173,14 +190,14 @@ class MinecraftData(commands.Cog):
             )
             return
         cape = io.BytesIO(base64.decodebytes(cape.encode()))
-        file = discord.File(cape, filename="{}.png".format(nickname))
+        file = discord.File(cape, filename="{}.png".format(player))
         await ctx.send(file=file)
         cape.close()
 
     @fivezig.command(name="animated")
-    async def _fivezig_animated(self, ctx, nickname: MCPlayer):
+    async def _fivezig_animated(self, ctx, player: MCPlayer):
         """Get 5zig animated cape by nickname"""
-        uuid = nickname.uuid
+        uuid = player.uuid
         try:
             async with self.session.get(
                     f"http://textures.5zig.net/textures/2/{uuid}", raise_for_status=True
@@ -188,7 +205,7 @@ class MinecraftData(commands.Cog):
                 response_data = await data.json(content_type=None)
             if "animatedCape" not in response_data:
                 await ctx.send(
-                    chat.error(_("{} doesn't have animated cape")).format(nickname.name)
+                    chat.error(_("{} doesn't have animated cape")).format(player.name)
                 )
                 return
             cape = response_data["animatedCape"]
@@ -202,11 +219,11 @@ class MinecraftData(commands.Cog):
             )
             return
         cape = io.BytesIO(base64.decodebytes(cape.encode()))
-        file = discord.File(cape, filename="{}.png".format(nickname))
+        file = discord.File(cape, filename="{}.png".format(player))
         await ctx.send(file=file)
         cape.close()
 
-    @minecraft.command()
+    @minecraft.command(usage="<server IP>")
     @checks.bot_has_permissions(embed_links=True)
     @commands.cooldown(1, 30, commands.BucketType.user)
     async def server(self, ctx, server_ip: str):
@@ -303,7 +320,7 @@ class MinecraftData(commands.Cog):
                 )
             )
 
-    @minecraft.command(aliases=["nicknames", "nickhistory"])
+    @minecraft.command(aliases=["nicknames", "nickhistory", "names"])
     async def nicks(self, ctx, current_nick: MCPlayer):
         """Check history of player's nicks"""
         uuid = current_nick.uuid
