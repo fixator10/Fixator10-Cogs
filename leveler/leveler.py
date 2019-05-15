@@ -63,6 +63,7 @@ async def non_global_bank(ctx):
 class Leveler(commands.Cog):
     """A level up thing with image generation!"""
 
+    # noinspection PyMissingConstructor
     def __init__(self, bot):
         self.bot = bot
         # fonts

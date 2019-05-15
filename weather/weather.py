@@ -32,6 +32,7 @@ WEATHER_STATES = {
 
 @cog_i18n(_)
 class Weather(commands.Cog):
+    # noinspection PyMissingConstructor
     def __init__(self, bot):
         self.bot = bot
 

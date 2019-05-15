@@ -16,6 +16,7 @@ BOOKMARKS_ICON_URL = (
 class SMMData(commands.Cog):
     """Super Mario Maker-related data"""
 
+    # noinspection PyMissingConstructor
     def __init__(self, bot):
         self.bot = bot
         self.session = aiohttp.ClientSession(loop=self.bot.loop)

@@ -21,6 +21,7 @@ _ = Translator("MessagesLog", __file__)
 class MessagesLog(commands.Cog):
     """Log deleted and redacted messages to the defined channel"""
 
+    # noinspection PyMissingConstructor
     def __init__(self, bot):
         self.bot = bot
         self.config = Config.get_conf(

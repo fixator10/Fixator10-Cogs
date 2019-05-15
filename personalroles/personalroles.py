@@ -19,6 +19,7 @@ async def has_assigned_role(ctx):
 class PersonalRoles(commands.Cog):
     """Assign and edit personal roles"""
 
+    # noinspection PyMissingConstructor
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.config = Config.get_conf(

@@ -23,6 +23,7 @@ _ = Translator("DataUtils", __file__)
 
 @cog_i18n(_)
 class DataUtils(commands.Cog):
+    # noinspection PyMissingConstructor
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.TIME_FORMAT = _("%d.%m.%Y %H:%M:%S %Z")

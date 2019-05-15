@@ -19,6 +19,7 @@ _ = Translator("Translators", __file__)
 
 @cog_i18n(_)
 class Translators(commands.Cog):
+    # noinspection PyMissingConstructor
     def __init__(self, bot):
         self.bot = bot
         self.session = aiohttp.ClientSession(loop=self.bot.loop)

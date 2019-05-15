@@ -36,6 +36,7 @@ _ = Translator("SteamCommunity", __file__)
 class SteamCommunity(commands.Cog):
     """SteamCommunity commands"""
 
+    # noinspection PyMissingConstructor
     def __init__(self, bot):
         self.bot = bot
 

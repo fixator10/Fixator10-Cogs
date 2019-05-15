@@ -18,6 +18,7 @@ _ = Translator("GeneralChannel", __file__)
 
 @cog_i18n(_)
 class GeneralChannel(commands.Cog):
+    # noinspection PyMissingConstructor
     def __init__(self, bot):
         self.bot = bot
         self.config = Config.get_conf(
