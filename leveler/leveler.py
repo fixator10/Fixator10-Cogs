@@ -114,7 +114,7 @@ class Leveler(commands.Cog):
         self.config.register_guild(**default_guild)
         self.session = aiohttp.ClientSession(loop=self.bot.loop)
 
-    def __unload(self):
+    def cog_unload(self):
         self.session.detach()
 
     @commands.cooldown(1, 10, commands.BucketType.user)

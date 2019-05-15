@@ -20,7 +20,7 @@ class SMMData(commands.Cog):
         self.bot = bot
         self.session = aiohttp.ClientSession(loop=self.bot.loop)
 
-    def __unload(self):
+    def cog_unload(self):
         self.bot.loop.create_task(self.session.close())
 
     @commands.group(autohelp=True)
