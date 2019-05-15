@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-04-23 12:43+0400\n"
+"POT-Creation-Date: 2019-05-14 14:27+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,180 +15,109 @@ msgstr ""
 "Generated-By: redgettext 2.2\n"
 
 
-#: converters.py:29
-msgid "Unable to get data from Minecraft API: {}"
-msgstr ""
-
-#: converters.py:31
-msgid "{} not found on Mojang servers"
-msgstr ""
-
-#: minecraftdata.py:22
 msgid "💔 **UNAVAILABLE**"
 msgstr ""
 
-#: minecraftdata.py:23
 msgid "💛 **SOME ISSUES**"
 msgstr ""
 
-#: minecraftdata.py:24
 msgid "💚 **OK**"
 msgstr ""
 
-#: minecraftdata.py:30
-#, docstring
 msgid "Minecraft-Related data"
 msgstr ""
 
-#: minecraftdata.py:41
-#, docstring
 msgid "Get Minecraft-Related data"
 msgstr ""
 
-#: minecraftdata.py:47
-#, docstring
 msgid "Get minecraft skin by nickname"
 msgstr ""
 
-#: minecraftdata.py:50 minecraftdata.py:115 minecraftdata.py:147
-#: minecraftdata.py:171 minecraftdata.py:198 minecraftdata.py:332
-msgid "This player not found"
-msgstr ""
-
-#: minecraftdata.py:87
 msgid "Provided by Crafatar"
 msgstr ""
 
-#: minecraftdata.py:93
-#, docstring
 msgid "Get minecraft cape by nickname"
 msgstr ""
 
-#: minecraftdata.py:99
-#, docstring
 msgid "Get optifine cape by nickname"
 msgstr ""
 
-#: minecraftdata.py:112
-#, docstring
 msgid "Get LabyMod cape by nickname"
 msgstr ""
 
-#: minecraftdata.py:123
-msgid "404. Player not found on LabyMod's servers."
+msgid "Unable to get data: {message} ({status})"
 msgstr ""
 
-#: minecraftdata.py:130
-msgid ""
-"Data is not found. (Or LabyMod capes server is down)\n"
-"{}"
-msgstr ""
-
-#: minecraftdata.py:144
-#, docstring
 msgid "Get MinecraftCapes.co.uk cape by nickname"
 msgstr ""
 
-#: minecraftdata.py:163 minecraftdata.py:168
-#, docstring
 msgid "Get 5zig cape by nickname"
 msgstr ""
 
-#: minecraftdata.py:182 minecraftdata.py:214
-msgid ""
-"Data is not found. (Or 5zig texture server is down)\n"
-"{}"
-msgstr ""
-
-#: minecraftdata.py:195
-#, docstring
 msgid "Get 5zig animated cape by nickname"
 msgstr ""
 
-#: minecraftdata.py:207
 msgid "{} doesn't have animated cape"
 msgstr ""
 
-#: minecraftdata.py:229
-#, docstring
 msgid "Get info about server"
 msgstr ""
 
-#: minecraftdata.py:235
 msgid "Unable to resolve IP: {}"
 msgstr ""
 
-#: minecraftdata.py:242
 msgid "Unable to get server's status: {}"
 msgstr ""
 
-#: minecraftdata.py:270
 msgid "Latency"
 msgstr ""
 
-#: minecraftdata.py:272
 msgid "Players"
 msgstr ""
 
-#: minecraftdata.py:286
 msgid "Version"
 msgstr ""
 
-#: minecraftdata.py:287
 msgid ""
 "{}\n"
 "Protocol: {}"
 msgstr ""
 
-#: minecraftdata.py:292
 msgid "World"
 msgstr ""
 
-#: minecraftdata.py:294
 msgid "Software"
 msgstr ""
 
-#: minecraftdata.py:295
 msgid ""
 "{}\n"
 "Version: {}"
 msgstr ""
 
-#: minecraftdata.py:305
-#, docstring
 msgid "Get status of minecraft services"
 msgstr ""
 
-#: minecraftdata.py:310
 msgid "Status of minecraft services"
 msgstr ""
 
-#: minecraftdata.py:321
 msgid "Unable to check. An error has been occurred: {}"
 msgstr ""
 
-#: minecraftdata.py:329
-#, docstring
 msgid "Check history of player's nicks"
 msgstr ""
 
-#: minecraftdata.py:343
 msgid "%d.%m.%Y %H:%M:%S"
 msgstr ""
 
-#: minecraftdata.py:345
 msgid "Initial"
 msgstr ""
 
-#: minecraftdata.py:349
 msgid "Nickname"
 msgstr ""
 
-#: minecraftdata.py:350
 msgid "Changed to at... (UTC)"
 msgstr ""
 
-#: minecraftdata.py:359
 msgid ""
 "Unable to check name history.\n"
 "An error has been occurred: "

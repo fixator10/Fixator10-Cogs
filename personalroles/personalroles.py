@@ -73,7 +73,7 @@ class PersonalRoles(commands.Cog):
                 continue
             dic = {
                 _("User"): ctx.guild.get_member(member)
-                or f"[X] {await self.bot.get_user_info(member)}",
+                           or f"[X] {await self.bot.fetch_user(member)}",
                 _("Role"): await self.smart_truncate(
                     ctx.guild.get_role(data["role"]) or "[X] {}".format(data["role"])
                 ),
@@ -216,6 +216,7 @@ class PersonalRoles(commands.Cog):
             return content
         return " ".join(content_str[: length + 1].split(" ")[0:-1]) + suffix
 
+    @commands.Cog.listener("on_member_join")
     async def role_persistance(self, member):
         """Automatically give already assigned roles on join"""
         role = await self.config.member(member).role()

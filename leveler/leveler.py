@@ -1284,7 +1284,7 @@ class Leveler(commands.Cog):
         """Ban user from getting experience"""
         if isinstance(user, int):
             try:
-                user = await self.bot.get_user_info(user)
+                user = await self.bot.fetch_user(user)
             except (discord.HTTPException, discord.NotFound):
                 user = None
         if user is None:
@@ -2369,9 +2369,8 @@ class Leveler(commands.Cog):
         async with self.session.get(bg_url) as r:
             image = await r.content.read()
             profile_background = BytesIO(image)
-        async with self.session.get(user.avatar_url) as r:
-            image = await r.content.read()
-            profile_avatar = BytesIO(image)
+        profile_avatar = BytesIO()
+        await user.avatar_url.save(profile_avatar, seek_begin=True)
 
         bg_image = Image.open(profile_background).convert("RGBA")
         profile_image = Image.open(profile_avatar).convert("RGBA")
@@ -2709,7 +2708,8 @@ class Leveler(commands.Cog):
         result = await self._add_corners(result, 25)
         file = BytesIO()
         result.save(file, "PNG", quality=100)
-        return file.getvalue()
+        file.seek(0)
+        return file
 
     # returns color that contrasts better in background
     def _contrast(self, bg_color, color1, color2):
@@ -2818,9 +2818,8 @@ class Leveler(commands.Cog):
         async with self.session.get(bg_url) as r:
             image = await r.content.read()
         rank_background = BytesIO(image)
-        async with self.session.get(user.avatar_url) as r:
-            image = await r.content.read()
-        rank_avatar = BytesIO(image)
+        rank_avatar = BytesIO()
+        await user.avatar_url.save(rank_avatar, seek_begin=True)
 
         bg_image = Image.open(rank_background).convert("RGBA")
         profile_image = Image.open(rank_avatar).convert("RGBA")
@@ -3010,7 +3009,8 @@ class Leveler(commands.Cog):
         result = Image.alpha_composite(result, process)
         file = BytesIO()
         result.save(file, "PNG", quality=100)
-        return file.getvalue()
+        file.seek(0)
+        return file
 
     async def _add_corners(self, im, rad, multiplier=6):
         raw_length = rad * 2 * multiplier
@@ -3041,9 +3041,8 @@ class Leveler(commands.Cog):
         async with self.session.get(bg_url) as r:
             image = await r.content.read()
         level_background = BytesIO(image)
-        async with self.session.get(user.avatar_url) as r:
-            image = await r.content.read()
-        level_avatar = BytesIO(image)
+        level_avatar = BytesIO()
+        await user.avatar_url.save(level_avatar, seek_begin=True)
 
         bg_image = Image.open(level_background).convert("RGBA")
         profile_image = Image.open(level_avatar).convert("RGBA")
@@ -3138,8 +3137,10 @@ class Leveler(commands.Cog):
         result = await self._add_corners(result, int(height / 2))
         file = BytesIO()
         result.save(file, "PNG", quality=100)
-        return file.getvalue()
+        file.seek(0)
+        return file
 
+    @commands.Cog.listener("on_message")
     async def _handle_on_message(self, message):
         text = message.content
         server = message.guild

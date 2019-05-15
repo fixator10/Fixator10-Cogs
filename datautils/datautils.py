@@ -27,12 +27,12 @@ class DataUtils(commands.Cog):
         self.bot = bot
         self.TIME_FORMAT = _("%d.%m.%Y %H:%M:%S %Z")
 
-    @commands.command()
+    @commands.command(alias=["fetchuser"])
     @checks.bot_has_permissions(embed_links=True)
     async def getuserinfo(self, ctx, user_id: int):
         """Get info about any Discord's user by ID"""
         try:
-            user = await self.bot.get_user_info(user_id)
+            user = await self.bot.fetch_user(user_id)
         except discord.NotFound:
             await ctx.send(
                 chat.error(_("Discord user with ID `{}` not found").format(user_id))
@@ -222,6 +222,13 @@ class DataUtils(commands.Cog):
                 name=_("Invite Splash"),
                 value=f"✅ [🔗]({server.splash_url_as(format='png', size=2048)})",
             )
+        if server.banner:
+            em.add_field(
+                name=_("Banner"),
+                value=f"✅ [🔗]({server.banner_url_as(format='png', size=2048)})",
+            )
+        else:
+            em.add_field(name=_("Banner"), value="❌")
         em.set_image(url=server.icon_url_as(format="png", size=2048))
         await ctx.send(embed=em)
 

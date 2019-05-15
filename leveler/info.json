@@ -4,7 +4,7 @@
     "Stevy"
   ],
   "hidden": true,
-  "install_msg": "**Port of Leveler by AznStevy to V3.**\n⚠ Warning: this cog not tested fully and may be unstable, including existing database corruption.\nFor more information about installing, please reffer to this: http://dimxxz.net/lvlsupport.html and this: https://github.com/AznStevy/Maybe-Useful-Cogs\nYou can also use `[p]lvladmin convertv2 /path/to/V2-Red-DiscordBot` to get data about existing servers settings and backgrounds",
+  "install_msg": "**Port of Leveler by AznStevy to V3.**\n⚠ Warning: this cog not tested fully and may be unstable, including existing database corruption.\nFor more information about installing, please reffer to this: http://dimxxz.net/lvlsupport.html and this: https://github.com/AznStevy/Maybe-Useful-Cogs",
   "short": "Level/Experience tracker",
   "description": "Level/Experience tracker\nIncrease activity(or not) on your server with chat exp!",
   "tags": [

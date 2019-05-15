@@ -1,3 +1,5 @@
+from typing import Union
+
 import discord
 from redbot.core import checks
 from redbot.core import commands
@@ -33,7 +35,9 @@ class MessagesLog(commands.Cog):
         }
         self.config.register_guild(**default_guild)
 
-    @commands.group(autohelp=True)
+    @commands.group(
+        autohelp=True, aliases=["messagelog", "messageslogs", "messagelogs"]
+    )
     @checks.admin_or_permissions(manage_guild=True)
     async def messageslog(self, ctx):
         """Manage message logging"""
@@ -73,65 +77,63 @@ class MessagesLog(commands.Cog):
         )
         await ctx.send(chat.info(_("Message editing logging {}").format(state)))
 
-    @messageslog.group(autohelp=True)
+    @messageslog.command()
     @commands.check(is_channel_set)
-    async def ignore(self, ctx):
-        """Manage message logging blacklist"""
-        pass
+    async def ignore(self, ctx, *ignore: Union[discord.Member, discord.TextChannel]):
+        """Manage message logging blacklist
 
-    @ignore.command(name="channel")
-    async def ignore_channel(self, ctx, *channels: discord.TextChannel):
-        """Ignore channel(s) in message logging"""
-        guild = self.config.guild(ctx.guild)
-        async with guild.ignored_channels() as ignored_channels:
-            for channel in channels:
-                ignored_channels.append(
-                    channel.id
-                ) if channel.id not in ignored_channels else ignored_channels.remove(
-                    channel.id
+        Shows blacklist if no arguments provided
+        You can ignore text channels and members
+        If member/channel in blacklist, removes it"""
+        if not ignore:
+            users = await self.config.guild(ctx.guild).ignored_users()
+            channels = await self.config.guild(ctx.guild).ignored_channels()
+            users = [
+                ctx.guild.get_member(m).mention
+                for m in users
+                if ctx.guild.get_member(m)
+            ]
+            channels = [
+                ctx.guild.get_channel(m).mention
+                for m in channels
+                if ctx.guild.get_channel(m)
+            ]
+            if not any([users, channels]):
+                await ctx.send(chat.info(_("Nothing is ignored")))
+                return
+            users_pages = []
+            channels_pages = []
+            for page in chat.pagify("\n".join(users), page_length=2048):
+                users_pages.append(
+                    discord.Embed(title=_("Ignored users"), description=page)
                 )
-        await ctx.tick()
+            for page in chat.pagify("\n".join(channels), page_length=2048):
+                channels_pages.append(
+                    discord.Embed(title=_("Ignored channels"), description=page)
+                )
+            pages = users_pages + channels_pages
+            await menu(ctx, pages, DEFAULT_CONTROLS)
+        else:
+            guild = self.config.guild(ctx.guild)
+            for item in ignore:
+                if isinstance(item, discord.Member):
+                    async with guild.ignored_users() as ignored_users:
+                        await self.ignore_config_add(ignored_users, item)
+                elif isinstance(item, discord.TextChannel):
+                    async with guild.ignored_channels() as ignored_channels:
+                        await self.ignore_config_add(ignored_channels, item)
+            await ctx.tick()
 
-    @ignore.command(name="member")
-    async def ignore_member(self, ctx, *members: discord.Member):
-        """Ignore member(s) in message logging"""
-        guild = self.config.guild(ctx.guild)
-        async with guild.ignored_users() as ignored_users:
-            for member in members:
-                ignored_users.append(
-                    member.id
-                ) if member.id not in ignored_users else ignored_users.remove(member.id)
-        await ctx.tick()
+    @ignore.error
+    async def ignore_error(self, ctx, error):
+        if isinstance(error, commands.BadUnionArgument):
+            await ctx.send_help()
 
-    @ignore.command(name="list")
-    async def ignore_list(self, ctx):
-        """Shows ignored channels and members list"""
-        users = await self.config.guild(ctx.guild).ignored_users()
-        channels = await self.config.guild(ctx.guild).ignored_channels()
-        users = [
-            ctx.guild.get_member(m).mention for m in users if ctx.guild.get_member(m)
-        ]
-        channels = [
-            ctx.guild.get_channel(m).mention
-            for m in channels
-            if ctx.guild.get_channel(m)
-        ]
-        if not any([users, channels]):
-            await ctx.send(chat.info(_("Nothing is ignored")))
-            return
-        users_pages = []
-        channels_pages = []
-        for page in chat.pagify("\n".join(users), page_length=2048):
-            users_pages.append(
-                discord.Embed(title=_("Ignored users"), description=page)
-            )
-        for page in chat.pagify("\n".join(channels), page_length=2048):
-            channels_pages.append(
-                discord.Embed(title=_("Ignored channels"), description=page)
-            )
-        pages = users_pages + channels_pages
-        await menu(ctx, pages, DEFAULT_CONTROLS)
+    async def ignore_config_add(self, config: list, item):
+        """Adds item to provided config list"""
+        config.append(item.id) if item.id not in config else config.remove(item.id)
 
+    @commands.Cog.listener("on_message_delete")
     async def message_deleted(self, message: discord.Message):
         if not message.guild:
             return
@@ -181,6 +183,7 @@ class MessagesLog(commands.Cog):
         except discord.Forbidden:
             pass
 
+    @commands.Cog.listener("on_message_edit")
     async def message_redacted(self, before: discord.Message, after: discord.Message):
         if not before.guild:
             return
@@ -216,6 +219,9 @@ class MessagesLog(commands.Cog):
             timestamp=before.created_at,
             color=before.author.color,
         )
+        embed.add_field(
+            name=_("Now"), value=_("[View message]({})").format(after.jump_url)
+        )
         if before.attachments:
             embed.add_field(
                 name=_("Attachments"),
@@ -225,27 +231,6 @@ class MessagesLog(commands.Cog):
             )
         embed.set_author(name=before.author, icon_url=before.author.avatar_url)
         embed.set_footer(text=_("ID: {} • Sent at").format(before.id))
-        try:
-            await logchannel.send(embed=embed)
-        except discord.Forbidden:
-            pass
-
-        embed = discord.Embed(
-            title=_("Message redacted (After)"),
-            description=after.content,
-            timestamp=after.edited_at,
-            color=after.author.color,
-        )
-        if after.attachments:
-            embed.add_field(
-                name=_("Attachments"),
-                value="\n".join(
-                    [f"[{a.filename}]({a.url})" for a in before.attachments]
-                ),
-            )
-        embed.set_author(name=after.author, icon_url=after.author.avatar_url)
-        embed.set_footer(text=_("ID: {} • Redacted at").format(after.id))
-        embed.add_field(name=_("Channel"), value=after.channel.mention)
         try:
             await logchannel.send(embed=embed)
         except discord.Forbidden:

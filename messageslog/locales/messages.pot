@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-04-20 17:07+0400\n"
+"POT-Creation-Date: 2019-05-14 13:13+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,107 +15,77 @@ msgstr ""
 "Generated-By: redgettext 2.2\n"
 
 
-#: messageslog.py:20
-#, docstring
 msgid "Log deleted and redacted messages to the defined channel"
 msgstr ""
 
-#: messageslog.py:39
-#, docstring
 msgid "Manage message logging"
 msgstr ""
 
-#: messageslog.py:44
-#, docstring
 msgid ""
 "Set the channel for logs\n"
 "\n"
 "        If channel is not provided, then logging will be disabled"
 msgstr ""
 
-#: messageslog.py:53
-#, docstring
 msgid "Toggle logging of message deletion"
 msgstr ""
 
-#: messageslog.py:57 messageslog.py:70
 msgid "enabled"
 msgstr ""
 
-#: messageslog.py:59 messageslog.py:72
 msgid "disabled"
 msgstr ""
 
-#: messageslog.py:61
 msgid "Message deletion logging {}"
 msgstr ""
 
-#: messageslog.py:66
-#, docstring
 msgid "Toggle logging of message editing"
 msgstr ""
 
-#: messageslog.py:74
 msgid "Message editing logging {}"
 msgstr ""
 
-#: messageslog.py:79
-#, docstring
-msgid "Manage message logging blacklist"
+msgid ""
+"Manage message logging blacklist\n"
+"\n"
+"        Shows blacklist if no arguments provided\n"
+"        You can ignore text channels and members\n"
+"        If member/channel in blacklist, removes it"
 msgstr ""
 
-#: messageslog.py:84
-#, docstring
-msgid "Ignore channel(s) in message logging"
-msgstr ""
-
-#: messageslog.py:97
-#, docstring
-msgid "Ignore member(s) in message logging"
-msgstr ""
-
-#: messageslog.py:108
-#, docstring
-msgid "Shows ignored channels and members list"
-msgstr ""
-
-#: messageslog.py:120
 msgid "Nothing is ignored"
 msgstr ""
 
-#: messageslog.py:126
 msgid "Ignored users"
 msgstr ""
 
-#: messageslog.py:130
 msgid "Ignored channels"
 msgstr ""
 
-#: messageslog.py:164
+msgid "Ignore channel(s) in message logging"
+msgstr ""
+
+msgid "Ignore member(s) in message logging"
+msgstr ""
+
 msgid "Message deleted"
 msgstr ""
 
-#: messageslog.py:171 messageslog.py:221 messageslog.py:241
 msgid "Attachments"
 msgstr ""
 
-#: messageslog.py:177 messageslog.py:227
 msgid "ID: {} • Sent at"
 msgstr ""
 
-#: messageslog.py:178 messageslog.py:248
 msgid "Channel"
 msgstr ""
 
-#: messageslog.py:214
 msgid "Message redacted (Before)"
 msgstr ""
 
-#: messageslog.py:234
-msgid "Message redacted (After)"
+msgid "Now"
 msgstr ""
 
-#: messageslog.py:247
-msgid "ID: {} • Redacted at"
+msgid "[View message]({})"
 msgstr ""
 
