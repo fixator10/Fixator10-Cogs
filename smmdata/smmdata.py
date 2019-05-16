@@ -38,6 +38,7 @@ class SMMData(commands.Cog):
             description=lvl.difficulty,
             timestamp=lvl.created_at,
         )
+        embed.add_field(name=_("Game Style"), value=lvl.gameskin, inline=False)
         embed.add_field(name="\N{White Medium Star} " + _("Stars"), value=lvl.stars)
         embed.add_field(name="\N{Footprints} " + _("Unique Players"), value=lvl.players)
         embed.add_field(name=_("Share count"), value=lvl.shares)
@@ -63,5 +64,5 @@ class SMMData(commands.Cog):
         embed.set_author(
             name=lvl.creator, url=lvl.creator_url, icon_url=lvl.creator_img
         )
-        embed.set_footer(text=lvl.tag or Embed.Empty, icon_url=BOOKMARKS_ICON_URL)
+        embed.set_footer(text=lvl.tag or "Untagged", icon_url=BOOKMARKS_ICON_URL)
         await ctx.send(embed=embed)

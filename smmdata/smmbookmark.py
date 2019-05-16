@@ -29,9 +29,9 @@ class Level:
         self.creator_url = SMMB_BASE_URL + data.select_one(
             ".mii-wrapper.creator > .link"
         ).get("href")
-        self.creator_img = data.select_one(
-            ".mii-wrapper.creator > .link > img"
-        ).get("src")
+        self.creator_img = data.select_one(".mii-wrapper.creator > .link > img").get(
+            "src"
+        )
         if data.select_one(
                 ".fastest-time-wrapper > .user-wrapper > .mii-wrapper > .link"
         ):
@@ -66,6 +66,19 @@ class Level:
             self.first_clear_img = None
 
     @property
+    def gameskin(self):
+        gameskin = self._data.select_one(".gameskin").get("class", ["", "", ""])[2]
+        if gameskin == "common_gs_sb":
+            return "Super Mario Bros."
+        if gameskin == "common_gs_sb3":
+            return "Super Mario Bros. 3"
+        if gameskin == "common_gs_sw":
+            return "Super Mario World"
+        if gameskin == "common_gs_sbu":
+            return "New Super Mario Bros. U"
+        return None
+
+    @property
     def created_at(self):
         created_at = self._data.select_one(".created_at").string
         if "ago" in created_at:
@@ -92,7 +105,7 @@ class Level:
                 clear_rate += "."
         if clear_rate:
             clear_rate = float(clear_rate)
-        return clear_rate or 0.
+        return clear_rate or 0.0
 
     @property
     def best_player_time(self):
@@ -143,7 +156,7 @@ class Level:
             return 0xEA348B
         if self.difficulty == "Super Expert":
             return 0xFF4545
-        return 0xf9cf00
+        return 0xF9CF00
 
     @classmethod
     async def convert(cls, ctx, argument):
@@ -160,9 +173,7 @@ class Level:
                     )
                 )
 
-    def _cleanup_typography_int(
-            self, selector: str, split: str = None
-    ) -> (str, list):
+    def _cleanup_typography_int(self, selector: str, split: str = None) -> (str, list):
         """Returns string from typography css class
 
         :param selector: css selector with typography

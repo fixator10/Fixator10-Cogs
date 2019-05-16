@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2019-05-14 17:14+0400\n"
-"PO-Revision-Date: 2019-05-14 17:19+0400\n"
+"POT-Creation-Date: 2019-05-16 13:07+0400\n"
+"PO-Revision-Date: 2019-05-16 13:08+0400\n"
 "Last-Translator: Максим Невзоров\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -29,6 +29,9 @@ msgstr "Получить информацию связанную с Super Mario 
 
 msgid "Get info about SMM level"
 msgstr "Получить информацию о уровне SMM"
+
+msgid "Game Style"
+msgstr "Стиль"
 
 msgid "Stars"
 msgstr "Звёзд"
