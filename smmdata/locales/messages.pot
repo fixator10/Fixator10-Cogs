@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-05-16 13:07+0400\n"
+"POT-Creation-Date: 2019-05-16 17:53+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,6 +16,9 @@ msgstr ""
 
 
 msgid "Unable to find level {level}: {status}"
+msgstr ""
+
+msgid "Unable to find user {user}: {status}"
 msgstr ""
 
 msgid "Super Mario Maker-related data"
@@ -49,5 +52,44 @@ msgid "World record"
 msgstr ""
 
 msgid "{time} by [{player}]({url})"
+msgstr ""
+
+msgid "Get info about levels maker"
+msgstr ""
+
+msgid "Stars Received"
+msgstr ""
+
+msgid "Medals Earned"
+msgstr ""
+
+msgid "100 Mario Challenge"
+msgstr ""
+
+msgid "Easy clears"
+msgstr ""
+
+msgid "Normal clears"
+msgstr ""
+
+msgid "Expert clears"
+msgstr ""
+
+msgid "Super Expert clears"
+msgstr ""
+
+msgid "Play History"
+msgstr ""
+
+msgid "Courses played"
+msgstr ""
+
+msgid "Courses cleared"
+msgstr ""
+
+msgid "Total plays"
+msgstr ""
+
+msgid "Lives lost"
 msgstr ""
 

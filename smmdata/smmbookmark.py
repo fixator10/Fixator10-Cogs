@@ -1,3 +1,4 @@
+from collections import namedtuple
 from datetime import datetime, timedelta
 
 from aiohttp import ClientResponseError
@@ -8,6 +9,25 @@ from redbot.core.i18n import Translator
 _ = Translator("SMMData", __file__)
 
 SMMB_BASE_URL = "https://supermariomakerbookmark.nintendo.net"
+
+
+def _cleanup_typography_int(data, selector: str, split: str = None) -> (int, list):
+    """Returns string from typography css class
+
+    :param data: BeautifulSoup object
+    :param selector: css selector with typography
+    :param split: css class name without "typography-", which will be used as separator"""
+    numbers = ""
+    for char in data.select(selector):
+        char = char.get("class", "")[1].replace("typography-", "")
+        if char.isdigit():
+            numbers += char
+        if char == split:
+            numbers += split
+    numbers = numbers.split(split)
+    if len(numbers) == 1:
+        numbers = int(numbers[0])
+    return numbers
 
 
 class Level:
@@ -64,6 +84,15 @@ class Level:
             self.first_clear_name = None
             self.first_clear_url = None
             self.first_clear_img = None
+        self.stars = _cleanup_typography_int(data, ".liked-count > .typography")
+        self.players = _cleanup_typography_int(data, ".played-count > .typography")
+        self.shares = _cleanup_typography_int(data, ".shared-count > .typography")
+        self.clears = _cleanup_typography_int(
+            data, ".tried-count > .typography", split="slash"
+        )[0]
+        self.attempts = _cleanup_typography_int(
+            data, ".tried-count > .typography", split="slash"
+        )[1]
 
     @property
     def gameskin(self):
@@ -123,30 +152,6 @@ class Level:
         return clear_time
 
     @property
-    def stars(self):
-        return self._cleanup_typography_int(".liked-count > .typography")
-
-    @property
-    def players(self):
-        return self._cleanup_typography_int(".played-count > .typography")
-
-    @property
-    def shares(self):
-        return self._cleanup_typography_int(".shared-count > .typography")
-
-    @property
-    def clears(self):
-        return self._cleanup_typography_int(
-            ".tried-count > .typography", split="slash"
-        )[0]
-
-    @property
-    def attempts(self):
-        return self._cleanup_typography_int(
-            ".tried-count > .typography", split="slash"
-        )[1]
-
-    @property
     def difficulty_color(self):
         if self.difficulty == "Easy":
             return 0x28AD8A
@@ -165,7 +170,7 @@ class Level:
                 async with ctx.cog.session.get(
                         f"{SMMB_BASE_URL}/courses/{argument}", raise_for_status=True
                 ) as page:
-                    return cls(BeautifulSoup(await page.read(), "html"))
+                    return cls(BeautifulSoup(await page.read(), "html.parser"))
             except ClientResponseError as e:
                 raise BadArgument(
                     _("Unable to find level {level}: {status}").format(
@@ -173,19 +178,74 @@ class Level:
                     )
                 )
 
-    def _cleanup_typography_int(self, selector: str, split: str = None) -> (str, list):
-        """Returns string from typography css class
 
-        :param selector: css selector with typography
-        :param split: css class name without "typography-", which will be used as separator"""
+class Maker:
+    def __init__(self, data: BeautifulSoup):
+        self._data = data
+        self.url = data.find("meta", property="og:url").get("content")
+        self.name = data.select_one(".user-info > .name").string
+        self.image = data.select_one(".mii").get("src")
+        self.country = data.select_one(".user-info > .flag").get("class")[1].lower()
+        self.stars = _cleanup_typography_int(
+            self._data, ".star > .liked-count > .typography"
+        )
+        challenge = namedtuple("challenge", "easy, normal, expert, super_expert")
+        self.challenge = challenge(
+            self.parsetable("Easy clears"),
+            self.parsetable("Normal clears"),
+            self.parsetable("Expert clears"),
+            self.parsetable("Super Expert clears"),
+        )
+        statistics = namedtuple("statistics", "played, cleared, total, lives")
+        self.statistics = statistics(
+            self.parsetable("Courses played"),
+            self.parsetable("Courses cleared"),
+            self.parsetable("Total plays"),
+            self.parsetable("Lives lost"),
+        )
+        self.uploads = _cleanup_typography_int(
+            self._data, ".user-courses-wrapper > .typography"
+        )
+
+    @property
+    def medals(self) -> int:
+        if self._data.select_one(".medal-count"):
+            return _cleanup_typography_int(self._data, ".medal-count > .typography")
+        medals = [
+            m
+            for m in self._data.select(".medal.bg-image")
+            if m.get("class")[2] != "profile_icon_medal_non"
+        ]
+        if medals:
+            return len(medals)
+        return 0
+
+    @classmethod
+    async def convert(cls, ctx, argument):
+        async with ctx.typing():
+            try:
+                async with ctx.cog.session.get(
+                        f"{SMMB_BASE_URL}/profile/{argument}", raise_for_status=True
+                ) as page:
+                    return cls(BeautifulSoup(await page.read(), "html.parser"))
+            except ClientResponseError as e:
+                raise BadArgument(
+                    _("Unable to find user {user}: {status}").format(
+                        user=argument, status=e.message
+                    )
+                )
+
+    def parsetable(self, line: str):
+        """Parses line in table of profile
+
+        :param line: name of line"""
         numbers = ""
-        for char in self._data.select(selector):
+        typograhpies = [
+            x for x in self._data.find(string=line).next if x.get("class") is not None
+        ]
+        for char in typograhpies:
             char = char.get("class", "")[1].replace("typography-", "")
             if char.isdigit():
                 numbers += char
-            if char == split:
-                numbers += split
-        numbers = numbers.split(split)
-        if len(numbers) == 1:
-            numbers = int(numbers[0])
+        numbers = int(numbers)
         return numbers

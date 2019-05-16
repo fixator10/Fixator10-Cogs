@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2019-05-16 13:07+0400\n"
-"PO-Revision-Date: 2019-05-16 13:08+0400\n"
+"POT-Creation-Date: 2019-05-16 17:53+0400\n"
+"PO-Revision-Date: 2019-05-16 17:54+0400\n"
 "Last-Translator: Максим Невзоров\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -20,6 +20,9 @@ msgstr ""
 
 msgid "Unable to find level {level}: {status}"
 msgstr "Невозможно найти уровень {level}: {status}"
+
+msgid "Unable to find user {user}: {status}"
+msgstr "Невозможно найти пользователя {user}: {status}"
 
 msgid "Super Mario Maker-related data"
 msgstr "Информация связанная с Super Mario Maker"
@@ -53,3 +56,42 @@ msgstr "Рекорд"
 
 msgid "{time} by [{player}]({url})"
 msgstr "[{player}]({url}) за {time}"
+
+msgid "Get info about levels maker"
+msgstr "Получить информацию о дизайнере"
+
+msgid "Stars Received"
+msgstr "Получено звезд"
+
+msgid "Medals Earned"
+msgstr "Полученные медали"
+
+msgid "100 Mario Challenge"
+msgstr "100 жизней Марио"
+
+msgid "Easy clears"
+msgstr "Легкие уровни"
+
+msgid "Normal clears"
+msgstr "Нормальные уровни"
+
+msgid "Expert clears"
+msgstr "Сложные уровни"
+
+msgid "Super Expert clears"
+msgstr "Очень сложные уровни"
+
+msgid "Play History"
+msgstr "Прочая статистика"
+
+msgid "Courses played"
+msgstr "Посещено уровней"
+
+msgid "Courses cleared"
+msgstr "Пройдено уровней"
+
+msgid "Total plays"
+msgstr "Сыграно раз"
+
+msgid "Lives lost"
+msgstr "Потеряно жизней"
