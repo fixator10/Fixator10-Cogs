@@ -13,6 +13,9 @@ class MCPlayer:
         self.uuid = uuid
         self.dashed_uuid = str(UUID(self.uuid))
 
+    def __str__(self):
+        return self.name
+
     @classmethod
     async def convert(cls, ctx, argument):
         try:

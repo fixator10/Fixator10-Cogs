@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-05-16 00:25+0400\n"
+"POT-Creation-Date: 2019-05-16 12:43+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,7 +42,16 @@ msgstr ""
 msgid "Get minecraft capes by nickname"
 msgstr ""
 
+msgid "{} doesn't have cape"
+msgstr ""
+
+msgid "Unable to get cape: {}"
+msgstr ""
+
 msgid "Get optifine cape by nickname"
+msgstr ""
+
+msgid "{} doesn't have optifine cape"
 msgstr ""
 
 msgid "Unable to get {player}'s optifine cape: {message}"
@@ -51,19 +60,34 @@ msgstr ""
 msgid "Get LabyMod cape by nickname"
 msgstr ""
 
+msgid "{} doesn't have LabyMod cape"
+msgstr ""
+
 msgid "Unable to get data: {message} ({status})"
 msgstr ""
 
 msgid "Get MinecraftCapes.co.uk cape by nickname"
 msgstr ""
 
+msgid "{} doesn't have MinecraftCapes cape"
+msgstr ""
+
+msgid "Unable to get {player}'s MinecraftCapes cape: {message}"
+msgstr ""
+
 msgid "Get 5zig cape by nickname"
+msgstr ""
+
+msgid "{} doesn't have 5zig cape"
+msgstr ""
+
+msgid "Unable to get {player}'s 5zig cape: {message}"
 msgstr ""
 
 msgid "Get 5zig animated cape by nickname"
 msgstr ""
 
-msgid "{} doesn't have animated cape"
+msgid "{} doesn't have animated 5zig cape"
 msgstr ""
 
 msgid "Get info about server"

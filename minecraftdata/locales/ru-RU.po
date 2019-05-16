@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2019-05-16 00:25+0400\n"
-"PO-Revision-Date: 2019-05-16 00:27+0400\n"
+"POT-Creation-Date: 2019-05-16 12:43+0400\n"
+"PO-Revision-Date: 2019-05-16 12:45+0400\n"
 "Last-Translator: Максим Невзоров\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -45,8 +45,17 @@ msgstr "Предоставлено Crafatar"
 msgid "Get minecraft capes by nickname"
 msgstr "Получить плащ Minecraft по никнейму"
 
+msgid "{} doesn't have cape"
+msgstr "{} не имеет плаща"
+
+msgid "Unable to get cape: {}"
+msgstr "Невозможно получить плащ: {}"
+
 msgid "Get optifine cape by nickname"
 msgstr "Получить плащ Optifine по никнейму"
+
+msgid "{} doesn't have optifine cape"
+msgstr "{} не имеет плаща Optifine"
 
 msgid "Unable to get {player}'s optifine cape: {message}"
 msgstr "Невозможно получить плащ {player}: {message}"
@@ -54,20 +63,35 @@ msgstr "Невозможно получить плащ {player}: {message}"
 msgid "Get LabyMod cape by nickname"
 msgstr "Получить плащ LabyMod по никнейму"
 
+msgid "{} doesn't have LabyMod cape"
+msgstr "{} не имеет плаща LabyMod"
+
 msgid "Unable to get data: {message} ({status})"
 msgstr "Невозможно получить информацию: {message} ({{status})"
 
 msgid "Get MinecraftCapes.co.uk cape by nickname"
 msgstr "Получить плащ MinecraftCapes.co.uk по никнейму"
 
+msgid "{} doesn't have MinecraftCapes cape"
+msgstr "{} не имеет плаща MinecraftCapes"
+
+msgid "Unable to get {player}'s MinecraftCapes cape: {message}"
+msgstr "Невозможно получить плащ MinecraftCapes игрока {player}: {message}"
+
 msgid "Get 5zig cape by nickname"
 msgstr "Получить плащ 5zig по никнейму"
+
+msgid "{} doesn't have 5zig cape"
+msgstr "{} не имеет плаща 5zig"
+
+msgid "Unable to get {player}'s 5zig cape: {message}"
+msgstr "Невозможно получить плащ 5zig игрока {player}: {message}"
 
 msgid "Get 5zig animated cape by nickname"
 msgstr "Получить анимированный плащ 5zig по никнейму"
 
-msgid "{} doesn't have animated cape"
-msgstr "{} не имеет анимированного плаща"
+msgid "{} doesn't have animated 5zig cape"
+msgstr "{} не имеет анимированного плаща 5zig"
 
 msgid "Get info about server"
 msgstr "Получить информацию о сервере"
