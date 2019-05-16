@@ -1,8 +1,8 @@
 import base64
-import io
 import itertools
 import random
 import re
+from io import BytesIO
 from urllib import parse
 
 import aiohttp
@@ -15,6 +15,14 @@ from redbot.core.utils import chat_formatting as chat
 from . import yandextranslate
 
 _ = Translator("Translators", __file__)
+
+USERAGENT = (
+    "Mozilla/5.0 (X11; Linux x86_64) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) "
+    "Ubuntu Chromium/69.0.3497.81 "
+    "Chrome/69.0.3497.81 "
+    "Safari/537.36"
+)
 
 
 @cog_i18n(_)
@@ -114,32 +122,34 @@ class Translators(commands.Cog):
     async def googlesay(self, ctx, lang: str, *, text: str):
         """Say something via Google Translate
 
+        lang arg must be two-letters google-translate language code
+        Not all languages support tts
         If text contains more than 200 symbols, it will be cut"""
         text = text[:200]
-        try:
-            async with self.session.get(
-                "http://translate.google.com/translate_tts?ie=utf-8"
-                "&q={}&tl={}&client=tw-ob".format(parse.quote(text), lang),
-                headers={
-                    "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 ("
-                    "KHTML, like Gecko) Ubuntu Chromium/69.0.3497.81 "
-                    "Chrome/69.0.3497.81 Safari/537.36"
-                },
-            ) as data:
-                if data.status != 200:
+        async with ctx.typing():
+            try:
+                async with self.session.get(
+                        "http://translate.google.com/translate_tts",
+                        params={"ie": "utf-8", "q": text, "tl": lang, "client": "tw-ob"},
+                        headers={"User-Agent": USERAGENT},
+                        raise_for_status=True,
+                ) as data:
+                    speech = await data.read()
+            except aiohttp.ClientResponseError as e:
+                if e.status == 404:
                     await ctx.send(
-                        chat.error(
-                            _("Google Translate returned code {}").format(data.status)
+                        _("Language {} is not supported or incorrect").format(
+                            lang.lower()
                         )
                     )
-                    return
-                speech = await data.read()
-        except Exception as e:
-            await ctx.send(
-                _("Unable to get data from Google Translate TTS: {}").format(e)
-            )
-            return
-        speechfile = io.BytesIO(speech)
+                else:
+                    await ctx.send(
+                        _("Unable to get data from Google Translate TTS: {}").format(
+                            e.status
+                        )
+                    )
+                return
+        speechfile = BytesIO(speech)
         file = discord.File(speechfile, filename="{}.mp3".format(text[:32]))
         await ctx.send(file=file)
         speechfile.close()
