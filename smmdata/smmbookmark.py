@@ -153,13 +153,13 @@ class Level:
 
     @property
     def difficulty_color(self):
-        if self.difficulty == _("Easy"):
+        if self.difficulty == "Easy":
             return 0x28AD8A
-        if self.difficulty == _("Normal"):
+        if self.difficulty == "Normal":
             return 0x2691BC
-        if self.difficulty == _("Expert"):
+        if self.difficulty == "Expert":
             return 0xEA348B
-        if self.difficulty == _("Super Expert"):
+        if self.difficulty == "Super Expert":
             return 0xFF4545
         return 0xF9CF00
 
