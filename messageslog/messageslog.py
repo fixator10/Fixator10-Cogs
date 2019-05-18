@@ -132,7 +132,10 @@ class MessagesLog(commands.Cog):
 
     async def ignore_config_add(self, config: list, item):
         """Adds item to provided config list"""
-        config.append(item.id) if item.id not in config else config.remove(item.id)
+        if item.id in config:
+            config.remove(item.id)
+        else:
+            config.append(item.id)
 
     @commands.Cog.listener("on_message_delete")
     async def message_deleted(self, message: discord.Message):
