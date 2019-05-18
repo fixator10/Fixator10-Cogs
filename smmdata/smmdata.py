@@ -81,6 +81,7 @@ class SMMData(commands.Cog):
         )
         em.add_field(name=_("Stars Received"), value=f"★ {profile.stars}")
         em.add_field(name=_("Medals Earned"), value=profile.medals)
+        em.add_field(name=_("Uploaded Courses"), value=profile.uploads)
         em.add_field(
             name=_("100 Mario Challenge"), value=EMBED_EMPTY_VALUE, inline=False
         )

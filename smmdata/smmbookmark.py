@@ -229,6 +229,8 @@ class Maker:
                 ) as page:
                     return cls(BeautifulSoup(await page.read(), "html.parser"))
             except ClientResponseError as e:
+                if e.status == 404:
+                    raise BadArgument(_("The specified user could not be found."))
                 raise BadArgument(
                     _("Unable to find user {user}: {status}").format(
                         user=argument, status=e.message

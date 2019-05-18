@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-05-16 17:53+0400\n"
+"POT-Creation-Date: 2019-05-18 22:44+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,6 +16,9 @@ msgstr ""
 
 
 msgid "Unable to find level {level}: {status}"
+msgstr ""
+
+msgid "The specified user could not be found."
 msgstr ""
 
 msgid "Unable to find user {user}: {status}"
@@ -61,6 +64,9 @@ msgid "Stars Received"
 msgstr ""
 
 msgid "Medals Earned"
+msgstr ""
+
+msgid "Uploaded Courses"
 msgstr ""
 
 msgid "100 Mario Challenge"

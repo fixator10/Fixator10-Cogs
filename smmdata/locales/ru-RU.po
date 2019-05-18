@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2019-05-16 17:53+0400\n"
-"PO-Revision-Date: 2019-05-16 18:06+0400\n"
+"POT-Creation-Date: 2019-05-18 22:44+0400\n"
+"PO-Revision-Date: 2019-05-18 22:44+0400\n"
 "Last-Translator: Максим Невзоров\n"
 "Language-Team: \n"
 "Language: ru_RU\n"
@@ -20,6 +20,9 @@ msgstr ""
 
 msgid "Unable to find level {level}: {status}"
 msgstr "Невозможно найти уровень {level}: {status}"
+
+msgid "The specified user could not be found."
+msgstr "Не удалось найти указанного пользователя."
 
 msgid "Unable to find user {user}: {status}"
 msgstr "Невозможно найти пользователя {user}: {status}"
@@ -65,6 +68,9 @@ msgstr "Получено звезд"
 
 msgid "Medals Earned"
 msgstr "Полученные медали"
+
+msgid "Uploaded Courses"
+msgstr "Отправленные уровни"
 
 msgid "100 Mario Challenge"
 msgstr "100 жизней Марио"
