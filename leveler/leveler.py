@@ -3141,7 +3141,7 @@ class Leveler(commands.Cog):
         file.seek(0)
         return file
 
-    @commands.Cog.listener("on_message")
+    @commands.Cog.listener("on_message_without_command")
     async def _handle_on_message(self, message):
         text = message.content
         server = message.guild
@@ -3166,7 +3166,6 @@ class Leveler(commands.Cog):
         if all(
             [
                 float(curr_time) - float(userinfo["chat_block"]) >= 120,
-                not any(text.startswith(x) for x in prefix),
                 len(message.content) > 10 or message.attachments,
                 message.content != userinfo["last_message"],
                 message.channel.id
@@ -3175,8 +3174,6 @@ class Leveler(commands.Cog):
         ):
             await self._process_exp(message, userinfo, random.randint(15, 20))
             await self._give_chat_credit(user, server)
-        # except AttributeError as e:
-        # pass
 
     async def _process_exp(self, message, userinfo, exp: int):
         server = message.guild
