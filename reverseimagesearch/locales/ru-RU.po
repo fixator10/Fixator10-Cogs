@@ -1,0 +1,119 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2019-05-19 21:38+0400\n"
+"PO-Revision-Date: 2019-05-19 21:43+0400\n"
+"Last-Translator: Максим Невзоров\n"
+"Language-Team: \n"
+"Language: ru_RU\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: redgettext 2.2\n"
+"X-Generator: Poedit 2.2.2\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+
+msgid "No images provided."
+msgstr "Не указано никаких изображений."
+
+msgid "No Images found in recent history."
+msgstr "Изображений в последних сообщениях не обнаружено."
+
+msgid "(Anime) Reverse Image Search"
+msgstr "Поиск (аниме) по изображению"
+
+msgid "Reverse search image via SauceNAO"
+msgstr "Поиск по изображению через SauceNAO"
+
+msgid "Similarity: {}%"
+msgstr "Схожесть: {}%"
+
+msgid "Part/Episode: {}"
+msgstr "Часть/Эпизод: {}"
+
+msgid "Year: {}"
+msgstr "Год: {}"
+
+msgid "Est. Time: {}"
+msgstr "Пр. время: {}"
+
+msgid "Via SauceNAO • Page {}/{}"
+msgstr "Через SauceNAO • Страница {}/{}"
+
+msgid "Set API key for SauceNAO"
+msgstr "Установить API ключ для SauceNAO"
+
+msgid ""
+"To get SauceNAO API key:\n"
+"1. [Login](https://saucenao.com/user.php) to your SauceNAO account\n"
+"2. Go to [Search > api](https://saucenao.com/user.php?page=search-api) "
+"page\n"
+"3. Copy your *api key*\n"
+"4. Use `{}set api reverseimagesearch saucenao,<your_api_key>`\n"
+"\n"
+"Note: These tokens are sensitive and should only be used in a private "
+"channel\n"
+"or in DM with the bot."
+msgstr ""
+"Для получения ключа API SauceNAO:\n"
+"1. [Войдите](https://saucenao.com/user.php) в ваш аккаунт SauceNAO\n"
+"2. Перейдите на страницу [Search > api](https://saucenao.com/user.php?"
+"page=search-api)\n"
+"3. Скопируйте ваш ключ API в поле *api key*\n"
+"4. Используйте `{}set api reverseimagesearch saucenao,<ваш_ключ_api>`\n"
+"\n"
+"Примечание: Эти ключи регистрозависимы и их настройка должна\n"
+"\"производится только в приватном канале или в ЛС с ботом."
+
+msgid ""
+"Set API count of results count for SauceNAO\n"
+"\n"
+"        6 by default"
+msgstr ""
+"Установить количество результатов для API SauceNAO\n"
+"\n"
+"         По умолчанию 6"
+
+msgid "See how many requests are left"
+msgstr "Посмотреть сколько запросов осталось"
+
+msgid ""
+"Remaining requests:\n"
+"Short (30 seconds): {}/{}\n"
+"Long: (24 hours): {}/{}"
+msgstr ""
+"Оставшихся запросов:\n"
+"Короткосрочных: (30 секунд): {}/{}\n"
+"Долгосрочных: (24 часа): {}/{}"
+
+msgid "Command `{}` has not been used yet"
+msgstr "Команда `{}` пока еще не использовалась"
+
+msgid ""
+"Unable to search for provided image, SauceNAO returned {status} "
+"({message})\n"
+"This is server issue, try again later."
+msgstr ""
+"Невозможно выполнить поиск по указанному изображению, SauceNAO вернул код "
+"{status} ({message})\n"
+"Эта проблема наблюдается на стороне сервера, попробуйте позже."
+
+msgid ""
+"Unable to search for provided image, SauceNAO returned {status} ({message})"
+msgstr ""
+"Невозможно выполнить поиск по указанному изображению, SauceNAO вернул код "
+"{status} ({message})"
+
+msgid "Unable to get image: {}"
+msgstr "Невозможно получить изображение: {}"
+
+msgid ""
+"Unable to search for provided image, trace.moe returned {status} ({message})"
+msgstr ""
+"Невозможно выполнить поиск по указанному изображению, trace.moe вернул код "
+"{status} ({message})"

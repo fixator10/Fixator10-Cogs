@@ -1,0 +1,90 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR ORGANIZATION
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2019-05-19 21:38+0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: redgettext 2.2\n"
+
+
+msgid "No images provided."
+msgstr ""
+
+msgid "No Images found in recent history."
+msgstr ""
+
+msgid "(Anime) Reverse Image Search"
+msgstr ""
+
+msgid "Reverse search image via SauceNAO"
+msgstr ""
+
+msgid "Similarity: {}%"
+msgstr ""
+
+msgid "Part/Episode: {}"
+msgstr ""
+
+msgid "Year: {}"
+msgstr ""
+
+msgid "Est. Time: {}"
+msgstr ""
+
+msgid "Via SauceNAO • Page {}/{}"
+msgstr ""
+
+msgid "Set API key for SauceNAO"
+msgstr ""
+
+msgid ""
+"To get SauceNAO API key:\n"
+"1. [Login](https://saucenao.com/user.php) to your SauceNAO account\n"
+"2. Go to [Search > api](https://saucenao.com/user.php?page=search-api) page\n"
+"3. Copy your *api key*\n"
+"4. Use `{}set api reverseimagesearch saucenao,<your_api_key>`\n"
+"\n"
+"Note: These tokens are sensitive and should only be used in a private channel\n"
+"or in DM with the bot."
+msgstr ""
+
+msgid ""
+"Set API count of results count for SauceNAO\n"
+"\n"
+"        6 by default"
+msgstr ""
+
+msgid "See how many requests are left"
+msgstr ""
+
+msgid ""
+"Remaining requests:\n"
+"Short (30 seconds): {}/{}\n"
+"Long: (24 hours): {}/{}"
+msgstr ""
+
+msgid "Command `{}` has not been used yet"
+msgstr ""
+
+msgid ""
+"Unable to search for provided image, SauceNAO returned {status} ({message})\n"
+"This is server issue, try again later."
+msgstr ""
+
+msgid "Unable to search for provided image, SauceNAO returned {status} ({message})"
+msgstr ""
+
+msgid "Unable to get image: {}"
+msgstr ""
+
+msgid "Unable to search for provided image, trace.moe returned {status} ({message})"
+msgstr ""
+
