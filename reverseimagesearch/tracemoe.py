@@ -1,7 +1,9 @@
 from base64 import b64encode
 from collections import namedtuple
+from io import BytesIO
 from urllib.parse import quote
 
+from PIL import Image
 from aiohttp import ClientResponseError
 from redbot.core.i18n import Translator
 
@@ -35,6 +37,12 @@ class TraceMoeDoc:
             f"&file={quote(self.filename)}&t={self.time}&token={tokenthumb}"
         )
 
+    @property
+    def time_str(self):
+        hours, minutes = divmod(self.time, 3600)
+        minutes, seconds = divmod(minutes, 60)
+        return "{:02}:{:02}:{:02}".format(int(hours), int(minutes), int(seconds))
+
 
 class TraceMoe:
     def __init__(self, data: dict):
@@ -59,14 +67,19 @@ class TraceMoe:
                 async with ctx.cog.session.get(
                         image_url, raise_for_status=True
                 ) as resp:
-                    image = b64encode(await resp.read())
+                    image = BytesIO(await resp.read())
+                    image = Image.open(image)
+                    image = image.convert("RGB")
+                    image.thumbnail((2048, 2048))
+                    image_file = BytesIO()
+                    image.save(image_file, "JPEG")
             except ClientResponseError as e:
                 raise ValueError(_("Unable to get image: {}").format(e.message))
             try:
                 async with ctx.cog.session.post(
                         f"{BASE_API_URL}/search",
                         params={"token": apikeys["tracemoe"]},
-                        json={"image": str(image)},
+                        json={"image": b64encode(image_file.getvalue()).decode()},
                         raise_for_status=True,
                 ) as data:
                     return cls(await data.json())

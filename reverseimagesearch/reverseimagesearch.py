@@ -5,9 +5,9 @@ from redbot.core.config import Config
 from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
 
-# from .tracemoe import TraceMoe
 from .converters import ImageFinder
 from .saucenao import SauceNAO
+from .tracemoe import TraceMoe
 
 _ = Translator("ReverseImageSearch", __file__)
 
@@ -116,9 +116,9 @@ class ReverseImageSearch(commands.Cog):
         await self.config.numres.set(results)
         await ctx.tick()
 
-    @saucenao.command()
+    @saucenao.command(name="stats")
     @commands.is_owner()
-    async def stats(self, ctx):
+    async def saucenao_stats(self, ctx):
         """See how many requests are left"""
         if any(limit is not None for limit in self.saucenao_limits.values()):
             await ctx.send(
@@ -138,55 +138,90 @@ class ReverseImageSearch(commands.Cog):
                 _("Command `{}` has not been used yet").format(self.saucenao)
             )
 
-    # @commands.group(invoke_without_command=True, aliases=["WAIT"])
-    # async def tracemoe(self, ctx, image: ImageFinder = None):
-    #     """Reverse search image via WAIT"""
-    #     if image is None:
-    #         try:
-    #             image = await ImageFinder().search_for_images(ctx)
-    #         except ValueError as e:
-    #             await ctx.send(e)
-    #             return
-    #     image = image[0]
-    #     try:
-    #         search = await TraceMoe.from_image(ctx, image)
-    #     except ValueError as e:
-    #         await ctx.send(e)
-    #         return
-    #     embeds = []
-    #     page = 0
-    #     for doc in search.docs:
-    #         page += 1
-    #         e = Embed(
-    #             title=doc.title,
-    #             description="\n".join(
-    #                 [
-    #                     doc.title_native
-    #                     and "🇯🇵" + _("Native title: {}").format(doc.title_native)
-    #                     or "",
-    #                     doc.title_romaji
-    #                     and "🇯🇵"
-    #                     + _("Romaji transcription: {}").format(doc.title_romaji)
-    #                     or "",
-    #                     doc.title_chinese
-    #                     and "🇨🇳" + _("Chinese title: {}").format(doc.title_chinese)
-    #                     or "",
-    #                     doc.title_english
-    #                     and "🇺🇸" + _("English title: {}").format(doc.title_english)
-    #                     or "",
-    #                 ]
-    #             ),
-    #             url=doc.mal_id
-    #             and f"https://myanimelist.net/anime/{doc.mal_id}"
-    #             or f"https://anilist.co/anime/{doc.anilist_id}",
-    #             color=await ctx.embed_color(),
-    #         )
-    #         e.set_thumbnail(url=doc.thumbnail)
-    #         e.set_footer(
-    #             text=_("Via WAIT (trace.moe) • Page {}/{}").format(
-    #                 page, len(search.docs)
-    #             ),
-    #             icon_url="https://trace.moe/favicon128.png",
-    #         )
-    #         embeds.append(e)
-    #     await menu(ctx, embeds, DEFAULT_CONTROLS)
+    @commands.group(invoke_without_command=True, aliases=["WAIT"])
+    async def tracemoe(self, ctx, image: ImageFinder = None):
+        """Reverse search image via WAIT
+
+        If search performed not in NSFW channel, NSFW results will be not shown"""
+        if image is None:
+            try:
+                image = await ImageFinder().search_for_images(ctx)
+            except ValueError as e:
+                await ctx.send(e)
+                return
+        image = image[0]
+        try:
+            search = await TraceMoe.from_image(ctx, image)
+        except ValueError as e:
+            await ctx.send(e)
+            return
+        embeds = []
+        page = 0
+        for doc in search.docs:
+            page += 1
+            if ctx.channel.nsfw and doc.is_adult:
+                continue
+            # this design is kinda shit too, ideas, plssss
+            e = Embed(
+                title=doc.title,
+                description="\n".join(
+                    [
+                        s
+                        for s in [
+                        _("Similarity: {:.2f}%").format(doc.similarity * 100),
+                        doc.title_native
+                        and "🇯🇵 " + _("Native title: {}").format(doc.title_native),
+                        doc.title_romaji
+                        and "🇯🇵 "
+                        + _("Romaji transcription: {}").format(doc.title_romaji),
+                        doc.title_chinese
+                        and "🇨🇳 "
+                        + _("Chinese title: {}").format(doc.title_chinese),
+                        doc.title_english
+                        and "🇺🇸 "
+                        + _("English title: {}").format(doc.title_english),
+                        _("Est. Time: {}").format(doc.time_str),
+                        _("Episode: {}").format(doc.episode),
+                        doc.synonyms
+                        and _("Also known as: {}").format(", ".join(doc.synonyms)),
+                    ]
+                        if s
+                    ]
+                ),
+                url=doc.mal_id
+                    and f"https://myanimelist.net/anime/{doc.mal_id}"
+                    or f"https://anilist.co/anime/{doc.anilist_id}",
+                color=await ctx.embed_color(),
+            )
+            e.set_thumbnail(url=doc.thumbnail)
+            e.set_footer(
+                text=_("Via WAIT (trace.moe) • Page {}/{}").format(
+                    page, len(search.docs)
+                ),
+                icon_url="https://trace.moe/favicon128.png",
+            )
+            embeds.append(e)
+        await menu(ctx, embeds, DEFAULT_CONTROLS)
+
+    @tracemoe.command(name="stats")
+    @commands.is_owner()
+    async def tracemoe_stats(self, ctx):
+        """See how many requests are left and time until reset"""
+        stats = await TraceMoe.me(ctx)
+        await ctx.send(
+            _(
+                "Remaining requests (ratelimit): {}/{}\n"
+                "Remaining requests (quota): {}/{}\n"
+                "Ratelimit reset in {}/{}\n"
+                "Quota reset in {}/{}\n"
+            ).format(
+                stats.limit,
+                stats.user_limit,
+                stats.quota,
+                stats.user_quota,
+                stats.limit_ttl,
+                stats.user_limit_ttl,
+                stats.quota_ttl,
+                stats.user_quota_ttl,
+            )
+        )

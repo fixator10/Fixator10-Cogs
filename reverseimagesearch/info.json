@@ -12,6 +12,7 @@
     "saucenao"
   ],
   "requirements": [
-    "python-dateutil"
+    "python-dateutil",
+    "pillow>=6"
   ]
 }
