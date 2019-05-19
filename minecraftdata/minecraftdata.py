@@ -38,7 +38,7 @@ class MinecraftData(commands.Cog):
     def cog_unload(self):
         self.bot.loop.create_task(self.session.close())
 
-    @commands.group(name="minecraft", aliases=["mc"])
+    @commands.group(aliases=["mc"])
     async def minecraft(self, ctx):
         """Get Minecraft-Related data"""
         pass
@@ -99,6 +99,7 @@ class MinecraftData(commands.Cog):
         await ctx.send(embed=em, files=files)
 
     @minecraft.group(invoke_without_command=True)
+    @checks.bot_has_permissions(embed_links=True)
     async def cape(self, ctx, player: MCPlayer):
         """Get minecraft capes by nickname"""
         try:
@@ -123,7 +124,6 @@ class MinecraftData(commands.Cog):
         await ctx.send(embed=em)
 
     @cape.command(aliases=["of"])
-    @checks.bot_has_permissions(embed_links=True)
     async def optifine(self, ctx, player: MCPlayer):
         """Get optifine cape by nickname"""
         try:
@@ -182,7 +182,6 @@ class MinecraftData(commands.Cog):
         cape.close()
 
     @cape.command(aliases=["minecraftcapes", "couk"])
-    @checks.bot_has_permissions(embed_links=True)
     async def mccapes(self, ctx, player: MCPlayer):
         """Get MinecraftCapes.co.uk cape by nickname"""
         try:
@@ -218,7 +217,7 @@ class MinecraftData(commands.Cog):
         )
         await ctx.send(embed=em)
 
-    @cape.group(name="5zig", aliases=["fivezig"], invoke_without_command=True)
+    @cape.group(aliases=["5zig"], invoke_without_command=True)
     async def fivezig(self, ctx, player: MCPlayer):
         """Get 5zig cape by nickname"""
         uuid = player.uuid
