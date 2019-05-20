@@ -2367,11 +2367,13 @@ class Leveler(commands.Cog):
         else:
             level_fill = self._contrast(exp_fill, rep_fill, badge_fill)
 
-        async with self.session.get(bg_url) as r:
-            image = await r.content.read()
-            profile_background = BytesIO(image)
-        profile_avatar = BytesIO()
-        await user.avatar_url.save(profile_avatar, seek_begin=True)
+        try:
+            profile_avatar = BytesIO()
+            await user.avatar_url.save(profile_avatar, seek_begin=True)
+        except:
+            async with self.session.get(bg_url) as r:
+                image = await r.content.read()
+                profile_background = BytesIO(image)
 
         bg_image = Image.open(profile_background).convert("RGBA")
         profile_image = Image.open(profile_avatar).convert("RGBA")
