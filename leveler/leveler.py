@@ -3241,6 +3241,7 @@ class Leveler(commands.Cog):
             name = "You"
 
         new_level = str(userinfo["servers"][str(server.id)]["level"])
+        self.bot.dispatch("leveler_levelup", user, new_level)
         # add to appropriate role if necessary
         # try:
         server_roles = db.roles.find_one({"server_id": str(server.id)})
@@ -3313,7 +3314,6 @@ class Leveler(commands.Cog):
                         "**{} just gained a level{}!**".format(name, server_identifier),
                         file=file,
                     )
-            self.bot.dispatch("leveler_levelup", user, new_level)
 
     async def _find_server_rank(self, user, server):
         targetid = str(user.id)
