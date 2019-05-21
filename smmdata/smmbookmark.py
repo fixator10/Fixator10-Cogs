@@ -105,10 +105,10 @@ class Level:
             return "Super Mario World"
         if gameskin == "common_gs_sbu":
             return "New Super Mario Bros. U"
-        return None
+        return
 
     @property
-    def created_at(self):
+    def created_at(self) -> datetime:
         created_at = self._data.select_one(".created_at").string
         if "ago" in created_at:
             created_at_ago = int(created_at.split()[0])
@@ -116,6 +116,8 @@ class Level:
                 created_at = datetime.utcnow() - timedelta(hours=created_at_ago)
             elif "day" in created_at:
                 created_at = datetime.utcnow() - timedelta(days=created_at_ago)
+            elif "min" in created_at:
+                created_at = datetime.utcnow() - timedelta(minutes=created_at_ago)
         else:
             created_at = created_at.split("/")
             created_at = datetime(
