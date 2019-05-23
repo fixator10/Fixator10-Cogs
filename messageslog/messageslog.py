@@ -33,6 +33,7 @@ class MessagesLog(commands.Cog):
             "editing": True,
             "ignored_channels": [],
             "ignored_users": [],
+            "ignored_categories": [],
         }
         self.config.register_guild(**default_guild)
 
@@ -80,15 +81,20 @@ class MessagesLog(commands.Cog):
 
     @messageslog.command()
     @commands.check(is_channel_set)
-    async def ignore(self, ctx, *ignore: Union[discord.Member, discord.TextChannel]):
+    async def ignore(
+            self,
+            ctx,
+            *ignore: Union[discord.Member, discord.TextChannel, discord.CategoryChannel],
+    ):
         """Manage message logging blacklist
 
         Shows blacklist if no arguments provided
-        You can ignore text channels and members
-        If member/channel in blacklist, removes it"""
+        You can ignore text channels, categories and members
+        If item is in blacklist, removes it"""
         if not ignore:
             users = await self.config.guild(ctx.guild).ignored_users()
             channels = await self.config.guild(ctx.guild).ignored_channels()
+            categories = await self.config.guild(ctx.guild).ignored_categories()
             users = [
                 ctx.guild.get_member(m).mention
                 for m in users
@@ -99,11 +105,17 @@ class MessagesLog(commands.Cog):
                 for m in channels
                 if ctx.guild.get_channel(m)
             ]
-            if not any([users, channels]):
+            categories = [
+                ctx.guild.get_channel(m).mention
+                for m in categories
+                if ctx.guild.get_channel(m)
+            ]
+            if not any([users, channels, categories]):
                 await ctx.send(chat.info(_("Nothing is ignored")))
                 return
             users_pages = []
             channels_pages = []
+            categories_pages = []
             for page in chat.pagify("\n".join(users), page_length=2048):
                 users_pages.append(
                     discord.Embed(title=_("Ignored users"), description=page)
@@ -112,7 +124,11 @@ class MessagesLog(commands.Cog):
                 channels_pages.append(
                     discord.Embed(title=_("Ignored channels"), description=page)
                 )
-            pages = users_pages + channels_pages
+            for page in chat.pagify("\n".join(categories), page_length=2048):
+                categories_pages.append(
+                    discord.Embed(title=_("Ignored categories"), description=page)
+                )
+            pages = users_pages + channels_pages + categories_pages
             await menu(ctx, pages, DEFAULT_CONTROLS)
         else:
             guild = self.config.guild(ctx.guild)
@@ -123,6 +139,9 @@ class MessagesLog(commands.Cog):
                 elif isinstance(item, discord.TextChannel):
                     async with guild.ignored_channels() as ignored_channels:
                         await self.ignore_config_add(ignored_channels, item)
+                elif isinstance(item, discord.CategoryChannel):
+                    async with guild.ignored_categories() as ignored_categories:
+                        await self.ignore_config_add(ignored_categories, item)
             await ctx.tick()
 
     @ignore.error
@@ -145,6 +164,12 @@ class MessagesLog(commands.Cog):
             await self.config.guild(message.guild).channel()
         )
         if not logchannel:
+            return
+        if (
+                message.channel.category
+                and message.channel.category.id
+                in await self.config.guild(message.guild).ignored_categories()
+        ):
             return
         if any(
             [
@@ -195,6 +220,12 @@ class MessagesLog(commands.Cog):
             await self.config.guild(before.guild).channel()
         )
         if not logchannel:
+            return
+        if (
+                before.channel.category
+                and before.channel.category.id
+                in await self.config.guild(before.guild).ignored_categories()
+        ):
             return
         if any(
             [
