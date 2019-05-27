@@ -11,7 +11,9 @@ from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
 
 async def is_channel_set(ctx: commands.Context):
     """Checks if server has set channel for logging"""
-    return ctx.guild.get_channel(await ctx.cog.config.guild(ctx.guild).channel())
+    if ctx.guild:
+        return ctx.guild.get_channel(await ctx.cog.config.guild(ctx.guild).channel())
+    return False
 
 
 _ = Translator("MessagesLog", __file__)
