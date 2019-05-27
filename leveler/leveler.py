@@ -1396,15 +1396,14 @@ class Leveler(commands.Cog):
         if (max_xp or min_xp) > 1000:
             return await ctx.send("Don't you think that number is a bit high? "
                                   "That might break things. Try something under 1k xp.")
-        elif max_xp == 0:
+        if max_xp == 0:
             return await ctx.send("Max XP can't be zero or less.")
-        elif min_xp >= max_xp:
+        if min_xp >= max_xp:
             return await ctx.send("The minimum xp amount needs to be less than the maximum xp amount.")
-        elif (min_xp or max_xp) < 0:
+        if (min_xp or max_xp) < 0:
             return await ctx.send("The xp amounts can't be less then zero.")
-        else:
-            await self.config.xp.set([min_xp, max_xp])
-            await ctx.send(f"XP given has been set to a range of {min_xp} to {max_xp} xp per message.")
+        await self.config.xp.set([min_xp, max_xp])
+        await ctx.send(f"XP given has been set to a range of {min_xp} to {max_xp} xp per message.")
 
     @lvladmin.command()
     @checks.is_owner()
