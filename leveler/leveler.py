@@ -76,6 +76,8 @@ class Leveler(commands.Cog):
         default_global = {
             "bg_price": 0,
             "badge_type": "circles",
+            "xp": [15, 20],
+            "message_length": 10,
             "mention": True,
             "backgrounds": {
                 "profile": {
@@ -1385,6 +1387,36 @@ class Leveler(commands.Cog):
                 "**Private level-up alerts enabled for `{}`.**".format(server.name)
             )
 
+    @lvladmin.command(aliases=["exp"])
+    @checks.is_owner()
+    async def xp(self, ctx, min_xp: int = 15, max_xp: int = 20):
+        """Set the range for the xp given on each successful xp gain.
+
+        Leaving the entries blank will reset the xp to the default."""
+        if (max_xp or min_xp) > 1000:
+            return await ctx.send("Don't you think that number is a bit high? "
+                                  "That might break things. Try something under 1k xp.")
+        elif max_xp == 0:
+            return await ctx.send("Max XP can't be zero or less.")
+        elif min_xp >= max_xp:
+            return await ctx.send("The minimum xp amount needs to be less than the maximum xp amount.")
+        elif (min_xp or max_xp) < 0:
+            return await ctx.send("The xp amounts can't be less then zero.")
+        else:
+            await self.config.xp.set([min_xp, max_xp])
+            await ctx.send(f"XP given has been set to a range of {min_xp} to {max_xp} xp per message.")
+
+    @lvladmin.command()
+    @checks.is_owner()
+    async def length(self, ctx, message_length: int = 10):
+        """Set minimum message length for xp gain.
+
+        Messages with attachments will give xp regardless of length"""
+        if message_length < 0:
+            raise commands.BadArgument
+        await self.config.message_length.set(message_length)
+        await ctx.tick()
+
     @lvlset.group(autohelp=True)
     async def badge(self, ctx):
         """Badge Configuration Options"""
@@ -1588,7 +1620,7 @@ class Leveler(commands.Cog):
 
     @badge.command(name="set")
     @commands.guild_only()
-    async def set(self, ctx, name: str, priority_num: int):
+    async def set_badge(self, ctx, name: str, priority_num: int):
         """Set a badge to profile.
 
         -1(invis), 0(not on profile), max: 5000."""
@@ -3143,10 +3175,9 @@ class Leveler(commands.Cog):
 
     @commands.Cog.listener("on_message_without_command")
     async def _handle_on_message(self, message):
-        text = message.content
         server = message.guild
         user = message.author
-        prefix = await self.bot.command_prefix(self.bot, message)
+        xp = await self.config.xp()
         # creates user if doesn't exist, bots are not logged.
         await self._create_user(user, server)
         curr_time = time.time()
@@ -3166,13 +3197,13 @@ class Leveler(commands.Cog):
         if all(
             [
                 float(curr_time) - float(userinfo["chat_block"]) >= 120,
-                len(message.content) > 10 or message.attachments,
+                len(message.content) > await self.config.message_length() or message.attachments,
                 message.content != userinfo["last_message"],
                 message.channel.id
                 not in await self.config.guild(server).ignored_channels(),
             ]
         ):
-            await self._process_exp(message, userinfo, random.randint(15, 20))
+            await self._process_exp(message, userinfo, random.randint(xp[0], xp[1]))
             await self._give_chat_credit(user, server)
 
     async def _process_exp(self, message, userinfo, exp: int):
