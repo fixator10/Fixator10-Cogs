@@ -2169,7 +2169,7 @@ class Leveler(commands.Cog):
         else:
             async with self.config.backgrounds() as backgrounds:
                 backgrounds["profile"][name] = url
-            await ctx.send("**New profile background(`{}`) added.**".format(name))
+            await ctx.send("**New profile background (`{}`) added.**".format(name))
 
     @checks.is_owner()
     @lvladminbg.command()
@@ -2186,7 +2186,7 @@ class Leveler(commands.Cog):
         else:
             async with self.config.backgrounds() as backgrounds:
                 backgrounds["rank"][name] = url
-            await ctx.send("**New rank background(`{}`) added.**".format(name))
+            await ctx.send("**New rank background (`{}`) added.**".format(name))
 
     @checks.is_owner()
     @lvladminbg.command()
@@ -2194,7 +2194,7 @@ class Leveler(commands.Cog):
     async def addlevelbg(self, ctx, name: str, url: str):
         """Add a level-up background.
 
-        Proportions: (85px x 105px)"""
+        Proportions: (175px x 65px)"""
         backgrounds = await self.config.backgrounds()
         if name in backgrounds["levelup"].keys():
             await ctx.send("**That level-up background name already exists!**")
@@ -2203,7 +2203,7 @@ class Leveler(commands.Cog):
         else:
             async with self.config.backgrounds() as backgrounds:
                 backgrounds["levelup"][name] = url
-            await ctx.send("**New level-up background(`{}`) added.**".format(name))
+            await ctx.send("**New level-up background (`{}`) added.**".format(name))
 
     @checks.is_owner()
     @lvladminbg.command()
@@ -2402,7 +2402,7 @@ class Leveler(commands.Cog):
             image = await r.content.read()
             profile_background = BytesIO(image)
         profile_avatar = BytesIO()
-        await user.avatar_url.save(profile_avatar, seek_begin=True)
+        await user.avatar_url_as(format="webp").save(profile_avatar)
 
         bg_image = Image.open(profile_background).convert("RGBA")
         profile_image = Image.open(profile_avatar).convert("RGBA")
@@ -2851,7 +2851,7 @@ class Leveler(commands.Cog):
             image = await r.content.read()
         rank_background = BytesIO(image)
         rank_avatar = BytesIO()
-        await user.avatar_url.save(rank_avatar, seek_begin=True)
+        await user.avatar_url_as(format="webp").save(rank_avatar, seek_begin=True)
 
         bg_image = Image.open(rank_background).convert("RGBA")
         profile_image = Image.open(rank_avatar).convert("RGBA")
@@ -3074,7 +3074,7 @@ class Leveler(commands.Cog):
             image = await r.content.read()
         level_background = BytesIO(image)
         level_avatar = BytesIO()
-        await user.avatar_url.save(level_avatar, seek_begin=True)
+        await user.avatar_url_as(format="webp").save(level_avatar, seek_begin=True)
 
         bg_image = Image.open(level_background).convert("RGBA")
         profile_image = Image.open(level_avatar).convert("RGBA")
