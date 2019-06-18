@@ -187,7 +187,6 @@ class MessagesLog(commands.Cog):
                 in await self.config.guild(message.guild).ignored_channels(),
                 message.author.id
                 in await self.config.guild(message.guild).ignored_users(),
-                not message.content,
                 message.author.bot,
                 message.channel.nsfw and not logchannel.nsfw,
             ]
@@ -195,7 +194,7 @@ class MessagesLog(commands.Cog):
             return
         embed = discord.Embed(
             title=_("Message deleted"),
-            description=message.content,
+            description=message.content or chat.inline(_("No text")),
             timestamp=message.created_at,
             color=message.author.color,
         )
@@ -243,7 +242,6 @@ class MessagesLog(commands.Cog):
                 in await self.config.guild(before.guild).ignored_channels(),
                 before.author.id
                 in await self.config.guild(before.guild).ignored_users(),
-                not after.content,
                 before.content == after.content,
                 before.author.bot,
                 before.channel.nsfw and not logchannel.nsfw,
@@ -251,8 +249,8 @@ class MessagesLog(commands.Cog):
         ):
             return
         embed = discord.Embed(
-            title=_("Message redacted (Before)"),
-            description=before.content,
+            title=_("Message redacted"),
+            description=before.content or chat.inline(_("No text")),
             timestamp=before.created_at,
             color=before.author.color,
         )
