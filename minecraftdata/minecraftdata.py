@@ -101,7 +101,7 @@ class MinecraftData(commands.Cog):
     @minecraft.group(invoke_without_command=True)
     @checks.bot_has_permissions(embed_links=True)
     async def cape(self, ctx, player: MCPlayer):
-        """Get minecraft capes by nickname"""
+        """Get Minecraft capes by nickname"""
         try:
             await self.session.get(
                 f"https://crafatar.com/capes/{player.uuid}", raise_for_status=True
@@ -125,7 +125,7 @@ class MinecraftData(commands.Cog):
 
     @cape.command(aliases=["of"])
     async def optifine(self, ctx, player: MCPlayer):
-        """Get optifine cape by nickname"""
+        """Get OptiFine cape by nickname"""
         try:
             await self.session.get(
                 f"http://s.optifine.net/capes/{player.name}.png", raise_for_status=True
@@ -133,12 +133,12 @@ class MinecraftData(commands.Cog):
         except aiohttp.ClientResponseError as e:
             if e.status == 404:
                 await ctx.send(
-                    chat.error(_("{} doesn't have optifine cape").format(player.name))
+                    chat.error(_("{} doesn't have OptiFine cape").format(player.name))
                 )
             else:
                 await ctx.send(
                     chat.error(
-                        _("Unable to get {player}'s optifine cape: {message}").format(
+                        _("Unable to get {player}'s OptiFine cape: {message}").format(
                             player=player.name, message=e.message
                         )
                     )
