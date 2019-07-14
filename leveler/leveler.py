@@ -3328,14 +3328,14 @@ class Leveler(commands.Cog):
 
         if await self.config.guild(server).lvl_msg():  # if lvl msg is enabled
             if await self.config.guild(server).text_only():
-                await self.bot.send_typing(channel)
-                em = discord.Embed(
-                    description="**{} just gained a level{}! (LEVEL {})**".format(
-                        name, server_identifier, new_level
-                    ),
-                    colour=user.colour,
-                )
-                channel.send(embed=em)
+                async with channel.typing():
+                    em = discord.Embed(
+                        description="**{} just gained a level{}! (LEVEL {})**".format(
+                            name, server_identifier, new_level
+                        ),
+                        colour=user.colour,
+                    )
+                    await channel.send(embed=em)
             else:
                 async with channel.typing():
                     levelup = await self.draw_levelup(user, server)
