@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-05-19 21:38+0400\n"
+"POT-Creation-Date: 2019-07-16 15:46+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,6 +25,9 @@ msgid "(Anime) Reverse Image Search"
 msgstr ""
 
 msgid "Reverse search image via SauceNAO"
+msgstr ""
+
+msgid "Nothing found"
 msgstr ""
 
 msgid "Similarity: {}%"
@@ -72,6 +75,46 @@ msgid ""
 msgstr ""
 
 msgid "Command `{}` has not been used yet"
+msgstr ""
+
+msgid ""
+"Reverse search image via WAIT\n"
+"\n"
+"        If search performed not in NSFW channel, NSFW results will be not shown"
+msgstr ""
+
+msgid "Similarity: {:.2f}%"
+msgstr ""
+
+msgid "Native title: {}"
+msgstr ""
+
+msgid "Romaji transcription: {}"
+msgstr ""
+
+msgid "Chinese title: {}"
+msgstr ""
+
+msgid "English title: {}"
+msgstr ""
+
+msgid "Episode: {}"
+msgstr ""
+
+msgid "Also known as: {}"
+msgstr ""
+
+msgid "Via WAIT (trace.moe) • Page {}/{}"
+msgstr ""
+
+msgid "See how many requests are left and time until reset"
+msgstr ""
+
+msgid ""
+"Remaining requests (ratelimit): {}/{}\n"
+"Remaining requests (quota): {}/{}\n"
+"Ratelimit reset in {}/{}\n"
+"Quota reset in {}/{}\n"
 msgstr ""
 
 msgid ""

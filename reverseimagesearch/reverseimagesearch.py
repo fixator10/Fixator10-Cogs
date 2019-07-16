@@ -51,6 +51,9 @@ class ReverseImageSearch(commands.Cog):
         except ValueError as e:
             await ctx.send(e)
             return
+        if not search.results:
+            await ctx.send(_("Nothing found"))
+            return
         self.saucenao_limits["short"] = search.limits.short
         self.saucenao_limits["long"] = search.limits.long
         self.saucenao_limits["long_remaining"] = search.limits.remaining.long
