@@ -12,7 +12,7 @@
 # Fixator10-Cogs
 Cogs from [my edition of DiNitride's selfbot](https://github.com/fixator10/Discord-Self-Bot) and moar
 
-For support visit my [personal server](https://invite.gg/fixator10) or find me (Fixator10#7133) on [Red - Cog Support server](https://discord.gg/GET4DVk)
+For support visit my [personal server](https://fixator10.ru/discord) or find me (Fixator10#7133) on [Red - Cog Support server](https://discord.gg/GET4DVk)
 
 # Installation
 `[p]repo add Fixator10-Cogs https://github.com/fixator10/Fixator10-Cogs V3`
