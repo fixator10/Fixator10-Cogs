@@ -870,7 +870,7 @@ class Leveler(commands.Cog):
 
         im = Image.open(image).convert("RGBA")
         im = im.resize((290, 290))  # resized to reduce time
-        ar = scipy.misc.fromimage(im)
+        ar = scipy.asarray(im)
         shape = ar.shape
         ar = ar.reshape(scipy.product(shape[:2]), shape[2])
 
