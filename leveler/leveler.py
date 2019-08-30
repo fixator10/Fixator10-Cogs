@@ -2495,12 +2495,12 @@ class Leveler(commands.Cog):
 
         # rep_text = "{} REP".format(userinfo["rep"])
         rep_text = "{}".format(userinfo["rep"])
-        await _write_unicode("❤", 257, 9, rep_fnt, rep_u_fnt, info_text_color)
+        await _write_unicode("❤", 257, 9, rep_fnt, rep_u_fnt, rep_fill)
         draw.text(
             (await self._center(278, 340, rep_text, rep_fnt), 10),
             rep_text,
             font=rep_fnt,
-            fill=info_text_color,
+            fill=rep_fill,
         )  # Exp Text
 
         label_align = 362  # vertical
