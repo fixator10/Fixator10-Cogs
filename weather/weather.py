@@ -52,9 +52,15 @@ class Weather(commands.Cog):
     @commands.guild_only()
     async def weather(self, ctx, *, place: str):
         """Shows weather in provided place"""
-        apikeys = await self.bot.db.api_tokens.get_raw(
-            "forecastio", default={"secret": None}
-        )
+        # TODO: Remove this on 3.2 release
+        try:
+            apikeys = await self.bot.db.api_tokens.get_raw(
+                "forecastio", default={"secret": None}
+            )
+        except AttributeError:
+            apikeys = await self.bot.get_shared_api_tokens("forecastio") or {
+                "secret": None
+            }
         g = await self.bot.loop.run_in_executor(None, geocoder.komoot, place)
         if not g.latlng:
             await ctx.send(
@@ -107,9 +113,15 @@ class Weather(commands.Cog):
     @commands.guild_only()
     async def forecast(self, ctx, *, place: str):
         """Shows 7 days forecast for provided place"""
-        apikeys = await self.bot.db.api_tokens.get_raw(
-            "forecastio", default={"secret": None}
-        )
+        # TODO: Remove this on 3.2 release
+        try:
+            apikeys = await self.bot.db.api_tokens.get_raw(
+                "forecastio", default={"secret": None}
+            )
+        except AttributeError:
+            apikeys = await self.bot.get_shared_api_tokens("forecastio") or {
+                "secret": None
+            }
         g = await self.bot.loop.run_in_executor(None, geocoder.komoot, place)
         if not g.latlng:
             await ctx.send(_("Cannot find a place {}").format(chat.inline(place)))

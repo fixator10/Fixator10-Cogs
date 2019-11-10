@@ -104,9 +104,7 @@ class SteamUser:
         if not id64.isnumeric():
             raise BadArgument(_("User with SteamID {} not found.").format(argument))
         try:
-            profile = await ctx.bot.loop.run_in_executor(
-                None, SteamUser, steam, id64
-            )
+            profile = await ctx.bot.loop.run_in_executor(None, SteamUser, steam, id64)
         except IndexError:
             raise BadArgument(
                 _(

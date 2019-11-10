@@ -43,9 +43,15 @@ class SteamCommunity(commands.Cog):
     # noinspection PyAttributeOutsideInit
     async def initialize(self):
         """Should be called straight after cog instantiation."""
-        self.apikeys = await self.bot.db.api_tokens.get_raw(
-            "steam", default={"web": None}
-        )
+        # TODO: Remove this on 3.2 release
+        try:
+            self.apikeys = await self.bot.db.api_tokens.get_raw(
+                "steam", default={"web": None}
+            )
+        except AttributeError:
+            self.apikeys = await self.bot.get_shared_api_tokens("steam") or {
+                "web": None
+            }
         self.steam = await self.bot.loop.run_in_executor(
             None, partial(interface.API, key=self.apikeys["web"])
         )

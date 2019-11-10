@@ -73,9 +73,15 @@ class SauceNAO:
 
     @classmethod
     async def from_image(cls, ctx, image_url):
-        apikeys = await ctx.bot.db.api_tokens.get_raw(
-            "reverseimagesearch", default={"saucenao": ""}
-        )
+        # TODO: Remove this on 3.2 release
+        try:
+            apikeys = await ctx.bot.db.api_tokens.get_raw(
+                "reverseimagesearch", default={"saucenao": ""}
+            )
+        except AttributeError:
+            apikeys = await ctx.bot.get_shared_api_tokens("reverseimagesearch") or {
+                "saucenao": ""
+            }
         params = {
             "output_type": 2,  # JSON API
             "api_key": apikeys["saucenao"],

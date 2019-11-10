@@ -59,9 +59,15 @@ class TraceMoe:
 
     @classmethod
     async def from_image(cls, ctx, image_url):
-        apikeys = await ctx.bot.db.api_tokens.get_raw(
-            "reverseimagesearch", default={"tracemoe": ""}
-        )
+        # TODO: Remove this on 3.2 release
+        try:
+            apikeys = await ctx.bot.db.api_tokens.get_raw(
+                "reverseimagesearch", default={"tracemoe": ""}
+            )
+        except AttributeError:
+            apikeys = await ctx.bot.get_shared_api_tokens("reverseimagesearch") or {
+                "tracemoe": ""
+            }
         async with ctx.typing():
             try:
                 async with ctx.cog.session.get(
