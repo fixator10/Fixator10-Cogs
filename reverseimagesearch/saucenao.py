@@ -79,9 +79,8 @@ class SauceNAO:
                 "reverseimagesearch", default={"saucenao": ""}
             )
         except AttributeError:
-            apikeys = await ctx.bot.get_shared_api_tokens("reverseimagesearch") or {
-                "saucenao": ""
-            }
+            shared_tokens = await ctx.bot.get_shared_api_tokens("reverseimagesearch")
+            apikeys = "saucenao" in shared_tokens and shared_tokens or {"saucenao": ""}
         params = {
             "output_type": 2,  # JSON API
             "api_key": apikeys["saucenao"],

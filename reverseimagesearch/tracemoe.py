@@ -65,9 +65,8 @@ class TraceMoe:
                 "reverseimagesearch", default={"tracemoe": ""}
             )
         except AttributeError:
-            apikeys = await ctx.bot.get_shared_api_tokens("reverseimagesearch") or {
-                "tracemoe": ""
-            }
+            shared_tokens = await ctx.bot.get_shared_api_tokens("reverseimagesearch")
+            apikeys = "tracemoe" in shared_tokens and shared_tokens or {"tracemoe": ""}
         async with ctx.typing():
             try:
                 async with ctx.cog.session.get(
