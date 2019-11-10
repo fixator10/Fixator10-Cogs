@@ -1,4 +1,5 @@
 import logging
+import math
 import operator
 import platform
 import random
@@ -13,7 +14,6 @@ from typing import Union
 
 import aiohttp
 import discord
-import math
 from discord.utils import find
 from fontTools.ttLib import TTFont
 from redbot.core import bank
@@ -1394,16 +1394,22 @@ class Leveler(commands.Cog):
 
         Leaving the entries blank will reset the xp to the default."""
         if (max_xp or min_xp) > 1000:
-            return await ctx.send("Don't you think that number is a bit high? "
-                                  "That might break things. Try something under 1k xp.")
+            return await ctx.send(
+                "Don't you think that number is a bit high? "
+                "That might break things. Try something under 1k xp."
+            )
         if max_xp == 0:
             return await ctx.send("Max XP can't be zero or less.")
         if min_xp >= max_xp:
-            return await ctx.send("The minimum xp amount needs to be less than the maximum xp amount.")
+            return await ctx.send(
+                "The minimum xp amount needs to be less than the maximum xp amount."
+            )
         if (min_xp or max_xp) < 0:
             return await ctx.send("The xp amounts can't be less then zero.")
         await self.config.xp.set([min_xp, max_xp])
-        await ctx.send(f"XP given has been set to a range of {min_xp} to {max_xp} xp per message.")
+        await ctx.send(
+            f"XP given has been set to a range of {min_xp} to {max_xp} xp per message."
+        )
 
     @lvladmin.command()
     @checks.is_owner()
@@ -3196,7 +3202,8 @@ class Leveler(commands.Cog):
         if all(
             [
                 float(curr_time) - float(userinfo["chat_block"]) >= 120,
-                len(message.content) > await self.config.message_length() or message.attachments,
+                len(message.content) > await self.config.message_length()
+                or message.attachments,
                 message.content != userinfo["last_message"],
                 message.channel.id
                 not in await self.config.guild(server).ignored_channels(),
