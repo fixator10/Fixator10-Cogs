@@ -66,7 +66,9 @@ FORECASTIO_SUPPORTED_LANGS = [
     "tr",
     "uk",
     "ur",
+    "x-pig-latin",
     "zh",
+    "zh-tw",
 ]
 
 _ = Translator("Weather", __file__)
