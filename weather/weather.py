@@ -157,7 +157,6 @@ class Weather(commands.Cog):
         us - Imperial units
         uk2 - Same as si, but distance in miles and speed in mph
         ca - Same as si, but speed in km/h"""
-        units = units.casefold()
         if not units:
             await ctx.send(
                 chat.info(
@@ -167,6 +166,7 @@ class Weather(commands.Cog):
                 )
             )
             return
+        units = units.casefold()
         if units not in UNITS.keys():
             await ctx.send(
                 chat.error(
