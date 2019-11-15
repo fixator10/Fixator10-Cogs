@@ -233,39 +233,40 @@ class Weather(commands.Cog):
             apikeys = await self.bot.get_shared_api_tokens("forecastio") or {
                 "secret": None
             }
-        g = await self.bot.loop.run_in_executor(
-            None, getattr(geocoder, GEOCODER_PROVIDER), place
-        )
-        if not g.latlng:
-            await ctx.send(
-                chat.error(_("Cannot find a place {}").format(chat.inline(place)))
+        async with ctx.typing():
+            g = await self.bot.loop.run_in_executor(
+                None, getattr(geocoder, GEOCODER_PROVIDER), place
             )
-            return
-        try:
-            forecast = await self.bot.loop.run_in_executor(
-                None,
-                partial(
-                    forecastio.load_forecast,
-                    apikeys["secret"],
-                    g.latlng[0],
-                    g.latlng[1],
-                    units=await self.config.guild(ctx.guild).units(),
-                    lang=await self.get_lang(),
-                ),
-            )
-        except HTTPError:
-            await ctx.send(
-                chat.error(
-                    _(
-                        "This command requires API key. "
-                        "Use {}forecastapi to get more information"
-                    ).format(ctx.prefix)
+            if not g.latlng:
+                await ctx.send(
+                    chat.error(_("Cannot find a place {}").format(chat.inline(place)))
                 )
-            )
-            return
-        except (RequestsConnectionError, Timeout):
-            await ctx.send(chat.error(_("Unable to get data from forecast.io")))
-            return
+                return
+            try:
+                forecast = await self.bot.loop.run_in_executor(
+                    None,
+                    partial(
+                        forecastio.load_forecast,
+                        apikeys["secret"],
+                        g.latlng[0],
+                        g.latlng[1],
+                        units=await self.config.guild(ctx.guild).units(),
+                        lang=await self.get_lang(),
+                    ),
+                )
+            except HTTPError:
+                await ctx.send(
+                    chat.error(
+                        _(
+                            "This command requires API key. "
+                            "Use {}forecastapi to get more information"
+                        ).format(ctx.prefix)
+                    )
+                )
+                return
+            except (RequestsConnectionError, Timeout):
+                await ctx.send(chat.error(_("Unable to get data from forecast.io")))
+                return
         by_hour = forecast.currently()
 
         em = discord.Embed(
@@ -353,37 +354,38 @@ class Weather(commands.Cog):
             apikeys = await self.bot.get_shared_api_tokens("forecastio") or {
                 "secret": None
             }
-        g = await self.bot.loop.run_in_executor(
-            None, getattr(geocoder, GEOCODER_PROVIDER), place
-        )
-        if not g.latlng:
-            await ctx.send(_("Cannot find a place {}").format(chat.inline(place)))
-            return
-        try:
-            forecast = await self.bot.loop.run_in_executor(
-                None,
-                partial(
-                    forecastio.load_forecast,
-                    apikeys["secret"],
-                    g.latlng[0],
-                    g.latlng[1],
-                    units=await self.config.guild(ctx.guild).units(),
-                    lang=await self.get_lang(),
-                ),
+        async with ctx.typing():
+            g = await self.bot.loop.run_in_executor(
+                None, getattr(geocoder, GEOCODER_PROVIDER), place
             )
-        except HTTPError:
-            await ctx.send(
-                chat.error(
-                    _(
-                        "This command requires API key. "
-                        "Use {}forecastapi to get more information"
-                    ).format(ctx.prefix)
+            if not g.latlng:
+                await ctx.send(_("Cannot find a place {}").format(chat.inline(place)))
+                return
+            try:
+                forecast = await self.bot.loop.run_in_executor(
+                    None,
+                    partial(
+                        forecastio.load_forecast,
+                        apikeys["secret"],
+                        g.latlng[0],
+                        g.latlng[1],
+                        units=await self.config.guild(ctx.guild).units(),
+                        lang=await self.get_lang(),
+                    ),
                 )
-            )
-            return
-        except (RequestsConnectionError, Timeout):
-            await ctx.send(chat.error(_("Unable to get data from forecast.io")))
-            return
+            except HTTPError:
+                await ctx.send(
+                    chat.error(
+                        _(
+                            "This command requires API key. "
+                            "Use {}forecastapi to get more information"
+                        ).format(ctx.prefix)
+                    )
+                )
+                return
+            except (RequestsConnectionError, Timeout):
+                await ctx.send(chat.error(_("Unable to get data from forecast.io")))
+                return
         by_day = forecast.daily()
         pages = []
         for i in range(0, 8):
@@ -489,7 +491,7 @@ class Weather(commands.Cog):
     async def get_lang(self):
         """Get language for forecastio, based on current's bot language"""
         locale = get_locale()
-        special_cases = {"lol-US": "en", "debugging": "en", "zh-TW": "zh-tw"}
+        special_cases = {"lol-US": "x-pig-latin", "debugging": "en", "zh-TW": "zh-tw"}
         lang = special_cases.get(locale, locale[:2])
         if lang in FORECASTIO_SUPPORTED_LANGS:
             return lang
