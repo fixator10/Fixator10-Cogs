@@ -147,9 +147,49 @@ class Weather(commands.Cog):
         ).format(ctx.prefix)
         await ctx.maybe_send_embed(message)
 
-    @commands.command()
+    @commands.group(invoke_without_command=True)
     @checks.admin_or_permissions(manage_guild=True)
     async def forecastunits(self, ctx, units: str = None):
+        """Set forecast units for yourself
+
+        Applicable units:
+        si - SI units (default)
+        us - Imperial units
+        uk2 - Same as si, but distance in miles and speed in mph
+        ca - Same as si, but speed in km/h
+        reset - reset your unit preference"""
+        if not units:
+            await ctx.send(
+                chat.info(
+                    _("Your current units are: {}").format(
+                        await self.config.user(ctx.author).units()
+                        or _("Not set, using server's default {}").format(
+                            await self.config.guild(ctx.guild).units()
+                        )
+                    )
+                )
+            )
+            return
+        units = units.casefold()
+        if units == "reset":
+            await self.config.user(ctx.author).units.clear()
+            await ctx.tick()
+            return
+        if units not in UNITS.keys():
+            await ctx.send(
+                chat.error(
+                    _(
+                        'Units "{}" are not supported, check {}help forecastunits'
+                    ).format(units, ctx.prefix)
+                )
+            )
+            return
+        await self.config.user(ctx.author).units.set(units)
+        await ctx.tick()
+
+    @forecastunits.command(name="guild")
+    @checks.admin_or_permissions(manage_guild=True)
+    async def set_guild_units(self, ctx, units: str = None):
         """Set forecast units for this guild
 
         Applicable units:
@@ -171,7 +211,7 @@ class Weather(commands.Cog):
             await ctx.send(
                 chat.error(
                     _(
-                        'Units "{}" are not supported, check {}help forecastunits'
+                        'Units "{}" are not supported, check {}help forecastunits guild'
                     ).format(units, ctx.prefix)
                 )
             )
@@ -440,7 +480,10 @@ class Weather(commands.Cog):
 
     async def get_units(self, ctx: commands.Context, units_type: str):
         """Get translated contextual units for type"""
-        current_system = await self.config.guild(ctx.guild).units()
+        current_system = (
+                await self.config.user(ctx.author).units()
+                or await self.config.guild(ctx.guild).units()
+        )
         return UNITS.get(current_system, {}).get(units_type, "?")
 
     async def get_lang(self):
