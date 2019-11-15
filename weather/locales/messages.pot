@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-04-20 17:13+0400\n"
+"POT-Creation-Date: 2019-11-15 15:47+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,12 +15,54 @@ msgstr ""
 "Generated-By: redgettext 2.2\n"
 
 
-#: weather.py:41
-#, docstring
+msgid "km"
+msgstr ""
+
+msgid "mm/h"
+msgstr ""
+
+msgid "cm"
+msgstr ""
+
+msgid "℃"
+msgstr ""
+
+msgid "m/s"
+msgstr ""
+
+msgid "hPa"
+msgstr ""
+
+msgid "km/h"
+msgstr ""
+
+msgid "mi"
+msgstr ""
+
+msgid "mph"
+msgstr ""
+
+msgid "″"
+msgstr ""
+
+msgid "℉"
+msgstr ""
+
+msgid "mbar"
+msgstr ""
+
+msgid "Rain"
+msgstr ""
+
+msgid "Snow"
+msgstr ""
+
+msgid "Sleet"
+msgstr ""
+
 msgid "Set API key for forecast.io"
 msgstr ""
 
-#: weather.py:42
 msgid ""
 "To get forecast.io API key:\n"
 "1. Register/login at [DarkSky](https://darksky.net/dev/register)\n"
@@ -28,38 +70,144 @@ msgid ""
 "3. Use `{}set api forecastio secret,<your_apikey>`"
 msgstr ""
 
-#: weather.py:53
-#, docstring
+msgid ""
+"Set forecast units for this guild\n"
+"\n"
+"        Applicable units:\n"
+"        si - SI units (default)\n"
+"        us - Imperial units\n"
+"        uk2 - Same as si, but distance in miles and speed in mph\n"
+"        ca - Same as si, but speed in km/h"
+msgstr ""
+
+msgid "Current units are: {}"
+msgstr ""
+
+msgid "Units \"{}\" are not supported, check {}help forecastunits"
+msgstr ""
+
 msgid "Shows weather in provided place"
 msgstr ""
 
-#: weather.py:60 weather.py:114
 msgid "Cannot find a place {}"
 msgstr ""
 
-#: weather.py:77 weather.py:130
 msgid "This command requires API key. Use {}forecastapi to get more information"
 msgstr ""
 
-#: weather.py:85 weather.py:138
 msgid "Unable to get data from forecast.io"
 msgstr ""
 
-#: weather.py:91
-msgid ""
-"Weather in {}:\n"
-"{}\n"
-"{}˚C\n"
-"{}\n"
+msgid "Weather in {}"
 msgstr ""
 
-#: weather.py:108
-#, docstring
+msgid "[View on Google Maps](https://www.google.com/maps/place/{},{})"
+msgstr ""
+
+msgid "Powered by Dark Sky"
+msgstr ""
+
+msgid "Summary"
+msgstr ""
+
+msgid "Temperature"
+msgstr ""
+
+msgid "Air pressure"
+msgstr ""
+
+msgid "Humidity"
+msgstr ""
+
+msgid "Visibility"
+msgstr ""
+
+msgid "Wind speed"
+msgstr ""
+
+msgid "Cloud cover"
+msgstr ""
+
+msgid "Ozone density"
+msgstr ""
+
+msgid "UV index"
+msgstr ""
+
+msgid "Precipitation"
+msgstr ""
+
+msgid ""
+"Probability: {}%\n"
+msgstr ""
+
+msgid "Intensity: {} {}"
+msgstr ""
+
+msgid ""
+"\n"
+"Type: {}"
+msgstr ""
+
 msgid "Shows 7 days forecast for provided place"
 msgstr ""
 
-#: weather.py:144
+msgid "Page {}/8"
+msgstr ""
+
 msgid ""
-"Weather in {}:\n"
+"\n"
+"Snowfall accumulation: {} {}"
+msgstr ""
+
+msgid "Moon phase"
+msgstr ""
+
+msgid "N"
+msgstr ""
+
+msgid "NNE"
+msgstr ""
+
+msgid "NE"
+msgstr ""
+
+msgid "ENE"
+msgstr ""
+
+msgid "E"
+msgstr ""
+
+msgid "ESE"
+msgstr ""
+
+msgid "SE"
+msgstr ""
+
+msgid "SSE"
+msgstr ""
+
+msgid "S"
+msgstr ""
+
+msgid "SSW"
+msgstr ""
+
+msgid "SW"
+msgstr ""
+
+msgid "WSW"
+msgstr ""
+
+msgid "W"
+msgstr ""
+
+msgid "WNW"
+msgstr ""
+
+msgid "NW"
+msgstr ""
+
+msgid "NNW"
 msgstr ""
 
