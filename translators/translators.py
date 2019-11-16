@@ -72,6 +72,14 @@ class Translators(commands.Cog):
                 self.session, apikeys["translate"]
             )
             translation = await translator.get_translation(language, text)
+        except yandextranslate.Exceptions.InvalidKey:
+            await ctx.send(
+                chat.error(
+                    _(
+                        "This command requires valid API key, check {}ytapikey to get more information"
+                    ).format(ctx.prefix)
+                )
+            )
         except yandextranslate.Exceptions.IncorrectLang:
             await ctx.send(
                 chat.error(
