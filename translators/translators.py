@@ -61,11 +61,11 @@ class Translators(commands.Cog):
         # TODO: Remove this on 3.2 release
         try:
             apikeys = await self.bot.db.api_tokens.get_raw(
-                "yandex", default={"translate": None}
+                "yandex", default={"translate": ""}
             )
         except AttributeError:
             apikeys = await self.bot.get_shared_api_tokens("yandex") or {
-                "translate": None
+                "translate": ""
             }
         try:
             translator = yandextranslate.YTranslateAPI(
