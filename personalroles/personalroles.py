@@ -1,3 +1,5 @@
+from typing import Union
+
 import discord
 from redbot.core import checks
 from redbot.core import commands
@@ -49,9 +51,15 @@ class PersonalRoles(commands.Cog):
 
     @myrole.command()
     @checks.admin_or_permissions(manage_roles=True)
-    async def unassign(self, ctx, *, user: discord.Member):
+    async def unassign(self, ctx, *, user: Union[discord.Member, int, None] = None):
         """Unassign personal role from someone"""
-        await self.config.member(user).role.clear()
+        if isinstance(user, discord.Member):
+            await self.config.member(user).role.clear()
+        elif isinstance(user, int):
+            await self.config.member_from_ids(ctx.guild.id, user).role.clear()
+        else:
+            await ctx.send_help()
+            return
         await ctx.send(
             _(
                 "Ok. I just unassigned {user.name} ({user.id}) from his personal role."
