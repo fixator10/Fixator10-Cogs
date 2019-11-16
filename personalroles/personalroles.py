@@ -84,7 +84,7 @@ class PersonalRoles(commands.Cog):
             dic = {
                 _("User"): ctx.guild.get_member(member) or f"[X] {member}",
                 _("Role"): shorten(
-                    ctx.guild.get_role(data["role"]) or "[X] {}".format(data["role"]),
+                    str(ctx.guild.get_role(data["role"]) or "[X] {}".format(data["role"])),
                     32,
                     placeholder="…",
                 ),
