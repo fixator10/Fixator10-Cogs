@@ -194,7 +194,7 @@ class MessagesLog(commands.Cog):
             return
         embed = discord.Embed(
             title=_("Message deleted"),
-            description=message.content or chat.inline(_("No text")),
+            description=message.system_content or chat.inline(_("No text")),
             timestamp=message.created_at,
             color=message.author.color,
         )
