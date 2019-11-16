@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-05-17 00:18+0400\n"
+"POT-Creation-Date: 2019-11-16 18:01+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,6 +33,9 @@ msgid ""
 "\n"
 "        Language may be just \"ru\" (target language to translate)\n"
 "        or \"en-ru\" (original text's language - target language)"
+msgstr ""
+
+msgid "This command requires valid API key, check {}ytapikey to get more information"
 msgstr ""
 
 msgid "An error has been occurred: Language {} is not supported or incorrect, check your formatting and try again"
