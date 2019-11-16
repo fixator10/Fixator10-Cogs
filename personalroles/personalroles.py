@@ -57,6 +57,7 @@ class PersonalRoles(commands.Cog):
             await self.config.member(user).role.clear()
         elif isinstance(user, int):
             await self.config.member_from_ids(ctx.guild.id, user).role.clear()
+            user = await self.bot.fetch_user(user)
         else:
             await ctx.send_help()
             return
@@ -81,8 +82,7 @@ class PersonalRoles(commands.Cog):
             if not data["role"]:
                 continue
             dic = {
-                _("User"): ctx.guild.get_member(member)
-                           or f"[X] {await self.bot.fetch_user(member)}",
+                _("User"): ctx.guild.get_member(member) or f"[X] {member}",
                 _("Role"): await self.smart_truncate(
                     ctx.guild.get_role(data["role"]) or "[X] {}".format(data["role"])
                 ),
