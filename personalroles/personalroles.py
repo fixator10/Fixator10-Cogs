@@ -1,3 +1,4 @@
+from textwrap import shorten
 from typing import Union
 
 import discord
@@ -41,7 +42,6 @@ class PersonalRoles(commands.Cog):
     @myrole.command()
     @checks.admin_or_permissions(manage_roles=True)
     async def assign(self, ctx, user: discord.Member, *, role: discord.Role):
-        """Assign personal role to someone"""
         await self.config.member(user).role.set(role.id)
         await ctx.send(
             _(
@@ -83,8 +83,10 @@ class PersonalRoles(commands.Cog):
                 continue
             dic = {
                 _("User"): ctx.guild.get_member(member) or f"[X] {member}",
-                _("Role"): await self.smart_truncate(
-                    ctx.guild.get_role(data["role"]) or "[X] {}".format(data["role"])
+                _("Role"): shorten(
+                    ctx.guild.get_role(data["role"]) or "[X] {}".format(data["role"]),
+                    32,
+                    placeholder="…",
                 ),
             }
             assigned_roles.append(dic)
@@ -217,13 +219,6 @@ class PersonalRoles(commands.Cog):
                     user=ctx.message.author.name, name=name
                 )
             )
-
-    async def smart_truncate(self, content, length=32, suffix="…"):
-        """https://stackoverflow.com/questions/250357/truncate-a-string-without-ending-in-the-middle-of-a-word"""
-        content_str = str(content)
-        if len(content_str) <= length:
-            return content
-        return " ".join(content_str[: length + 1].split(" ")[0:-1]) + suffix
 
     @commands.Cog.listener("on_member_join")
     async def role_persistance(self, member):
