@@ -28,7 +28,7 @@ class DataUtils(commands.Cog):
         self.bot = bot
         self.TIME_FORMAT = _("%d.%m.%Y %H:%M:%S %Z")
 
-    @commands.command(alias=["fetchuser"])
+    @commands.command(aliases=["fetchuser"])
     @checks.bot_has_permissions(embed_links=True)
     async def getuserinfo(self, ctx, user_id: int):
         """Get info about any Discord's user by ID"""
