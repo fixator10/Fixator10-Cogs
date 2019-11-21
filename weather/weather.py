@@ -248,7 +248,7 @@ class Weather(commands.Cog):
             if ctx.guild:
                 units = await self.config.guild(ctx.guild).units()
             else:
-                units = await self.config.user(ctx.author).units()
+                units = await self.config.user(ctx.author).units() or "si"
             try:
                 forecast = await self.bot.loop.run_in_executor(
                     None,
@@ -371,7 +371,7 @@ class Weather(commands.Cog):
             if ctx.guild:
                 units = await self.config.guild(ctx.guild).units()
             else:
-                units = await self.config.user(ctx.author).units()
+                units = await self.config.user(ctx.author).units() or "si"
             try:
                 forecast = await self.bot.loop.run_in_executor(
                     None,
