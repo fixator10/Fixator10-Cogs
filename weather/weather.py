@@ -245,6 +245,10 @@ class Weather(commands.Cog):
                     chat.error(_("Cannot find a place {}").format(chat.inline(place)))
                 )
                 return
+            if ctx.guild:
+                units = await self.config.guild(ctx.guild).units()
+            else:
+                units = await self.config.user(ctx.author).units()
             try:
                 forecast = await self.bot.loop.run_in_executor(
                     None,
@@ -253,7 +257,7 @@ class Weather(commands.Cog):
                         apikeys["secret"],
                         g.latlng[0],
                         g.latlng[1],
-                        units=await self.config.guild(ctx.guild).units(),
+                        units=units,
                         lang=await self.get_lang(),
                     ),
                 )
@@ -364,6 +368,10 @@ class Weather(commands.Cog):
             if not g.latlng:
                 await ctx.send(_("Cannot find a place {}").format(chat.inline(place)))
                 return
+            if ctx.guild:
+                units = await self.config.guild(ctx.guild).units()
+            else:
+                units = await self.config.user(ctx.author).units()
             try:
                 forecast = await self.bot.loop.run_in_executor(
                     None,
@@ -372,7 +380,7 @@ class Weather(commands.Cog):
                         apikeys["secret"],
                         g.latlng[0],
                         g.latlng[1],
-                        units=await self.config.guild(ctx.guild).units(),
+                        units=units,
                         lang=await self.get_lang(),
                     ),
                 )
