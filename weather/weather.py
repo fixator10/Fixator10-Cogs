@@ -151,6 +151,7 @@ class Weather(commands.Cog):
 
     @commands.group(invoke_without_command=True)
     @checks.admin_or_permissions(manage_guild=True)
+    @commands.guild_only()
     async def forecastunits(self, ctx, units: str = None):
         """Set forecast units for yourself
 
@@ -484,6 +485,8 @@ class Weather(commands.Cog):
 
     async def get_units(self, ctx: commands.Context, units_type: str):
         """Get translated contextual units for type"""
+        if not ctx.guild:
+            return UNITS.get(await self.config.user(ctx.author).units(), UNITS["si"])
         current_system = (
                 await self.config.user(ctx.author).units()
                 or await self.config.guild(ctx.guild).units()
