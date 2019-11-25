@@ -186,7 +186,7 @@ class MinecraftData(commands.Cog):
         """Get MinecraftCapes.co.uk cape by nickname"""
         try:
             await self.session.get(
-                f"https://www.minecraftcapes.co.uk/getCape.php?uuid={player.uuid}",
+                f"https://minecraftcapes.co.uk/getCape/{player.uuid}",
                 raise_for_status=True,
             )
         except aiohttp.ClientResponseError as e:
