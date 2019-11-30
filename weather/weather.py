@@ -245,6 +245,10 @@ class Weather(commands.Cog):
                     chat.error(_("Cannot find a place {}").format(chat.inline(place)))
                 )
                 return
+            if ctx.guild:
+                units = await self.config.guild(ctx.guild).units()
+            else:
+                units = await self.config.user(ctx.author).units()
             try:
                 forecast = await self.bot.loop.run_in_executor(
                     None,
@@ -253,7 +257,7 @@ class Weather(commands.Cog):
                         apikeys["secret"],
                         g.latlng[0],
                         g.latlng[1],
-                        units=await self.get_units(ctx),
+                        units=units,
                         lang=await self.get_lang(),
                     ),
                 )
@@ -292,20 +296,20 @@ class Weather(commands.Cog):
         )
         em.add_field(
             name=_("Temperature"),
-            value=f"{by_hour.temperature} {await self.get_localized_units(ctx, 'temp')} "
-                  f"({by_hour.apparentTemperature} {await self.get_localized_units(ctx, 'temp')})",
+            value=f"{by_hour.temperature} {await self.get_units(ctx, 'temp')} "
+                  f"({by_hour.apparentTemperature} {await self.get_units(ctx, 'temp')})",
         )
         em.add_field(
             name=_("Air pressure"),
             value="{} {}".format(
-                by_hour.pressure, await self.get_localized_units(ctx, "pressure")
+                by_hour.pressure, await self.get_units(ctx, "pressure")
             ),
         )
         em.add_field(name=_("Humidity"), value=f"{int(by_hour.humidity * 100)}%")
         em.add_field(
             name=_("Visibility"),
             value="{} {}".format(
-                by_hour.visibility, await self.get_localized_units(ctx, "distance")
+                by_hour.visibility, await self.get_units(ctx, "distance")
             ),
         )
         em.add_field(
@@ -313,7 +317,7 @@ class Weather(commands.Cog):
             value="{} {} {}".format(
                 await self.wind_bearing_direction(by_hour.windBearing),
                 by_hour.windSpeed,
-                await self.get_localized_units(ctx, "speed"),
+                await self.get_units(ctx, "speed"),
             ),
         )
         em.add_field(name=_("Cloud cover"), value=f"{int(by_hour.cloudCover * 100)}%")
@@ -333,7 +337,7 @@ class Weather(commands.Cog):
             value=_("Probability: {}%\n").format(int(by_hour.precipProbability * 100))
                   + _("Intensity: {} {}").format(
                 int(by_hour.precipIntensity * 100),
-                await self.get_localized_units(ctx, "intensity"),
+                await self.get_units(ctx, "intensity"),
             )
                   + (
                           preciptype
@@ -364,6 +368,10 @@ class Weather(commands.Cog):
             if not g.latlng:
                 await ctx.send(_("Cannot find a place {}").format(chat.inline(place)))
                 return
+            if ctx.guild:
+                units = await self.config.guild(ctx.guild).units()
+            else:
+                units = await self.config.user(ctx.author).units()
             try:
                 forecast = await self.bot.loop.run_in_executor(
                     None,
@@ -372,7 +380,7 @@ class Weather(commands.Cog):
                         apikeys["secret"],
                         g.latlng[0],
                         g.latlng[1],
-                        units=await self.get_units(ctx),
+                        units=units,
                         lang=await self.get_lang(),
                     ),
                 )
@@ -415,20 +423,20 @@ class Weather(commands.Cog):
             )
             em.add_field(
                 name=_("Temperature"),
-                value=f"{data.temperatureMin} — {data.temperatureMax} {await self.get_localized_units(ctx, 'temp')}\n"
-                      f"({data.apparentTemperatureMin} — {data.apparentTemperatureMax}{await self.get_localized_units(ctx, 'temp')})",
+                value=f"{data.temperatureMin} — {data.temperatureMax} {await self.get_units(ctx, 'temp')}\n"
+                      f"({data.apparentTemperatureMin} — {data.apparentTemperatureMax}{await self.get_units(ctx, 'temp')})",
             )
             em.add_field(
                 name=_("Air pressure"),
                 value="{} {}".format(
-                    data.pressure, await self.get_localized_units(ctx, "pressure")
+                    data.pressure, await self.get_units(ctx, "pressure")
                 ),
             )
             em.add_field(name=_("Humidity"), value=f"{int(data.humidity * 100)}%")
             em.add_field(
                 name=_("Visibility"),
                 value="{} {}".format(
-                    data.visibility, await self.get_localized_units(ctx, "distance")
+                    data.visibility, await self.get_units(ctx, "distance")
                 ),
             )
             em.add_field(
@@ -436,7 +444,7 @@ class Weather(commands.Cog):
                 value="{} {} {}".format(
                     await self.wind_bearing_direction(data.windBearing),
                     data.windSpeed,
-                    await self.get_localized_units(ctx, "speed"),
+                    await self.get_units(ctx, "speed"),
                 ),
             )
             em.add_field(name=_("Cloud cover"), value=f"{int(data.cloudCover * 100)}%")
@@ -460,7 +468,7 @@ class Weather(commands.Cog):
                 value=_("Probability: {}%\n").format(int(data.precipProbability * 100))
                       + _("Intensity: {} {}").format(
                     int(data.precipIntensity * 100),
-                    await self.get_localized_units(ctx, "intensity"),
+                    await self.get_units(ctx, "intensity"),
                 )
                       + (
                               preciptype
@@ -472,8 +480,7 @@ class Weather(commands.Cog):
                       + (
                               precipaccumulation
                               and _("\nSnowfall accumulation: {} {}").format(
-                          precipaccumulation,
-                          await self.get_localized_units(ctx, "accumulation"),
+                          precipaccumulation, await self.get_units(ctx, "accumulation")
                       )
                               or ""
                       ),
@@ -484,17 +491,10 @@ class Weather(commands.Cog):
             pages.append(em)
         await menu(ctx, pages, DEFAULT_CONTROLS)
 
-    async def get_units(self, ctx: commands.Context):
-        if ctx.guild:
-            return await self.config.guild(ctx.guild).units()
-        return await self.config.user(ctx.author).units() or "si"
-
-    async def get_localized_units(self, ctx: commands.Context, units_type: str):
+    async def get_units(self, ctx: commands.Context, units_type: str):
         """Get translated contextual units for type"""
         if not ctx.guild:
-            return UNITS.get(
-                await self.config.user(ctx.author).units(), UNITS["si"]
-            ).get(units_type, "?")
+            return UNITS.get(await self.config.user(ctx.author).units(), UNITS["si"])
         current_system = (
                 await self.config.user(ctx.author).units()
                 or await self.config.guild(ctx.guild).units()
