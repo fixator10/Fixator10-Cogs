@@ -210,10 +210,10 @@ class MinecraftData(commands.Cog):
         )
         em.set_author(
             name=player.name,
-            url=f"https://www.minecraftcapes.co.uk/getCape.php?uuid={player.uuid}",
+            url=f"https://minecraftcapes.co.uk/getCape/{player.uuid}",
         )
         em.set_image(
-            url=f"https://www.minecraftcapes.co.uk/getCape.php?uuid={player.uuid}"
+            url=f"https://minecraftcapes.co.uk/getCape/{player.uuid}"
         )
         await ctx.send(embed=em)
 
