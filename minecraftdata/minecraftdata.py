@@ -13,7 +13,6 @@ from redbot.core import checks
 from redbot.core import commands
 from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils import chat_formatting as chat
-from redbot.core.utils import common_filters as filters
 from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
 
 from .minecraftplayer import MCPlayer
@@ -324,19 +323,16 @@ class MinecraftData(commands.Cog):
             value="{0.players.online}/{0.players.max}\n{1}".format(
                 status,
                 status.players.sample
-                and list(
-                    chat.pagify(
-                        filters.escape_spoilers(
-                            chat.escape(
-                                await self.clear_mcformatting(
-                                    "\n".join([p.name for p in status.players.sample])
-                                ),
-                                formatting=True,
-                            )
-                        ),
-                        page_length=1000,
-                    )
-                )[0]
+                and chat.box(
+                    list(
+                        chat.pagify(
+                            await self.clear_mcformatting(
+                                "\n".join([p.name for p in status.players.sample])
+                            ),
+                            page_length=992,
+                        )
+                    )[0]
+                )
                 or "",
             ),
         )
