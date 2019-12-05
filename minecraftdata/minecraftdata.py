@@ -13,6 +13,7 @@ from redbot.core import checks
 from redbot.core import commands
 from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils import chat_formatting as chat
+from redbot.core.utils import common_filters as filters
 from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
 
 from .minecraftplayer import MCPlayer
@@ -209,12 +210,9 @@ class MinecraftData(commands.Cog):
             timestamp=ctx.message.created_at, color=await ctx.embed_color()
         )
         em.set_author(
-            name=player.name,
-            url=f"https://minecraftcapes.co.uk/getCape/{player.uuid}",
+            name=player.name, url=f"https://minecraftcapes.co.uk/getCape/{player.uuid}"
         )
-        em.set_image(
-            url=f"https://minecraftcapes.co.uk/getCape/{player.uuid}"
-        )
+        em.set_image(url=f"https://minecraftcapes.co.uk/getCape/{player.uuid}")
         await ctx.send(embed=em)
 
     @cape.group(aliases=["5zig"], invoke_without_command=True)
@@ -282,7 +280,7 @@ class MinecraftData(commands.Cog):
         await ctx.send(file=file)
         cape.close()
 
-    @minecraft.command(usage="<server IP>")
+    @minecraft.command(usage="<server IP>[:port]")
     @checks.bot_has_permissions(embed_links=True)
     @commands.cooldown(1, 30, commands.BucketType.user)
     async def server(self, ctx, server_ip: str):
@@ -315,7 +313,7 @@ class MinecraftData(commands.Cog):
         )
         embed = discord.Embed(
             title=f"{server.host}:{server.port}",
-            description=await self.clear_mcformatting(status.description),
+            description=chat.box(await self.clear_mcformatting(status.description)),
             color=await ctx.embed_color(),
         )
         if icon:
@@ -328,8 +326,13 @@ class MinecraftData(commands.Cog):
                 status.players.sample
                 and list(
                     chat.pagify(
-                        await self.clear_mcformatting(
-                            "\n".join([p.name for p in status.players.sample])
+                        filters.escape_spoilers(
+                            chat.escape(
+                                await self.clear_mcformatting(
+                                    "\n".join([p.name for p in status.players.sample])
+                                ),
+                                formatting=True,
+                            )
                         ),
                         page_length=1000,
                     )
