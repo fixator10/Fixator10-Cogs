@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2019-11-15 16:56+0400\n"
+"POT-Creation-Date: 2019-12-16 12:03+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -173,6 +173,9 @@ msgid "Shows 7 days forecast for provided place"
 msgstr ""
 
 msgid "Page {}/8"
+msgstr ""
+
+msgid "No summary for this day"
 msgstr ""
 
 msgid ""

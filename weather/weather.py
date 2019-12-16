@@ -406,11 +406,16 @@ class Weather(commands.Cog):
                 name=_("Powered by Dark Sky"), url="https://darksky.net/poweredby/"
             )
             em.set_footer(text=_("Page {}/8").format(i + 1))
+            try:
+                # FIXME: find a better way to do that
+                summary = data.summary
+            except PropertyUnavailable:
+                summary = _("No summary for this day")
             em.add_field(
                 name=_("Summary"),
                 value="{} {}".format(
                     WEATHER_STATES.get(data.icon, "\N{White Question Mark Ornament}"),
-                    data.summary,
+                    summary,
                 ),
             )
             em.add_field(
