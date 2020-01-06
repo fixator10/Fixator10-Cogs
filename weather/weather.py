@@ -1,4 +1,5 @@
 from functools import partial
+from textwrap import shorten
 
 import discord
 import forecastio
@@ -273,7 +274,7 @@ class Weather(commands.Cog):
         by_hour = forecast.currently()
 
         em = discord.Embed(
-            title=_("Weather in {}").format(g.address),
+            title=_("Weather in {}").format(shorten(g.address, 244, placeholder="…")),
             description=_(
                 "[View on Google Maps](https://www.google.com/maps/place/{},{})"
             ).format(g.lat, g.lng),
@@ -394,7 +395,9 @@ class Weather(commands.Cog):
         for i in range(0, 8):
             data = by_day.data[i]
             em = discord.Embed(
-                title=_("Weather in {}").format(g.address),
+                title=_("Weather in {}").format(
+                    shorten(g.address, 244, placeholder="…")
+                ),
                 description=f"{by_day.summary}\n"
                             + _(
                     "[View on Google Maps](https://www.google.com/maps/place/{},{})"
