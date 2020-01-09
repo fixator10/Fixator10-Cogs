@@ -39,21 +39,19 @@ class SteamCommunity(commands.Cog):
     # noinspection PyMissingConstructor
     def __init__(self, bot):
         self.bot = bot
+        self.steam = None
 
-    # noinspection PyAttributeOutsideInit
     async def initialize(self):
         """Should be called straight after cog instantiation."""
         # TODO: Remove this on 3.2 release
         try:
-            self.apikeys = await self.bot.db.api_tokens.get_raw(
+            apikeys = await self.bot.db.api_tokens.get_raw(
                 "steam", default={"web": None}
             )
         except AttributeError:
-            self.apikeys = await self.bot.get_shared_api_tokens("steam") or {
-                "web": None
-            }
+            apikeys = await self.bot.get_shared_api_tokens("steam") or {"web": None}
         self.steam = await self.bot.loop.run_in_executor(
-            None, partial(interface.API, key=self.apikeys["web"])
+            None, partial(interface.API, key=apikeys["web"])
         )
 
     async def validate_ip(self, s):
@@ -89,7 +87,7 @@ class SteamCommunity(commands.Cog):
             "3. Enter any domain name (e.g. `localhost`)\n"
             '4. You will now see "Key" field\n'
             "5. Use `{}set api steam web,<your_apikey>`\n"
-            "6. Use this command again\n\n"
+            "6. Use this command again\n\n"  # TODO: Remove on 3.2 release
             "Note: These tokens are sensitive and should only be used in a private channel\n"
             "or in DM with the bot."
         ).format(ctx.prefix)
@@ -263,3 +261,10 @@ class SteamCommunity(commands.Cog):
             )
 
         await ctx.send(embed=em)
+
+    @commands.Cog.listener()
+    async def on_red_api_tokens_update(self, service_name, api_tokens):
+        if service_name == "steam":
+            self.steam = await self.bot.loop.run_in_executor(
+                None, partial(interface.API, key=api_tokens.get("web"))
+            )
