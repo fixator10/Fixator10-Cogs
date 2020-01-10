@@ -5,6 +5,7 @@
   "install_msg": "Thanks for install.\nFor Yandex.Translate you will need to set apikey (`[p]ytapikey`)",
   "short": "Useful (and not) translators",
   "description": "Useful (and not) translators",
+  "min_bot_version": "3.2.1",
   "tags": [
     "translation",
     "yandex",

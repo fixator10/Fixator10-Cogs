@@ -6,7 +6,7 @@
   "install_msg": "Thanks for install.\nDon't forget to set api key (`[p]forecastapi`)",
   "short": "Weather forecast",
   "description": "Weather forecast",
-  "min_bot_version": "3.1.0",
+  "min_bot_version": "3.2.1",
   "tags": [
     "weather",
     "forecast"

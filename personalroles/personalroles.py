@@ -1,5 +1,4 @@
 from textwrap import shorten
-from types import SimpleNamespace
 from typing import Union
 
 import discord
@@ -57,14 +56,7 @@ class PersonalRoles(commands.Cog):
         if isinstance(user, discord.Member):
             await self.config.member(user).role.clear()
         elif isinstance(user, int):
-            # TODO: Remove this on 3.2 release
-            if "member_from_ids" in dir(self.config):
-                await self.config.member_from_ids(ctx.guild.id, user).role.clear()
-            else:
-                fakeuser = SimpleNamespace()
-                fakeuser.guild = ctx.guild
-                fakeuser.id = user
-                await self.config.member(fakeuser).role.clear()
+            await self.config.member_from_ids(ctx.guild.id, user).role.clear()
             user = await self.bot.fetch_user(user)
         else:
             await ctx.send_help()

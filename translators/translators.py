@@ -58,18 +58,10 @@ class Translators(commands.Cog):
         Language may be just "ru" (target language to translate)
         or "en-ru" (original text's language - target language)"""
         text = chat.escape(text, formatting=True)
-        # TODO: Remove this on 3.2 release
-        try:
-            apikeys = await self.bot.db.api_tokens.get_raw(
-                "yandex", default={"translate": ""}
-            )
-        except AttributeError:
-            apikeys = await self.bot.get_shared_api_tokens("yandex") or {
-                "translate": ""
-            }
+        apikeys = await self.bot.get_shared_api_tokens("yandex")
         try:
             translator = yandextranslate.YTranslateAPI(
-                self.session, apikeys["translate"]
+                self.session, apikeys.get("translate", "")
             )
             translation = await translator.get_translation(language, text)
         except yandextranslate.Exceptions.InvalidKey:

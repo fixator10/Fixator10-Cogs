@@ -59,14 +59,8 @@ class TraceMoe:
 
     @classmethod
     async def from_image(cls, ctx, image_url):
-        # TODO: Remove this on 3.2 release
-        try:
-            apikeys = await ctx.bot.db.api_tokens.get_raw(
-                "reverseimagesearch", default={"tracemoe": ""}
-            )
-        except AttributeError:
-            shared_tokens = await ctx.bot.get_shared_api_tokens("reverseimagesearch")
-            apikeys = "tracemoe" in shared_tokens and shared_tokens or {"tracemoe": ""}
+        apikeys = await ctx.bot.get_shared_api_tokens("reverseimagesearch")
+        apikey = apikeys.get("saucenao", "")
         async with ctx.typing():
             try:
                 async with ctx.cog.session.get(
@@ -83,7 +77,7 @@ class TraceMoe:
             try:
                 async with ctx.cog.session.post(
                         f"{BASE_API_URL}/search",
-                        params={"token": apikeys["tracemoe"]},
+                        params={"token": apikey},
                         json={"image": b64encode(image_file.getvalue()).decode()},
                         raise_for_status=True,
                 ) as data:

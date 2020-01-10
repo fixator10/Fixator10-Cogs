@@ -43,15 +43,9 @@ class SteamCommunity(commands.Cog):
 
     async def initialize(self):
         """Should be called straight after cog instantiation."""
-        # TODO: Remove this on 3.2 release
-        try:
-            apikeys = await self.bot.db.api_tokens.get_raw(
-                "steam", default={"web": None}
-            )
-        except AttributeError:
-            apikeys = await self.bot.get_shared_api_tokens("steam") or {"web": None}
+        apikeys = await self.bot.get_shared_api_tokens("steam")
         self.steam = await self.bot.loop.run_in_executor(
-            None, partial(interface.API, key=apikeys["web"])
+            None, partial(interface.API, key=apikeys.get("web"))
         )
 
     async def validate_ip(self, s):
@@ -87,7 +81,6 @@ class SteamCommunity(commands.Cog):
             "3. Enter any domain name (e.g. `localhost`)\n"
             '4. You will now see "Key" field\n'
             "5. Use `{}set api steam web,<your_apikey>`\n"
-            "6. Use this command again\n\n"  # TODO: Remove on 3.2 release
             "Note: These tokens are sensitive and should only be used in a private channel\n"
             "or in DM with the bot."
         ).format(ctx.prefix)

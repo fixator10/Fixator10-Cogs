@@ -228,15 +228,7 @@ class Weather(commands.Cog):
     @commands.bot_has_permissions(embed_links=True)
     async def weather(self, ctx, *, place: str):
         """Shows weather in provided place"""
-        # TODO: Remove this on 3.2 release
-        try:
-            apikeys = await self.bot.db.api_tokens.get_raw(
-                "forecastio", default={"secret": None}
-            )
-        except AttributeError:
-            apikeys = await self.bot.get_shared_api_tokens("forecastio") or {
-                "secret": None
-            }
+        apikeys = await self.bot.get_shared_api_tokens("forecastio")
         async with ctx.typing():
             g = await self.bot.loop.run_in_executor(
                 None, getattr(geocoder, GEOCODER_PROVIDER), place
@@ -251,7 +243,7 @@ class Weather(commands.Cog):
                     None,
                     partial(
                         forecastio.load_forecast,
-                        apikeys["secret"],
+                        apikeys.get("secret"),
                         g.latlng[0],
                         g.latlng[1],
                         units=await self.get_units(ctx),
@@ -349,15 +341,7 @@ class Weather(commands.Cog):
     @commands.bot_has_permissions(embed_links=True)
     async def forecast(self, ctx, *, place: str):
         """Shows 7 days forecast for provided place"""
-        # TODO: Remove this on 3.2 release
-        try:
-            apikeys = await self.bot.db.api_tokens.get_raw(
-                "forecastio", default={"secret": None}
-            )
-        except AttributeError:
-            apikeys = await self.bot.get_shared_api_tokens("forecastio") or {
-                "secret": None
-            }
+        apikeys = await self.bot.get_shared_api_tokens("forecastio")
         async with ctx.typing():
             g = await self.bot.loop.run_in_executor(
                 None, getattr(geocoder, GEOCODER_PROVIDER), place
@@ -370,7 +354,7 @@ class Weather(commands.Cog):
                     None,
                     partial(
                         forecastio.load_forecast,
-                        apikeys["secret"],
+                        apikeys.get("secret"),
                         g.latlng[0],
                         g.latlng[1],
                         units=await self.get_units(ctx),
