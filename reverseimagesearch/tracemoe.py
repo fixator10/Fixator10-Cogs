@@ -60,7 +60,7 @@ class TraceMoe:
     @classmethod
     async def from_image(cls, ctx, image_url):
         apikeys = await ctx.bot.get_shared_api_tokens("reverseimagesearch")
-        apikey = apikeys.get("saucenao", "")
+        apikey = apikeys.get("tracemoe", "")
         async with ctx.typing():
             try:
                 async with ctx.cog.session.get(
