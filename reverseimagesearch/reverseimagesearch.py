@@ -104,7 +104,7 @@ class ReverseImageSearch(commands.Cog):
             "1. [Login](https://saucenao.com/user.php) to your SauceNAO account\n"
             "2. Go to [Search > api](https://saucenao.com/user.php?page=search-api) page\n"
             "3. Copy your *api key*\n"
-            "4. Use `{}set api reverseimagesearch saucenao,<your_api_key>`\n\n"
+            "4. Use `{}set api reverseimagesearch saucenao <your_api_key>`\n\n"
             "Note: These tokens are sensitive and should only be used in a private channel\n"
             "or in DM with the bot."
         ).format(ctx.prefix)

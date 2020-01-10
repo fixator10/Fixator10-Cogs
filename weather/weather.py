@@ -146,7 +146,7 @@ class Weather(commands.Cog):
             "To get forecast.io API key:\n"
             "1. Register/login at [DarkSky](https://darksky.net/dev/register)\n"
             '2. Copy ["Your Secret Key"](https://darksky.net/dev/account)\n'
-            "3. Use `{}set api forecastio secret,<your_apikey>`"
+            "3. Use `{}set api forecastio secret <your_apikey>`"
         ).format(ctx.prefix)
         await ctx.maybe_send_embed(message)
 

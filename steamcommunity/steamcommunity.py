@@ -80,7 +80,7 @@ class SteamCommunity(commands.Cog):
             "2. Visit [Register Steam Web API Key](https://steamcommunity.com/dev/apikey) page\n"
             "3. Enter any domain name (e.g. `localhost`)\n"
             '4. You will now see "Key" field\n'
-            "5. Use `{}set api steam web,<your_apikey>`\n"
+            "5. Use `{}set api steam web <your_apikey>`\n"
             "Note: These tokens are sensitive and should only be used in a private channel\n"
             "or in DM with the bot."
         ).format(ctx.prefix)

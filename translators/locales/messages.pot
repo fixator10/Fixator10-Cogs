@@ -25,7 +25,7 @@ msgid ""
 "2. Press `Create a new key`\n"
 "3. Enter description for key\n"
 "4. Copy `trnsl.*` key\n"
-"5. Use `{}set api yandex translate,<your_apikey>`"
+"5. Use `{}set api yandex translate <your_apikey>`"
 msgstr ""
 
 msgid ""

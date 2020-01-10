@@ -46,7 +46,7 @@ class Translators(commands.Cog):
             "2. Press `Create a new key`\n"
             "3. Enter description for key\n"
             "4. Copy `trnsl.*` key\n"
-            "5. Use `{}set api yandex translate,<your_apikey>`"
+            "5. Use `{}set api yandex translate <your_apikey>`"
         ).format(ctx.prefix)
         await ctx.maybe_send_embed(message)
 
