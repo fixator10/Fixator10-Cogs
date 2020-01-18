@@ -7,6 +7,7 @@ import re
 import textwrap
 import time
 from asyncio import TimeoutError as AsyncTimeoutError
+from asyncio import sleep
 from collections import OrderedDict
 from datetime import timedelta
 from io import BytesIO
@@ -275,128 +276,138 @@ class Leveler(commands.Cog):
             await ctx.send("**Leveler commands for this server are disabled!**")
             return
 
-        users = []
-        user_stat = None
-        if "-rep" in options and "-global" in options:
-            title = "Global Rep Leaderboard for {}\n".format(self.bot.user.name)
-            async for userinfo in db.users.find({}):
-                try:
-                    users.append((userinfo["username"], userinfo["rep"]))
-                except KeyError:
-                    users.append((userinfo["user_id"], userinfo["rep"]))
-
-                if str(user.id) == userinfo["user_id"]:
-                    user_stat = userinfo["rep"]
-
-            board_type = "Rep"
-            footer_text = "Your Rank: {}                  {}: {}".format(
-                await self._find_global_rep_rank(user), board_type, user_stat
-            )
-            icon_url = self.bot.user.avatar_url
-        elif "-global" in options:
-            title = "Global Exp Leaderboard for {}\n".format(self.bot.user.name)
-            async for userinfo in db.users.find({}):
-                try:
-                    users.append((userinfo["username"], userinfo["total_exp"]))
-                except KeyError:
-                    users.append((userinfo["user_id"], userinfo["total_exp"]))
-
-                if str(user.id) == userinfo["user_id"]:
-                    user_stat = userinfo["total_exp"]
-
-            board_type = "Points"
-            footer_text = "Your Rank: {}                  {}: {}".format(
-                await self._find_global_rank(user), board_type, user_stat
-            )
-            icon_url = self.bot.user.avatar_url
-        elif "-rep" in options:
-            title = "Rep Leaderboard for {}\n".format(server.name)
-            async for userinfo in db.users.find({}):
-                if "servers" in userinfo and str(server.id) in userinfo["servers"]:
+        async with ctx.typing():
+            users = []
+            user_stat = None
+            if "-rep" in options and "-global" in options:
+                title = "Global Rep Leaderboard for {}\n".format(self.bot.user.name)
+                async for userinfo in db.users.find({}):
                     try:
                         users.append((userinfo["username"], userinfo["rep"]))
                     except KeyError:
                         users.append((userinfo["user_id"], userinfo["rep"]))
 
-                if str(user.id) == userinfo["user_id"]:
-                    user_stat = userinfo["rep"]
+                    if str(user.id) == userinfo["user_id"]:
+                        user_stat = userinfo["rep"]
 
-            board_type = "Rep"
-            footer_text = "Your Rank: {}                  {}: {}".format(
-                await self._find_server_rep_rank(user, server), board_type, user_stat
-            )
-            icon_url = server.icon_url
-        else:
-            title = "Exp Leaderboard for {}\n".format(server.name)
-            async for userinfo in db.users.find({}):
-                try:
+                board_type = "Rep"
+                footer_text = "Your Rank: {}                  {}: {}".format(
+                    await self._find_global_rep_rank(user), board_type, user_stat
+                )
+                icon_url = self.bot.user.avatar_url
+            elif "-global" in options:
+                title = "Global Exp Leaderboard for {}\n".format(self.bot.user.name)
+                async for userinfo in db.users.find({}):
+                    try:
+                        users.append((userinfo["username"], userinfo["total_exp"]))
+                    except KeyError:
+                        users.append((userinfo["user_id"], userinfo["total_exp"]))
+
+                    if str(user.id) == userinfo["user_id"]:
+                        user_stat = userinfo["total_exp"]
+
+                board_type = "Points"
+                footer_text = "Your Rank: {}                  {}: {}".format(
+                    await self._find_global_rank(user), board_type, user_stat
+                )
+                icon_url = self.bot.user.avatar_url
+            elif "-rep" in options:
+                title = "Rep Leaderboard for {}\n".format(server.name)
+                async for userinfo in db.users.find({}):
                     if "servers" in userinfo and str(server.id) in userinfo["servers"]:
-                        server_exp = 0
-                        for i in range(userinfo["servers"][str(server.id)]["level"]):
-                            server_exp += await self._required_exp(i)
-                        server_exp += userinfo["servers"][str(server.id)]["current_exp"]
                         try:
-                            users.append((userinfo["username"], server_exp))
+                            users.append((userinfo["username"], userinfo["rep"]))
                         except KeyError:
-                            users.append((userinfo["user_id"], server_exp))
-                except KeyError:
-                    pass
-            board_type = "Points"
-            footer_text = "Your Rank: {}                  {}: {}".format(
-                await self._find_server_rank(user, server),
-                board_type,
-                await self._find_server_exp(user, server),
-            )
-            icon_url = server.icon_url
-        sorted_list = sorted(users, key=operator.itemgetter(1), reverse=True)
+                            users.append((userinfo["user_id"], userinfo["rep"]))
 
-        # multiple page support
-        page = 1
-        per_page = 15
-        pages = math.ceil(len(sorted_list) / per_page)
-        for option in options:
-            if str(option).isdigit():
-                if page >= 1 and int(option) <= pages:
-                    page = int(str(option))
-                else:
-                    await ctx.send(
-                        "**Please enter a valid page number! (1 - {})**".format(
-                            str(pages)
-                        )
-                    )
-                    return
-                break
+                    if str(user.id) == userinfo["user_id"]:
+                        user_stat = userinfo["rep"]
 
-        msg = ""
-        msg += "Rank     Name                   (Page {}/{})     \n\n".format(
-            page, pages
-        )
-        rank = 1 + per_page * (page - 1)
-        start_index = per_page * page - per_page
-        end_index = per_page * page
-
-        default_label = "   "
-        special_labels = ["♔", "♕", "♖", "♗", "♘", "♙"]
-
-        for single_user in sorted_list[start_index:end_index]:
-            if rank - 1 < len(special_labels):
-                label = special_labels[rank - 1]
+                board_type = "Rep"
+                footer_text = "Your Rank: {}                  {}: {}".format(
+                    await self._find_server_rep_rank(user, server),
+                    board_type,
+                    user_stat,
+                )
+                icon_url = server.icon_url
             else:
-                label = default_label
+                title = "Exp Leaderboard for {}\n".format(server.name)
+                async for userinfo in db.users.find({}):
+                    try:
+                        if (
+                                "servers" in userinfo
+                                and str(server.id) in userinfo["servers"]
+                        ):
+                            server_exp = 0
+                            for i in range(
+                                    userinfo["servers"][str(server.id)]["level"]
+                            ):
+                                server_exp += await self._required_exp(i)
+                            server_exp += userinfo["servers"][str(server.id)][
+                                "current_exp"
+                            ]
+                            try:
+                                users.append((userinfo["username"], server_exp))
+                            except KeyError:
+                                users.append((userinfo["user_id"], server_exp))
+                    except KeyError:
+                        pass
+                board_type = "Points"
+                footer_text = "Your Rank: {}                  {}: {}".format(
+                    await self._find_server_rank(user, server),
+                    board_type,
+                    await self._find_server_exp(user, server),
+                )
+                icon_url = server.icon_url
+            sorted_list = sorted(users, key=operator.itemgetter(1), reverse=True)
 
-            msg += "{:<2}{:<2}{:<2} # {:<11}".format(
-                rank, label, "➤", await self._truncate_text(single_user[0], 11)
-            )
-            msg += "{:>5}{:<2}{:<2}{:<5}\n".format(
-                " ", " ", " ", " {}: ".format(board_type) + str(single_user[1])
-            )
-            rank += 1
-        msg += "--------------------------------------------            \n"
-        msg += "{}".format(footer_text)
+            # multiple page support
+            page = 1
+            per_page = 15
+            pages = math.ceil(len(sorted_list) / per_page)
+            for option in options:
+                if str(option).isdigit():
+                    if page >= 1 and int(option) <= pages:
+                        page = int(str(option))
+                    else:
+                        await ctx.send(
+                            "**Please enter a valid page number! (1 - {})**".format(
+                                str(pages)
+                            )
+                        )
+                        return
+                    break
 
-        em = discord.Embed(description="", colour=user.colour)
-        em.set_author(name=title, icon_url=icon_url)
-        em.description = box(msg)
+            msg = ""
+            msg += "Rank     Name                   (Page {}/{})     \n\n".format(
+                page, pages
+            )
+            rank = 1 + per_page * (page - 1)
+            start_index = per_page * page - per_page
+            end_index = per_page * page
+
+            default_label = "   "
+            special_labels = ["♔", "♕", "♖", "♗", "♘", "♙"]
+
+            async for single_user in self.asyncit(sorted_list[start_index:end_index]):
+                if rank - 1 < len(special_labels):
+                    label = special_labels[rank - 1]
+                else:
+                    label = default_label
+
+                msg += "{:<2}{:<2}{:<2} # {:<11}".format(
+                    rank, label, "➤", await self._truncate_text(single_user[0], 11)
+                )
+                msg += "{:>5}{:<2}{:<2}{:<5}\n".format(
+                    " ", " ", " ", " {}: ".format(board_type) + str(single_user[1])
+                )
+                rank += 1
+            msg += "--------------------------------------------            \n"
+            msg += "{}".format(footer_text)
+
+            em = discord.Embed(description="", colour=user.colour)
+            em.set_author(name=title, icon_url=icon_url)
+            em.description = box(msg)
 
         await ctx.send(embed=em)
 
@@ -3500,6 +3511,11 @@ class Leveler(commands.Cog):
         if len(text) > max_length:
             return text[: max_length - 1] + "…"
         return text
+
+    async def asyncit(self, iterable):
+        for i in iterable:
+            yield i
+            await sleep(0)
 
     # finds the the pixel to center the text
     async def _center(self, start, end, text, font):
