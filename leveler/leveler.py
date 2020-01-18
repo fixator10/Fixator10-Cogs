@@ -935,7 +935,9 @@ class Leveler(commands.Cog):
             return
 
         if len(info) < max_char:
-            await db.users.update_one({"user_id": str(user.id)}, {"$set": {"info": info}})
+            await db.users.update_one(
+                {"user_id": str(user.id)}, {"$set": {"info": info}}
+            )
             await ctx.send("**Your info section has been succesfully set!**")
         else:
             await ctx.send(
@@ -1063,7 +1065,9 @@ class Leveler(commands.Cog):
 
         if len(title) < max_char:
             userinfo["title"] = title
-            await db.users.update_one({"user_id": str(user.id)}, {"$set": {"title": title}})
+            await db.users.update_one(
+                {"user_id": str(user.id)}, {"$set": {"title": title}}
+            )
             await ctx.send("**Your title has been succesfully set!**")
         else:
             await ctx.send(
@@ -1489,7 +1493,7 @@ class Leveler(commands.Cog):
         server = ctx.guild
         await self._create_user(user, server)
         userinfo = await db.users.find_one({"user_id": str(user.id)})
-        userinfo = self._badge_convert_dict(userinfo)
+        userinfo = await self._badge_convert_dict(userinfo)
 
         # sort
         priority_badges = []
@@ -1546,7 +1550,7 @@ class Leveler(commands.Cog):
             serverid = server.id
         await self._create_user(user, server)
         userinfo = await db.users.find_one({"user_id": str(user.id)})
-        userinfo = self._badge_convert_dict(userinfo)
+        userinfo = await self._badge_convert_dict(userinfo)
         server_badge_info = await db.badges.find_one({"server_id": str(serverid)})
 
         if server_badge_info:
@@ -1630,7 +1634,7 @@ class Leveler(commands.Cog):
         await self._create_user(user, server)
 
         userinfo = await db.users.find_one({"user_id": str(user.id)})
-        userinfo = self._badge_convert_dict(userinfo)
+        userinfo = await self._badge_convert_dict(userinfo)
 
         if priority_num < -1 or priority_num > 5000:
             await ctx.send("**Invalid priority number! -1-5000**")
@@ -1652,7 +1656,7 @@ class Leveler(commands.Cog):
         else:
             await ctx.send("**You don't have that badge!**")
 
-    def _badge_convert_dict(self, userinfo):
+    async def _badge_convert_dict(self, userinfo):
         if "badges" not in userinfo or not isinstance(userinfo["badges"], dict):
             await db.users.update_one(
                 {"user_id": userinfo["user_id"]}, {"$set": {"badges": {}}}
@@ -1757,16 +1761,14 @@ class Leveler(commands.Cog):
             # Doing it this way because dynamic does more accesses when doing profile
             async for user in db.users.find({}):
                 try:
-                    user = self._badge_convert_dict(user)
+                    user = await self._badge_convert_dict(user)
                     userbadges = user["badges"]
                     badge_name = "{}_{}".format(name, serverid)
                     if badge_name in userbadges.keys():
                         user_priority_num = userbadges[badge_name]["priority_num"]
                         new_badge[
                             "priority_num"
-                        ] = (
-                            user_priority_num
-                        )  # maintain old priority number set by user
+                        ] = user_priority_num  # maintain old priority number set by user
                         userbadges[badge_name] = new_badge
                         await db.users.update_one(
                             {"user_id": user["user_id"]},
@@ -1831,7 +1833,7 @@ class Leveler(commands.Cog):
             # remove the badge if there
             async for user_info_temp in db.users.find({}):
                 try:
-                    user_info_temp = self._badge_convert_dict(user_info_temp)
+                    user_info_temp = await self._badge_convert_dict(user_info_temp)
 
                     badge_name = "{}_{}".format(name, serverid)
                     if badge_name in user_info_temp["badges"].keys():
@@ -1862,7 +1864,7 @@ class Leveler(commands.Cog):
             return
         await self._create_user(user, server)
         userinfo = await db.users.find_one({"user_id": str(user.id)})
-        userinfo = self._badge_convert_dict(userinfo)
+        userinfo = await self._badge_convert_dict(userinfo)
 
         if await self.config.guild(server).disabled():
             await ctx.send("Leveler commands for this server are disabled.")
@@ -1903,7 +1905,7 @@ class Leveler(commands.Cog):
         # creates user if doesn't exist
         await self._create_user(user, server)
         userinfo = await db.users.find_one({"user_id": str(user.id)})
-        userinfo = self._badge_convert_dict(userinfo)
+        userinfo = await self._badge_convert_dict(userinfo)
 
         if await self.config.guild(server).disabled():
             await ctx.send("Leveler commands for this server are disabled.")
@@ -1952,7 +1954,9 @@ class Leveler(commands.Cog):
                 "**Please make sure the `{}` badge exists!**".format(badge_name)
             )
             return
-        server_linked_badges = await db.badgelinks.find_one({"server_id": str(server.id)})
+        server_linked_badges = await db.badgelinks.find_one(
+            {"server_id": str(server.id)}
+        )
         if not server_linked_badges:
             new_server = {
                 "server_id": str(server.id),
@@ -1976,7 +1980,9 @@ class Leveler(commands.Cog):
         """Delete a badge/level association."""
         server = ctx.guild
 
-        server_linked_badges = await db.badgelinks.find_one({"server_id": str(server.id)})
+        server_linked_badges = await db.badgelinks.find_one(
+            {"server_id": str(server.id)}
+        )
         badge_links = server_linked_badges["badges"]
 
         if badge_name in badge_links.keys():
@@ -2368,7 +2374,7 @@ class Leveler(commands.Cog):
 
         # get urls
         userinfo = await db.users.find_one({"user_id": str(user.id)})
-        self._badge_convert_dict(userinfo)
+        await self._badge_convert_dict(userinfo)
         userinfo = await db.users.find_one({"user_id": str(user.id)})
         bg_url = userinfo["profile_background"]
 
@@ -3237,7 +3243,7 @@ class Leveler(commands.Cog):
                                                                         str(server.id)
                                                                     ]["current_exp"]
                                                                     + exp
-                        - required,
+                                                                    - required,
                         "chat_block": time.time(),
                         "last_message": message.content,
                     }
@@ -3304,20 +3310,24 @@ class Leveler(commands.Cog):
                         except discord.HTTPException:
                             await channel.send("Levelup role removal failed")
         try:
-            server_linked_badges = await db.badgelinks.find_one({"server_id": str(server.id)})
+            server_linked_badges = await db.badgelinks.find_one(
+                {"server_id": str(server.id)}
+            )
             if server_linked_badges is not None:
                 for badge_name in server_linked_badges["badges"]:
                     if int(server_linked_badges["badges"][badge_name]) == int(
-                        new_level
+                            new_level
                     ):
                         server_badges = await db.badges.find_one(
                             {"server_id": str(server.id)}
                         )
                         if (
-                            server_badges is not None
-                            and badge_name in server_badges["badges"].keys()
+                                server_badges is not None
+                                and badge_name in server_badges["badges"].keys()
                         ):
-                            userinfo_db = await db.users.find_one({"user_id": str(user.id)})
+                            userinfo_db = await db.users.find_one(
+                                {"user_id": str(user.id)}
+                            )
                             new_badge_name = "{}_{}".format(badge_name, server.id)
                             userinfo_db["badges"][new_badge_name] = server_badges[
                                 "badges"
