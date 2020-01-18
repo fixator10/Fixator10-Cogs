@@ -265,6 +265,7 @@ class Leveler(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
+    @commands.cooldown(1, 30, commands.BucketType.guild)
     async def top(self, ctx, *options):
         """Displays leaderboard.
 
