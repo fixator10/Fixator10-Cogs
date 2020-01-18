@@ -12,7 +12,8 @@
     "v2 cog"
   ],
   "requirements": [
-    "pymongo",
+    "pymongo>=3.10",
+    "motor",
     "fonttools",
     "pillow>=6.2.1"
   ]
