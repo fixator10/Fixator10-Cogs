@@ -86,9 +86,7 @@ class MoreUtils(commands.Cog):
             timestamp=ctx.message.created_at,
         )
         em.set_thumbnail(
-            url="https://xenforo.com/rgba.php?r={}&g={}&b={}&a=255".format(
-                colorrgb[0], colorrgb[1], colorrgb[2]
-            )
+            url=f"https://dummyimage.com/512/{hex(color.value).lstrip('0x')}&text=%20"
         )
         await ctx.send(embed=em)
 
