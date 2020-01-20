@@ -1,17 +1,13 @@
+from textwrap import shorten
 from typing import Union
 
 import discord
-import matplotlib.colors as colors
 import tabulate
 from redbot.core import checks
 from redbot.core import commands
 from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils import chat_formatting as chat
 from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
-
-
-def rgb_to_hex(rgb_tuple):
-    return colors.rgb2hex([1.0 * x / 255 for x in rgb_tuple])
 
 
 def bool_emojify(bool_var: bool) -> str:
@@ -478,7 +474,7 @@ class DataUtils(commands.Cog):
             return
         roles = []
         for role in server.roles:
-            dic = {_("Name"): await self.smart_truncate(role.name), _("ID"): role.id}
+            dic = {_("Name"): shorten(role.name, 32, placeholder="…"), _("ID"): role.id}
             roles.append(dic)
         pages = list(chat.pagify(tabulate.tabulate(roles, tablefmt="orgtbl")))
         pages = [chat.box(p) for p in pages]
