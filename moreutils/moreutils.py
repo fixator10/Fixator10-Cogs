@@ -73,7 +73,7 @@ class MoreUtils(commands.Cog):
             "HLS: {}\n"
             "YIQ: {}\n"
             "int: {}".format(
-                hex(color.value).replace("0x", "#"),
+                str(color),
                 colorrgb,
                 colorcmyk,
                 colorhsv,
@@ -81,12 +81,12 @@ class MoreUtils(commands.Cog):
                 coloryiq,
                 color.value,
             ),
-            url=f"http://www.color-hex.com/color/{hex(color.value).lstrip('0x')}",
+            url=f"http://www.color-hex.com/color/{str(color)[1:]}",
             colour=color,
             timestamp=ctx.message.created_at,
         )
         em.set_thumbnail(
-            url=f"https://dummyimage.com/512/{hex(color.value).lstrip('0x')}&text=%20"
+            url=f"https://dummyimage.com/512/{str(color)[1:]}&text=%20"
         )
         await ctx.send(embed=em)
 
