@@ -15,6 +15,7 @@ _ = Translator("ReverseImageSearch", __file__)
 @cog_i18n(_)
 class ReverseImageSearch(commands.Cog):
     """(Anime) Reverse Image Search"""
+    __version__ = "2.0.0"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):

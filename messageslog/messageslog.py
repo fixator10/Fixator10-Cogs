@@ -22,6 +22,7 @@ _ = Translator("MessagesLog", __file__)
 @cog_i18n(_)
 class MessagesLog(commands.Cog):
     """Log deleted and redacted messages to the defined channel"""
+    __version__ = "2.0.0"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):

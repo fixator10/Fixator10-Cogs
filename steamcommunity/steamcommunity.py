@@ -35,6 +35,7 @@ _ = Translator("SteamCommunity", __file__)
 @cog_i18n(_)
 class SteamCommunity(commands.Cog):
     """SteamCommunity commands"""
+    __version__ = "2.0.0"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):

@@ -15,6 +15,8 @@ _ = Translator("AdminUtils", __file__)
 
 @cog_i18n(_)
 class AdminUtils(commands.Cog):
+    __version__ = "2.0.0"
+
     # noinspection PyMissingConstructor
     def __init__(self, bot: commands.Bot):
         self.bot = bot

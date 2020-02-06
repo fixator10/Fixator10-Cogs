@@ -21,6 +21,7 @@ async def has_assigned_role(ctx):
 @cog_i18n(_)
 class PersonalRoles(commands.Cog):
     """Assign and edit personal roles"""
+    __version__ = "2.0.0"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot: commands.Bot):
@@ -42,6 +43,7 @@ class PersonalRoles(commands.Cog):
     @myrole.command()
     @checks.admin_or_permissions(manage_roles=True)
     async def assign(self, ctx, user: discord.Member, *, role: discord.Role):
+        """Assign personal role to someone"""
         await self.config.member(user).role.set(role.id)
         await ctx.send(
             _(

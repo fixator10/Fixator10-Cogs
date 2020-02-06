@@ -16,6 +16,7 @@ EMBED_EMPTY_VALUE = "\N{Invisible Separator}"
 @cog_i18n(_)
 class SMMData(commands.Cog):
     """Super Mario Maker-related data"""
+    __version__ = "2.0.0"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):

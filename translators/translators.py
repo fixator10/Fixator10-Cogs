@@ -27,6 +27,8 @@ USERAGENT = (
 
 @cog_i18n(_)
 class Translators(commands.Cog):
+    __version__ = "2.0.0"
+
     # noinspection PyMissingConstructor
     def __init__(self, bot):
         self.bot = bot

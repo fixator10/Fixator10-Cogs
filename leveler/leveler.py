@@ -62,6 +62,7 @@ async def non_global_bank(ctx):
 
 class Leveler(commands.Cog):
     """A level up thing with image generation!"""
+    __version__ = "2.0.0b"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):

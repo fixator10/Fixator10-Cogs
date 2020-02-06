@@ -11,6 +11,7 @@ BASE_API_GLOBAL = "http://godvillegame.com/gods/api/"
 
 class GodvilleData(commands.Cog):
     """Get data about Godville profiles"""
+    __version__ = "2.0.0"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):

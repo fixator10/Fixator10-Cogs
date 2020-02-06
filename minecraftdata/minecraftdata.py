@@ -29,6 +29,7 @@ SERVICE_STATUS = {
 @cog_i18n(_)
 class MinecraftData(commands.Cog):
     """Minecraft-Related data"""
+    __version__ = "2.0.0"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot: commands.Bot):
