@@ -1,6 +1,7 @@
 from asyncio import TimeoutError as AsyncTimeoutError
 from textwrap import shorten
 from typing import Union
+from types import SimpleNamespace
 import unicodedata
 
 import discord
@@ -38,7 +39,7 @@ GUILD_FEATURES = {
 
 @cog_i18n(_)
 class DataUtils(commands.Cog):
-    __version__ = "2.1.0"
+    __version__ = "2.1.1"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot: commands.Bot):
@@ -167,7 +168,10 @@ class DataUtils(commands.Cog):
             await ctx.send(_("Failed to get server with provided ID"))
             return
         afk = server.afk_timeout / 60
-        widget = await server.widget()
+        try:
+            widget = await server.widget()
+        except (discord.Forbidden, discord.HTTPException):
+            widget = SimpleNamespace(invite_url=None)
         em = discord.Embed(
             title=_("Server info"),
             description=server.description and server.description or None,
