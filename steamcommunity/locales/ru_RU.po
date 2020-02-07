@@ -1,0 +1,236 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: fixator10-cogs\n"
+"POT-Creation-Date: 2020-02-06 12:55+0400\n"
+"PO-Revision-Date: 2020-02-07 11:00\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Russian\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: redgettext 3.1\n"
+"Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
+"X-Crowdin-Project: fixator10-cogs\n"
+"X-Crowdin-Language: ru\n"
+"X-Crowdin-File: /V3/steamcommunity/locales/messages.pot\n"
+"Language: ru_RU\n"
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:37
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:66
+#, docstring
+msgid "SteamCommunity commands"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:73
+#, docstring
+msgid "Set API key for Steam Web API"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:78
+msgid "To get Steam Web API key:\\n1. Login to your Steam account\\n2. Visit [Register Steam Web API Key](https://steamcommunity.com/dev/apikey) page\\n3. Enter any domain name (e.g. `localhost`)\\n4. You will now see \\\"Key\\\" field\\n5. Use `{}set api steam web <your_apikey>`\\nNote: These tokens are sensitive and should only be used in a private channel\\nor in DM with the bot."
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:95
+#, docstring
+msgid "Get steam user's steamcommunity profile"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:104
+msgid "In game: [{}](http://store.steampowered.com/app/{})"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:108
+msgid " on server {}"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:110
+msgid "\\nFamily Shared by [{}]({})"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:114
+msgid "Real name"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:115
+msgid "Level"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:118
+msgid "Country"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:120
+msgid "Visibility"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:123
+msgid "Created at"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:125
+msgid "%d.%m.%Y %H:%M:%S"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:133
+msgid "Days since last ban: {}"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:135
+msgid "Has one or more bans:"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:137
+msgid "No bans on record"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:138
+msgid "🛡 Bans"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:140
+msgid "Community ban"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:143
+msgid "Economy ban"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:147
+msgid "VAC bans"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:148
+msgid "{} VAC bans"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:151
+msgid "Game bans"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:152
+msgid "{} game bans"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:158
+msgid "Powered by Steam • Last seen on"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:165
+#, docstring
+msgid "Get info about a gameserver"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:175
+msgid "The specified domain is not valid: {}"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:198
+msgid "Could not fetch Server or the Server is not on the Steam masterlist"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:205
+msgid "An Error has been occurred: {}"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:232
+msgid "Game"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:235
+msgid "Gamemode"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:236
+msgid "Server name"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:237
+msgid "Map"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:239
+msgid "Operating System"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:240
+msgid "Server type"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:241
+msgid "Version"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:244
+msgid "Password"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:249
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:254
+msgid "Players"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:250
+msgid "{}/{}\\nBots: {}"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamuser.py:23
+msgid "Private"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamuser.py:24
+msgid "Friends only"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamuser.py:25
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamuser.py:27
+msgid "Public"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamuser.py:26
+msgid "Users only"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamuser.py:90
+msgid "ApiKey not set or incorrect."
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamuser.py:101
+msgid "Incorrect SteamID32 provided."
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamuser.py:105
+msgid "User with SteamID {} not found."
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamuser.py:110
+msgid "Unable to get profile for {} ({}). Check your input or try again later."
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamuser.py:121
+msgid "Offline"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamuser.py:122
+msgid "Online"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamuser.py:123
+msgid "Busy"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamuser.py:124
+msgid "Away"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamuser.py:125
+msgid "Snooze"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamuser.py:126
+msgid "Looking to trade"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamuser.py:127
+msgid "Looking to play"
+msgstr ""
+
