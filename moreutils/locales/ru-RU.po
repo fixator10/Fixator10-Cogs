@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fixator10-cogs\n"
-"POT-Creation-Date: 2020-02-06 12:53+0400\n"
-"PO-Revision-Date: 2020-02-07 11:09\n"
+"POT-Creation-Date: 2020-02-07 15:35+0400\n"
+"PO-Revision-Date: 2020-02-07 11:58\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
@@ -15,51 +15,51 @@ msgstr ""
 "X-Crowdin-File: /V3/moreutils/locales/messages.pot\n"
 "Language: ru_RU\n"
 
-#: D:\CodeProjects\Fixator10-Cogs\moreutils\moreutils.py:57
+#: moreutils\moreutils.py:57
 #, docstring
 msgid "Send bot's current time"
 msgstr "Отправляет текущее время бота"
 
-#: D:\CodeProjects\Fixator10-Cogs\moreutils\moreutils.py:58
+#: moreutils\moreutils.py:58
 msgid "%d.%m.%Y %H:%M:%S %Z"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\moreutils\moreutils.py:63
+#: moreutils\moreutils.py:63
 #, docstring
 msgid "Shows some info about provided color"
 msgstr "Показывает информацию о предоставленном цвете"
 
-#: D:\CodeProjects\Fixator10-Cogs\moreutils\moreutils.py:97
+#: moreutils\moreutils.py:97
 #, docstring
 msgid "Help I've fallen and I need @someone.\\n\\n        Discord 2018 April Fools"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\moreutils\moreutils.py:126
+#: moreutils\moreutils.py:126
 #, docstring
 msgid "Get current discord status from status.discordapp.com"
 msgstr "Получить текущее состояние Discord со страницы status.discordapp.com"
 
-#: D:\CodeProjects\Fixator10-Cogs\moreutils\moreutils.py:135
+#: moreutils\moreutils.py:135
 msgid "Unable to get data from https://status.discordapp.com: {}"
 msgstr "Невозможно получить информацию от https://status.discordapp.com: {}"
 
-#: D:\CodeProjects\Fixator10-Cogs\moreutils\moreutils.py:143
+#: moreutils\moreutils.py:143
 msgid "OK"
 msgstr "ОК"
 
-#: D:\CodeProjects\Fixator10-Cogs\moreutils\moreutils.py:144
+#: moreutils\moreutils.py:144
 msgid "Minor problems"
 msgstr "Небольшие проблемы"
 
-#: D:\CodeProjects\Fixator10-Cogs\moreutils\moreutils.py:145
+#: moreutils\moreutils.py:145
 msgid "Major problems"
 msgstr "Большие проблемы"
 
-#: D:\CodeProjects\Fixator10-Cogs\moreutils\moreutils.py:146
+#: moreutils\moreutils.py:146
 msgid "Critical problems"
 msgstr "Критические проблемы"
 
-#: D:\CodeProjects\Fixator10-Cogs\moreutils\moreutils.py:150
+#: moreutils\moreutils.py:150
 msgid "Discord Status"
 msgstr "Статус Discord"
 
