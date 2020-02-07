@@ -1,211 +1,236 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR ORGANIZATION
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
-"POT-Creation-Date: 2019-05-14 12:15+0400\n"
-"PO-Revision-Date: 2019-05-14 12:16+0400\n"
-"Last-Translator: Максим Невзоров\n"
-"Language-Team: \n"
-"Language: ru_RU\n"
+"Project-Id-Version: fixator10-cogs\n"
+"POT-Creation-Date: 2020-02-06 12:55+0400\n"
+"PO-Revision-Date: 2020-02-07 11:09\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: redgettext 2.2\n"
-"X-Generator: Poedit 2.2.1\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+"Generated-By: redgettext 3.1\n"
+"Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
+"X-Crowdin-Project: fixator10-cogs\n"
+"X-Crowdin-Language: ru\n"
+"X-Crowdin-File: /V3/steamcommunity/locales/messages.pot\n"
+"Language: ru_RU\n"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:37
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:66
+#, docstring
 msgid "SteamCommunity commands"
 msgstr "Команды SteamCommunity"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:73
+#, docstring
 msgid "Set API key for Steam Web API"
 msgstr "Установить API ключ для Steam Web API"
 
-msgid ""
-"To get Steam Web API key:\n"
-"1. Login to your Steam account\n"
-"2. Visit [Register Steam Web API Key](https://steamcommunity.com/dev/apikey) "
-"page\n"
-"3. Enter any domain name (e.g. `localhost`)\n"
-"4. You will now see \"Key\" field\n"
-"5. Use `{}set api steam web <your_apikey>`\n"
-"6. Use this command again\n"
-"\n"
-"Note: These tokens are sensitive and should only be used in a private "
-"channel\n"
-"or in DM with the bot."
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:78
+msgid "To get Steam Web API key:\\n1. Login to your Steam account\\n2. Visit [Register Steam Web API Key](https://steamcommunity.com/dev/apikey) page\\n3. Enter any domain name (e.g. `localhost`)\\n4. You will now see \\\"Key\\\" field\\n5. Use `{}set api steam web <your_apikey>`\\nNote: These tokens are sensitive and should only be used in a private channel\\nor in DM with the bot."
 msgstr ""
-"Для получения ключа Steam Web API:\n"
-"1. Войдите в ваш аккаунт Steam\n"
-"2. Посетите страницу [Зарегестрировать ключ Steam Web API](https://"
-"steamcommunity.com/dev/apikey)\n"
-"3. Введите любой домен (например `localhost`)\n"
-"4. Вы увидите поле \"Ключ\"\n"
-"5. Используйте команду `{}set api steam web <your_apikey>`\n"
-"6. Используйте эту команду снова\n"
-"\n"
-"Примечание: Эти ключи регистрозависимы и их настройка должна \n"
-"производится только в приватном канале или в ЛС с ботом."
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:95
+#, docstring
 msgid "Get steam user's steamcommunity profile"
 msgstr "Вывести профиль пользователя Steam в Steamcommunity"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:104
 msgid "In game: [{}](http://store.steampowered.com/app/{})"
 msgstr "В игре: [{}](http://store.steampowered.com/app/{})"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:108
 msgid " on server {}"
 msgstr " на сервере {}"
 
-msgid ""
-"\n"
-"Family Shared by [{}]({})"
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:110
+msgid "\\nFamily Shared by [{}]({})"
 msgstr ""
-"\n"
-"Доступ по Family Sharing от [{}]({})"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:114
 msgid "Real name"
 msgstr "Настоящее имя"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:115
 msgid "Level"
 msgstr "Уровень"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:118
 msgid "Country"
 msgstr "Страна"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:120
 msgid "Visibility"
 msgstr "Видимость"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:123
 msgid "Created at"
 msgstr "Создан"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:125
 msgid "%d.%m.%Y %H:%M:%S"
 msgstr ""
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:133
 msgid "Days since last ban: {}"
 msgstr "Дней с последней блокировки: {}"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:135
 msgid "Has one or more bans:"
 msgstr "Имеет одну или более блокировок:"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:137
 msgid "No bans on record"
 msgstr "Нет известных блокировок"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:138
 msgid "🛡 Bans"
 msgstr "🛡 Баны"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:140
 msgid "Community ban"
 msgstr "Блокировка сообщества"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:143
 msgid "Economy ban"
 msgstr "Блокировка экономики"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:147
 msgid "VAC bans"
 msgstr "VAC блокировка"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:148
 msgid "{} VAC bans"
 msgstr "{} блокировок VAC"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:151
 msgid "Game bans"
 msgstr "Игровые блокировки"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:152
 msgid "{} game bans"
 msgstr "{} игровых блокировок"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:158
 msgid "Powered by Steam • Last seen on"
 msgstr "Powered by Steam • Последний раз в сети"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:165
+#, docstring
 msgid "Get info about a gameserver"
 msgstr "Получить информацию о игровом сервере"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:175
 msgid "The specified domain is not valid: {}"
 msgstr "Указаный домен неверен: {}"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:198
 msgid "Could not fetch Server or the Server is not on the Steam masterlist"
 msgstr "Невозможно найти сервер или сервер не в мастерсписке Steam"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:205
 msgid "An Error has been occurred: {}"
 msgstr "Произошла ошибка: {}"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:232
 msgid "Game"
 msgstr "Игра"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:235
 msgid "Gamemode"
 msgstr "Игровой режим"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:236
 msgid "Server name"
 msgstr "Название сервера"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:237
 msgid "Map"
 msgstr "Карта"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:239
 msgid "Operating System"
 msgstr "Операционная система"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:240
 msgid "Server type"
 msgstr "Тип сервера"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:241
 msgid "Version"
 msgstr "Версия"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:244
 msgid "Password"
 msgstr "Пароль"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:249
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:254
 msgid "Players"
 msgstr "Игроков"
 
-msgid ""
-"{}/{}\n"
-"Bots: {}"
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamcommunity.py:250
+msgid "{}/{}\\nBots: {}"
 msgstr ""
-"{}/{}\n"
-"Ботов: {}"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamuser.py:23
 msgid "Private"
 msgstr "Скрытый"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamuser.py:24
 msgid "Friends only"
 msgstr "Только друзья"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamuser.py:25
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamuser.py:27
 msgid "Public"
 msgstr "Открытый"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamuser.py:26
 msgid "Users only"
 msgstr "Только пользователи"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamuser.py:90
 msgid "ApiKey not set or incorrect."
 msgstr "API ключ не установлен или неверен."
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamuser.py:101
 msgid "Incorrect SteamID32 provided."
 msgstr "Указан неверный SteamID32."
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamuser.py:105
 msgid "User with SteamID {} not found."
 msgstr "Пользователь с SteamID {} не найден."
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamuser.py:110
 msgid "Unable to get profile for {} ({}). Check your input or try again later."
-msgstr ""
-"Не могу получить профиль для {} ({}). Проверьте вводные данные или "
-"попробуйте позднее."
+msgstr "Не могу получить профиль для {} ({}). Проверьте вводные данные или попробуйте позднее."
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamuser.py:121
 msgid "Offline"
 msgstr "Не в сети"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamuser.py:122
 msgid "Online"
 msgstr "В сети"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamuser.py:123
 msgid "Busy"
 msgstr "Не беспокоить"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamuser.py:124
 msgid "Away"
 msgstr "Нет на месте"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamuser.py:125
 msgid "Snooze"
 msgstr "Спит"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamuser.py:126
 msgid "Looking to trade"
 msgstr "Хочет обменяться"
 
+#: D:\CodeProjects\Fixator10-Cogs\steamcommunity\steamuser.py:127
 msgid "Looking to play"
 msgstr "Хочет играть"
+
