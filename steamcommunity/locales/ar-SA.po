@@ -1,0 +1,233 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: fixator10-cogs\n"
+"POT-Creation-Date: 2020-02-07 15:35+0400\n"
+"PO-Revision-Date: 2020-02-07 20:09\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Arabic\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: redgettext 3.1\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5);\n"
+"X-Crowdin-Project: fixator10-cogs\n"
+"X-Crowdin-Language: ar\n"
+"X-Crowdin-File: /V3/steamcommunity/locales/messages.pot\n"
+"Language: ar_SA\n"
+
+#: steamcommunity\steamcommunity.py:37 steamcommunity\steamcommunity.py:66
+#, docstring
+msgid "SteamCommunity commands"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:73
+#, docstring
+msgid "Set API key for Steam Web API"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:78
+msgid "To get Steam Web API key:\\n1. Login to your Steam account\\n2. Visit [Register Steam Web API Key](https://steamcommunity.com/dev/apikey) page\\n3. Enter any domain name (e.g. `localhost`)\\n4. You will now see \\\"Key\\\" field\\n5. Use `{}set api steam web <your_apikey>`\\nNote: These tokens are sensitive and should only be used in a private channel\\nor in DM with the bot."
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:95
+#, docstring
+msgid "Get steam user's steamcommunity profile"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:104
+msgid "In game: [{}](http://store.steampowered.com/app/{})"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:108
+msgid " on server {}"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:110
+msgid "\\nFamily Shared by [{}]({})"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:114
+msgid "Real name"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:115
+msgid "Level"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:118
+msgid "Country"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:120
+msgid "Visibility"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:123
+msgid "Created at"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:125
+msgid "%d.%m.%Y %H:%M:%S"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:133
+msgid "Days since last ban: {}"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:135
+msgid "Has one or more bans:"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:137
+msgid "No bans on record"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:138
+msgid "🛡 Bans"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:140
+msgid "Community ban"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:143
+msgid "Economy ban"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:147
+msgid "VAC bans"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:148
+msgid "{} VAC bans"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:151
+msgid "Game bans"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:152
+msgid "{} game bans"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:158
+msgid "Powered by Steam • Last seen on"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:165
+#, docstring
+msgid "Get info about a gameserver"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:175
+msgid "The specified domain is not valid: {}"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:198
+msgid "Could not fetch Server or the Server is not on the Steam masterlist"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:205
+msgid "An Error has been occurred: {}"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:232
+msgid "Game"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:235
+msgid "Gamemode"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:236
+msgid "Server name"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:237
+msgid "Map"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:239
+msgid "Operating System"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:240
+msgid "Server type"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:241
+msgid "Version"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:244
+msgid "Password"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:249 steamcommunity\steamcommunity.py:254
+msgid "Players"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:250
+msgid "{}/{}\\nBots: {}"
+msgstr ""
+
+#: steamcommunity\steamuser.py:23
+msgid "Private"
+msgstr ""
+
+#: steamcommunity\steamuser.py:24
+msgid "Friends only"
+msgstr ""
+
+#: steamcommunity\steamuser.py:25 steamcommunity\steamuser.py:27
+msgid "Public"
+msgstr ""
+
+#: steamcommunity\steamuser.py:26
+msgid "Users only"
+msgstr ""
+
+#: steamcommunity\steamuser.py:90
+msgid "ApiKey not set or incorrect."
+msgstr ""
+
+#: steamcommunity\steamuser.py:101
+msgid "Incorrect SteamID32 provided."
+msgstr ""
+
+#: steamcommunity\steamuser.py:105
+msgid "User with SteamID {} not found."
+msgstr ""
+
+#: steamcommunity\steamuser.py:110
+msgid "Unable to get profile for {} ({}). Check your input or try again later."
+msgstr ""
+
+#: steamcommunity\steamuser.py:121
+msgid "Offline"
+msgstr ""
+
+#: steamcommunity\steamuser.py:122
+msgid "Online"
+msgstr ""
+
+#: steamcommunity\steamuser.py:123
+msgid "Busy"
+msgstr ""
+
+#: steamcommunity\steamuser.py:124
+msgid "Away"
+msgstr ""
+
+#: steamcommunity\steamuser.py:125
+msgid "Snooze"
+msgstr ""
+
+#: steamcommunity\steamuser.py:126
+msgid "Looking to trade"
+msgstr ""
+
+#: steamcommunity\steamuser.py:127
+msgid "Looking to play"
+msgstr ""
+
