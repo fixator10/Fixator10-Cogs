@@ -1,154 +1,108 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR ORGANIZATION
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
-"POT-Creation-Date: 2019-04-23 18:04+0400\n"
-"PO-Revision-Date: 2019-04-23 18:07+0400\n"
-"Last-Translator: Максим Невзоров\n"
-"Language-Team: \n"
-"Language: ru_RU\n"
+"Project-Id-Version: fixator10-cogs\n"
+"POT-Creation-Date: 2020-02-06 12:44+0400\n"
+"PO-Revision-Date: 2020-02-07 11:09\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: redgettext 2.2\n"
-"X-Generator: Poedit 2.2.1\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+"Generated-By: redgettext 3.1\n"
+"Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
+"X-Crowdin-Project: fixator10-cogs\n"
+"X-Crowdin-Language: ru\n"
+"X-Crowdin-File: /V3/adminutils/locales/messages.pot\n"
+"Language: ru_RU\n"
 
-#: adminutils.py:30
+#: D:\CodeProjects\Fixator10-Cogs\adminutils\adminutils.py:33
+#, docstring
 msgid "Cleanup inactive server members"
 msgstr "Чистка неактивных участников сервера"
 
-#: adminutils.py:34
-msgid ""
-"Due to Discord Restrictions, you cannot use more than 30 days for that cmd."
+#: D:\CodeProjects\Fixator10-Cogs\adminutils\adminutils.py:37
+msgid "Due to Discord Restrictions, you cannot use more than 30 days for that cmd."
+msgstr "В связи с ограничениями Discord, вы не можете использовать более 30 дней для этой команды."
+
+#: D:\CodeProjects\Fixator10-Cogs\adminutils\adminutils.py:44
+msgid "\\\"days\\\" arg cannot be less than 1..."
 msgstr ""
-"В связи с ограничениями Discord, вы не можете использовать более 30 дней для "
-"этой команды."
 
-#: adminutils.py:41
-msgid "\"days\" arg cannot be less than 1..."
-msgstr "Аргумент \"days\" (дни) не может быть меньше 1..."
-
-#: adminutils.py:46
-msgid ""
-"You about to kick **{to_kick}** inactive for **{days}** days members from "
-"this server. Are you sure?\n"
-"To agree, type \"yes\""
+#: D:\CodeProjects\Fixator10-Cogs\adminutils\adminutils.py:49
+msgid "You about to kick **{to_kick}** inactive for **{days}** days members from this server. Are you sure?\\nTo agree, type \\\"yes\\\""
 msgstr ""
-"Вы собираетесь выгнать с этого сервера **{to_kick}** участников, не "
-"проявивших активность в последние **{days}** дней. Вы уверены в этом?\n"
-"Для подтверждения, напишите \"yes\""
 
-#: adminutils.py:63
-msgid ""
-"**{removed}**/**{all}** inactive members removed.\n"
-"(They was inactive for **{days}** days)"
+#: D:\CodeProjects\Fixator10-Cogs\adminutils\adminutils.py:66
+msgid "**{removed}**/**{all}** inactive members removed.\\n(They was inactive for **{days}** days)"
 msgstr ""
-"**{removed}**/**{all}** неактивных участников удалено.\n"
-"(Они были неактивны **{days}** дней)"
 
-#: adminutils.py:70
+#: D:\CodeProjects\Fixator10-Cogs\adminutils\adminutils.py:73
 msgid "Inactive members cleanup canceled."
 msgstr "Очистка неактивных участников отменена."
 
-#: adminutils.py:78
+#: D:\CodeProjects\Fixator10-Cogs\adminutils\adminutils.py:81
+#, docstring
 msgid "Mass nicknames everyone on the server"
 msgstr "Массово устанавливает ники всем на сервере"
 
-#: adminutils.py:86
+#: D:\CodeProjects\Fixator10-Cogs\adminutils\adminutils.py:89
 msgid "Massnick"
 msgstr "Массовая установка ников"
 
-#: adminutils.py:93
+#: D:\CodeProjects\Fixator10-Cogs\adminutils\adminutils.py:96
 msgid "Finished nicknaming server. {} nicknames could not be completed."
 msgstr "Изменение никнеймов завершено. {} никнеймов не удалось изменить."
 
-#: adminutils.py:104
+#: D:\CodeProjects\Fixator10-Cogs\adminutils\adminutils.py:107
+#, docstring
 msgid "Resets nicknames on the server"
 msgstr "Сбрасывает никнеймы на сервере"
 
-#: adminutils.py:111
+#: D:\CodeProjects\Fixator10-Cogs\adminutils\adminutils.py:114
 msgid "Reset nicks"
 msgstr "Сброс никнеймов"
 
-#: adminutils.py:118
+#: D:\CodeProjects\Fixator10-Cogs\adminutils\adminutils.py:121
 msgid "Finished resetting server nicknames. Unable to reset {} nicknames."
 msgstr "Сброс серверных никнеймов завершен. {} никнеймов не удалось сбросить."
 
-#: adminutils.py:128
+#: D:\CodeProjects\Fixator10-Cogs\adminutils\adminutils.py:131
+#, docstring
 msgid "Manage emoji"
 msgstr "Управление эмодзи"
 
-#: adminutils.py:133
-msgid ""
-"Create custom emoji\n"
-"\n"
-"        Use double quotes if role name has spaces\n"
-"\n"
-"        Examples:\n"
-"            `[p]emoji add Example https://example.com/image.png`\n"
-"            `[p]emoji add RoleBased https://example.com/image.png EmojiRole "
-"\"Test image\"`\n"
-"        "
+#: D:\CodeProjects\Fixator10-Cogs\adminutils\adminutils.py:136
+#, docstring
+msgid "Create custom emoji\\n\\n        Use double quotes if role name has spaces\\n\\n        Examples:\\n            `[p]emoji add Example https://example.com/image.png`\\n            `[p]emoji add RoleBased https://example.com/image.png EmojiRole \\\"Test image\\\"`\\n        "
 msgstr ""
-"Создать серверную эмодзи\n"
-"\n"
-"        Используйте двойные кавычки, если название роли содержит пробелы\n"
-"\n"
-"        Например:\n"
-"            `[p]emoji add Example https://example.com/image.png`\n"
-"            `[p]emoji add RoleBased https://example.com/image.png "
-"РольДляЭмодзи \"Тестовое Изображение\"`\n"
-"        "
 
-#: adminutils.py:146
+#: D:\CodeProjects\Fixator10-Cogs\adminutils\adminutils.py:149
 msgid "Unable to get emoji from provided url: {}"
 msgstr "Невозможно получить эмодзи по предоставленному адресу: {}"
 
-#: adminutils.py:156
+#: D:\CodeProjects\Fixator10-Cogs\adminutils\adminutils.py:159
 msgid "Restricted to roles: {}"
 msgstr "Ограничено для ролей: {}"
 
-#: adminutils.py:165
+#: D:\CodeProjects\Fixator10-Cogs\adminutils\adminutils.py:168
 msgid "This image type is unsupported, or link is incorrect"
 msgstr "Данный тип изображений не поддерживается, или указана неверная ссылка"
 
-#: adminutils.py:169
+#: D:\CodeProjects\Fixator10-Cogs\adminutils\adminutils.py:172
 msgid "An error occured on adding an emoji: {}"
 msgstr "Произошла ошибка при добавлении эмодзи: {}"
 
-#: adminutils.py:178
-msgid ""
-"Rename emoji and restrict to certain roles\n"
-"        Only this roles will be able to use this emoji\n"
-"\n"
-"        Use double quotes if role name has spaces\n"
-"\n"
-"        Examples:\n"
-"            `[p]emoji rename emoji NewEmojiName`\n"
-"            `[p]emoji rename emoji NewEmojiName Administrator \"Allowed role"
-"\"`\n"
-"        "
+#: D:\CodeProjects\Fixator10-Cogs\adminutils\adminutils.py:181
+#, docstring
+msgid "Rename emoji and restrict to certain roles\\n        Only this roles will be able to use this emoji\\n\\n        Use double quotes if role name has spaces\\n\\n        Examples:\\n            `[p]emoji rename emoji NewEmojiName`\\n            `[p]emoji rename emoji NewEmojiName Administrator \\\"Allowed role\\\"`\\n        "
 msgstr ""
-"Переименовать эмодзи и ограничить использование для определённых ролей\n"
-"        Этой эмодзи смогут пользоваться только указанные роли\n"
-"\n"
-"        Используйте двойные кавычки, если название роли содержит пробелы\n"
-"\n"
-"        Наример:\n"
-"            `[p]emoji rename emoji NewEmojiName`\n"
-"            `[p]emoji rename emoji NewEmojiName Администратор \"Разрешенная "
-"роль\"`\n"
-"        "
 
-#: adminutils.py:195
+#: D:\CodeProjects\Fixator10-Cogs\adminutils\adminutils.py:198
 msgid "Restricted to roles: "
 msgstr "Ограничено для ролей: "
 
-#: adminutils.py:206
+#: D:\CodeProjects\Fixator10-Cogs\adminutils\adminutils.py:209
+#, docstring
 msgid "Remove emoji from server"
 msgstr "Удалить эмодзи с сервера"
+
