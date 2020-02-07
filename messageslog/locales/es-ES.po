@@ -1,0 +1,111 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: fixator10-cogs\n"
+"POT-Creation-Date: 2020-02-07 15:35+0400\n"
+"PO-Revision-Date: 2020-02-07 20:10\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Spanish\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: redgettext 3.1\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: fixator10-cogs\n"
+"X-Crowdin-Language: es-ES\n"
+"X-Crowdin-File: /V3/messageslog/locales/messages.pot\n"
+"Language: es_ES\n"
+
+#: messageslog\messageslog.py:24
+#, docstring
+msgid "Log deleted and redacted messages to the defined channel"
+msgstr ""
+
+#: messageslog\messageslog.py:48
+#, docstring
+msgid "Manage message logging"
+msgstr ""
+
+#: messageslog\messageslog.py:53
+#, docstring
+msgid "Set the channel for logs\\n\\n        If channel is not provided, then logging will be disabled"
+msgstr ""
+
+#: messageslog\messageslog.py:62
+#, docstring
+msgid "Toggle logging of message deletion"
+msgstr ""
+
+#: messageslog\messageslog.py:66 messageslog\messageslog.py:79
+msgid "enabled"
+msgstr ""
+
+#: messageslog\messageslog.py:68 messageslog\messageslog.py:81
+msgid "disabled"
+msgstr ""
+
+#: messageslog\messageslog.py:70
+msgid "Message deletion logging {}"
+msgstr ""
+
+#: messageslog\messageslog.py:75
+#, docstring
+msgid "Toggle logging of message editing"
+msgstr ""
+
+#: messageslog\messageslog.py:83
+msgid "Message editing logging {}"
+msgstr ""
+
+#: messageslog\messageslog.py:92
+#, docstring
+msgid "Manage message logging blacklist\\n\\n        Shows blacklist if no arguments provided\\n        You can ignore text channels, categories and members\\n        If item is in blacklist, removes it"
+msgstr ""
+
+#: messageslog\messageslog.py:117
+msgid "Nothing is ignored"
+msgstr ""
+
+#: messageslog\messageslog.py:124
+msgid "Ignored users"
+msgstr ""
+
+#: messageslog\messageslog.py:128
+msgid "Ignored channels"
+msgstr ""
+
+#: messageslog\messageslog.py:132
+msgid "Ignored categories"
+msgstr ""
+
+#: messageslog\messageslog.py:197
+msgid "Message deleted"
+msgstr ""
+
+#: messageslog\messageslog.py:198 messageslog\messageslog.py:254
+msgid "No text"
+msgstr ""
+
+#: messageslog\messageslog.py:204 messageslog\messageslog.py:263
+msgid "Attachments"
+msgstr ""
+
+#: messageslog\messageslog.py:210 messageslog\messageslog.py:269
+msgid "ID: {} • Sent at"
+msgstr ""
+
+#: messageslog\messageslog.py:211
+msgid "Channel"
+msgstr ""
+
+#: messageslog\messageslog.py:253
+msgid "Message redacted"
+msgstr ""
+
+#: messageslog\messageslog.py:259
+msgid "Now"
+msgstr ""
+
+#: messageslog\messageslog.py:259
+msgid "[View message]({})"
+msgstr ""
+
