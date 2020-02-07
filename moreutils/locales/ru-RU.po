@@ -1,69 +1,65 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR ORGANIZATION
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
-"POT-Creation-Date: 2019-04-20 17:08+0400\n"
-"PO-Revision-Date: 2019-04-20 17:11+0400\n"
-"Last-Translator: \n"
-"Language-Team: \n"
-"Language: ru_RU\n"
+"Project-Id-Version: fixator10-cogs\n"
+"POT-Creation-Date: 2020-02-06 12:53+0400\n"
+"PO-Revision-Date: 2020-02-07 11:09\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: redgettext 2.2\n"
-"X-Generator: Poedit 2.2.1\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+"Generated-By: redgettext 3.1\n"
+"Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
+"X-Crowdin-Project: fixator10-cogs\n"
+"X-Crowdin-Language: ru\n"
+"X-Crowdin-File: /V3/moreutils/locales/messages.pot\n"
+"Language: ru_RU\n"
 
-#: moreutils.py:54
+#: D:\CodeProjects\Fixator10-Cogs\moreutils\moreutils.py:57
+#, docstring
 msgid "Send bot's current time"
 msgstr "Отправляет текущее время бота"
 
-#: moreutils.py:55
+#: D:\CodeProjects\Fixator10-Cogs\moreutils\moreutils.py:58
 msgid "%d.%m.%Y %H:%M:%S %Z"
 msgstr ""
 
-#: moreutils.py:60
+#: D:\CodeProjects\Fixator10-Cogs\moreutils\moreutils.py:63
+#, docstring
 msgid "Shows some info about provided color"
 msgstr "Показывает информацию о предоставленном цвете"
 
-#: moreutils.py:96
-msgid ""
-"Help I've fallen and I need @someone.\n"
-"\n"
-"        Discord 2018 April Fools"
+#: D:\CodeProjects\Fixator10-Cogs\moreutils\moreutils.py:97
+#, docstring
+msgid "Help I've fallen and I need @someone.\\n\\n        Discord 2018 April Fools"
 msgstr ""
-"Help I've fallen and I need @someone.\n"
-"\n"
-"        Первоапрельская шутка Discord 2018"
 
-#: moreutils.py:125
+#: D:\CodeProjects\Fixator10-Cogs\moreutils\moreutils.py:126
+#, docstring
 msgid "Get current discord status from status.discordapp.com"
 msgstr "Получить текущее состояние Discord со страницы status.discordapp.com"
 
-#: moreutils.py:134
+#: D:\CodeProjects\Fixator10-Cogs\moreutils\moreutils.py:135
 msgid "Unable to get data from https://status.discordapp.com: {}"
 msgstr "Невозможно получить информацию от https://status.discordapp.com: {}"
 
-#: moreutils.py:142
+#: D:\CodeProjects\Fixator10-Cogs\moreutils\moreutils.py:143
 msgid "OK"
 msgstr "ОК"
 
-#: moreutils.py:143
+#: D:\CodeProjects\Fixator10-Cogs\moreutils\moreutils.py:144
 msgid "Minor problems"
 msgstr "Небольшие проблемы"
 
-#: moreutils.py:144
+#: D:\CodeProjects\Fixator10-Cogs\moreutils\moreutils.py:145
 msgid "Major problems"
 msgstr "Большие проблемы"
 
-#: moreutils.py:145
+#: D:\CodeProjects\Fixator10-Cogs\moreutils\moreutils.py:146
 msgid "Critical problems"
 msgstr "Критические проблемы"
 
-#: moreutils.py:149
+#: D:\CodeProjects\Fixator10-Cogs\moreutils\moreutils.py:150
 msgid "Discord Status"
 msgstr "Статус Discord"
+
