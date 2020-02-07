@@ -13,7 +13,7 @@
         <img src="https://img.shields.io/badge/code%20style-black-000000.svg?style=for-the-badge">
     </a>
     <br>
-    <a href="https://crowdin.com/project/fixator10-cogs">
+    <a href="https://i18n.fixator10.ru/project/fixator10-cogs">
         <img src="https://badges.crowdin.net/fixator10-cogs/localized.svg">
     </a>
 </p>
