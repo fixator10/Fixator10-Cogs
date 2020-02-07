@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fixator10-cogs\n"
-"POT-Creation-Date: 2020-02-06 12:52+0400\n"
-"PO-Revision-Date: 2020-02-07 11:09\n"
+"POT-Creation-Date: 2020-02-07 15:35+0400\n"
+"PO-Revision-Date: 2020-02-07 11:59\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
@@ -15,129 +15,127 @@ msgstr ""
 "X-Crowdin-File: /V3/personalroles/locales/messages.pot\n"
 "Language: ru_RU\n"
 
-#: D:\CodeProjects\Fixator10-Cogs\personalroles\personalroles.py:23
+#: personalroles\personalroles.py:23
 #, docstring
 msgid "Assign and edit personal roles"
 msgstr "Назначение и редактирование персональных ролей"
 
-#: D:\CodeProjects\Fixator10-Cogs\personalroles\personalroles.py:40
+#: personalroles\personalroles.py:40
 #, docstring
 msgid "Control of personal role"
 msgstr "Управление персональной ролью"
 
-#: D:\CodeProjects\Fixator10-Cogs\personalroles\personalroles.py:46
+#: personalroles\personalroles.py:46
 #, docstring
 msgid "Assign personal role to someone"
 msgstr "Назначить роль кому-либо"
 
-#: D:\CodeProjects\Fixator10-Cogs\personalroles\personalroles.py:49
+#: personalroles\personalroles.py:49
 msgid "Ok. I just assigned {user.name} ({user.id}) to role {role.name} ({role.id})."
 msgstr "Ок. Я назначил роль {role.name} ({role.id}) пользователю {user.name} ({user.id})."
 
-#: D:\CodeProjects\Fixator10-Cogs\personalroles\personalroles.py:57
+#: personalroles\personalroles.py:57
 #, docstring
 msgid "Unassign personal role from someone"
 msgstr "Отменить привязку роли к кому-либо"
 
-#: D:\CodeProjects\Fixator10-Cogs\personalroles\personalroles.py:67
+#: personalroles\personalroles.py:67
 msgid "Ok. I just unassigned {user.name} ({user.id}) from his personal role."
 msgstr "Ок. Я отменил привязку роли пользователя {user.name} ({user.id})"
 
-#: D:\CodeProjects\Fixator10-Cogs\personalroles\personalroles.py:75
+#: personalroles\personalroles.py:75
 #, docstring
 msgid "Assigned roles list"
 msgstr "Список назначенных ролей"
 
-#: D:\CodeProjects\Fixator10-Cogs\personalroles\personalroles.py:79
+#: personalroles\personalroles.py:79
 msgid "There is no assigned personal roles on this server"
 msgstr "На данном сервере нет назначенных ролей"
 
-#: D:\CodeProjects\Fixator10-Cogs\personalroles\personalroles.py:87
+#: personalroles\personalroles.py:87
 msgid "User"
 msgstr "Пользователь"
 
-#: D:\CodeProjects\Fixator10-Cogs\personalroles\personalroles.py:88
+#: personalroles\personalroles.py:88
 msgid "Role"
 msgstr "Роль"
 
-#: D:\CodeProjects\Fixator10-Cogs\personalroles\personalroles.py:105
+#: personalroles\personalroles.py:105
 #, docstring
 msgid "Manage blacklisted names"
 msgstr "Управление запрещенными именами"
 
-#: D:\CodeProjects\Fixator10-Cogs\personalroles\personalroles.py:111
+#: personalroles\personalroles.py:111
 #, docstring
 msgid "Add rolename to blacklist\\n        Members will be not able to change name of role to blacklisted names"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\personalroles\personalroles.py:117
+#: personalroles\personalroles.py:117
 msgid "`{}` is already in blacklist"
 msgstr "`{}` уже в чёрном списке"
 
-#: D:\CodeProjects\Fixator10-Cogs\personalroles\personalroles.py:123
+#: personalroles\personalroles.py:123
 msgid "Added `{}` to blacklisted roles list"
 msgstr "`{}` добавлено в чёрный список"
 
-#: D:\CodeProjects\Fixator10-Cogs\personalroles\personalroles.py:130
+#: personalroles\personalroles.py:130
 #, docstring
 msgid "Remove rolename from blacklist"
 msgstr "Убрать роль из чёрного списка"
 
-#: D:\CodeProjects\Fixator10-Cogs\personalroles\personalroles.py:135
+#: personalroles\personalroles.py:135
 msgid "`{}` is not blacklisted"
 msgstr "`{}` не в чёрном списке"
 
-#: D:\CodeProjects\Fixator10-Cogs\personalroles\personalroles.py:141
+#: personalroles\personalroles.py:141
 msgid "Removed `{}` from blacklisted roles list"
 msgstr "`{}` удалено из чёрного списка"
 
-#: D:\CodeProjects\Fixator10-Cogs\personalroles\personalroles.py:148
+#: personalroles\personalroles.py:148
 #, docstring
 msgid "List of blacklisted role names"
 msgstr "Чёрный список названия ролей"
 
-#: D:\CodeProjects\Fixator10-Cogs\personalroles\personalroles.py:154
+#: personalroles\personalroles.py:154
 msgid "There is no blacklisted roles"
 msgstr "В чёрном списке нет запрещенных названий"
 
-#: D:\CodeProjects\Fixator10-Cogs\personalroles\personalroles.py:161
+#: personalroles\personalroles.py:161
 #, docstring
 msgid "Change color of personal role"
 msgstr "Сменить цвет персональной роли"
 
-#: D:\CodeProjects\Fixator10-Cogs\personalroles\personalroles.py:166
-#: D:\CodeProjects\Fixator10-Cogs\personalroles\personalroles.py:203
-#: D:\CodeProjects\Fixator10-Cogs\personalroles\personalroles.py:233
+#: personalroles\personalroles.py:166 personalroles\personalroles.py:203
+#: personalroles\personalroles.py:233
 msgid "Personal Role"
 msgstr "Персональная роль"
 
-#: D:\CodeProjects\Fixator10-Cogs\personalroles\personalroles.py:172
+#: personalroles\personalroles.py:172
 msgid "Unable to edit role.\\nRole must be lower than my top role and i must have permission \\\"Manage Roles\\\""
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\personalroles\personalroles.py:180
-#: D:\CodeProjects\Fixator10-Cogs\personalroles\personalroles.py:217
+#: personalroles\personalroles.py:180 personalroles\personalroles.py:217
 msgid "Unable to edit role: {}"
 msgstr "Невозможно изменить роль: {}"
 
-#: D:\CodeProjects\Fixator10-Cogs\personalroles\personalroles.py:183
+#: personalroles\personalroles.py:183
 msgid "Changed color of {user}'s personal role to {color}"
 msgstr "Цвет персональной роли {user} изменен на {color}"
 
-#: D:\CodeProjects\Fixator10-Cogs\personalroles\personalroles.py:193
+#: personalroles\personalroles.py:193
 #, docstring
 msgid "Change name of personal role\\n        You cant use blacklisted names"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\personalroles\personalroles.py:199
+#: personalroles\personalroles.py:199
 msgid "NONONO!!! This rolename is blacklisted."
 msgstr "НЕНЕНЕ!!! Это название роли в чёрном списке."
 
-#: D:\CodeProjects\Fixator10-Cogs\personalroles\personalroles.py:209
+#: personalroles\personalroles.py:209
 msgid "Unable to edit role.\\nRole must be lower than my top role and i must have permission \\\"Manage Roles\\\""
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\personalroles\personalroles.py:220
+#: personalroles\personalroles.py:220
 msgid "Changed name of {user}'s personal role to {name}"
 msgstr "Название персональной роли {user} изменено на {name}"
 
