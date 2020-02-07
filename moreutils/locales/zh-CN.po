@@ -1,0 +1,65 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: fixator10-cogs\n"
+"POT-Creation-Date: 2020-02-07 15:35+0400\n"
+"PO-Revision-Date: 2020-02-07 20:10\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Chinese Simplified\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: redgettext 3.1\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Crowdin-Project: fixator10-cogs\n"
+"X-Crowdin-Language: zh-CN\n"
+"X-Crowdin-File: /V3/moreutils/locales/messages.pot\n"
+"Language: zh_CN\n"
+
+#: moreutils\moreutils.py:57
+#, docstring
+msgid "Send bot's current time"
+msgstr ""
+
+#: moreutils\moreutils.py:58
+msgid "%d.%m.%Y %H:%M:%S %Z"
+msgstr ""
+
+#: moreutils\moreutils.py:63
+#, docstring
+msgid "Shows some info about provided color"
+msgstr ""
+
+#: moreutils\moreutils.py:97
+#, docstring
+msgid "Help I've fallen and I need @someone.\\n\\n        Discord 2018 April Fools"
+msgstr ""
+
+#: moreutils\moreutils.py:126
+#, docstring
+msgid "Get current discord status from status.discordapp.com"
+msgstr ""
+
+#: moreutils\moreutils.py:135
+msgid "Unable to get data from https://status.discordapp.com: {}"
+msgstr ""
+
+#: moreutils\moreutils.py:143
+msgid "OK"
+msgstr ""
+
+#: moreutils\moreutils.py:144
+msgid "Minor problems"
+msgstr ""
+
+#: moreutils\moreutils.py:145
+msgid "Major problems"
+msgstr ""
+
+#: moreutils\moreutils.py:146
+msgid "Critical problems"
+msgstr ""
+
+#: moreutils\moreutils.py:150
+msgid "Discord Status"
+msgstr ""
+
