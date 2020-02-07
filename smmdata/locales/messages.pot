@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-02-06 12:53+0400\n"
+"POT-Creation-Date: 2020-02-07 15:35+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,118 +11,118 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: redgettext 3.1\n"
 
-#: D:\CodeProjects\Fixator10-Cogs\smmdata\smmbookmark.py:178
+#: smmdata\smmbookmark.py:178
 msgid "Unable to find level {level}: {status}"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\smmdata\smmbookmark.py:235
+#: smmdata\smmbookmark.py:235
 msgid "The specified user could not be found."
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\smmdata\smmbookmark.py:237
+#: smmdata\smmbookmark.py:237
 msgid "Unable to find user {user}: {status}"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\smmdata\smmdata.py:18
+#: smmdata\smmdata.py:18
 #, docstring
 msgid "Super Mario Maker-related data"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\smmdata\smmdata.py:32
+#: smmdata\smmdata.py:32
 #, docstring
 msgid "Get Super Mario Maker-related data"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\smmdata\smmdata.py:37
+#: smmdata\smmdata.py:37
 #, docstring
 msgid "Get info about SMM level"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\smmdata\smmdata.py:45
+#: smmdata\smmdata.py:45
 msgid "Game Style"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\smmdata\smmdata.py:46
+#: smmdata\smmdata.py:46
 msgid "Stars"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\smmdata\smmdata.py:47
+#: smmdata\smmdata.py:47
 msgid "Unique Players"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\smmdata\smmdata.py:48
+#: smmdata\smmdata.py:48
 msgid "Share count"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\smmdata\smmdata.py:50
+#: smmdata\smmdata.py:50
 msgid "Clears"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\smmdata\smmdata.py:54
+#: smmdata\smmdata.py:54
 msgid "First clear"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\smmdata\smmdata.py:59
+#: smmdata\smmdata.py:59
 msgid "World record"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\smmdata\smmdata.py:60
+#: smmdata\smmdata.py:60
 msgid "{time} by [{player}]({url})"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\smmdata\smmdata.py:76
+#: smmdata\smmdata.py:76
 #, docstring
 msgid "Get info about levels maker"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\smmdata\smmdata.py:83
+#: smmdata\smmdata.py:83
 msgid "Stars Received"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\smmdata\smmdata.py:84
+#: smmdata\smmdata.py:84
 msgid "Medals Earned"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\smmdata\smmdata.py:85
+#: smmdata\smmdata.py:85
 msgid "Uploaded Courses"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\smmdata\smmdata.py:87
+#: smmdata\smmdata.py:87
 msgid "100 Mario Challenge"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\smmdata\smmdata.py:89
+#: smmdata\smmdata.py:89
 msgid "Easy clears"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\smmdata\smmdata.py:90
+#: smmdata\smmdata.py:90
 msgid "Normal clears"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\smmdata\smmdata.py:91
+#: smmdata\smmdata.py:91
 msgid "Expert clears"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\smmdata\smmdata.py:93
+#: smmdata\smmdata.py:93
 msgid "Super Expert clears"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\smmdata\smmdata.py:95
+#: smmdata\smmdata.py:95
 msgid "Play History"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\smmdata\smmdata.py:96
+#: smmdata\smmdata.py:96
 msgid "Courses played"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\smmdata\smmdata.py:97
+#: smmdata\smmdata.py:97
 msgid "Courses cleared"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\smmdata\smmdata.py:98
+#: smmdata\smmdata.py:98
 msgid "Total plays"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\smmdata\smmdata.py:99
+#: smmdata\smmdata.py:99
 msgid "Lives lost"
 msgstr ""

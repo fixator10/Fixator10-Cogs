@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-02-06 12:51+0400\n"
+"POT-Creation-Date: 2020-02-07 15:35+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,52 +11,50 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: redgettext 3.1\n"
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:24
+#: messageslog\messageslog.py:24
 #, docstring
 msgid "Log deleted and redacted messages to the defined channel"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:48
+#: messageslog\messageslog.py:48
 #, docstring
 msgid "Manage message logging"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:53
+#: messageslog\messageslog.py:53
 #, docstring
 msgid ""
 "Set the channel for logs\\n\\n        If channel is not provided, then "
 "logging will be disabled"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:62
+#: messageslog\messageslog.py:62
 #, docstring
 msgid "Toggle logging of message deletion"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:66
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:79
+#: messageslog\messageslog.py:66 messageslog\messageslog.py:79
 msgid "enabled"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:68
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:81
+#: messageslog\messageslog.py:68 messageslog\messageslog.py:81
 msgid "disabled"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:70
+#: messageslog\messageslog.py:70
 msgid "Message deletion logging {}"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:75
+#: messageslog\messageslog.py:75
 #, docstring
 msgid "Toggle logging of message editing"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:83
+#: messageslog\messageslog.py:83
 msgid "Message editing logging {}"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:92
+#: messageslog\messageslog.py:92
 #, docstring
 msgid ""
 "Manage message logging blacklist\\n\\n        Shows blacklist if no "
@@ -64,53 +62,50 @@ msgid ""
 "members\\n        If item is in blacklist, removes it"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:117
+#: messageslog\messageslog.py:117
 msgid "Nothing is ignored"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:124
+#: messageslog\messageslog.py:124
 msgid "Ignored users"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:128
+#: messageslog\messageslog.py:128
 msgid "Ignored channels"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:132
+#: messageslog\messageslog.py:132
 msgid "Ignored categories"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:197
+#: messageslog\messageslog.py:197
 msgid "Message deleted"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:198
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:254
+#: messageslog\messageslog.py:198 messageslog\messageslog.py:254
 msgid "No text"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:204
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:263
+#: messageslog\messageslog.py:204 messageslog\messageslog.py:263
 msgid "Attachments"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:210
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:269
+#: messageslog\messageslog.py:210 messageslog\messageslog.py:269
 msgid "ID: {} • Sent at"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:211
+#: messageslog\messageslog.py:211
 msgid "Channel"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:253
+#: messageslog\messageslog.py:253
 msgid "Message redacted"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:259
+#: messageslog\messageslog.py:259
 msgid "Now"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:259
+#: messageslog\messageslog.py:259
 msgid "[View message]({})"
 msgstr ""

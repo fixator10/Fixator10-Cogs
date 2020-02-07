@@ -105,3 +105,6 @@ ENV/
 
 # Empty cog for copypaste
 dull/
+
+# update translation source files
+/update_translations.bat
