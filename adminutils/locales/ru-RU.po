@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fixator10-cogs\n"
 "POT-Creation-Date: 2020-02-07 15:35+0400\n"
-"PO-Revision-Date: 2020-02-07 12:12\n"
+"PO-Revision-Date: 2020-02-07 12:23\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
@@ -74,7 +74,7 @@ msgstr "Управление эмодзи"
 #: adminutils\adminutils.py:136
 #, docstring
 msgid "Create custom emoji\\n\\n        Use double quotes if role name has spaces\\n\\n        Examples:\\n            `[p]emoji add Example https://example.com/image.png`\\n            `[p]emoji add RoleBased https://example.com/image.png EmojiRole \\\"Test image\\\"`\\n        "
-msgstr ""
+msgstr "Создать серверную эмодзи\\n\\n        Используйте двойные кавычки, если название роли содержит пробелы\\n\\n        Например:\\n            `[p]emoji add Example https://example.com/image.png`\\n            `[p]emoji add RoleBased https://example.com/image.png РольДляЭмодзи \\\"Тестовое Изображение\\\"`\\n        "
 
 #: adminutils\adminutils.py:149
 msgid "Unable to get emoji from provided url: {}"
@@ -95,7 +95,7 @@ msgstr "Произошла ошибка при добавлении эмодзи
 #: adminutils\adminutils.py:181
 #, docstring
 msgid "Rename emoji and restrict to certain roles\\n        Only this roles will be able to use this emoji\\n\\n        Use double quotes if role name has spaces\\n\\n        Examples:\\n            `[p]emoji rename emoji NewEmojiName`\\n            `[p]emoji rename emoji NewEmojiName Administrator \\\"Allowed role\\\"`\\n        "
-msgstr ""
+msgstr "Переименовать эмодзи и ограничить использование для определённых ролей\\n        Этой эмодзи смогут пользоваться только указанные роли\\n\\n        Используйте двойные кавычки, если название роли содержит пробелы\\n\\n        Наример:\\n            `[p]emoji rename emoji NewEmojiName`\\n            `[p]emoji rename emoji NewEmojiName Администратор \\\"Разрешенная роль\\\"`\\n        "
 
 #: adminutils\adminutils.py:198
 msgid "Restricted to roles: "
