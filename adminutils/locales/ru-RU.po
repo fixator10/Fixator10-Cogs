@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fixator10-cogs\n"
 "POT-Creation-Date: 2020-02-07 15:35+0400\n"
-"PO-Revision-Date: 2020-02-07 11:58\n"
+"PO-Revision-Date: 2020-02-07 12:12\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
@@ -26,15 +26,15 @@ msgstr "В связи с ограничениями Discord, вы не може�
 
 #: adminutils\adminutils.py:44
 msgid "\\\"days\\\" arg cannot be less than 1..."
-msgstr ""
+msgstr "Аргумент \\\"days\\\" не может быть меньше 1..."
 
 #: adminutils\adminutils.py:49
 msgid "You about to kick **{to_kick}** inactive for **{days}** days members from this server. Are you sure?\\nTo agree, type \\\"yes\\\""
-msgstr ""
+msgstr "\"Вы собираетесь выгнать с этого сервера **{to_kick}** участников, не проявивших активность в последние **{days}** дней. Вы уверены в этом?\\nДля подтверждения, напишите \\\"yes\\\"\""
 
 #: adminutils\adminutils.py:66
 msgid "**{removed}**/**{all}** inactive members removed.\\n(They was inactive for **{days}** days)"
-msgstr ""
+msgstr "**{removed}**/**{all}** неактивных участников удалено.\\n(Они были неактивны **{days}** дней)\""
 
 #: adminutils\adminutils.py:73
 msgid "Inactive members cleanup canceled."
