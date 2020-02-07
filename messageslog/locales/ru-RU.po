@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fixator10-cogs\n"
-"POT-Creation-Date: 2020-02-06 12:51+0400\n"
-"PO-Revision-Date: 2020-02-07 11:09\n"
+"POT-Creation-Date: 2020-02-07 15:35+0400\n"
+"PO-Revision-Date: 2020-02-07 11:58\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
@@ -15,102 +15,97 @@ msgstr ""
 "X-Crowdin-File: /V3/messageslog/locales/messages.pot\n"
 "Language: ru_RU\n"
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:24
+#: messageslog\messageslog.py:24
 #, docstring
 msgid "Log deleted and redacted messages to the defined channel"
 msgstr "Записывает удалённые и отредактированные сообщения в установленный канал"
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:48
+#: messageslog\messageslog.py:48
 #, docstring
 msgid "Manage message logging"
 msgstr "Управление логированием сообщений"
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:53
+#: messageslog\messageslog.py:53
 #, docstring
 msgid "Set the channel for logs\\n\\n        If channel is not provided, then logging will be disabled"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:62
+#: messageslog\messageslog.py:62
 #, docstring
 msgid "Toggle logging of message deletion"
 msgstr "Переключает логирование удалённых сообщений"
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:66
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:79
+#: messageslog\messageslog.py:66 messageslog\messageslog.py:79
 msgid "enabled"
 msgstr "включено"
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:68
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:81
+#: messageslog\messageslog.py:68 messageslog\messageslog.py:81
 msgid "disabled"
 msgstr "выключено"
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:70
+#: messageslog\messageslog.py:70
 msgid "Message deletion logging {}"
 msgstr "Логирование удалённых сообщений {}"
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:75
+#: messageslog\messageslog.py:75
 #, docstring
 msgid "Toggle logging of message editing"
 msgstr "Переключает логирование отредактированных сообщений"
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:83
+#: messageslog\messageslog.py:83
 msgid "Message editing logging {}"
 msgstr "Логирование редактирований сообщений {}"
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:92
+#: messageslog\messageslog.py:92
 #, docstring
 msgid "Manage message logging blacklist\\n\\n        Shows blacklist if no arguments provided\\n        You can ignore text channels, categories and members\\n        If item is in blacklist, removes it"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:117
+#: messageslog\messageslog.py:117
 msgid "Nothing is ignored"
 msgstr "Ничего не игнорируется"
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:124
+#: messageslog\messageslog.py:124
 msgid "Ignored users"
 msgstr "Игнорируемые пользователи"
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:128
+#: messageslog\messageslog.py:128
 msgid "Ignored channels"
 msgstr "Игнорируемые каналы"
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:132
+#: messageslog\messageslog.py:132
 msgid "Ignored categories"
 msgstr "Игнорируемые категории"
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:197
+#: messageslog\messageslog.py:197
 msgid "Message deleted"
 msgstr "Сообщение удалено"
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:198
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:254
+#: messageslog\messageslog.py:198 messageslog\messageslog.py:254
 msgid "No text"
 msgstr "Нет текста"
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:204
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:263
+#: messageslog\messageslog.py:204 messageslog\messageslog.py:263
 msgid "Attachments"
 msgstr "Вложения"
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:210
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:269
+#: messageslog\messageslog.py:210 messageslog\messageslog.py:269
 msgid "ID: {} • Sent at"
 msgstr "ID: {} • Отправлено в"
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:211
+#: messageslog\messageslog.py:211
 msgid "Channel"
 msgstr "Канал"
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:253
+#: messageslog\messageslog.py:253
 msgid "Message redacted"
 msgstr "Сообщение отредактировано"
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:259
+#: messageslog\messageslog.py:259
 msgid "Now"
 msgstr "Сейчас"
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:259
+#: messageslog\messageslog.py:259
 msgid "[View message]({})"
 msgstr "[Просмотреть сообщение]({})"
 
