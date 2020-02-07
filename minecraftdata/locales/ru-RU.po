@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fixator10-cogs\n"
 "POT-Creation-Date: 2020-02-07 15:35+0400\n"
-"PO-Revision-Date: 2020-02-07 11:58\n"
+"PO-Revision-Date: 2020-02-07 20:10\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
@@ -53,7 +53,7 @@ msgstr "Предоставлено Crafatar"
 #: minecraftdata\minecraftdata.py:105
 #, docstring
 msgid "Get Minecraft capes by nickname"
-msgstr ""
+msgstr "Получить плащ Minecraft по никнейму"
 
 #: minecraftdata\minecraftdata.py:113
 msgid "{} doesn't have cape"
@@ -66,15 +66,15 @@ msgstr "Невозможно получить плащ: {}"
 #: minecraftdata\minecraftdata.py:129
 #, docstring
 msgid "Get OptiFine cape by nickname"
-msgstr ""
+msgstr "Получить плащ OptiFine по никнейму"
 
 #: minecraftdata\minecraftdata.py:137
 msgid "{} doesn't have OptiFine cape"
-msgstr ""
+msgstr "{} не имеет плаща OptiFine"
 
 #: minecraftdata\minecraftdata.py:142
 msgid "Unable to get {player}'s OptiFine cape: {message}"
-msgstr ""
+msgstr "Невозможно получить плащ OptiFine игрока {player}: {message}"
 
 #: minecraftdata\minecraftdata.py:159
 #, docstring
@@ -151,7 +151,7 @@ msgstr "Версия"
 
 #: minecraftdata\minecraftdata.py:342
 msgid "{}\\nProtocol: {}"
-msgstr ""
+msgstr "{}\\nПротокол: {}"
 
 #: minecraftdata\minecraftdata.py:347
 msgid "World"
@@ -163,7 +163,7 @@ msgstr "ПО"
 
 #: minecraftdata\minecraftdata.py:350
 msgid "{}\\nVersion: {}"
-msgstr ""
+msgstr "{}\\nВерсия: {}"
 
 #: minecraftdata\minecraftdata.py:360
 #, docstring
@@ -201,7 +201,7 @@ msgstr "Изменено в... (UTC)"
 
 #: minecraftdata\minecraftdata.py:411
 msgid "Unable to check name history.\\nAn error has been occurred: "
-msgstr ""
+msgstr "Невозможно получить историю никнеймов\\nПроизошла ошибка: "
 
 #: minecraftdata\minecraftplayer.py:31
 msgid "Unable to get data from Minecraft API: {}"
