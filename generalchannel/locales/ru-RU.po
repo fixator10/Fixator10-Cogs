@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fixator10-cogs\n"
-"POT-Creation-Date: 2020-02-06 12:50+0400\n"
-"PO-Revision-Date: 2020-02-07 11:09\n"
+"POT-Creation-Date: 2020-02-07 15:35+0400\n"
+"PO-Revision-Date: 2020-02-07 11:58\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
@@ -15,52 +15,52 @@ msgstr ""
 "X-Crowdin-File: /V3/generalchannel/locales/messages.pot\n"
 "Language: ru_RU\n"
 
-#: D:\CodeProjects\Fixator10-Cogs\generalchannel\generalchannel.py:35
+#: generalchannel\generalchannel.py:35
 #, docstring
 msgid "Change general server's channel name/topic"
 msgstr "Изменить название/заголовок основного канала"
 
-#: D:\CodeProjects\Fixator10-Cogs\generalchannel\generalchannel.py:41
+#: generalchannel\generalchannel.py:41
 #, docstring
 msgid "Set general channel"
 msgstr "Установить основной канал"
 
-#: D:\CodeProjects\Fixator10-Cogs\generalchannel\generalchannel.py:46
+#: generalchannel\generalchannel.py:46
 #, docstring
 msgid "Set #general channel\\n\\n        Clears setting if channel not specified"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\generalchannel\generalchannel.py:59
+#: generalchannel\generalchannel.py:59
 #, docstring
 msgid "Change name of #general"
 msgstr "Изменить название #основного канала"
 
-#: D:\CodeProjects\Fixator10-Cogs\generalchannel\generalchannel.py:67
+#: generalchannel\generalchannel.py:67
 msgid "General channel name change"
 msgstr "Изменение названия основного канала"
 
-#: D:\CodeProjects\Fixator10-Cogs\generalchannel\generalchannel.py:71
+#: generalchannel\generalchannel.py:71
 msgid "Unable to change channel's name: Missing permissions"
 msgstr "Невозможно изменить название канала: Недостаточно прав"
 
-#: D:\CodeProjects\Fixator10-Cogs\generalchannel\generalchannel.py:76
+#: generalchannel\generalchannel.py:76
 msgid "Unable to change channel's name: Failed: {}"
 msgstr "Невозможно изменить название канала: Произошла ошибка: {}"
 
-#: D:\CodeProjects\Fixator10-Cogs\generalchannel\generalchannel.py:85
+#: generalchannel\generalchannel.py:85
 #, docstring
 msgid "Change topic of #general\\n\\n        Use `[p]generalchannel topic +<text>` to add text\\n        to end of topic"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\generalchannel\generalchannel.py:102
+#: generalchannel\generalchannel.py:102
 msgid "General channel topic change"
 msgstr "Изменение заголовка основного канала"
 
-#: D:\CodeProjects\Fixator10-Cogs\generalchannel\generalchannel.py:106
+#: generalchannel\generalchannel.py:106
 msgid "Unable to change channel's topic: Missing permissions"
 msgstr "Невозможно изменить заголовок канала: Недостаточно прав"
 
-#: D:\CodeProjects\Fixator10-Cogs\generalchannel\generalchannel.py:111
+#: generalchannel\generalchannel.py:111
 msgid "Unable to change channel's topic: Failed: {}"
 msgstr "Невозможно изменить заголовок канала: Произошла ошибка: {}"
 
