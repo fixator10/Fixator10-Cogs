@@ -1,166 +1,131 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR ORGANIZATION
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
-"POT-Creation-Date: 2019-11-16 18:01+0400\n"
-"PO-Revision-Date: 2019-11-16 18:02+0400\n"
-"Last-Translator: Максим Невзоров\n"
-"Language-Team: \n"
-"Language: ru_RU\n"
+"Project-Id-Version: fixator10-cogs\n"
+"POT-Creation-Date: 2020-02-06 12:55+0400\n"
+"PO-Revision-Date: 2020-02-07 11:09\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: redgettext 2.2\n"
-"X-Generator: Poedit 2.2.2\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+"Generated-By: redgettext 3.1\n"
+"Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
+"X-Crowdin-Project: fixator10-cogs\n"
+"X-Crowdin-Language: ru\n"
+"X-Crowdin-File: /V3/translators/locales/messages.pot\n"
+"Language: ru_RU\n"
 
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:43
+#, docstring
 msgid "Set API key for Yandex.Translate"
 msgstr "Установить ключ"
 
-msgid ""
-"To get Yandex.Translate API key:\n"
-"1. Login to your Yandex account\n"
-"1.1. Visit [API keys](https://translate.yandex.com/developers/keys) page\n"
-"2. Press `Create a new key`\n"
-"3. Enter description for key\n"
-"4. Copy `trnsl.*` key\n"
-"5. Use `{}set api yandex translate <your_apikey>`"
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:44
+msgid "To get Yandex.Translate API key:\\n1. Login to your Yandex account\\n1.1. Visit [API keys](https://translate.yandex.com/developers/keys) page\\n2. Press `Create a new key`\\n3. Enter description for key\\n4. Copy `trnsl.*` key\\n5. Use `{}set api yandex translate <your_apikey>`"
 msgstr ""
-"Для получения API-ключа Yandex.Translate:\n"
-"1. Войдите в ваш аккаунт Yandex\n"
-"1.1. Посетите страницу [API-ключи](https://translate.yandex.ru/developers/"
-"keys)\n"
-"2. Нажмите `Создать новый ключ`\n"
-"3. Введите описание ключа\n"
-"4. Скопируйте ключ вида `trnsl.*`\n"
-"5. Используйте команду `{}set api yandex translate <ваш_API_ключ>`"
 
-msgid ""
-"Translate text via Yandex\n"
-"\n"
-"        Language may be just \"ru\" (target language to translate)\n"
-"        or \"en-ru\" (original text's language - target language)"
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:58
+#, docstring
+msgid "Translate text via Yandex\\n\\n        Language may be just \\\"ru\\\" (target language to translate)\\n        or \\\"en-ru\\\" (original text's language - target language)"
 msgstr ""
-"Перевести текст через Яндекс\n"
-"\n"
-"        Язык может быть \"ru\" (язык на который будет осуществлятся "
-"перевод)\n"
-"        или \"en-ru\" (язык текста - язык цель)"
 
-msgid ""
-"This command requires valid API key, check {}ytapikey to get more information"
-msgstr ""
-"Эта команда требует API ключа, используйте {}ytapikey для получения большей "
-"информации"
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:72
+msgid "This command requires valid API key, check {}ytapikey to get more information"
+msgstr "Эта команда требует API ключа, используйте {}ytapikey для получения большей информации"
 
-msgid ""
-"An error has been occurred: Language {} is not supported or incorrect, check "
-"your formatting and try again"
-msgstr ""
-"Произошла ошибка: Язык {} не поддерживается или неверен, проверьте "
-"форматирование и попробуйте снова"
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:80
+msgid "An error has been occurred: Language {} is not supported or incorrect, check your formatting and try again"
+msgstr "Произошла ошибка: Язык {} не поддерживается или неверен, проверьте форматирование и попробуйте снова"
 
-msgid ""
-"An error has been occurred: Text that you provided is too big to translate"
-msgstr ""
-"Произошла ошибка: Текст, который вы предоставили слишком большой для перевода"
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:90
+msgid "An error has been occurred: Text that you provided is too big to translate"
+msgstr "Произошла ошибка: Текст, который вы предоставили слишком большой для перевода"
 
-msgid ""
-"API key is blocked. Bot owner needs to get new api key or unlock current."
-msgstr ""
-"Ключ API заблокирован. Владелец бота должен получить новый ключ или "
-"разблокировать текущий."
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:98
+msgid "API key is blocked. Bot owner needs to get new api key or unlock current."
+msgstr "Ключ API заблокирован. Владелец бота должен получить новый ключ или разблокировать текущий."
 
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:105
 msgid "Daily requests limit reached. Try again later."
 msgstr "Достигнут лимит суточных запросов. Попробуйте позже."
 
-msgid ""
-"An error has been occurred: Yandex.Translate is unable to translate your text"
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:110
+msgid "An error has been occurred: Yandex.Translate is unable to translate your text"
 msgstr "Произошла ошибка: Яндекс.Переводчик не может перевести ваш текст"
 
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:116
 msgid "An error has been occurred: {}"
 msgstr "Произошла ошибка: {}"
 
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:123
 msgid "Translated via Yandex.Translate"
 msgstr "Переведено сервисом «Яндекс.Переводчик»"
 
-msgid ""
-"Say something via Google Translate\n"
-"\n"
-"        lang arg must be two-letters google-translate language code\n"
-"        Not all languages support tts\n"
-"        If text contains more than 200 symbols, it will be cut"
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:131
+#, docstring
+msgid "Say something via Google Translate\\n\\n        lang arg must be two-letters google-translate language code\\n        Not all languages support tts\\n        If text contains more than 200 symbols, it will be cut"
 msgstr ""
-"Сказать что-нибудь через переводчик Google\n"
-"\n"
-"        Аргумент \"язык\" должен быть двухбуквенным кодом языка Переводчика "
-"Google\n"
-"        Не все языки поддерживают tts\n"
-"        Если текст содержит более 200 символов, он будет обрезан"
 
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:149
 msgid "Language {} is not supported or incorrect"
 msgstr "Язык {} не поддерживается или неверен"
 
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:155
 msgid "Unable to get data from Google Translate TTS: {}"
 msgstr "Невозможно получить информацию от переводчика Google: {}"
 
-msgid ""
-"Translates text (cyrillic/latin) to \"eciho\"\n"
-"\n"
-"        eciho - language created by Фражуз#2170 (255682413445906433)\n"
-"\n"
-"        This is unusable shit, i know, but whatever"
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:167
+#, docstring
+msgid "Translates text (cyrillic/latin) to \\\"eciho\\\"\\n\\n        eciho - language created by Фражуз#2170 (255682413445906433)\\n\\n        This is unusable shit, i know, but whatever"
 msgstr ""
-"Переводит текст (кириллицу/латиницу) на \"Ецихо\"\n"
-"\n"
-"        Ецихо - язык созданный Фражуз#2170 (255682413445906433)\n"
-"\n"
-"        Бесполезное дерьмо, но кому какая разница"
 
-msgid ""
-"Flips text upside-down\n"
-"\n"
-"        Based on https://unicode-table.com/en/tools/flip/"
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:193
+#, docstring
+msgid "Flips text upside-down\\n\\n        Based on https://unicode-table.com/en/tools/flip/"
 msgstr ""
-"Переворачивает текст\n"
-"\n"
-"        Основано на https://unicode-table.com/ru/tools/flip/"
 
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:210
+#, docstring
 msgid "Switches text to Ｆｕｌｌ－ｗｉｄｔｈ　ｃｈａｒａｃｔｅｒｓ"
 msgstr "Переводит текст в Ｆｕｌｌ－ｗｉｄｔｈ　ｃｈａｒａｃｔｅｒｓ"
 
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:227
+#, docstring
 msgid "Leet (1337) translation commands"
 msgstr "Команды перевода в Leet (1337)"
 
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:232
+#, docstring
 msgid "Translates provided text to 1337"
 msgstr "Переводит указанный текст в 1337"
 
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:268
+#, docstring
 msgid "Translate cyrillic to 1337"
 msgstr "Переводит кириллицу в 1337"
 
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:312
+#, docstring
 msgid "Base64 text converter"
 msgstr "Конвертер текста в/из Base64"
 
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:317
+#, docstring
 msgid "Encode text to Base64"
 msgstr "Закодировать текст в Base64"
 
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:326
+#, docstring
 msgid "Decode text from Base64"
 msgstr "Раскодировать текст из Base64"
 
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:339
+#, docstring
 msgid "Emojify text"
 msgstr "Преобразовать текст в emoji"
 
-msgid ""
-"Encode text to url-like format\n"
-"        ('abc def') -> 'abc%20def'"
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:366
+#, docstring
+msgid "Encode text to url-like format\\n        ('abc def') -> 'abc%20def'"
 msgstr ""
-"Преобразовать текст в строку типа URL\n"
-"\n"
-"        ('abc абв') -> 'abc%20%D0%B0%D0%B1%D0%B2'"
 
-#~ msgid "Google Translate returned code {}"
-#~ msgstr "Переводчик Google вернул код {}"

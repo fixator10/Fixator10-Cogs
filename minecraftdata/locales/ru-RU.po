@@ -1,192 +1,219 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR ORGANIZATION
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
-"POT-Creation-Date: 2019-05-16 12:43+0400\n"
-"PO-Revision-Date: 2019-05-16 12:45+0400\n"
-"Last-Translator: Максим Невзоров\n"
-"Language-Team: \n"
-"Language: ru_RU\n"
+"Project-Id-Version: fixator10-cogs\n"
+"POT-Creation-Date: 2020-02-06 12:51+0400\n"
+"PO-Revision-Date: 2020-02-07 11:09\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: redgettext 2.2\n"
-"X-Generator: Poedit 2.2.1\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+"Generated-By: redgettext 3.1\n"
+"Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
+"X-Crowdin-Project: fixator10-cogs\n"
+"X-Crowdin-Language: ru\n"
+"X-Crowdin-File: /V3/minecraftdata/locales/messages.pot\n"
+"Language: ru_RU\n"
 
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:23
 msgid "💔 **UNAVAILABLE**"
 msgstr "💔 **НЕДОСТУПЕН**"
 
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:24
 msgid "💛 **SOME ISSUES**"
 msgstr "💛 **НЕКОТОРЫЕ ПРОБЛЕМЫ**"
 
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:25
 msgid "💚 **OK**"
-msgstr "💚 **OK**"
+msgstr ""
 
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:31
+#, docstring
 msgid "Minecraft-Related data"
 msgstr "Информация связанная с Minecraft"
 
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:44
+#, docstring
 msgid "Get Minecraft-Related data"
 msgstr "Получить информацию связанную с Minecraft"
 
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:50
+#, docstring
 msgid "Get minecraft skin by nickname"
 msgstr "Получить скин по никнейму"
 
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:83
 msgid "Unable to get data from Crafatar: {}"
 msgstr "Невозможно получить информацию от Crafatar: {}"
 
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:98
 msgid "Provided by Crafatar"
 msgstr "Предоставлено Crafatar"
 
-msgid "Get minecraft capes by nickname"
-msgstr "Получить плащ Minecraft по никнейму"
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:105
+#, docstring
+msgid "Get Minecraft capes by nickname"
+msgstr ""
 
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:113
 msgid "{} doesn't have cape"
 msgstr "{} не имеет плаща"
 
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:117
 msgid "Unable to get cape: {}"
 msgstr "Невозможно получить плащ: {}"
 
-msgid "Get optifine cape by nickname"
-msgstr "Получить плащ Optifine по никнейму"
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:129
+#, docstring
+msgid "Get OptiFine cape by nickname"
+msgstr ""
 
-msgid "{} doesn't have optifine cape"
-msgstr "{} не имеет плаща Optifine"
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:137
+msgid "{} doesn't have OptiFine cape"
+msgstr ""
 
-msgid "Unable to get {player}'s optifine cape: {message}"
-msgstr "Невозможно получить плащ {player}: {message}"
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:142
+msgid "Unable to get {player}'s OptiFine cape: {message}"
+msgstr ""
 
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:159
+#, docstring
 msgid "Get LabyMod cape by nickname"
 msgstr "Получить плащ LabyMod по никнейму"
 
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:169
 msgid "{} doesn't have LabyMod cape"
 msgstr "{} не имеет плаща LabyMod"
 
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:174
 msgid "Unable to get data: {message} ({status})"
 msgstr "Невозможно получить информацию: {message} ({{status})"
 
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:187
+#, docstring
 msgid "Get MinecraftCapes.co.uk cape by nickname"
 msgstr "Получить плащ MinecraftCapes.co.uk по никнейму"
 
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:197
 msgid "{} doesn't have MinecraftCapes cape"
 msgstr "{} не имеет плаща MinecraftCapes"
 
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:203
 msgid "Unable to get {player}'s MinecraftCapes cape: {message}"
 msgstr "Невозможно получить плащ MinecraftCapes игрока {player}: {message}"
 
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:220
+#, docstring
 msgid "Get 5zig cape by nickname"
 msgstr "Получить плащ 5zig по никнейму"
 
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:231
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:267
 msgid "{} doesn't have 5zig cape"
 msgstr "{} не имеет плаща 5zig"
 
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:236
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:272
 msgid "Unable to get {player}'s 5zig cape: {message}"
 msgstr "Невозможно получить плащ 5zig игрока {player}: {message}"
 
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:249
+#, docstring
 msgid "Get 5zig animated cape by nickname"
 msgstr "Получить анимированный плащ 5zig по никнейму"
 
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:258
 msgid "{} doesn't have animated 5zig cape"
 msgstr "{} не имеет анимированного плаща 5zig"
 
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:287
+#, docstring
 msgid "Get info about server"
 msgstr "Получить информацию о сервере"
 
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:293
 msgid "Unable to resolve IP: {}"
 msgstr "Невозможно преобразовать IP адрес: {}"
 
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:300
 msgid "Unable to get server's status: {}"
 msgstr "Невозможно получить информацию о состоянии сервера: {}"
 
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:321
 msgid "Latency"
 msgstr "Задержка"
 
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:323
 msgid "Players"
 msgstr "Игроков"
 
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:341
 msgid "Version"
 msgstr "Версия"
 
-msgid ""
-"{}\n"
-"Protocol: {}"
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:342
+msgid "{}\\nProtocol: {}"
 msgstr ""
-"{}\n"
-"Протокол: {}"
 
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:347
 msgid "World"
 msgstr "Мир"
 
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:349
 msgid "Software"
 msgstr "ПО"
 
-msgid ""
-"{}\n"
-"Version: {}"
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:350
+msgid "{}\\nVersion: {}"
 msgstr ""
-"{}\n"
-"Версия: {}"
 
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:360
+#, docstring
 msgid "Get status of minecraft services"
 msgstr "Получить статус сервисов Minecraft"
 
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:365
 msgid "Status of minecraft services"
 msgstr "Статус сервисов Minecraft"
 
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:376
 msgid "Unable to check. An error has been occurred: {}"
 msgstr "Невозможно проверить. Произошла ошибка: {}"
 
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:384
+#, docstring
 msgid "Check history of player's nicks"
 msgstr "Получить историю ников игрока"
 
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:395
 msgid "%d.%m.%Y %H:%M:%S"
 msgstr ""
 
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:397
 msgid "Initial"
 msgstr "Изначальный"
 
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:401
 msgid "Nickname"
 msgstr "Никнейм"
 
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:402
 msgid "Changed to at... (UTC)"
 msgstr "Изменено в... (UTC)"
 
-msgid ""
-"Unable to check name history.\n"
-"An error has been occurred: "
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftdata.py:411
+msgid "Unable to check name history.\\nAn error has been occurred: "
 msgstr ""
-"Невозможно получить историю ников.\n"
-"Произошла ошибка: "
 
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftplayer.py:31
 msgid "Unable to get data from Minecraft API: {}"
 msgstr "Невозможно получить информацию от Minecraft API: {}"
 
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftplayer.py:34
 msgid "{} not found on Mojang servers"
 msgstr "{} не найден на серверах Mojang"
 
+#: D:\CodeProjects\Fixator10-Cogs\minecraftdata\minecraftplayer.py:41
 msgid "{} is found, but has incorrect UUID."
 msgstr "{} найден, но имеет неверный UUID."
 
-#~ msgid ""
-#~ "Data is not found. (Or LabyMod capes server is down)\n"
-#~ "{}"
-#~ msgstr ""
-#~ "Информации не обнаружено (Или сервер плащей LabyMod упал)\n"
-#~ "{}"
-
-#~ msgid ""
-#~ "Data is not found. (Or 5zig texture server is down)\n"
-#~ "{}"
-#~ msgstr ""
-#~ "Информации не обнаружено (Или сервер текстур 5zig упал)\n"
-#~ "{}"
-
-#~ msgid "This player not found"
-#~ msgstr "Такого игрока не найдено"
-
-#~ msgid "404. Player not found on LabyMod's servers."
-#~ msgstr "404. Игрок не найден на серверах LabyMod."

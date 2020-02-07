@@ -1,120 +1,116 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR ORGANIZATION
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
-"POT-Creation-Date: 2019-06-18 22:42+0400\n"
-"PO-Revision-Date: 2019-06-18 22:42+0400\n"
-"Last-Translator: Максим Невзоров\n"
-"Language-Team: \n"
-"Language: ru_RU\n"
+"Project-Id-Version: fixator10-cogs\n"
+"POT-Creation-Date: 2020-02-06 12:51+0400\n"
+"PO-Revision-Date: 2020-02-07 11:09\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: redgettext 2.2\n"
-"X-Generator: Poedit 2.2.2\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+"Generated-By: redgettext 3.1\n"
+"Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
+"X-Crowdin-Project: fixator10-cogs\n"
+"X-Crowdin-Language: ru\n"
+"X-Crowdin-File: /V3/messageslog/locales/messages.pot\n"
+"Language: ru_RU\n"
 
+#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:24
+#, docstring
 msgid "Log deleted and redacted messages to the defined channel"
-msgstr ""
-"Записывает удалённые и отредактированные сообщения в установленный канал"
+msgstr "Записывает удалённые и отредактированные сообщения в установленный канал"
 
+#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:48
+#, docstring
 msgid "Manage message logging"
 msgstr "Управление логированием сообщений"
 
-msgid ""
-"Set the channel for logs\n"
-"\n"
-"        If channel is not provided, then logging will be disabled"
+#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:53
+#, docstring
+msgid "Set the channel for logs\\n\\n        If channel is not provided, then logging will be disabled"
 msgstr ""
-"Устанавливает канал для логов\n"
-"\n"
-"        Если канал не указан, логирование будет отключено"
 
+#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:62
+#, docstring
 msgid "Toggle logging of message deletion"
 msgstr "Переключает логирование удалённых сообщений"
 
+#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:66
+#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:79
 msgid "enabled"
 msgstr "включено"
 
+#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:68
+#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:81
 msgid "disabled"
 msgstr "выключено"
 
+#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:70
 msgid "Message deletion logging {}"
 msgstr "Логирование удалённых сообщений {}"
 
+#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:75
+#, docstring
 msgid "Toggle logging of message editing"
 msgstr "Переключает логирование отредактированных сообщений"
 
+#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:83
 msgid "Message editing logging {}"
 msgstr "Логирование редактирований сообщений {}"
 
-msgid ""
-"Manage message logging blacklist\n"
-"\n"
-"        Shows blacklist if no arguments provided\n"
-"        You can ignore text channels, categories and members\n"
-"        If item is in blacklist, removes it"
+#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:92
+#, docstring
+msgid "Manage message logging blacklist\\n\\n        Shows blacklist if no arguments provided\\n        You can ignore text channels, categories and members\\n        If item is in blacklist, removes it"
 msgstr ""
-"Управление чёрным списком логов сообщений\n"
-"\n"
-"        Показывает чёрный список, если не указано никаких аргументов\n"
-"        Вы можете игнорировать текстовые каналы, категории и участников\n"
-"        Если предмет в чёрном списке, убирает его"
 
+#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:117
 msgid "Nothing is ignored"
 msgstr "Ничего не игнорируется"
 
+#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:124
 msgid "Ignored users"
 msgstr "Игнорируемые пользователи"
 
+#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:128
 msgid "Ignored channels"
 msgstr "Игнорируемые каналы"
 
+#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:132
 msgid "Ignored categories"
 msgstr "Игнорируемые категории"
 
+#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:197
 msgid "Message deleted"
 msgstr "Сообщение удалено"
 
+#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:198
+#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:254
 msgid "No text"
 msgstr "Нет текста"
 
+#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:204
+#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:263
 msgid "Attachments"
 msgstr "Вложения"
 
+#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:210
+#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:269
 msgid "ID: {} • Sent at"
 msgstr "ID: {} • Отправлено в"
 
+#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:211
 msgid "Channel"
 msgstr "Канал"
 
+#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:253
 msgid "Message redacted"
 msgstr "Сообщение отредактировано"
 
+#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:259
 msgid "Now"
 msgstr "Сейчас"
 
+#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:259
 msgid "[View message]({})"
 msgstr "[Просмотреть сообщение]({})"
 
-#~ msgid "Message redacted (Before)"
-#~ msgstr "Сообщение отредактировано (До)"
-
-#~ msgid "Ignore channel(s) in message logging"
-#~ msgstr "Игнорировать канал(ы) при логировании сообщений"
-
-#~ msgid "Ignore member(s) in message logging"
-#~ msgstr "Игнорировать участника(ов) при логировании сообщений"
-
-#~ msgid "Manage message logging blacklist"
-#~ msgstr "Управление черным списком логов сообщений"
-
-#~ msgid "Shows ignored channels and members list"
-#~ msgstr "Показывает список игнорируемых каналов и участников"
-
-#~ msgid "ID: {} • Redacted at"
-#~ msgstr "ID: {} • Отредактировано в"
