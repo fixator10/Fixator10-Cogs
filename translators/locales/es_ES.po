@@ -1,0 +1,131 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: fixator10-cogs\n"
+"POT-Creation-Date: 2020-02-06 12:55+0400\n"
+"PO-Revision-Date: 2020-02-07 11:00\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Spanish\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: redgettext 3.1\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: fixator10-cogs\n"
+"X-Crowdin-Language: es-ES\n"
+"X-Crowdin-File: /V3/translators/locales/messages.pot\n"
+"Language: es_ES\n"
+
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:43
+#, docstring
+msgid "Set API key for Yandex.Translate"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:44
+msgid "To get Yandex.Translate API key:\\n1. Login to your Yandex account\\n1.1. Visit [API keys](https://translate.yandex.com/developers/keys) page\\n2. Press `Create a new key`\\n3. Enter description for key\\n4. Copy `trnsl.*` key\\n5. Use `{}set api yandex translate <your_apikey>`"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:58
+#, docstring
+msgid "Translate text via Yandex\\n\\n        Language may be just \\\"ru\\\" (target language to translate)\\n        or \\\"en-ru\\\" (original text's language - target language)"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:72
+msgid "This command requires valid API key, check {}ytapikey to get more information"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:80
+msgid "An error has been occurred: Language {} is not supported or incorrect, check your formatting and try again"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:90
+msgid "An error has been occurred: Text that you provided is too big to translate"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:98
+msgid "API key is blocked. Bot owner needs to get new api key or unlock current."
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:105
+msgid "Daily requests limit reached. Try again later."
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:110
+msgid "An error has been occurred: Yandex.Translate is unable to translate your text"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:116
+msgid "An error has been occurred: {}"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:123
+msgid "Translated via Yandex.Translate"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:131
+#, docstring
+msgid "Say something via Google Translate\\n\\n        lang arg must be two-letters google-translate language code\\n        Not all languages support tts\\n        If text contains more than 200 symbols, it will be cut"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:149
+msgid "Language {} is not supported or incorrect"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:155
+msgid "Unable to get data from Google Translate TTS: {}"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:167
+#, docstring
+msgid "Translates text (cyrillic/latin) to \\\"eciho\\\"\\n\\n        eciho - language created by Фражуз#2170 (255682413445906433)\\n\\n        This is unusable shit, i know, but whatever"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:193
+#, docstring
+msgid "Flips text upside-down\\n\\n        Based on https://unicode-table.com/en/tools/flip/"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:210
+#, docstring
+msgid "Switches text to Ｆｕｌｌ－ｗｉｄｔｈ　ｃｈａｒａｃｔｅｒｓ"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:227
+#, docstring
+msgid "Leet (1337) translation commands"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:232
+#, docstring
+msgid "Translates provided text to 1337"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:268
+#, docstring
+msgid "Translate cyrillic to 1337"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:312
+#, docstring
+msgid "Base64 text converter"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:317
+#, docstring
+msgid "Encode text to Base64"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:326
+#, docstring
+msgid "Decode text from Base64"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:339
+#, docstring
+msgid "Emojify text"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\translators\translators.py:366
+#, docstring
+msgid "Encode text to url-like format\\n        ('abc def') -> 'abc%20def'"
+msgstr ""
+
