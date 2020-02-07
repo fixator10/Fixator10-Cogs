@@ -36,10 +36,16 @@ GUILD_FEATURES = {
     "PUBLIC_DISABLED": _("Cannot be public"),
 }
 
+ACTIVITY_TYPES = {
+    discord.ActivityType.playing: _("Playing"),
+    discord.ActivityType.watching: _("Watching"),
+    discord.ActivityType.listening: _("Listening"),
+}
+
 
 @cog_i18n(_)
 class DataUtils(commands.Cog):
-    __version__ = "2.1.1"
+    __version__ = "2.2.0"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot: commands.Bot):
@@ -154,6 +160,21 @@ class DataUtils(commands.Cog):
         em.set_image(url=member.avatar_url_as(static_format="png", size=2048))
         # em.set_thumbnail(url=member.default_avatar_url)
         await ctx.send(embed=em)
+
+    @commands.command()
+    @checks.mod_or_permissions(embed_links=True)
+    async def activities(self, ctx, *, member: discord.Member = None):
+        """List user's activities"""
+        if member is None:
+            member = ctx.message.author
+        pages = []
+        for activity in member.activities:
+            em = await self.activity_embed(ctx, activity)
+            pages.append(em)
+        if pages:
+            await menu(ctx, pages, DEFAULT_CONTROLS)
+        else:
+            await ctx.send(chat.info(_("Right now this user is doing nothing")))
 
     @commands.command(aliases=["servinfo", "serv", "sv"])
     @commands.guild_only()
@@ -580,7 +601,9 @@ class DataUtils(commands.Cog):
                 try:
                     reaction = await ctx.bot.wait_for(
                         "reaction_add",
-                        check=ReactionPredicate.same_context(message=m, user=ctx.author),
+                        check=ReactionPredicate.same_context(
+                            message=m, user=ctx.author
+                        ),
                         timeout=30,
                     )
                     emoji = reaction[0].emoji
@@ -613,14 +636,8 @@ class DataUtils(commands.Cog):
         else:
             await ctx.send(_("No emojis on this server"))
 
-    async def smart_truncate(self, content, length=32, suffix="…"):
-        """https://stackoverflow.com/questions/250357/truncate-a-string-without-ending-in-the-middle-of-a-word"""
-        content_str = str(content)
-        if len(content_str) <= length:
-            return content
-        return " ".join(content_str[: length + 1].split(" ")[0:-1]) + suffix
-
     async def emoji_embed(self, ctx, emoji: Union[discord.Emoji, discord.PartialEmoji]):
+        """Make embed with info about emoji"""
         em = discord.Embed(
             title=isinstance(emoji, str)
             and unicodedata.name(emoji[0], f"\\{emoji}")
@@ -629,7 +646,8 @@ class DataUtils(commands.Cog):
         )
         if isinstance(emoji, str):
             emoji = emoji[0]
-            em.add_field(name=_("Unicode emoji"), value="✅")
+            # em.add_field(name=_("Unicode emoji"), value="✅")
+            em.add_field(name=_("Unicode character"), value=f"\\{emoji}")
             em.add_field(name=_("Unicode category"), value=unicodedata.category(emoji))
         if not isinstance(emoji, str):
             em.add_field(name=_("ID"), value=emoji.id)
@@ -656,4 +674,86 @@ class DataUtils(commands.Cog):
             # em.add_field(
             #     name=_("Unicode emoji"), value=bool_emojify(emoji.is_unicode_emoji())
             # )
+        return em
+
+    async def activity_embed(self, ctx, activity: discord.Activity):
+        """Make embed with info about emoji"""
+        # design is not my best side
+        if isinstance(activity, discord.CustomActivity):
+            em = discord.Embed(title=activity.name, color=await ctx.embed_color())
+            activity.emoji and em.set_thumbnail(url=activity.emoji.url)
+            em.set_footer(text=_("Custom status"))
+        elif isinstance(activity, discord.Game):
+            em = discord.Embed(
+                title=_("Playing {}").format(activity.name),
+                timestamp=activity.start or discord.Embed.Empty,
+                color=await ctx.embed_color(),
+            )
+            activity.end and em.add_field(
+                name=_("This game will end at"),
+                value=activity.end.strftime(self.TIME_FORMAT),
+            )
+            activity.start and em.set_footer(text=_("Playing since"))
+        elif isinstance(activity, discord.Activity):
+            party_size = activity.party.get("size")
+            party_size = party_size and f" ({party_size[0]}/{party_size[1]})" or ""
+            em = discord.Embed(
+                title=f"{ACTIVITY_TYPES.get(activity.type, activity.type)} {activity.name}",
+                description=f"{activity.details and activity.details or ''}\n"
+                f"{activity.state and activity.state or ''}{party_size}",
+                color=await ctx.embed_color(),
+            )
+            activity.small_image_text and em.add_field(
+                name=_("Small image text"),
+                value=activity.small_image_text,
+                inline=False,
+            )
+            activity.application_id and em.add_field(
+                name=_("Application ID"), value=activity.application_id
+            )
+            activity.start and em.add_field(
+                name=_("Started at"), value=activity.start.strftime(self.TIME_FORMAT),
+            )
+            activity.end and em.add_field(
+                name=_("Will end at"), value=activity.end.strftime(self.TIME_FORMAT),
+            )
+            activity.large_image_text and em.add_field(
+                name=_("Large image text"),
+                value=activity.large_image_text,
+                inline=False,
+            )
+            activity.small_image_url and em.set_thumbnail(url=activity.small_image_url)
+            activity.large_image_url and em.set_image(url=activity.large_image_url)
+        elif isinstance(activity, discord.Streaming):
+            em = discord.Embed(
+                title=activity.name,
+                description=_("Streaming on {}").format(activity.platform),
+                url=activity.url,
+            )
+            activity.game and em.add_field(name=_("Game"), value=activity.game)
+        elif isinstance(activity, discord.Spotify):
+            em = discord.Embed(
+                title=activity.title,
+                description=_("by {}\non {}").format(
+                    ", ".join(activity.artists), activity.album
+                ),
+                color=activity.color,
+                timestamp=activity.created_at,
+                url=f"https://open.spotify.com/track/{activity.track_id}",
+            )
+            em.add_field(
+                name=_("Started at"), value=activity.start.strftime(self.TIME_FORMAT)
+            )
+            em.add_field(
+                name=_("Duration"), value=str(activity.duration)[:-3]
+            )  # 0:03:33.877[000]
+            em.add_field(
+                name=_("Will end at"), value=activity.end.strftime(self.TIME_FORMAT)
+            )
+            em.set_image(url=activity.album_cover_url)
+            em.set_footer(text=_("Listening since"))
+        else:
+            em = discord.Embed(
+                title=_("Unsupported activity type: {}").format(type(activity))
+            )
         return em
