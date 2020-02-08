@@ -3,6 +3,7 @@ from discord import Embed
 from redbot.core import commands
 from redbot.core.config import Config
 from redbot.core.i18n import Translator, cog_i18n
+from redbot.core.utils import chat_formatting as chat
 from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
 
 from .converters import ImageFinder
@@ -15,7 +16,7 @@ _ = Translator("ReverseImageSearch", __file__)
 @cog_i18n(_)
 class ReverseImageSearch(commands.Cog):
     """(Anime) Reverse Image Search"""
-    __version__ = "2.0.0"
+    __version__ = "2.0.1"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -94,7 +95,10 @@ class ReverseImageSearch(commands.Cog):
             )
             e.set_thumbnail(url=entry.thumbnail)
             embeds.append(e)
-        await menu(ctx, embeds, DEFAULT_CONTROLS)
+        if embeds:
+            await menu(ctx, embeds, DEFAULT_CONTROLS)
+        else:
+            await ctx.send(chat.info(_("Nothing found")))
 
     @saucenao.command()
     @commands.is_owner()
@@ -205,7 +209,10 @@ class ReverseImageSearch(commands.Cog):
                 icon_url="https://trace.moe/favicon128.png",
             )
             embeds.append(e)
-        await menu(ctx, embeds, DEFAULT_CONTROLS)
+        if embeds:
+            await menu(ctx, embeds, DEFAULT_CONTROLS)
+        else:
+            await ctx.send(chat.info(_("Nothing found")))
 
     @tracemoe.command(name="stats")
     @commands.is_owner()
