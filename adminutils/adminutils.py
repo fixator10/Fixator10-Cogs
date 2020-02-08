@@ -15,7 +15,7 @@ _ = Translator("AdminUtils", __file__)
 
 @cog_i18n(_)
 class AdminUtils(commands.Cog):
-    __version__ = "2.0.0"
+    __version__ = "2.0.1"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot: commands.Bot):
@@ -190,18 +190,21 @@ class AdminUtils(commands.Cog):
         if emoji.guild != ctx.guild:
             await ctx.send_help()
             return
-        await emoji.edit(
-            name=name,
-            roles=roles,
-            reason=get_audit_reason(
-                ctx.author,
-                _("Restricted to roles: ").format(
-                    ", ".join([f"{role.name}" for role in roles])
-                )
-                if roles
-                else None,
-            ),
-        )
+        try:
+            await emoji.edit(
+                name=name,
+                roles=roles,
+                reason=get_audit_reason(
+                    ctx.author,
+                    _("Restricted to roles: ").format(
+                        ", ".join([f"{role.name}" for role in roles])
+                    )
+                    if roles
+                    else None,
+                ),
+            )
+        except discord.Forbidden:
+            await ctx.send(chat.error(_("I can't edit this emoji")))
         await ctx.tick()
 
     @emoji.command(name="remove")
