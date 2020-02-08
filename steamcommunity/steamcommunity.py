@@ -1,6 +1,7 @@
 from datetime import datetime
 from functools import partial
 from socket import gethostbyname_ex
+from warnings import filterwarnings
 
 import discord
 import valve.source.a2s
@@ -29,13 +30,30 @@ def check_not_api(ctx):
     return not check_api(ctx)
 
 
+async def validate_ip(s):
+    """Is IP address valid"""
+    a = s.split(".")
+    if len(a) != 4:
+        return False
+    for x in a:
+        if not x.isdigit():
+            return False
+        i = int(x)
+        if i < 0 or i > 255:
+            return False
+    return True
+
+
 _ = Translator("SteamCommunity", __file__)
+
+
+filterwarnings("ignore", category=FutureWarning, module=r"valve.")
 
 
 @cog_i18n(_)
 class SteamCommunity(commands.Cog):
     """SteamCommunity commands"""
-    __version__ = "2.0.0"
+    __version__ = "2.0.1"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -48,18 +66,6 @@ class SteamCommunity(commands.Cog):
         self.steam = await self.bot.loop.run_in_executor(
             None, partial(interface.API, key=apikeys.get("web"))
         )
-
-    async def validate_ip(self, s):
-        a = s.split(".")
-        if len(a) != 4:
-            return False
-        for x in a:
-            if not x.isdigit():
-                return False
-            i = int(x)
-            if i < 0 or i > 255:
-                return False
-        return True
 
     @commands.group(aliases=["sc"])
     async def steamcommunity(self, ctx):
@@ -181,7 +187,7 @@ class SteamCommunity(commands.Cog):
             serverc = [str(serverc[0]), int(serverc[1])]
         serverc = tuple(serverc)
 
-        if not await self.validate_ip(str(servercheck)):
+        if not await validate_ip(str(servercheck)):
             await ctx.send_help()
             return
 

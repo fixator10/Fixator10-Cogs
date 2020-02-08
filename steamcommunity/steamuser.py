@@ -1,3 +1,4 @@
+from json import JSONDecodeError
 from redbot.core.commands import BadArgument
 from redbot.core.i18n import Translator
 from valve.steam.api.interface import API
@@ -100,7 +101,17 @@ class SteamUser:
                 except SteamIDError:
                     raise BadArgument(_("Incorrect SteamID32 provided."))
             else:
-                id64 = userapi.ResolveVanityURL(argument)["response"].get("steamid", "")
+                try:
+                    id64 = userapi.ResolveVanityURL(argument)["response"].get(
+                        "steamid", ""
+                    )
+                except JSONDecodeError:
+                    raise BadArgument(
+                        _(
+                            "Unable to resolve {} into SteamID. "
+                            "Check your input or try again later."
+                        ).format(argument)
+                    )
         if not id64.isnumeric():
             raise BadArgument(_("User with SteamID {} not found.").format(argument))
         try:
