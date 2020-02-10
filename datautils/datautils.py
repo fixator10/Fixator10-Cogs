@@ -45,7 +45,7 @@ ACTIVITY_TYPES = {
 
 @cog_i18n(_)
 class DataUtils(commands.Cog):
-    __version__ = "2.2.0"
+    __version__ = "2.2.1"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot: commands.Bot):
@@ -161,7 +161,7 @@ class DataUtils(commands.Cog):
         # em.set_thumbnail(url=member.default_avatar_url)
         await ctx.send(embed=em)
 
-    @commands.command()
+    @commands.command(aliases=["activity"])
     @checks.mod_or_permissions(embed_links=True)
     async def activities(self, ctx, *, member: discord.Member = None):
         """List user's activities"""
@@ -668,6 +668,10 @@ class DataUtils(commands.Cog):
                     name=_("Roles"), value="\n".join([x.name for x in emoji.roles])
                 )
         elif isinstance(emoji, discord.PartialEmoji):
+            em.add_field(
+                name=_("Has existed since"),
+                value=discord.utils.snowflake_time(emoji.id).strftime(self.TIME_FORMAT),
+            )
             em.add_field(
                 name=_("Custom emoji"), value=bool_emojify(emoji.is_custom_emoji())
             )
