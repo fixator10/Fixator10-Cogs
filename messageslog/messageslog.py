@@ -19,10 +19,18 @@ async def is_channel_set(ctx: commands.Context):
 _ = Translator("MessagesLog", __file__)
 
 
+async def ignore_config_add(config: list, item):
+    """Adds item to provided config list"""
+    if item.id in config:
+        config.remove(item.id)
+    else:
+        config.append(item.id)
+
+
 @cog_i18n(_)
 class MessagesLog(commands.Cog):
     """Log deleted and redacted messages to the defined channel"""
-    __version__ = "2.0.0"
+    __version__ = "2.0.1"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -138,26 +146,14 @@ class MessagesLog(commands.Cog):
             for item in ignore:
                 if isinstance(item, discord.Member):
                     async with guild.ignored_users() as ignored_users:
-                        await self.ignore_config_add(ignored_users, item)
+                        await ignore_config_add(ignored_users, item)
                 elif isinstance(item, discord.TextChannel):
                     async with guild.ignored_channels() as ignored_channels:
-                        await self.ignore_config_add(ignored_channels, item)
+                        await ignore_config_add(ignored_channels, item)
                 elif isinstance(item, discord.CategoryChannel):
                     async with guild.ignored_categories() as ignored_categories:
-                        await self.ignore_config_add(ignored_categories, item)
+                        await ignore_config_add(ignored_categories, item)
             await ctx.tick()
-
-    @ignore.error
-    async def ignore_error(self, ctx, error):
-        if isinstance(error, commands.BadUnionArgument):
-            await ctx.send_help()
-
-    async def ignore_config_add(self, config: list, item):
-        """Adds item to provided config list"""
-        if item.id in config:
-            config.remove(item.id)
-        else:
-            config.append(item.id)
 
     @commands.Cog.listener("on_message_delete")
     async def message_deleted(self, message: discord.Message):

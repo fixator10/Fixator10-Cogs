@@ -45,7 +45,7 @@ ACTIVITY_TYPES = {
 
 @cog_i18n(_)
 class DataUtils(commands.Cog):
-    __version__ = "2.2.1"
+    __version__ = "2.2.2"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot: commands.Bot):
@@ -592,7 +592,7 @@ class DataUtils(commands.Cog):
     @commands.guild_only()
     @checks.bot_has_permissions(embed_links=True)
     async def einfo(
-        self, ctx, *, emoji: Union[discord.Emoji, discord.PartialEmoji, None]
+        self, ctx, *, emoji: Union[discord.Emoji, discord.PartialEmoji]
     ):
         """Get info about emoji"""
         if emoji is None:

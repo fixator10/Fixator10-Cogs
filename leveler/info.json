@@ -11,6 +11,7 @@
     "leveler",
     "v2 cog"
   ],
+  "min_bot_version": "3.2.1",
   "requirements": [
     "pymongo>=3.10",
     "motor",

@@ -62,7 +62,7 @@ async def non_global_bank(ctx):
 
 class Leveler(commands.Cog):
     """A level up thing with image generation!"""
-    __version__ = "2.0.0b"
+    __version__ = "2.0.1b"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -1296,7 +1296,7 @@ class Leveler(commands.Cog):
     @checks.is_owner()
     @lvladmin.command()
     @commands.guild_only()
-    async def xpban(self, ctx, days: int, *, user: Union[discord.Member, int, None]):
+    async def xpban(self, ctx, days: int, *, user: Union[discord.Member, int]):
         """Ban user from getting experience"""
         if isinstance(user, int):
             try:
