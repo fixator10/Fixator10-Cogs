@@ -62,7 +62,8 @@ async def non_global_bank(ctx):
 
 class Leveler(commands.Cog):
     """A level up thing with image generation!"""
-    __version__ = "2.0.1b"
+
+    __version__ = "2.0.2b"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -337,12 +338,12 @@ class Leveler(commands.Cog):
                 async for userinfo in db.users.find({}):
                     try:
                         if (
-                                "servers" in userinfo
-                                and str(server.id) in userinfo["servers"]
+                            "servers" in userinfo
+                            and str(server.id) in userinfo["servers"]
                         ):
                             server_exp = 0
                             for i in range(
-                                    userinfo["servers"][str(server.id)]["level"]
+                                userinfo["servers"][str(server.id)]["level"]
                             ):
                                 server_exp += await self._required_exp(i)
                             server_exp += userinfo["servers"][str(server.id)][
@@ -1301,8 +1302,16 @@ class Leveler(commands.Cog):
         if isinstance(user, int):
             try:
                 user = await self.bot.fetch_user(user)
-            except (discord.HTTPException, discord.NotFound):
-                user = None
+            except discord.NotFound:
+                await ctx.send(_("Discord user with ID `{}` not found").format(user))
+                return
+            except discord.HTTPException:
+                await ctx.send(
+                    _(
+                        "I was unable to get data about user with ID `{}`. Try again later"
+                    ).format(user)
+                )
+                return
         if user is None:
             await ctx.send_help()
             return
@@ -3253,10 +3262,10 @@ class Leveler(commands.Cog):
                             str(server.id)
                         ]["level"],
                         "servers.{}.current_exp".format(server.id): userinfo["servers"][
-                                                                        str(server.id)
-                                                                    ]["current_exp"]
-                                                                    + exp
-                                                                    - required,
+                            str(server.id)
+                        ]["current_exp"]
+                        + exp
+                        - required,
                         "chat_block": time.time(),
                         "last_message": message.content,
                     }
@@ -3269,9 +3278,9 @@ class Leveler(commands.Cog):
                 {
                     "$set": {
                         "servers.{}.current_exp".format(server.id): userinfo["servers"][
-                                                                        str(server.id)
-                                                                    ]["current_exp"]
-                                                                    + exp,
+                            str(server.id)
+                        ]["current_exp"]
+                        + exp,
                         "chat_block": time.time(),
                         "last_message": message.content,
                     }
@@ -3329,14 +3338,14 @@ class Leveler(commands.Cog):
             if server_linked_badges is not None:
                 for badge_name in server_linked_badges["badges"]:
                     if int(server_linked_badges["badges"][badge_name]) == int(
-                            new_level
+                        new_level
                     ):
                         server_badges = await db.badges.find_one(
                             {"server_id": str(server.id)}
                         )
                         if (
-                                server_badges is not None
-                                and badge_name in server_badges["badges"].keys()
+                            server_badges is not None
+                            and badge_name in server_badges["badges"].keys()
                         ):
                             userinfo_db = await db.users.find_one(
                                 {"user_id": str(user.id)}

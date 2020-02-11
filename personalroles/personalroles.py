@@ -21,7 +21,7 @@ async def has_assigned_role(ctx):
 @cog_i18n(_)
 class PersonalRoles(commands.Cog):
     """Assign and edit personal roles"""
-    __version__ = "2.0.1"
+    __version__ = "2.0.2"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot: commands.Bot):
@@ -59,7 +59,22 @@ class PersonalRoles(commands.Cog):
             await self.config.member(user).role.clear()
         elif isinstance(user, int):
             await self.config.member_from_ids(ctx.guild.id, user).role.clear()
-            user = await self.bot.fetch_user(user)
+            try:
+                user = await self.bot.fetch_user(user)
+            except discord.NotFound:
+                await ctx.send(
+                    chat.error(_("Discord user with ID `{}` not found").format(user))
+                )
+                return
+            except discord.HTTPException:
+                await ctx.send(
+                    chat.warning(
+                        _(
+                            "I was unable to get data about user with ID `{}`. Try again later"
+                        ).format(user)
+                    )
+                )
+                return
         else:
             await ctx.send_help()
             return
