@@ -28,7 +28,7 @@ from redbot.core.utils.predicates import MessagePredicate
 try:
     from motor.motor_asyncio import AsyncIOMotorClient
 except Exception as e:
-    raise RuntimeError("Can't load pymongo:{e}\nInstall 'pymongo' package")
+    raise RuntimeError(f"Can't load pymongo/motor:{e}\nInstall 'pymongo' and 'motor' packages")
 try:
     import scipy
     import scipy.misc
@@ -63,7 +63,7 @@ async def non_global_bank(ctx):
 class Leveler(commands.Cog):
     """A level up thing with image generation!"""
 
-    __version__ = "2.0.2b"
+    __version__ = "2.0.3b"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
