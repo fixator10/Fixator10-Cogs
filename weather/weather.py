@@ -1,12 +1,13 @@
 from functools import partial
 from textwrap import shorten
 
+import aiohttp
 import discord
 import forecastio
-import geocoder
 from forecastio.utils import PropertyUnavailable
 from redbot.core import checks
 from redbot.core import commands
+from redbot.core import __version__ as redbot_ver
 from redbot.core.config import Config
 from redbot.core.i18n import Translator, cog_i18n, get_locale
 from redbot.core.utils import chat_formatting as chat
@@ -87,6 +88,9 @@ WEATHER_STATES = {
     "partly-cloudy-night": "\N{Night with Stars}",
 }
 
+# Emoji that will be used for "unknown" strings
+UNKNOWN_EMOJI = "\N{White Question Mark Ornament}"
+
 UNITS = {
     "si": {
         "distance": _("km"),
@@ -122,14 +126,12 @@ UNITS = {
     },
 }
 
-GEOCODER_PROVIDER = "osm"
-
 PRECIP_TYPE_I18N = {"rain": _("Rain"), "snow": _("Snow"), "sleet": _("Sleet")}
 
 
 @cog_i18n(_)
 class Weather(commands.Cog):
-    __version__ = "2.0.0"
+    __version__ = "2.0.1"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -139,6 +141,10 @@ class Weather(commands.Cog):
         )
         default_guild = {"units": "si"}
         self.config.register_guild(**default_guild)
+        self.session = aiohttp.ClientSession(loop=self.bot.loop, raise_for_status=True,)
+
+    def cog_unload(self):
+        self.session.detach()
 
     @commands.command()
     @checks.is_owner()
@@ -232,22 +238,38 @@ class Weather(commands.Cog):
         """Shows weather in provided place"""
         apikeys = await self.bot.get_shared_api_tokens("forecastio")
         async with ctx.typing():
-            g = await self.bot.loop.run_in_executor(
-                None, getattr(geocoder, GEOCODER_PROVIDER), place
-            )
-            if not g.latlng:
+            try:
+                async with self.session.get(
+                    f"https://nominatim.openstreetmap.org/search?q={place}&format=jsonv2&addressdetails=1&limit=1",
+                    headers={
+                        "Accept-Language": get_locale(),
+                        "User-Agent": f"Red-DiscordBot/{redbot_ver} Fixator10-Cogs/Weather/{self.__version__}",
+                    },
+                ) as r:
+                    location = await r.json()
+            except aiohttp.ClientResponseError as e:
+                await ctx.send(
+                    chat.error(
+                        _("Cannot find a place {}. OSM returned {}").format(
+                            chat.inline(place), e.status
+                        )
+                    )
+                )
+                return
+            if not location:
                 await ctx.send(
                     chat.error(_("Cannot find a place {}").format(chat.inline(place)))
                 )
                 return
+            location = location[0]
             try:
                 forecast = await self.bot.loop.run_in_executor(
                     None,
                     partial(
                         forecastio.load_forecast,
                         apikeys.get("secret"),
-                        g.latlng[0],
-                        g.latlng[1],
+                        location.get("lat", 0),
+                        location.get("lon", 0),
                         units=await self.get_units(ctx),
                         lang=await self.get_lang(),
                     ),
@@ -268,10 +290,14 @@ class Weather(commands.Cog):
         by_hour = forecast.currently()
 
         em = discord.Embed(
-            title=_("Weather in {}").format(shorten(g.address, 244, placeholder="…")),
+            title=_("Weather in {}").format(
+                shorten(
+                    location.get("display_name", UNKNOWN_EMOJI), 244, placeholder="…"
+                )
+            ),
             description=_(
                 "[View on Google Maps](https://www.google.com/maps/place/{},{})"
-            ).format(g.lat, g.lng),
+            ).format(location.get("lat", 0), location.get("lon", 0)),
             color=await ctx.embed_color(),
             timestamp=by_hour.time,
         )
@@ -281,14 +307,13 @@ class Weather(commands.Cog):
         em.add_field(
             name=_("Summary"),
             value="{} {}".format(
-                WEATHER_STATES.get(by_hour.icon, "\N{White Question Mark Ornament}"),
-                by_hour.summary,
+                WEATHER_STATES.get(by_hour.icon, UNKNOWN_EMOJI), by_hour.summary,
             ),
         )
         em.add_field(
             name=_("Temperature"),
             value=f"{by_hour.temperature} {await self.get_localized_units(ctx, 'temp')} "
-                  f"({by_hour.apparentTemperature} {await self.get_localized_units(ctx, 'temp')})",
+            f"({by_hour.apparentTemperature} {await self.get_localized_units(ctx, 'temp')})",
         )
         em.add_field(
             name=_("Air pressure"),
@@ -326,15 +351,15 @@ class Weather(commands.Cog):
         em.add_field(
             name=_("Precipitation"),
             value=_("Probability: {}%\n").format(int(by_hour.precipProbability * 100))
-                  + _("Intensity: {} {}").format(
+            + _("Intensity: {} {}").format(
                 int(by_hour.precipIntensity * 100),
                 await self.get_localized_units(ctx, "intensity"),
             )
-                  + (
-                          preciptype
-                          and _("\nType: {}").format(PRECIP_TYPE_I18N.get(preciptype, preciptype))
-                          or ""
-                  ),
+            + (
+                preciptype
+                and _("\nType: {}").format(PRECIP_TYPE_I18N.get(preciptype, preciptype))
+                or ""
+            ),
         )
         await ctx.send(embed=em)
 
@@ -345,20 +370,38 @@ class Weather(commands.Cog):
         """Shows 7 days forecast for provided place"""
         apikeys = await self.bot.get_shared_api_tokens("forecastio")
         async with ctx.typing():
-            g = await self.bot.loop.run_in_executor(
-                None, getattr(geocoder, GEOCODER_PROVIDER), place
-            )
-            if not g.latlng:
-                await ctx.send(_("Cannot find a place {}").format(chat.inline(place)))
+            try:
+                async with self.session.get(
+                    f"https://nominatim.openstreetmap.org/search?q={place}&format=jsonv2&addressdetails=1&limit=1",
+                    headers={
+                        "Accept-Language": get_locale(),
+                        "User-Agent": f"Red-DiscordBot/{redbot_ver} Fixator10-Cogs/Weather/{self.__version__}",
+                    },
+                ) as r:
+                    location = await r.json()
+            except aiohttp.ClientResponseError as e:
+                await ctx.send(
+                    chat.error(
+                        _("Cannot find a place {}. OSM returned {}").format(
+                            chat.inline(place), e.status
+                        )
+                    )
+                )
                 return
+            if not location:
+                await ctx.send(
+                    chat.error(_("Cannot find a place {}").format(chat.inline(place)))
+                )
+                return
+            location = location[0]
             try:
                 forecast = await self.bot.loop.run_in_executor(
                     None,
                     partial(
                         forecastio.load_forecast,
                         apikeys.get("secret"),
-                        g.latlng[0],
-                        g.latlng[1],
+                        location.get("lat", 0),
+                        location.get("lon", 0),
                         units=await self.get_units(ctx),
                         lang=await self.get_lang(),
                     ),
@@ -382,12 +425,16 @@ class Weather(commands.Cog):
             data = by_day.data[i]
             em = discord.Embed(
                 title=_("Weather in {}").format(
-                    shorten(g.address, 244, placeholder="…")
+                    shorten(
+                        location.get("display_name", UNKNOWN_EMOJI),
+                        244,
+                        placeholder="…",
+                    )
                 ),
                 description=f"{by_day.summary}\n"
-                            + _(
+                + _(
                     "[View on Google Maps](https://www.google.com/maps/place/{},{})"
-                ).format(g.lat, g.lng),
+                ).format(location.get("lat", 0), location.get("lon", 0),),
                 color=await ctx.embed_color(),
                 timestamp=data.time,
             )
@@ -403,14 +450,13 @@ class Weather(commands.Cog):
             em.add_field(
                 name=_("Summary"),
                 value="{} {}".format(
-                    WEATHER_STATES.get(data.icon, "\N{White Question Mark Ornament}"),
-                    summary,
+                    WEATHER_STATES.get(data.icon, UNKNOWN_EMOJI), summary,
                 ),
             )
             em.add_field(
                 name=_("Temperature"),
                 value=f"{data.temperatureMin} — {data.temperatureMax} {await self.get_localized_units(ctx, 'temp')}\n"
-                      f"({data.apparentTemperatureMin} — {data.apparentTemperatureMax}{await self.get_localized_units(ctx, 'temp')})",
+                f"({data.apparentTemperatureMin} — {data.apparentTemperatureMax}{await self.get_localized_units(ctx, 'temp')})",
             )
             em.add_field(
                 name=_("Air pressure"),
@@ -452,25 +498,25 @@ class Weather(commands.Cog):
             em.add_field(
                 name=_("Precipitation"),
                 value=_("Probability: {}%\n").format(int(data.precipProbability * 100))
-                      + _("Intensity: {} {}").format(
+                + _("Intensity: {} {}").format(
                     int(data.precipIntensity * 100),
                     await self.get_localized_units(ctx, "intensity"),
                 )
-                      + (
-                              preciptype
-                              and _("\nType: {}").format(
-                          PRECIP_TYPE_I18N.get(preciptype, preciptype)
-                      )
-                              or ""
-                      )
-                      + (
-                              precipaccumulation
-                              and _("\nSnowfall accumulation: {} {}").format(
-                          precipaccumulation,
-                          await self.get_localized_units(ctx, "accumulation"),
-                      )
-                              or ""
-                      ),
+                + (
+                    preciptype
+                    and _("\nType: {}").format(
+                        PRECIP_TYPE_I18N.get(preciptype, preciptype)
+                    )
+                    or ""
+                )
+                + (
+                    precipaccumulation
+                    and _("\nSnowfall accumulation: {} {}").format(
+                        precipaccumulation,
+                        await self.get_localized_units(ctx, "accumulation"),
+                    )
+                    or ""
+                ),
             )
             em.add_field(
                 name=_("Moon phase"), value=await self.num_to_moon(data.moonPhase)
@@ -490,8 +536,8 @@ class Weather(commands.Cog):
                 await self.config.user(ctx.author).units(), UNITS["si"]
             ).get(units_type, "?")
         current_system = (
-                await self.config.user(ctx.author).units()
-                or await self.config.guild(ctx.guild).units()
+            await self.config.user(ctx.author).units()
+            or await self.config.guild(ctx.guild).units()
         )
         return UNITS.get(current_system, {}).get(units_type, "?")
 

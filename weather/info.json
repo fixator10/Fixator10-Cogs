@@ -12,7 +12,6 @@
     "forecast"
   ],
   "requirements": [
-    "python-forecastio",
-    "geocoder"
+    "python-forecastio"
   ]
 }
