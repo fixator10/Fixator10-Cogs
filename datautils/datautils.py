@@ -45,7 +45,7 @@ ACTIVITY_TYPES = {
 
 @cog_i18n(_)
 class DataUtils(commands.Cog):
-    __version__ = "2.2.3"
+    __version__ = "2.2.4"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot: commands.Bot):
@@ -162,6 +162,7 @@ class DataUtils(commands.Cog):
         await ctx.send(embed=em)
 
     @commands.command(aliases=["activity"])
+    @commands.guild_only()
     @checks.mod_or_permissions(embed_links=True)
     async def activities(self, ctx, *, member: discord.Member = None):
         """List user's activities"""
@@ -589,7 +590,6 @@ class DataUtils(commands.Cog):
         )
 
     @commands.command(aliases=["emojiinfo", "emojinfo"])
-    @commands.guild_only()
     @checks.bot_has_permissions(embed_links=True)
     async def einfo(
         self, ctx, *, emoji: Union[discord.Emoji, discord.PartialEmoji] = None
@@ -618,6 +618,7 @@ class DataUtils(commands.Cog):
         await ctx.send(embed=em)
 
     @commands.command(aliases=["emojilist", "listemojis"])
+    @commands.guild_only()
     async def emojis(self, ctx, server: int = None):
         if server is None or not await self.bot.is_owner(ctx.author):
             server = ctx.guild
