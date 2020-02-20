@@ -20,6 +20,10 @@ def bool_emojify(bool_var: bool) -> str:
 
 _ = Translator("DataUtils", __file__)
 
+
+TWEMOJI_URL = "https://twemoji.maxcdn.com/v/latest/72x72"
+
+
 GUILD_FEATURES = {
     "VIP_REGIONS": _("VIP voice regions"),
     "VANITY_URL": _("Vanity invite URL"),
@@ -45,7 +49,7 @@ ACTIVITY_TYPES = {
 
 @cog_i18n(_)
 class DataUtils(commands.Cog):
-    __version__ = "2.2.4"
+    __version__ = "2.2.5"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot: commands.Bot):
@@ -686,7 +690,19 @@ class DataUtils(commands.Cog):
         # design is not my best side
         if isinstance(activity, discord.CustomActivity):
             em = discord.Embed(title=activity.name, color=await ctx.embed_color())
-            activity.emoji and em.set_thumbnail(url=activity.emoji.url)
+            if activity.emoji:
+                if activity.emoji.is_unicode_emoji():
+                    emoji_pic = []
+                    for char in activity.emoji.name:
+                        emoji_pic.append(hex(ord(char))[2:])
+                    emoji_pic = "-".join(emoji_pic)
+                    emoji_pic = f"{TWEMOJI_URL}/{emoji_pic}.png"
+                else:
+                    emoji_pic = activity.emoji.url
+                if activity.name:
+                    em.set_thumbnail(url=emoji_pic)
+                else:
+                    em.set_image(url=emoji_pic)
             em.set_footer(text=_("Custom status"))
         elif isinstance(activity, discord.Game):
             em = discord.Embed(
