@@ -47,9 +47,17 @@ ACTIVITY_TYPES = {
 }
 
 
+async def get_twemoji(emoji: str):
+    emoji_unicode = []
+    for char in emoji:
+        emoji_unicode.append(hex(ord(char))[2:])
+    emoji_unicode = "-".join(emoji_unicode)
+    return f"{TWEMOJI_URL}/{emoji_unicode}.png"
+
+
 @cog_i18n(_)
 class DataUtils(commands.Cog):
-    __version__ = "2.2.5"
+    __version__ = "2.2.6"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot: commands.Bot):
@@ -650,10 +658,12 @@ class DataUtils(commands.Cog):
             color=await ctx.embed_color(),
         )
         if isinstance(emoji, str):
+            # TODO: Support for multicharacter emojis
             emoji = emoji[0]
             # em.add_field(name=_("Unicode emoji"), value="✅")
             em.add_field(name=_("Unicode character"), value=f"\\{emoji}")
             em.add_field(name=_("Unicode category"), value=unicodedata.category(emoji))
+            em.set_image(url=await get_twemoji(emoji))
         if not isinstance(emoji, str):
             em.add_field(name=_("ID"), value=emoji.id)
             em.add_field(name=_("Animated"), value=bool_emojify(emoji.animated))
@@ -692,11 +702,7 @@ class DataUtils(commands.Cog):
             em = discord.Embed(title=activity.name, color=await ctx.embed_color())
             if activity.emoji:
                 if activity.emoji.is_unicode_emoji():
-                    emoji_pic = []
-                    for char in activity.emoji.name:
-                        emoji_pic.append(hex(ord(char))[2:])
-                    emoji_pic = "-".join(emoji_pic)
-                    emoji_pic = f"{TWEMOJI_URL}/{emoji_pic}.png"
+                    emoji_pic = await get_twemoji(activity.emoji.name)
                 else:
                     emoji_pic = activity.emoji.url
                 if activity.name:
