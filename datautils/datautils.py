@@ -51,7 +51,6 @@ async def get_twemoji(emoji: str):
     emoji_unicode = []
     for char in emoji:
         char = hex(ord(char))[2:]
-        print(char)
         if char != "fe0f":  # Variation Selector-16
             emoji_unicode.append(char)
     emoji_unicode = "-".join(emoji_unicode)
@@ -60,7 +59,7 @@ async def get_twemoji(emoji: str):
 
 @cog_i18n(_)
 class DataUtils(commands.Cog):
-    __version__ = "2.2.7"
+    __version__ = "2.2.8"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot: commands.Bot):
