@@ -59,7 +59,7 @@ async def get_twemoji(emoji: str):
 
 @cog_i18n(_)
 class DataUtils(commands.Cog):
-    __version__ = "2.2.8"
+    __version__ = "2.2.9"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot: commands.Bot):
@@ -634,6 +634,7 @@ class DataUtils(commands.Cog):
     @commands.command(aliases=["emojilist", "listemojis"])
     @commands.guild_only()
     async def emojis(self, ctx, server: int = None):
+        """Get all emojis on server"""
         if server is None or not await self.bot.is_owner(ctx.author):
             server = ctx.guild
         else:
