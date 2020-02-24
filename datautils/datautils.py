@@ -59,7 +59,7 @@ async def get_twemoji(emoji: str):
 
 @cog_i18n(_)
 class DataUtils(commands.Cog):
-    __version__ = "2.2.9"
+    __version__ = "2.2.10"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot: commands.Bot):
@@ -656,16 +656,14 @@ class DataUtils(commands.Cog):
         """Make embed with info about emoji"""
         em = discord.Embed(
             title=isinstance(emoji, str)
-            and unicodedata.name(emoji[0], f"\\{emoji}")
+            and "\n".join(map(unicodedata.name, emoji))
             or chat.escape(emoji.name, formatting=True),
             color=await ctx.embed_color(),
         )
         if isinstance(emoji, str):
-            # TODO: Support for multicharacter emojis
-            emoji = emoji[0]
             # em.add_field(name=_("Unicode emoji"), value="✅")
-            em.add_field(name=_("Unicode character"), value=f"\\{emoji}")
-            em.add_field(name=_("Unicode category"), value=unicodedata.category(emoji))
+            em.add_field(name=_("Unicode character"), value="".join(f"\\{e}" for e in emoji))
+            em.add_field(name=_("Unicode category"), value=unicodedata.category(emoji[0]))
             em.set_image(url=await get_twemoji(emoji))
         if not isinstance(emoji, str):
             em.add_field(name=_("ID"), value=emoji.id)
