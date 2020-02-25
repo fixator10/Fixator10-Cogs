@@ -18,6 +18,7 @@ _ = Translator("GeneralChannel", __file__)
 
 @cog_i18n(_)
 class GeneralChannel(commands.Cog):
+    """Allow users to manage #general channel's name and topic"""
     __version__ = "2.0.0"
 
     # noinspection PyMissingConstructor

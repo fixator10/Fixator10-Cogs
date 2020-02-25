@@ -42,6 +42,7 @@ def bool_emojify(bool_var: bool) -> str:
 
 @cog_i18n(_)
 class MoreUtils(commands.Cog):
+    """Some (maybe) useful utils."""
     __version__ = "2.0.0"
 
     # noinspection PyMissingConstructor

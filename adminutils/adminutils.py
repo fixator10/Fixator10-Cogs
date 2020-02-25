@@ -15,6 +15,7 @@ _ = Translator("AdminUtils", __file__)
 
 @cog_i18n(_)
 class AdminUtils(commands.Cog):
+    """Useful commands for server administrators."""
     __version__ = "2.0.1"
 
     # noinspection PyMissingConstructor

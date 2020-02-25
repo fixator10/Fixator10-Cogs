@@ -59,6 +59,7 @@ async def get_twemoji(emoji: str):
 
 @cog_i18n(_)
 class DataUtils(commands.Cog):
+    """Commands for getting information about users or servers."""
     __version__ = "2.2.10"
 
     # noinspection PyMissingConstructor

@@ -27,6 +27,7 @@ USERAGENT = (
 
 @cog_i18n(_)
 class Translators(commands.Cog):
+    """Useful (and not) translators"""
     __version__ = "2.0.0"
 
     # noinspection PyMissingConstructor
