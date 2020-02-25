@@ -9,8 +9,9 @@ from redbot.core.utils.mod import get_audit_reason
 
 async def server_set(ctx):
     """Check if member has required role and channel is configured"""
-    channel = await ctx.cog.config.guild(ctx.guild).channel()
-    return ctx.guild.get_channel(channel)
+    if ctx.guild:
+        return ctx.guild.get_channel(await ctx.cog.config.guild(ctx.guild).channel())
+    return False
 
 
 _ = Translator("GeneralChannel", __file__)
@@ -19,7 +20,7 @@ _ = Translator("GeneralChannel", __file__)
 @cog_i18n(_)
 class GeneralChannel(commands.Cog):
     """Allow users to manage #general channel's name and topic"""
-    __version__ = "2.0.0"
+    __version__ = "2.0.1"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
