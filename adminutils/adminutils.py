@@ -100,22 +100,32 @@ class AdminUtils(commands.Cog):
     @commands.cooldown(1, 60, commands.BucketType.guild)
     @checks.admin_or_permissions(move_members=True)
     @checks.bot_has_permissions(move_members=True)
-    async def massmove(self, ctx, from_channel: discord.VoiceChannel, to_channel: discord.VoiceChannel):
+    async def massmove(
+        self, ctx, from_channel: discord.VoiceChannel, to_channel: discord.VoiceChannel
+    ):
         """Move all members from one voice channel to another
 
         Use double quotes if channel name has spaces"""
         fails = 0
         if not from_channel.members:
-            await ctx.send(chat.error(_("There is no users in channel {}.").format(from_channel.mention)))
+            await ctx.send(
+                chat.error(
+                    _("There is no users in channel {}.").format(from_channel.mention)
+                )
+            )
             return
         async with ctx.typing():
             for member in from_channel.members:
                 try:
-                    await member.move_to(to_channel, reason=get_audit_reason(ctx.author, _("Massmove")))
+                    await member.move_to(
+                        to_channel, reason=get_audit_reason(ctx.author, _("Massmove"))
+                    )
                 except discord.HTTPException:
                     fails += 1
                     continue
-        await ctx.send(_("Finished moving users. {} members could not be moved.").format(fails))
+        await ctx.send(
+            _("Finished moving users. {} members could not be moved.").format(fails)
+        )
 
     @commands.command()
     @commands.guild_only()
