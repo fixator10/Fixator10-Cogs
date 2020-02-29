@@ -1,5 +1,6 @@
 from asyncio import TimeoutError as AsyncTimeoutError
 from asyncio import sleep
+from random import choice
 
 import aiohttp
 import discord
@@ -16,7 +17,8 @@ _ = Translator("AdminUtils", __file__)
 @cog_i18n(_)
 class AdminUtils(commands.Cog):
     """Useful commands for server administrators."""
-    __version__ = "2.0.1"
+
+    __version__ = "2.2.0"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot: commands.Bot):
@@ -72,6 +74,48 @@ class AdminUtils(commands.Cog):
             )
         else:
             await ctx.send(chat.error(_("Inactive members cleanup canceled.")))
+
+    @commands.command()
+    @commands.guild_only()
+    @checks.admin_or_permissions(manage_guild=True)
+    @checks.bot_has_permissions(manage_guild=True)
+    async def restartvoice(self, ctx):
+        """Change server's voice region to random and back
+
+        Useful to reinitate all voice connections"""
+        current_region = ctx.guild.region
+        random_region = choice(
+            [
+                r
+                for r in discord.VoiceRegion
+                if not r.value.startswith("vip") and current_region != r
+            ]
+        )
+        await ctx.guild.edit(region=random_region)
+        await ctx.guild.edit(region=current_region)
+        await ctx.tick()
+
+    @commands.command()
+    @commands.guild_only()
+    @commands.cooldown(1, 60, commands.BucketType.guild)
+    @checks.admin_or_permissions(move_members=True)
+    @checks.bot_has_permissions(move_members=True)
+    async def massmove(self, ctx, from_channel: discord.VoiceChannel, to_channel: discord.VoiceChannel):
+        """Move all members from one voice channel to another
+
+        Use double quotes if channel name has spaces"""
+        fails = 0
+        if not from_channel.members:
+            await ctx.send(chat.error(_("There is no users in channel {}.").format(from_channel.mention)))
+            return
+        async with ctx.typing():
+            for member in from_channel.members:
+                try:
+                    await member.move_to(to_channel, reason=get_audit_reason(ctx.author, _("Massmove")))
+                except discord.HTTPException:
+                    fails += 1
+                    continue
+        await ctx.send(_("Finished moving users. {} members could not be moved.").format(fails))
 
     @commands.command()
     @commands.guild_only()
