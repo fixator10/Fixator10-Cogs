@@ -28,7 +28,9 @@ from redbot.core.utils.predicates import MessagePredicate
 try:
     from motor.motor_asyncio import AsyncIOMotorClient
 except Exception as e:
-    raise RuntimeError(f"Can't load pymongo/motor:{e}\nInstall 'pymongo' and 'motor' packages")
+    raise RuntimeError(
+        f"Can't load pymongo/motor:{e}\nInstall 'pymongo' and 'motor' packages"
+    )
 try:
     import scipy
     import scipy.misc
@@ -57,6 +59,7 @@ log = logging.getLogger("red.fixator10-cogs.leveler")
 
 
 AVATAR_FORMAT = pil_features.check("webp_anim") and "webp" or "jpg"
+log.debug(f"using {AVATAR_FORMAT} avatar format")
 
 
 # noinspection PyUnusedLocal
@@ -67,7 +70,7 @@ async def non_global_bank(ctx):
 class Leveler(commands.Cog):
     """A level up thing with image generation!"""
 
-    __version__ = "2.0.4b"
+    __version__ = "2.0.5b"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -2436,7 +2439,9 @@ class Leveler(commands.Cog):
             image = await r.content.read()
             profile_background = BytesIO(image)
         profile_avatar = BytesIO()
-        await user.avatar_url_as(format=AVATAR_FORMAT).save(profile_avatar, seek_begin=True)
+        await user.avatar_url_as(format=AVATAR_FORMAT).save(
+            profile_avatar, seek_begin=True
+        )
 
         bg_image = Image.open(profile_background).convert("RGBA")
         profile_image = Image.open(profile_avatar).convert("RGBA")
@@ -2885,7 +2890,9 @@ class Leveler(commands.Cog):
             image = await r.content.read()
         rank_background = BytesIO(image)
         rank_avatar = BytesIO()
-        await user.avatar_url_as(format=AVATAR_FORMAT).save(rank_avatar, seek_begin=True)
+        await user.avatar_url_as(format=AVATAR_FORMAT).save(
+            rank_avatar, seek_begin=True
+        )
 
         bg_image = Image.open(rank_background).convert("RGBA")
         profile_image = Image.open(rank_avatar).convert("RGBA")
@@ -3108,7 +3115,9 @@ class Leveler(commands.Cog):
             image = await r.content.read()
         level_background = BytesIO(image)
         level_avatar = BytesIO()
-        await user.avatar_url_as(format=AVATAR_FORMAT).save(level_avatar, seek_begin=True)
+        await user.avatar_url_as(format=AVATAR_FORMAT).save(
+            level_avatar, seek_begin=True
+        )
 
         bg_image = Image.open(level_background).convert("RGBA")
         profile_image = Image.open(level_avatar).convert("RGBA")
