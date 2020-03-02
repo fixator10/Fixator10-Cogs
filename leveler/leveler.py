@@ -39,6 +39,7 @@ except Exception as e:
     )
 try:
     from PIL import Image, ImageDraw, ImageFont, ImageColor, ImageOps, ImageFilter
+    from PIL import features as pil_features
 except Exception as e:
     raise RuntimeError(f"Can't load pillow: {e}\nDo '[p] pipinstall pillow'.")
 
@@ -55,6 +56,9 @@ except Exception as e:
 log = logging.getLogger("red.fixator10-cogs.leveler")
 
 
+AVATAR_FORMAT = pil_features.check("webp_anim") and "webp" or "jpg"
+
+
 # noinspection PyUnusedLocal
 async def non_global_bank(ctx):
     return not await bank.is_global()
@@ -63,7 +67,7 @@ async def non_global_bank(ctx):
 class Leveler(commands.Cog):
     """A level up thing with image generation!"""
 
-    __version__ = "2.0.3b"
+    __version__ = "2.0.4b"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -2432,7 +2436,7 @@ class Leveler(commands.Cog):
             image = await r.content.read()
             profile_background = BytesIO(image)
         profile_avatar = BytesIO()
-        await user.avatar_url_as(format="webp").save(profile_avatar)
+        await user.avatar_url_as(format=AVATAR_FORMAT).save(profile_avatar, seek_begin=True)
 
         bg_image = Image.open(profile_background).convert("RGBA")
         profile_image = Image.open(profile_avatar).convert("RGBA")
@@ -2881,7 +2885,7 @@ class Leveler(commands.Cog):
             image = await r.content.read()
         rank_background = BytesIO(image)
         rank_avatar = BytesIO()
-        await user.avatar_url_as(format="webp").save(rank_avatar, seek_begin=True)
+        await user.avatar_url_as(format=AVATAR_FORMAT).save(rank_avatar, seek_begin=True)
 
         bg_image = Image.open(rank_background).convert("RGBA")
         profile_image = Image.open(rank_avatar).convert("RGBA")
@@ -3104,7 +3108,7 @@ class Leveler(commands.Cog):
             image = await r.content.read()
         level_background = BytesIO(image)
         level_avatar = BytesIO()
-        await user.avatar_url_as(format="webp").save(level_avatar, seek_begin=True)
+        await user.avatar_url_as(format=AVATAR_FORMAT).save(level_avatar, seek_begin=True)
 
         bg_image = Image.open(level_background).convert("RGBA")
         profile_image = Image.open(level_avatar).convert("RGBA")
