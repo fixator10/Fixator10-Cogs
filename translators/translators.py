@@ -2,6 +2,7 @@ import base64
 import itertools
 import random
 import re
+from typing import Optional
 from io import BytesIO
 from urllib import parse
 
@@ -13,6 +14,7 @@ from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils import chat_formatting as chat
 
 from . import yandextranslate
+from .converters import PySupportedEncoding
 
 _ = Translator("Translators", __file__)
 
@@ -28,7 +30,8 @@ USERAGENT = (
 @cog_i18n(_)
 class Translators(commands.Cog):
     """Useful (and not) translators"""
-    __version__ = "2.0.0"
+
+    __version__ = "2.1.0"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -138,10 +141,10 @@ class Translators(commands.Cog):
         async with ctx.typing():
             try:
                 async with self.session.get(
-                        "http://translate.google.com/translate_tts",
-                        params={"ie": "utf-8", "q": text, "tl": lang, "client": "tw-ob"},
-                        headers={"User-Agent": USERAGENT},
-                        raise_for_status=True,
+                    "http://translate.google.com/translate_tts",
+                    params={"ie": "utf-8", "q": text, "tl": lang, "client": "tw-ob"},
+                    headers={"User-Agent": USERAGENT},
+                    raise_for_status=True,
                 ) as data:
                     speech = await data.read()
             except aiohttp.ClientResponseError as e:
@@ -309,29 +312,34 @@ class Translators(commands.Cog):
         await ctx.send(chat.box(result))
 
     @commands.group(name="base64")
-    async def _base64(self, ctx):
+    async def base64_command(self, ctx):
         """Base64 text converter"""
         pass
 
-    @_base64.command(name="encode")
-    async def _tobase64(self, ctx, *, text: str):
+    @base64_command.command(name="encode")
+    async def tobase64(
+        self, ctx, encoding: Optional[PySupportedEncoding], *, text: str
+    ):
         """Encode text to Base64"""
-        text = text.encode()
+        if not encoding:
+            encoding = "utf-8"
+        text = text.encode(encoding=encoding, errors="replace")
         output = base64.standard_b64encode(text)
         result = output.decode()
         for page in chat.pagify(result):
             await ctx.send(chat.box(page))
 
-    @_base64.command(name="decode")
-    async def _frombase64(self, ctx, *, encoded: str):
+    @base64_command.command(name="decode")
+    async def frombase64(
+        self, ctx, encoding: Optional[PySupportedEncoding], *, encoded: str
+    ):
         """Decode text from Base64"""
+        if not encoding:
+            encoding = "utf-8"
+        encoded = encoded + "=="  # extra padding if padding is missing from string
         encoded = encoded.encode()
-        try:
-            decoded = base64.standard_b64decode(encoded)
-            result = decoded.decode()
-        except Exception as e:
-            await ctx.send(e)
-            return
+        decoded = base64.standard_b64decode(encoded)
+        result = decoded.decode(encoding=encoding, errors="replace")
         await ctx.send(chat.box(result))
 
     # noinspection PyPep8
