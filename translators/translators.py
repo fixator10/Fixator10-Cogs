@@ -32,7 +32,7 @@ USERAGENT = (
 class Translators(commands.Cog):
     """Useful (and not) translators"""
 
-    __version__ = "2.1.0"
+    __version__ = "2.1.1"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
