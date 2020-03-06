@@ -5,6 +5,7 @@ import re
 from typing import Optional
 from io import BytesIO
 from urllib import parse
+from binascii import Error as binasciiError
 
 import aiohttp
 import discord
@@ -338,7 +339,11 @@ class Translators(commands.Cog):
             encoding = "utf-8"
         encoded = encoded + "=="  # extra padding if padding is missing from string
         encoded = encoded.encode()
-        decoded = base64.standard_b64decode(encoded)
+        try:
+            decoded = base64.standard_b64decode(encoded)
+        except binasciiError:
+            await ctx.send(chat.error(_("Invalid Base64 string provided")))
+            return
         result = decoded.decode(encoding=encoding, errors="replace")
         await ctx.send(chat.box(result))
 
