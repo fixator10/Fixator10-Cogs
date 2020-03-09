@@ -20,9 +20,7 @@ def bool_emojify(bool_var: bool) -> str:
 
 _ = Translator("DataUtils", __file__)
 
-
 TWEMOJI_URL = "https://twemoji.maxcdn.com/v/latest/72x72"
-
 
 GUILD_FEATURES = {
     "VIP_REGIONS": _("VIP voice regions"),
@@ -51,8 +49,9 @@ async def get_twemoji(emoji: str):
     emoji_unicode = []
     for char in emoji:
         char = hex(ord(char))[2:]
-        if char != "fe0f":  # Variation Selector-16
-            emoji_unicode.append(char)
+        emoji_unicode.append(char)
+    if "200d" not in emoji_unicode:
+        emoji_unicode = list(filter(lambda c: c != "fe0f", emoji_unicode))
     emoji_unicode = "-".join(emoji_unicode)
     return f"{TWEMOJI_URL}/{emoji_unicode}.png"
 
@@ -60,7 +59,7 @@ async def get_twemoji(emoji: str):
 @cog_i18n(_)
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
-    __version__ = "2.2.10"
+    __version__ = "2.2.11"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot: commands.Bot):
@@ -128,8 +127,8 @@ class DataUtils(commands.Cog):
         em.add_field(
             name=_("Client"),
             value="📱: {}\n"
-            "🖥: {}\n"
-            "🌎: {}".format(
+                  "🖥: {}\n"
+                  "🌎: {}".format(
                 str(member.mobile_status).capitalize(),
                 str(member.desktop_status).capitalize(),
                 str(member.web_status).capitalize(),
@@ -169,7 +168,7 @@ class DataUtils(commands.Cog):
             value="\n".join(
                 [role.name for role in member.roles if not role.is_default()]
             )
-            or "❌",
+                  or "❌",
             inline=False,
         )
         em.set_image(url=member.avatar_url_as(static_format="png", size=2048))
@@ -213,8 +212,8 @@ class DataUtils(commands.Cog):
             title=_("Server info"),
             description=server.description and server.description or None,
             color=server.owner.color.value
-            and server.owner.color
-            or discord.Embed.Empty,
+                  and server.owner.color
+                  or discord.Embed.Empty,
         )
         em.add_field(name=_("Name"), value=chat.escape(server.name, formatting=True))
         em.add_field(name=_("Server ID"), value=server.id)
@@ -313,14 +312,14 @@ class DataUtils(commands.Cog):
             name=_("Features"),
             value="\n".join(GUILD_FEATURES.get(f, f) for f in server.features).format(
                 banner=server.banner
-                and f" [🔗]({server.banner_url_as(format='png')})"
-                or "",
+                       and f" [🔗]({server.banner_url_as(format='png')})"
+                       or "",
                 splash=server.splash
-                and f" [🔗]({server.splash_url_as(format='png')})"
-                or "",
+                       and f" [🔗]({server.splash_url_as(format='png')})"
+                       or "",
                 discovery=server.discovery_splash
-                and f" [🔗]({server.discovery_splash_url_as(format='png')})"
-                or "",
+                          and f" [🔗]({server.discovery_splash_url_as(format='png')})"
+                          or "",
             ),
             inline=False,
         )
@@ -387,12 +386,12 @@ class DataUtils(commands.Cog):
     @commands.guild_only()
     @checks.bot_has_permissions(embed_links=True)
     async def cinfo(
-        self,
-        ctx,
-        *,
-        channel: Union[
-            discord.TextChannel, discord.VoiceChannel, discord.CategoryChannel, None
-        ] = None,
+            self,
+            ctx,
+            *,
+            channel: Union[
+                discord.TextChannel, discord.VoiceChannel, discord.CategoryChannel, None
+            ] = None,
     ):
         """Get info about channel"""
         if channel is None:
@@ -429,7 +428,7 @@ class DataUtils(commands.Cog):
         em.add_field(
             name=_("Category"),
             value=chat.escape(str(channel.category), formatting=True)
-            or chat.inline(_("Not in category")),
+                  or chat.inline(_("Not in category")),
         )
         em.add_field(name=_("Position"), value=channel.position)
         if isinstance(channel, discord.TextChannel):
@@ -450,8 +449,8 @@ class DataUtils(commands.Cog):
                 )
             em.add_field(name=_("NSFW"), value=bool_emojify(channel.is_nsfw()))
             if (
-                channel.guild.me.permissions_in(channel).manage_webhooks
-                and await channel.webhooks()
+                    channel.guild.me.permissions_in(channel).manage_webhooks
+                    and await channel.webhooks()
             ):
                 em.add_field(
                     name=_("Webhooks count"), value=str(len(await channel.webhooks()))
@@ -463,8 +462,8 @@ class DataUtils(commands.Cog):
             em.add_field(
                 name=_("Users"),
                 value=channel.user_limit
-                and f"{len(channel.members)}/{channel.user_limit}"
-                or f"{len(channel.members)}",
+                      and f"{len(channel.members)}/{channel.user_limit}"
+                      or f"{len(channel.members)}",
             )
         elif isinstance(channel, discord.CategoryChannel):
             em.add_field(name=_("NSFW"), value=bool_emojify(channel.is_nsfw()))
@@ -585,13 +584,13 @@ class DataUtils(commands.Cog):
     @commands.guild_only()
     @checks.admin_or_permissions(administrator=True)
     async def chanperms(
-        self,
-        ctx,
-        member: discord.Member,
-        *,
-        channel: Union[
-            discord.TextChannel, discord.VoiceChannel, discord.CategoryChannel, None
-        ] = None,
+            self,
+            ctx,
+            member: discord.Member,
+            *,
+            channel: Union[
+                discord.TextChannel, discord.VoiceChannel, discord.CategoryChannel, None
+            ] = None,
     ):
         """Check user's permission for current or provided channel"""
         if channel is None:
@@ -607,7 +606,7 @@ class DataUtils(commands.Cog):
     @commands.command(aliases=["emojiinfo", "emojinfo"])
     @checks.bot_has_permissions(embed_links=True)
     async def einfo(
-        self, ctx, *, emoji: Union[discord.Emoji, discord.PartialEmoji] = None
+            self, ctx, *, emoji: Union[discord.Emoji, discord.PartialEmoji] = None
     ):
         """Get info about emoji"""
         if emoji is None:
@@ -657,8 +656,8 @@ class DataUtils(commands.Cog):
         """Make embed with info about emoji"""
         em = discord.Embed(
             title=isinstance(emoji, str)
-            and "\n".join(map(unicodedata.name, emoji))
-            or chat.escape(emoji.name, formatting=True),
+                  and "\n".join(map(unicodedata.name, emoji))
+                  or chat.escape(emoji.name, formatting=True),
             color=await ctx.embed_color(),
         )
         if isinstance(emoji, str):
@@ -729,7 +728,7 @@ class DataUtils(commands.Cog):
             em = discord.Embed(
                 title=f"{ACTIVITY_TYPES.get(activity.type, activity.type)} {activity.name}",
                 description=f"{activity.details and activity.details or ''}\n"
-                f"{activity.state and activity.state or ''}{party_size}",
+                            f"{activity.state and activity.state or ''}{party_size}",
                 color=await ctx.embed_color(),
             )
             activity.small_image_text and em.add_field(
