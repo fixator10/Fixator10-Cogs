@@ -43,7 +43,8 @@ def bool_emojify(bool_var: bool) -> str:
 @cog_i18n(_)
 class MoreUtils(commands.Cog):
     """Some (maybe) useful utils."""
-    __version__ = "2.0.0"
+
+    __version__ = "2.0.1"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot: commands.Bot):
@@ -89,7 +90,10 @@ class MoreUtils(commands.Cog):
             timestamp=ctx.message.created_at,
         )
         em.set_thumbnail(
-            url=f"https://dummyimage.com/512/{str(color)[1:]}&text=%20"
+            url=f"https://api.alexflipnote.dev/color/image/{str(color)[1:]}"
+        )
+        em.set_image(
+            url=f"https://api.alexflipnote.dev/color/image/gradient/{str(color)[1:]}"
         )
         await ctx.send(embed=em)
 
