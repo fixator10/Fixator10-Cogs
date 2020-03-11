@@ -1,4 +1,6 @@
 import aiohttp
+import discord
+from typing import Union
 from redbot.core import commands
 from redbot.core.config import Config
 from redbot.core.utils import chat_formatting as chat
@@ -11,7 +13,8 @@ BASE_API_GLOBAL = "http://godvillegame.com/gods/api/"
 
 class GodvilleData(commands.Cog):
     """Get data about Godville profiles"""
-    __version__ = "2.0.0"
+
+    __version__ = "2.1.0"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -42,19 +45,30 @@ class GodvilleData(commands.Cog):
         for user, data in users.items():
             if data[game]["godname"] == godname:
                 return data[game]["apikey"]
-        return None
+        return ""
 
     @commands.group(invoke_without_command=True)
     @commands.cooldown(30, 10 * 60, commands.BucketType.user)
-    async def godville(self, ctx, *, godname: str):
+    async def godville(self, ctx, *, god: Union[discord.Member, str]):
         """Get data about godville.net (Russian) god by name"""
-        async with self.session.get(
-            "{}/{}/{}".format(
-                BASE_API,
-                godname.casefold(),
-                await self.api_by_god(godname.casefold(), "godville") or "",
-            )
-        ) as sg:
+        if isinstance(god, discord.Member):
+            godname = await self.config.user(god).godville.godname()
+            if not godname:
+                await ctx.send(
+                    chat.error(
+                        "User {} does not have api key set".format(
+                            chat.escape(
+                                god.display_name, mass_mentions=True, formatting=True
+                            )
+                        )
+                    )
+                )
+                return
+            apikey = await self.config.user(god).godville.apikey()
+        else:
+            godname = god.casefold()
+            apikey = await self.api_by_god(godname, "godville")
+        async with self.session.get(f"{BASE_API}/{godname}/{apikey}") as sg:
             if sg.status == 404:
                 await ctx.send(
                     chat.error(
