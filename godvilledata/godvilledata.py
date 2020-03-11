@@ -1,6 +1,5 @@
 import aiohttp
 import discord
-from typing import Union
 from redbot.core import commands
 from redbot.core.config import Config
 from redbot.core.utils import chat_formatting as chat
@@ -11,10 +10,39 @@ BASE_API = "https://godville.net/gods/api/"
 BASE_API_GLOBAL = "http://godvillegame.com/gods/api/"
 
 
+class GodConverter(commands.MemberConverter):
+    async def api_by_god(self, ctx, godname: str, game: str):
+        """Get apikey by godname
+        :param godname: name of god to get key
+        :param game: type of account ("godville" or "godvillegame")"""
+        if not any(g == game for g in ["godville", "godvillegame"]):
+            raise ValueError(
+                f"{game} is not right type of account\n"
+                'only "godville" and "godvillegame" are supported'
+            )
+        users = await ctx.cog.config.all_users()
+        for user, data in users.items():
+            if data[game]["godname"] == godname:
+                return data[game]["apikey"]
+        return ""
+
+    async def convert(self, ctx, argument):
+        member = await super().convert(ctx, argument)
+        godname = None
+        apikey = ""
+        if member:
+            godname = await ctx.cog.config.user(member).godville.godname()
+            apikey = await ctx.cog.config.user(member).godville.apikey() or ""
+        if not godname:
+            godname = argument
+            apikey = await self.api_by_god(ctx, argument, "godville")
+        return godname, apikey
+
+
 class GodvilleData(commands.Cog):
     """Get data about Godville profiles"""
 
-    __version__ = "2.1.0"
+    __version__ = "2.1.1"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -32,42 +60,11 @@ class GodvilleData(commands.Cog):
     def cog_unload(self):
         self.bot.loop.create_task(self.session.close())
 
-    async def api_by_god(self, godname: str, game: str):
-        """Get apikey by godname
-        :param godname: name of god to get key
-        :param game: type of account ("godville" or "godvillegame")"""
-        if not any(g == game for g in ["godville", "godvillegame"]):
-            raise ValueError(
-                f"{game} is not right type of account\n"
-                'only "godville" and "godvillegame" are supported'
-            )
-        users = await self.config.all_users()
-        for user, data in users.items():
-            if data[game]["godname"] == godname:
-                return data[game]["apikey"]
-        return ""
-
     @commands.group(invoke_without_command=True)
     @commands.cooldown(30, 10 * 60, commands.BucketType.user)
-    async def godville(self, ctx, *, god: Union[discord.Member, str]):
+    async def godville(self, ctx, *, god: GodConverter):
         """Get data about godville.net (Russian) god by name"""
-        if isinstance(god, discord.Member):
-            godname = await self.config.user(god).godville.godname()
-            if not godname:
-                await ctx.send(
-                    chat.error(
-                        "User {} does not have api key set".format(
-                            chat.escape(
-                                god.display_name, mass_mentions=True, formatting=True
-                            )
-                        )
-                    )
-                )
-                return
-            apikey = await self.config.user(god).godville.apikey()
-        else:
-            godname = god.casefold()
-            apikey = await self.api_by_god(godname, "godville")
+        godname, apikey = god
         async with self.session.get(f"{BASE_API}/{godname}/{apikey}") as sg:
             if sg.status == 404:
                 await ctx.send(
