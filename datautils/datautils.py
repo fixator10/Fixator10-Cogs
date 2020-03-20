@@ -32,10 +32,11 @@ GUILD_FEATURES = {
     "DISCOVERABLE": _("Shows in Server Discovery{discovery}"),
     "FEATURABLE": _('Can be in "Featured" section of Server Discovery'),
     "COMMERCE": _("Store channels"),
-    "PUBLIC": _('"Lurkable"'),
+    "PUBLIC": _("Can be joined without an invite"),
     "NEWS": _("News channels"),
     "BANNER": _("Banner{banner}"),
     "ANIMATED_ICON": _("Animated icon"),
+    "WELCOME_SCREEN_ENABLED": _("Welcome screen"),
     "PUBLIC_DISABLED": _("Cannot be public"),
     # "ENABLED_DISCOVERABLE_BEFORE": _("UNDOCUMENTED")
 }
@@ -62,7 +63,7 @@ async def get_twemoji(emoji: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.2.12"
+    __version__ = "2.2.13"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot: commands.Bot):
