@@ -1,5 +1,4 @@
 import aiohttp
-import discord
 from redbot.core import commands
 from redbot.core.config import Config
 from redbot.core.utils import chat_formatting as chat
