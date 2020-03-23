@@ -18,7 +18,7 @@ _ = Translator("AdminUtils", __file__)
 class AdminUtils(commands.Cog):
     """Useful commands for server administrators."""
 
-    __version__ = "2.2.0"
+    __version__ = "2.2.1"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot: commands.Bot):
@@ -92,7 +92,10 @@ class AdminUtils(commands.Cog):
             ]
         )
         await ctx.guild.edit(region=random_region)
-        await ctx.guild.edit(region=current_region)
+        await ctx.guild.edit(
+            region=current_region,
+            reason=get_audit_reason(ctx.author, _("Voice restart")),
+        )
         await ctx.tick()
 
     @commands.command()
