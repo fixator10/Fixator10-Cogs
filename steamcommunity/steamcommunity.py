@@ -191,25 +191,26 @@ class SteamCommunity(commands.Cog):
             await ctx.send_help()
             return
 
-        try:
-            server = await self.bot.loop.run_in_executor(
-                None, valve.source.a2s.ServerQuerier, serverc
-            )
-            info = server.info()
-            server.close()
+        async with ctx.typing():
+            try:
+                server = await self.bot.loop.run_in_executor(
+                    None, valve.source.a2s.ServerQuerier, serverc
+                )
+                info = server.info()
+                server.close()
 
-        except valve.source.a2s.NoResponseError:
-            await ctx.send(
-                chat.error(
-                    _(
-                        "Could not fetch Server or the Server is not on the Steam masterlist"
+            except valve.source.a2s.NoResponseError:
+                await ctx.send(
+                    chat.error(
+                        _(
+                            "Could not fetch Server or the Server is not on the Steam masterlist"
+                        )
                     )
                 )
-            )
-            return
-        except Exception as e:
-            await ctx.send(chat.error(_("An Error has been occurred: {}").format(e)))
-            return
+                return
+            except Exception as e:
+                await ctx.send(chat.error(_("An Error has been occurred: {}").format(e)))
+                return
 
         _map = info.values["map"]
 
