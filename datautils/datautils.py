@@ -38,7 +38,7 @@ GUILD_FEATURES = {
     "ANIMATED_ICON": _("Animated icon"),
     "WELCOME_SCREEN_ENABLED": _("Welcome screen"),
     "PUBLIC_DISABLED": _("Cannot be public"),
-    # "ENABLED_DISCOVERABLE_BEFORE": _("UNDOCUMENTED")
+    "ENABLED_DISCOVERABLE_BEFORE": _("Was in Server Discovery")
 }
 
 ACTIVITY_TYPES = {
@@ -63,7 +63,7 @@ async def get_twemoji(emoji: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.2.13"
+    __version__ = "2.2.14"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot: commands.Bot):
