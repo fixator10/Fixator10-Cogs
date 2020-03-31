@@ -1,8 +1,10 @@
+from collections import namedtuple
 from datetime import datetime
 from functools import partial
 from socket import gethostbyname_ex
 from warnings import filterwarnings
 
+import aiohttp
 import discord
 import valve.source.a2s
 from redbot.core import checks
@@ -11,7 +13,20 @@ from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils import chat_formatting as chat
 from valve.steam.api import interface
 
+try:
+    import matplotlib
+    import matplotlib.pyplot as plt
+    import matplotlib.units as munits
+    import matplotlib.dates as mdates
+    import numpy as np
+    from io import BytesIO
+except:
+    pass
+
 from .steamuser import SteamUser
+
+
+LOAD_INDICATORS = ["\N{GREEN HEART}", "\N{YELLOW HEART}", "\N{BROKEN HEART}"]
 
 
 def bool_emojify(bool_var: bool) -> str:
@@ -23,11 +38,6 @@ def check_api(ctx):
     if "ISteamUser" in list(ctx.cog.steam._interfaces.keys()):
         return True
     return False
-
-
-def check_not_api(ctx):
-    """Opposite to check_api(ctx)"""
-    return not check_api(ctx)
 
 
 async def validate_ip(s):
@@ -44,8 +54,60 @@ async def validate_ip(s):
     return True
 
 
-_ = Translator("SteamCommunity", __file__)
+async def find_service(services: dict, service: str):
+    """Find service from steamstat.us' service list"""
+    Service = namedtuple("Service", ["id", "load", "text", "text_with_indicator"])
+    for s in services:
+        if s[0] == service:
+            return Service(s[0], s[1], s[2], f"{LOAD_INDICATORS[s[1]]} {s[2]}")
+    return Service("", "", "", "")
 
+
+async def gen_steam_cm_graph(graphdata: dict):
+    """Make an graph for connection managers"""
+    formats = [
+        "%y",  # ticks are mostly years
+        "%b",  # ticks are mostly months
+        "%d",  # ticks are mostly days
+        "%H:%M",  # hrs
+        "%H:%M",  # min
+        "%S.%f",
+    ]  # secs
+    zero_formats = [""] + formats[:-1]
+    zero_formats[3] = "%d-%b"
+    offset_formats = [
+        "",
+        "%Y",
+        "%b %Y",
+        "%d %b %Y",
+        "%d %b %Y",
+        "%d %b %Y %H:%M",
+    ]
+
+    converter = mdates.ConciseDateConverter(
+        formats=formats, zero_formats=zero_formats, offset_formats=offset_formats
+    )
+    munits.registry[datetime] = converter
+    cur = graphdata["start"]
+    x = []
+    for i in range(0, len(graphdata["data"])):
+        cur += graphdata["step"]
+        x.append(cur)
+    x = [datetime.utcfromtimestamp(_x / 1000) for _x in x]
+    y = graphdata["data"]
+    fig, ax = plt.subplots()
+    ax.plot(x, y)
+    ax.set_ylim(bottom=0)
+    ax.grid()
+    ax.set(xlabel="Date", ylabel="%", title="Steam Connection Managers")
+    ax.set_yticks(np.arange(0, 100, 5))
+    graphfile = BytesIO()
+    fig.savefig(graphfile)
+    graphfile.seek(0)
+    return graphfile
+
+
+_ = Translator("SteamCommunity", __file__)
 
 filterwarnings("ignore", category=FutureWarning, module=r"valve.")
 
@@ -53,12 +115,17 @@ filterwarnings("ignore", category=FutureWarning, module=r"valve.")
 @cog_i18n(_)
 class SteamCommunity(commands.Cog):
     """SteamCommunity commands"""
-    __version__ = "2.0.2"
+
+    __version__ = "2.1.0"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
         self.bot = bot
         self.steam = None
+        self.session = aiohttp.ClientSession(loop=self.bot.loop)
+
+    def cog_unload(self):
+        self.session.detach()
 
     async def initialize(self):
         """Should be called straight after cog instantiation."""
@@ -73,14 +140,9 @@ class SteamCommunity(commands.Cog):
         pass
 
     @steamcommunity.command()
-    @commands.check(check_not_api)
     @checks.is_owner()
     async def apikey(self, ctx):
         """Set API key for Steam Web API"""
-        await self.initialize()
-        if "ISteamUser" in list(self.steam._interfaces.keys()):
-            await ctx.tick()
-            return
         message = _(
             "To get Steam Web API key:\n"
             "1. Login to your Steam account\n"
@@ -103,7 +165,9 @@ class SteamCommunity(commands.Cog):
             title=profile.personaname,
             description=profile.personastate(),
             url=profile.profileurl,
-            timestamp=datetime.fromtimestamp(profile.lastlogoff) if profile.lastlogoff else discord.Embed.Empty,
+            timestamp=datetime.fromtimestamp(profile.lastlogoff)
+            if profile.lastlogoff
+            else discord.Embed.Empty,
             color=profile.personastatecolor,
         )
         if profile.gameid:
@@ -166,6 +230,83 @@ class SteamCommunity(commands.Cog):
         )
         await ctx.send(embed=em)
 
+    @steamcommunity.command(name="status")
+    @commands.cooldown(1, 45, commands.BucketType.guild)
+    @commands.bot_has_permissions(embed_links=True)
+    async def steamstatus(self, ctx):
+        async with ctx.typing():
+            try:
+                async with self.session.get(
+                    "https://crowbar.steamstat.us/gravity.json", raise_for_status=True
+                ) as gravity:
+                    data = await gravity.json()
+            except aiohttp.ClientResponseError as e:
+                await ctx.send(
+                    chat.error(
+                        _("Unable to get data from steamstat.us: {} ({})").format(
+                            e.status, e.message
+                        )
+                    )
+                )
+                return
+            except aiohttp.ClientError as e:
+                await ctx.send(
+                    chat.error(_("Unable to get data from steamstat.us: {}").format(e))
+                )
+        services = data.get("services", {})
+        graph = data.get("graph")
+        em = discord.Embed(
+            title=_("Steam Status"),
+            url="https://steamstat.us",
+            color=await ctx.embed_color(),
+        )
+        em.description = _(
+            "**Online**: {}\n"
+            "**In-game**: {}\n"
+            "**Store**: {}\n"
+            "**Community**: {}\n"
+            "**Web API**: {}\n"
+            "**Steam Connection Managers**: {}\n"
+            "**SteamDB.info database**: {}"
+        ).format(
+            (await find_service(services, "online")).text_with_indicator,
+            (await find_service(services, "ingame")).text_with_indicator,
+            (await find_service(services, "store")).text_with_indicator,
+            (await find_service(services, "community")).text_with_indicator,
+            (await find_service(services, "webapi")).text_with_indicator,
+            (await find_service(services, "cms")).text_with_indicator,
+            (await find_service(services, "database")).text_with_indicator,
+        )
+        em.add_field(
+            name=_("Games"),
+            value=_(
+                "**TF2 Game Coordinator**: {}\n"
+                "**Dota 2 Game Coordinator**: {}\n"
+                "**Underlords Game Coordinator**: {}\n"
+                "**Artifact Game Coordinator**: {}\n"
+                "**CS:GO Game Coordinator**: {}\n"
+                "**CS:GO Sessions Logon**: {}\n"
+                "**CS:GO Player Inventories**: {}\n"
+                "**CS:GO Matchmaking Scheduler**: {}\n"
+            ).format(
+                (await find_service(services, "tf2")).text_with_indicator,
+                (await find_service(services, "dota2")).text_with_indicator,
+                (await find_service(services, "underlords")).text_with_indicator,
+                (await find_service(services, "artifact")).text_with_indicator,
+                (await find_service(services, "csgo")).text_with_indicator,
+                (await find_service(services, "csgo_sessions")).text_with_indicator,
+                (await find_service(services, "csgo_community")).text_with_indicator,
+                (await find_service(services, "csgo_mm_scheduler")).text_with_indicator,
+            ),
+        )
+        graph_file = None
+        if all(lib in globals().keys() for lib in ["matplotlib", "plt"]):
+            graph_file = await gen_steam_cm_graph(graph)
+            graph_file = discord.File(graph_file, filename="CMgraph.png")
+            em.set_image(url="attachment://CMgraph.png")
+        # TODO: Regions?
+        await ctx.send(embed=em, file=graph_file)
+
     @commands.command(aliases=["gameserver"])
     async def getserver(self, ctx, serverip: str):
         """Get info about a gameserver"""
@@ -209,7 +350,9 @@ class SteamCommunity(commands.Cog):
                 )
                 return
             except Exception as e:
-                await ctx.send(chat.error(_("An Error has been occurred: {}").format(e)))
+                await ctx.send(
+                    chat.error(_("An Error has been occurred: {}").format(e))
+                )
                 return
 
         _map = info.values["map"]
