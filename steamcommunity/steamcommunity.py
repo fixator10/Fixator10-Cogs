@@ -116,7 +116,7 @@ filterwarnings("ignore", category=FutureWarning, module=r"valve.")
 class SteamCommunity(commands.Cog):
     """SteamCommunity commands"""
 
-    __version__ = "2.1.1"
+    __version__ = "2.1.2"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -165,7 +165,7 @@ class SteamCommunity(commands.Cog):
             title=profile.personaname,
             description=profile.personastate(),
             url=profile.profileurl,
-            timestamp=datetime.fromtimestamp(profile.lastlogoff)
+            timestamp=datetime.utcfromtimestamp(profile.lastlogoff)
             if profile.lastlogoff
             else discord.Embed.Empty,
             color=profile.personastatecolor,
@@ -234,6 +234,7 @@ class SteamCommunity(commands.Cog):
     @commands.cooldown(1, 45, commands.BucketType.guild)
     @commands.bot_has_permissions(embed_links=True)
     async def steamstatus(self, ctx):
+        """Get status of steam services"""
         async with ctx.typing():
             try:
                 async with self.session.get(
@@ -259,7 +260,7 @@ class SteamCommunity(commands.Cog):
             title=_("Steam Status"),
             url="https://steamstat.us",
             color=await ctx.embed_color(),
-            timestamp=datetime.fromtimestamp(data.get("time", 0))
+            timestamp=datetime.utcfromtimestamp(data.get("time", 0))
         )
         em.description = _(
             "**Online**: {}\n"
