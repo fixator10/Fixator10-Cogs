@@ -1,8 +1,8 @@
+import unicodedata
 from asyncio import TimeoutError as AsyncTimeoutError
 from textwrap import shorten
-from typing import Union
 from types import SimpleNamespace
-import unicodedata
+from typing import Union
 
 import discord
 import tabulate
@@ -10,8 +10,8 @@ from redbot.core import checks
 from redbot.core import commands
 from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils import chat_formatting as chat
-from redbot.core.utils.predicates import ReactionPredicate
 from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
+from redbot.core.utils.predicates import ReactionPredicate
 
 
 def bool_emojify(bool_var: bool) -> str:
@@ -38,7 +38,7 @@ GUILD_FEATURES = {
     "ANIMATED_ICON": _("Animated icon"),
     "WELCOME_SCREEN_ENABLED": _("Welcome screen"),
     "PUBLIC_DISABLED": _("Cannot be public"),
-    "ENABLED_DISCOVERABLE_BEFORE": _("Was in Server Discovery")
+    "ENABLED_DISCOVERABLE_BEFORE": _("Was in Server Discovery"),
 }
 
 ACTIVITY_TYPES = {
@@ -63,7 +63,7 @@ async def get_twemoji(emoji: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.2.14"
+    __version__ = "2.2.15"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot: commands.Bot):
@@ -159,9 +159,8 @@ class DataUtils(commands.Cog):
                 member.guild_permissions.value
             ),
         )
-        member.voice and em.add_field(
-            name=_("In voice channel"), value=member.voice.channel.mention
-        )
+        if member.voice:
+            em.add_field(name=_("In voice channel"), value=member.voice.channel.mention)
         em.add_field(
             name=_("Mention"),
             value=f"{member.mention}\n{chat.inline(member.mention)}",
@@ -521,7 +520,7 @@ class DataUtils(commands.Cog):
         """Get info about role"""
         em = discord.Embed(
             title=chat.escape(role.name, formatting=True),
-            color=role.color.value and role.color or discord.Embed.Empty,
+            color=role.color if role.color.value else discord.Embed.Empty,
         )
         em.add_field(name=_("ID"), value=role.id)
         em.add_field(
@@ -725,41 +724,50 @@ class DataUtils(commands.Cog):
                 timestamp=activity.start or discord.Embed.Empty,
                 color=await ctx.embed_color(),
             )
-            activity.end and em.add_field(
-                name=_("This game will end at"),
-                value=activity.end.strftime(self.TIME_FORMAT),
-            )
-            activity.start and em.set_footer(text=_("Playing since"))
+            if activity.end:
+                em.add_field(
+                    name=_("This game will end at"),
+                    value=activity.end.strftime(self.TIME_FORMAT),
+                )
+            if activity.start:
+                em.set_footer(text=_("Playing since"))
         elif isinstance(activity, discord.Activity):
             party_size = activity.party.get("size")
-            party_size = party_size and f" ({party_size[0]}/{party_size[1]})" or ""
+            party_size = f" ({party_size[0]}/{party_size[1]})" if party_size else ""
             em = discord.Embed(
                 title=f"{ACTIVITY_TYPES.get(activity.type, activity.type)} {activity.name}",
                 description=f"{activity.details and activity.details or ''}\n"
                 f"{activity.state and activity.state or ''}{party_size}",
                 color=await ctx.embed_color(),
             )
-            activity.small_image_text and em.add_field(
-                name=_("Small image text"),
-                value=activity.small_image_text,
-                inline=False,
-            )
-            activity.application_id and em.add_field(
-                name=_("Application ID"), value=activity.application_id
-            )
-            activity.start and em.add_field(
-                name=_("Started at"), value=activity.start.strftime(self.TIME_FORMAT),
-            )
-            activity.end and em.add_field(
-                name=_("Will end at"), value=activity.end.strftime(self.TIME_FORMAT),
-            )
-            activity.large_image_text and em.add_field(
-                name=_("Large image text"),
-                value=activity.large_image_text,
-                inline=False,
-            )
-            activity.small_image_url and em.set_thumbnail(url=activity.small_image_url)
-            activity.large_image_url and em.set_image(url=activity.large_image_url)
+            if activity.small_image_text:
+                em.add_field(
+                    name=_("Small image text"),
+                    value=activity.small_image_text,
+                    inline=False,
+                )
+            if activity.application_id:
+                em.add_field(name=_("Application ID"), value=activity.application_id)
+            if activity.start:
+                em.add_field(
+                    name=_("Started at"),
+                    value=activity.start.strftime(self.TIME_FORMAT),
+                )
+            if activity.end:
+                em.add_field(
+                    name=_("Will end at"),
+                    value=activity.end.strftime(self.TIME_FORMAT),
+                )
+            if activity.large_image_text:
+                em.add_field(
+                    name=_("Large image text"),
+                    value=activity.large_image_text,
+                    inline=False,
+                )
+            if activity.small_image_url:
+                em.set_thumbnail(url=activity.small_image_url)
+            if activity.large_image_url:
+                em.set_image(url=activity.large_image_url)
         elif isinstance(activity, discord.Streaming):
             em = discord.Embed(
                 title=activity.name,
