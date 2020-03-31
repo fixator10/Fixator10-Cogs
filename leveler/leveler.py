@@ -58,7 +58,7 @@ except Exception as e:
 log = logging.getLogger("red.fixator10-cogs.leveler")
 
 
-AVATAR_FORMAT = pil_features.check("webp_anim") and "webp" or "jpg"
+AVATAR_FORMAT = "webp" if pil_features.check("webp_anim") else "jpg"
 log.debug(f"using {AVATAR_FORMAT} avatar format")
 
 
@@ -70,7 +70,7 @@ async def non_global_bank(ctx):
 class Leveler(commands.Cog):
     """A level up thing with image generation!"""
 
-    __version__ = "2.0.5b"
+    __version__ = "2.0.6b"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
