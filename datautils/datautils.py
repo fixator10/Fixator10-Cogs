@@ -63,7 +63,7 @@ async def get_twemoji(emoji: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.2.16"
+    __version__ = "2.2.17"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot: commands.Bot):
@@ -126,7 +126,9 @@ class DataUtils(commands.Cog):
             color=member.color.value and member.color or discord.Embed.Empty,
         )
         if member.nick:
-            em.add_field(name=_("Nickname"), value=member.nick) or em.add_field(
+            em.add_field(name=_("Nickname"), value=member.nick)
+        else:
+            em.add_field(
                 name=_("Name"), value=member.name
             )
         em.add_field(
