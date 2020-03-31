@@ -63,7 +63,7 @@ async def get_twemoji(emoji: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.2.15"
+    __version__ = "2.2.16"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot: commands.Bot):
@@ -125,9 +125,10 @@ class DataUtils(commands.Cog):
             title=chat.escape(str(member), formatting=True),
             color=member.color.value and member.color or discord.Embed.Empty,
         )
-        member.nick and em.add_field(
-            name=_("Nickname"), value=member.nick
-        ) or em.add_field(name=_("Name"), value=member.name)
+        if member.nick:
+            em.add_field(name=_("Nickname"), value=member.nick) or em.add_field(
+                name=_("Name"), value=member.name
+            )
         em.add_field(
             name=_("Client"),
             value="📱: {}\n"
@@ -146,11 +147,13 @@ class DataUtils(commands.Cog):
             name=_("Has existed since"),
             value=member.created_at.strftime(self.TIME_FORMAT),
         )
-        member.color.value and em.add_field(name=_("Color"), value=member.colour)
-        member.premium_since and em.add_field(
-            name=_("Boosted server"),
-            value=member.premium_since.strftime(self.TIME_FORMAT),
-        )
+        if member.color.value:
+            em.add_field(name=_("Color"), value=member.colour)
+        if member.premium_since:
+            em.add_field(
+                name=_("Boosted server"),
+                value=member.premium_since.strftime(self.TIME_FORMAT),
+            )
         em.add_field(name=_("Bot?"), value=bool_emojify(member.bot))
         em.add_field(name=_("System?"), value=bool_emojify(member.system))
         em.add_field(
@@ -224,9 +227,8 @@ class DataUtils(commands.Cog):
             name=_("Existed since"), value=server.created_at.strftime(self.TIME_FORMAT)
         )
         em.add_field(name=_("Region"), value=server.region)
-        server.preferred_locale and em.add_field(
-            name=_("Discovery language"), value=server.preferred_locale
-        )
+        if server.preferred_locale:
+            em.add_field(name=_("Discovery language"), value=server.preferred_locale)
         em.add_field(
             name=_("Owner"), value=chat.escape(str(server.owner), formatting=True)
         )
@@ -269,19 +271,24 @@ class DataUtils(commands.Cog):
             else _("Unknown"),
         )
         em.add_field(name=_("2FA admins"), value=bool_emojify(server.mfa_level))
-        server.system_channel and em.add_field(
-            name=_("System messages channel"),
-            value=_(
-                "**Channel:** {channel}\n"
-                "**Welcome message:** {welcome}\n"
-                "**Boosts:** {boost}"
-            ).format(
-                channel=chat.escape(str(server.system_channel), formatting=True),
-                welcome=bool_emojify(server.system_channel_flags.join_notifications),
-                boost=bool_emojify(server.system_channel_flags.premium_subscriptions),
-            ),
-            inline=False,
-        )
+        if server.system_channel:
+            em.add_field(
+                name=_("System messages channel"),
+                value=_(
+                    "**Channel:** {channel}\n"
+                    "**Welcome message:** {welcome}\n"
+                    "**Boosts:** {boost}"
+                ).format(
+                    channel=chat.escape(str(server.system_channel), formatting=True),
+                    welcome=bool_emojify(
+                        server.system_channel_flags.join_notifications
+                    ),
+                    boost=bool_emojify(
+                        server.system_channel_flags.premium_subscriptions
+                    ),
+                ),
+                inline=False,
+            )
         em.add_field(
             name=_("Stats"),
             value=_(
@@ -311,24 +318,26 @@ class DataUtils(commands.Cog):
             ),
             inline=False,
         )
-        server.features and em.add_field(
-            name=_("Features"),
-            value="\n".join(GUILD_FEATURES.get(f, f) for f in server.features).format(
-                banner=server.banner
-                and f" [🔗]({server.banner_url_as(format='png')})"
-                or "",
-                splash=server.splash
-                and f" [🔗]({server.splash_url_as(format='png')})"
-                or "",
-                discovery=server.discovery_splash
-                and f" [🔗]({server.discovery_splash_url_as(format='png')})"
-                or "",
-            ),
-            inline=False,
-        )
-        widget.invite_url and em.add_field(
-            name=_("Widget's invite"), value=widget.invite_url
-        )
+        if server.features:
+            em.add_field(
+                name=_("Features"),
+                value="\n".join(
+                    GUILD_FEATURES.get(f, f) for f in server.features
+                ).format(
+                    banner=server.banner
+                    and f" [🔗]({server.banner_url_as(format='png')})"
+                    or "",
+                    splash=server.splash
+                    and f" [🔗]({server.splash_url_as(format='png')})"
+                    or "",
+                    discovery=server.discovery_splash
+                    and f" [🔗]({server.discovery_splash_url_as(format='png')})"
+                    or "",
+                ),
+                inline=False,
+            )
+        if widget.invite_url:
+            em.add_field(name=_("Widget's invite"), value=widget.invite_url)
         em.set_image(url=server.icon_url_as(format="png", size=2048))
         await ctx.send(embed=em)
 
@@ -774,7 +783,8 @@ class DataUtils(commands.Cog):
                 description=_("Streaming on {}").format(activity.platform),
                 url=activity.url,
             )
-            activity.game and em.add_field(name=_("Game"), value=activity.game)
+            if activity.game:
+                em.add_field(name=_("Game"), value=activity.game)
         elif isinstance(activity, discord.Spotify):
             em = discord.Embed(
                 title=activity.title,
