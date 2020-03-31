@@ -24,12 +24,12 @@ class SauceNAOEntry:
         self.urls = data.get("ext_urls", [])
         self.title = data.get("title")
         self.created_at = (
-                data.get("created_at") and parse(data.get("created_at")) or None
+            parse(data.get("created_at")) if data.get("created_at") else None
         )
         self.member_name = (
-                data.get("member_name")
-                or data.get("author_name")
-                or data.get("pawoo_user_username")
+            data.get("member_name")
+            or data.get("author_name")
+            or data.get("pawoo_user_username")
         )
         self.creator = data.get("creator")
         self.material = data.get("material")
@@ -86,7 +86,7 @@ class SauceNAO:
         async with ctx.typing():
             try:
                 async with ctx.cog.session.get(
-                        BASE_API_URL, params=params, raise_for_status=True
+                    BASE_API_URL, params=params, raise_for_status=True
                 ) as data:
                     data = await data.json()
                     if data.get("status", 0) != 0:
