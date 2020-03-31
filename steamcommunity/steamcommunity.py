@@ -116,7 +116,7 @@ filterwarnings("ignore", category=FutureWarning, module=r"valve.")
 class SteamCommunity(commands.Cog):
     """SteamCommunity commands"""
 
-    __version__ = "2.1.0"
+    __version__ = "2.1.1"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -259,6 +259,7 @@ class SteamCommunity(commands.Cog):
             title=_("Steam Status"),
             url="https://steamstat.us",
             color=await ctx.embed_color(),
+            timestamp=datetime.fromtimestamp(data.get("time", 0))
         )
         em.description = _(
             "**Online**: {}\n"
