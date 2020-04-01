@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-02-07 15:35+0400\n"
+"POT-Creation-Date: 2020-04-01 11:35+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,133 +11,144 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: redgettext 3.1\n"
 
-#: personalroles\personalroles.py:23
+#: personalroles.py:23
 #, docstring
 msgid "Assign and edit personal roles"
 msgstr ""
 
-#: personalroles\personalroles.py:40
+#: personalroles.py:40
 #, docstring
 msgid "Control of personal role"
 msgstr ""
 
-#: personalroles\personalroles.py:46
+#: personalroles.py:46
 #, docstring
 msgid "Assign personal role to someone"
 msgstr ""
 
-#: personalroles\personalroles.py:49
+#: personalroles.py:49
 msgid ""
 "Ok. I just assigned {user.name} ({user.id}) to role {role.name} ({role.id})."
 msgstr ""
 
-#: personalroles\personalroles.py:57
+#: personalroles.py:57
 #, docstring
 msgid "Unassign personal role from someone"
 msgstr ""
 
-#: personalroles\personalroles.py:67
+#: personalroles.py:66
+msgid "Discord user with ID `{}` not found"
+msgstr ""
+
+#: personalroles.py:72
+msgid "I was unable to get data about user with ID `{}`. Try again later"
+msgstr ""
+
+#: personalroles.py:79
 msgid "Ok. I just unassigned {user.name} ({user.id}) from his personal role."
 msgstr ""
 
-#: personalroles\personalroles.py:75
+#: personalroles.py:87
 #, docstring
 msgid "Assigned roles list"
 msgstr ""
 
-#: personalroles\personalroles.py:79
+#: personalroles.py:91
 msgid "There is no assigned personal roles on this server"
 msgstr ""
 
-#: personalroles\personalroles.py:87
+#: personalroles.py:99
 msgid "User"
 msgstr ""
 
-#: personalroles\personalroles.py:88
+#: personalroles.py:100
 msgid "Role"
 msgstr ""
 
-#: personalroles\personalroles.py:105
+#: personalroles.py:117
 #, docstring
 msgid "Manage blacklisted names"
 msgstr ""
 
-#: personalroles\personalroles.py:111
+#: personalroles.py:123
 #, docstring
 msgid ""
 "Add rolename to blacklist\\n        Members will be not able to change name "
 "of role to blacklisted names"
 msgstr ""
 
-#: personalroles\personalroles.py:117
+#: personalroles.py:129
 msgid "`{}` is already in blacklist"
 msgstr ""
 
-#: personalroles\personalroles.py:123
+#: personalroles.py:135
 msgid "Added `{}` to blacklisted roles list"
 msgstr ""
 
-#: personalroles\personalroles.py:130
+#: personalroles.py:142
 #, docstring
 msgid "Remove rolename from blacklist"
 msgstr ""
 
-#: personalroles\personalroles.py:135
+#: personalroles.py:147
 msgid "`{}` is not blacklisted"
 msgstr ""
 
-#: personalroles\personalroles.py:141
+#: personalroles.py:153
 msgid "Removed `{}` from blacklisted roles list"
 msgstr ""
 
-#: personalroles\personalroles.py:148
+#: personalroles.py:160
 #, docstring
 msgid "List of blacklisted role names"
 msgstr ""
 
-#: personalroles\personalroles.py:154
+#: personalroles.py:166
 msgid "There is no blacklisted roles"
 msgstr ""
 
-#: personalroles\personalroles.py:161
+#: personalroles.py:173
 #, docstring
 msgid "Change color of personal role"
 msgstr ""
 
-#: personalroles\personalroles.py:166 personalroles\personalroles.py:203
-#: personalroles\personalroles.py:233
+#: personalroles.py:178 personalroles.py:218 personalroles.py:248
 msgid "Personal Role"
 msgstr ""
 
-#: personalroles\personalroles.py:172
+#: personalroles.py:184
 msgid ""
 "Unable to edit role.\\nRole must be lower than my top role and i must have "
 "permission \\\"Manage Roles\\\""
 msgstr ""
 
-#: personalroles\personalroles.py:180 personalroles\personalroles.py:217
+#: personalroles.py:192 personalroles.py:232
 msgid "Unable to edit role: {}"
 msgstr ""
 
-#: personalroles\personalroles.py:183
+#: personalroles.py:195
+msgid "Reset {user}'s personal role color"
+msgstr ""
+
+#: personalroles.py:198
 msgid "Changed color of {user}'s personal role to {color}"
 msgstr ""
 
-#: personalroles\personalroles.py:193
+#: personalroles.py:208
 #, docstring
 msgid "Change name of personal role\\n        You cant use blacklisted names"
 msgstr ""
 
-#: personalroles\personalroles.py:199
+#: personalroles.py:214
 msgid "NONONO!!! This rolename is blacklisted."
 msgstr ""
 
-#: personalroles\personalroles.py:209
+#: personalroles.py:224
 msgid ""
 "Unable to edit role.\\nRole must be lower than my top role and i must have "
 "permission \\\"Manage Roles\\\""
 msgstr ""
 
-#: personalroles\personalroles.py:220
+#: personalroles.py:235
 msgid "Changed name of {user}'s personal role to {name}"
 msgstr ""

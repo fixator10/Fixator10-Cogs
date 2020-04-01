@@ -21,7 +21,7 @@ async def has_assigned_role(ctx):
 @cog_i18n(_)
 class PersonalRoles(commands.Cog):
     """Assign and edit personal roles"""
-    __version__ = "2.0.3"
+    __version__ = "2.0.4"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot: commands.Bot):
@@ -191,11 +191,14 @@ class PersonalRoles(commands.Cog):
             ctx.command.reset_cooldown(ctx)
             await ctx.send(chat.error(_("Unable to edit role: {}").format(e)))
         else:
-            await ctx.send(
-                _("Changed color of {user}'s personal role to {color}").format(
-                    user=ctx.message.author.name, color=colour
+            if not colour.value:
+                await ctx.send(_("Reset {user}'s personal role color").format(user=ctx.message.author.name))
+            else:
+                await ctx.send(
+                    _("Changed color of {user}'s personal role to {color}").format(
+                        user=ctx.message.author.name, color=colour
+                    )
                 )
-            )
 
     @commands.cooldown(1, 30, commands.BucketType.user)
     @myrole.command()
