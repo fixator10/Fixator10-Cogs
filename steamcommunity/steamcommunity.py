@@ -71,8 +71,8 @@ async def gen_steam_cm_graph(graphdata: dict):
         "%d",  # ticks are mostly days
         "%H:%M",  # hrs
         "%H:%M",  # min
-        "%S.%f",
-    ]  # secs
+        "%S.%f",  # secs
+    ]
     zero_formats = [""] + formats[:-1]
     zero_formats[3] = "%d-%b"
     offset_formats = [
@@ -260,7 +260,7 @@ class SteamCommunity(commands.Cog):
             title=_("Steam Status"),
             url="https://steamstat.us",
             color=await ctx.embed_color(),
-            timestamp=datetime.utcfromtimestamp(data.get("time", 0))
+            timestamp=datetime.utcfromtimestamp(data.get("time", 0)),
         )
         em.description = _(
             "**Online**: {}\n"
