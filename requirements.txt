@@ -1,0 +1,13 @@
+wcwidth
+fonttools
+pillow>=6
+matplotlib
+pillow>=6.2.1
+tabulate
+beautifulsoup4
+mcstatus
+motor
+python-forecastio
+python-valve
+python-dateutil
+pymongo>=3.10

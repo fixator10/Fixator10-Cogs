@@ -108,3 +108,6 @@ dull/
 
 # update translation source files
 /update_translations.bat
+
+# update requirements.txt
+requirements_generator.py
