@@ -3,6 +3,7 @@ from datetime import datetime
 from functools import partial
 from socket import gethostbyname_ex
 from warnings import filterwarnings
+from contextlib import suppress
 
 import aiohttp
 import discord
@@ -13,15 +14,12 @@ from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils import chat_formatting as chat
 from valve.steam.api import interface
 
-try:
-    import matplotlib
+with suppress(Exception):
     import matplotlib.pyplot as plt
     import matplotlib.units as munits
     import matplotlib.dates as mdates
     import numpy as np
     from io import BytesIO
-except:
-    pass
 
 from .steamuser import SteamUser
 
@@ -116,7 +114,7 @@ filterwarnings("ignore", category=FutureWarning, module=r"valve.")
 class SteamCommunity(commands.Cog):
     """SteamCommunity commands"""
 
-    __version__ = "2.1.2"
+    __version__ = "2.1.3"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -302,7 +300,7 @@ class SteamCommunity(commands.Cog):
             ),
         )
         graph_file = None
-        if all(lib in globals().keys() for lib in ["matplotlib", "plt"]):
+        if all(lib in globals().keys() for lib in ["plt", "np"]):
             graph_file = await gen_steam_cm_graph(graph)
             graph_file = discord.File(graph_file, filename="CMgraph.png")
             em.set_image(url="attachment://CMgraph.png")
