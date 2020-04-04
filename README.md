@@ -6,6 +6,7 @@
     <a href="https://github.com/Cog-Creators/Red-DiscordBot">
         <img src="https://img.shields.io/badge/Red-DiscordBot-red.svg?style=for-the-badge">
     </a>
+<a href="https://app.fossa.io/projects/git%2Bgithub.com%2Ffixator10%2FFixator10-Cogs?ref=badge_shield" alt="FOSSA Status"><img src="https://app.fossa.io/api/projects/git%2Bgithub.com%2Ffixator10%2FFixator10-Cogs.svg?type=shield"/></a>
     <a href="https://www.codefactor.io/repository/github/fixator10/fixator10-cogs">
         <img src="https://www.codefactor.io/repository/github/fixator10/fixator10-cogs/badge?style=for-the-badge">
     </a>
@@ -27,3 +28,7 @@ For support visit my [personal server](https://fixator10.ru/discord) or find me 
 `[p]repo add Fixator10-Cogs https://github.com/fixator10/Fixator10-Cogs V3`
 
 `[p]cog install Fixator10-Cogs <cog_name>`
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Ffixator10%2FFixator10-Cogs.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Ffixator10%2FFixator10-Cogs?ref=badge_large)
