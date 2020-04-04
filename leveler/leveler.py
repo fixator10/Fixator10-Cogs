@@ -33,8 +33,6 @@ except Exception as e:
     )
 try:
     import scipy
-    import scipy.misc
-    import scipy.cluster
 except Exception as e:
     print(
         f"{__file__}: scipy is unable to import: {e}\nAutocolor feature will be unavailable"
@@ -70,7 +68,7 @@ async def non_global_bank(ctx):
 class Leveler(commands.Cog):
     """A level up thing with image generation!"""
 
-    __version__ = "2.0.6b"
+    __version__ = "2.0.7b"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -193,12 +191,12 @@ class Leveler(commands.Cog):
         )
         u_credits = await bank.get_balance(user)
         em.add_field(
-            name="Credits: ",
+            name="Credits:",
             value=f"{u_credits}{(await bank.get_currency_name(server))[0]}",
         )
-        em.add_field(name="Info: ", value=userinfo["info"] or None)
+        em.add_field(name="Info:", value=userinfo["info"] or None)
         em.add_field(
-            name="Badges: ",
+            name="Badges:",
             value=(", ".join(userinfo["badges"]).replace("_", " ") or None),
         )
         em.set_author(name="Profile for {}".format(user.name), url=user.avatar_url)
@@ -261,7 +259,7 @@ class Leveler(commands.Cog):
         )
         em.add_field(name="Server Exp", value=await self._find_server_exp(user, server))
         em.set_author(
-            name="Rank and Statistics for {}".format(user.name), url=user.avatar_url
+            name="Rank & Statistics for {}".format(user.name), url=user.avatar_url
         )
         em.set_thumbnail(url=user.avatar_url)
         return em
@@ -552,29 +550,31 @@ class Leveler(commands.Cog):
 
     @commands.group(name="lvlset", pass_context=True)
     async def lvlset(self, ctx):
-        """Profile Configuration Options"""
+        """Profile configuration Options."""
         pass
 
     @lvlset.group(name="profile", pass_context=True)
     async def profileset(self, ctx):
-        """Profile options"""
+        """Profile options."""
         pass
 
     @lvlset.group(name="rank", pass_context=True)
     async def rankset(self, ctx):
-        """Rank options"""
+        """Rank options."""
         pass
 
     @lvlset.group(name="levelup", pass_context=True)
     async def levelupset(self, ctx):
-        """Level-Up options"""
+        """Level-Up options."""
         pass
 
     @profileset.command(name="color", pass_context=True, no_pm=True)
     async def profilecolors(self, ctx, section: str, color: str):
-        """Set info color.
+        """Set profile color.
 
-        e.g [p]lvlset profile color [exp|rep|badge|info|all] [default|white|hex|auto]"""
+        For section, you can choose: `exp`, `rep`, `badge`, `info` or `all`.
+        For color, you can use: `default`, `white`, `HEX code` (#000000) or `auto`.
+        e.g: `[p]lvlset profile color all #eb4034`"""
         user = ctx.author
         server = ctx.guild
         # creates user if doesn't exist
@@ -609,7 +609,9 @@ class Leveler(commands.Cog):
         elif section == "all":
             section_name = "all"
         else:
-            await ctx.send("**Not a valid section. (rep, exp, badge, info, all)**")
+            await ctx.send(
+                "**Not a valid section. Must be `rep`, `exp`, `badge`, `info` or `all`.**"
+            )
             return
 
         # get correct color choice
@@ -659,7 +661,9 @@ class Leveler(commands.Cog):
         elif self._is_hex(color):
             set_color = [self._hex_to_rgb(color, default_a)]
         else:
-            await ctx.send("**Not a valid color. (default, hex, white, auto)**")
+            await ctx.send(
+                "**Not a valid color. Must be `default`, `HEX color`, `white` or `auto`.**"
+            )
             return
 
         if section == "all":
@@ -709,9 +713,11 @@ class Leveler(commands.Cog):
     @rankset.command(name="color")
     @commands.guild_only()
     async def rankcolors(self, ctx, section: str, color: str = None):
-        """Set info color.
+        """Set rank color.
 
-        e.g [p]lvlset rank color [exp|info] [default|white|hex|auto]"""
+        For section, you can choose: `exp`, `info` or `all`.
+        For color, you can use: `default`, `white`, `HEX code` (#000000) or `auto`.
+        e.g: `[p]lvlset rank color info white`"""
         user = ctx.author
         server = ctx.guild
         # creates user if doesn't exist
@@ -742,7 +748,7 @@ class Leveler(commands.Cog):
         elif section == "all":
             section_name = "all"
         else:
-            await ctx.send("**Not a valid section. (exp, info, all)**")
+            await ctx.send("**Not a valid section. Must be `exp`, `info` or `all`**")
             return
 
         # get correct color choice
@@ -778,7 +784,9 @@ class Leveler(commands.Cog):
         elif self._is_hex(color):
             set_color = [self._hex_to_rgb(color, default_a)]
         else:
-            await ctx.send("**Not a valid color. (default, hex, white, auto)**")
+            await ctx.send(
+                "**Not a valid color. Must be `default`, `HEX color`, `white or `auto`.**"
+            )
             return
 
         if section == "all":
@@ -822,9 +830,11 @@ class Leveler(commands.Cog):
     @levelupset.command(name="color")
     @commands.guild_only()
     async def levelupcolors(self, ctx, section: str, color: str = None):
-        """Set info color.
+        """Set levelup color.
 
-        e.g [p]lvlset color [info] [default|white|hex|auto]"""
+        Section can only be `info`.
+        Color can be : `default`, `white`, `HEX code` (#000000) or `auto`.
+        e.g: `[p]lvlset color info default`"""
         user = ctx.author
         server = ctx.guild
         # creates user if doesn't exist
@@ -848,7 +858,7 @@ class Leveler(commands.Cog):
         if section == "info":
             section_name = "levelup_info_color"
         else:
-            await ctx.send("**Not a valid section. (info)**")
+            await ctx.send("**Not a valid section. Must be `info`.**")
             return
 
         # get correct color choice
@@ -870,7 +880,7 @@ class Leveler(commands.Cog):
         elif self._is_hex(color):
             set_color = [self._hex_to_rgb(color, default_a)]
         else:
-            await ctx.send("**Not a valid color. (default, hex, white, auto)**")
+            await ctx.send("**Not a valid color. Must be `default` `HEX color`, `white` or `auto`.**")
             return
 
         await db.users.update_one(
@@ -880,6 +890,9 @@ class Leveler(commands.Cog):
 
     # uses k-means algorithm to find color from bg, rank is abundance of color, descending
     async def _auto_color(self, ctx, url: str, ranks):
+        if "scipy" not in globals():
+            await ctx.send("**Bot missing a required package. Cannot use Autocolor feature.**")
+            return
         phrases = ["Calculating colors..."]  # in case I want more
         await ctx.send("**{}**".format(random.choice(phrases)))
         clusters = 10
@@ -952,7 +965,7 @@ class Leveler(commands.Cog):
         max_char = 150
 
         if await self.config.guild(ctx.guild).disabled():
-            await ctx.send("Leveler commands for this server are disabled.")
+            await ctx.send("**Leveler commands for this server are disabled!**")
             return
 
         if len(info) < max_char:
@@ -962,7 +975,7 @@ class Leveler(commands.Cog):
             await ctx.send("**Your info section has been succesfully set!**")
         else:
             await ctx.send(
-                "**Your description has too many characters! Must be <{}**".format(
+                "**Your description has too many characters! Must be {} or less.**".format(
                     max_char
                 )
             )
@@ -970,7 +983,7 @@ class Leveler(commands.Cog):
     @levelupset.command(name="bg")
     @commands.guild_only()
     async def levelbg(self, ctx, *, image_name: str):
-        """Set your level background"""
+        """Set your level-up background."""
         user = ctx.author
         server = ctx.guild
         backgrounds = await self.config.backgrounds()
@@ -978,7 +991,7 @@ class Leveler(commands.Cog):
         await self._create_user(user, server)
 
         if await self.config.guild(ctx.guild).disabled():
-            await ctx.send("Leveler commands for this server are disabled.")
+            await ctx.send("**Leveler commands for this server are disabled!**")
             return
 
         if await self.config.guild(ctx.guild).text_only():
@@ -1000,13 +1013,13 @@ class Leveler(commands.Cog):
                 )
         else:
             await ctx.send(
-                f"That is not a valid bg. See available bgs at `{ctx.prefix}backgrounds levelup`"
+                f"That is not a valid background. See available backgrounds at `{ctx.prefix}backgrounds levelup`."
             )
 
     @profileset.command(name="bg")
     @commands.guild_only()
     async def profilebg(self, ctx, *, image_name: str):
-        """Set your profile background"""
+        """Set your profile background."""
         user = ctx.author
         server = ctx.guild
         backgrounds = await self.config.backgrounds()
@@ -1014,7 +1027,7 @@ class Leveler(commands.Cog):
         await self._create_user(user, server)
 
         if await self.config.guild(ctx.guild).disabled():
-            await ctx.send("Leveler commands for this server are disabled.")
+            await ctx.send("**Leveler commands for this server are disabled!**")
             return
 
         if await self.config.guild(ctx.guild).text_only():
@@ -1036,13 +1049,13 @@ class Leveler(commands.Cog):
                 )
         else:
             await ctx.send(
-                f"That is not a valid bg. See available bgs at `{ctx.prefix}backgrounds profile`"
+                f"That is not a valid background. See available backgrounds at `{ctx.prefix}backgrounds profile`."
             )
 
     @rankset.command(name="bg")
     @commands.guild_only()
     async def rankbg(self, ctx, *, image_name: str):
-        """Set your rank background"""
+        """Set your rank background."""
         user = ctx.author
         server = ctx.guild
         backgrounds = await self.config.backgrounds()
@@ -1066,7 +1079,7 @@ class Leveler(commands.Cog):
                 await ctx.send("**Your new rank background has been succesfully set!**")
         else:
             await ctx.send(
-                f"That is not a valid bg. See available bgs at `{ctx.prefix}backgrounds rank`"
+                f"That is not a valid background. See available backgrounds at `{ctx.prefix}backgrounds rank`."
             )
 
     @profileset.command()
@@ -1081,7 +1094,7 @@ class Leveler(commands.Cog):
         max_char = 20
 
         if await self.config.guild(ctx.guild).disabled():
-            await ctx.send("Leveler commands for this server are disabled.")
+            await ctx.send("**Leveler commands for this server are disabled!**")
             return
 
         if len(title) < max_char:
@@ -1092,20 +1105,20 @@ class Leveler(commands.Cog):
             await ctx.send("**Your title has been succesfully set!**")
         else:
             await ctx.send(
-                "**Your title has too many characters! Must be <{}**".format(max_char)
+                "**Your title has too many characters! Must be {} or less.**".format(max_char)
             )
 
     @checks.admin_or_permissions(manage_guild=True)
     @commands.group()
     @commands.guild_only()
     async def lvladmin(self, ctx):
-        """Admin Toggle Features"""
+        """Admin options features."""
         pass
 
     @checks.admin_or_permissions(manage_guild=True)
     @lvladmin.group()
     async def overview(self, ctx):
-        """A list of settings"""
+        """A list of settings."""
 
         disabled_servers = []
         private_levels = []
@@ -1151,11 +1164,11 @@ class Leveler(commands.Cog):
     async def msgcredits(self, ctx, currency: int = 0):
         """Credits per message logged.
 
-        Default = 0"""
+        Default to `0`."""
         server = ctx.guild
 
         if currency < 0 or currency > 1000:
-            await ctx.send("**Please enter a valid number (0 - 1000)**")
+            await ctx.send("**Please enter a valid number between 0 and 1000.**")
             return
 
         await self.config.guild(server).msg_credits.set(currency)
@@ -1164,9 +1177,9 @@ class Leveler(commands.Cog):
     @lvladmin.command()
     @commands.guild_only()
     async def ignorechannel(self, ctx, channel: discord.TextChannel = None):
-        """Blocks exp gain in certain channel
+        """Blocks exp gain in certain channel.
 
-        Use command without channel to see list of ignored channels"""
+        Use command without channel to see list of ignored channels."""
         server = ctx.guild
         if channel is None:
             channels = [
@@ -1182,11 +1195,11 @@ class Leveler(commands.Cog):
         if channel.id in await self.config.guild(server).ignored_channels():
             async with self.config.guild(server).ignored_channels() as channels:
                 channels.remove(channel.id)
-            await ctx.send(f"**Messages in {channel.mention} will give exp now**")
+            await ctx.send(f"**Messages in {channel.mention} will give exp now.**")
         else:
             async with self.config.guild(server).ignored_channels() as channels:
                 channels.append(channel.id)
-            await ctx.send(f"**Messages in {channel.mention} will not give exp now**")
+            await ctx.send(f"**Messages in {channel.mention} will not give exp now.**")
 
     @lvladmin.command(name="lock")
     @commands.guild_only()
@@ -1305,19 +1318,15 @@ class Leveler(commands.Cog):
     @lvladmin.command()
     @commands.guild_only()
     async def xpban(self, ctx, days: int, *, user: Union[discord.Member, int]):
-        """Ban user from getting experience"""
+        """Ban user from getting experience."""
         if isinstance(user, int):
             try:
                 user = await self.bot.fetch_user(user)
             except discord.NotFound:
-                await ctx.send(_("Discord user with ID `{}` not found").format(user))
+                await ctx.send("Discord user with ID `{}` not found.".format(user))
                 return
             except discord.HTTPException:
-                await ctx.send(
-                    _(
-                        "I was unable to get data about user with ID `{}`. Try again later"
-                    ).format(user)
-                )
+                await ctx.send("I was unable to get data about user with ID `{}`. Try again later.".format(user))
                 return
         if user is None:
             await ctx.send_help()
@@ -1403,7 +1412,7 @@ class Leveler(commands.Cog):
     @lvladmin.command(name="private")
     @commands.guild_only()
     async def lvlprivate(self, ctx):
-        """Toggles if lvl alert is a private message to the user."""
+        """Toggles level-up alert in private message to the user."""
         server = ctx.guild
         if await self.config.guild(server).private_lvl_message():
             await self.config.guild(server).private_lvl_message.set(False)
@@ -1419,9 +1428,9 @@ class Leveler(commands.Cog):
     @lvladmin.command(aliases=["exp"])
     @checks.is_owner()
     async def xp(self, ctx, min_xp: int = 15, max_xp: int = 20):
-        """Set the range for the xp given on each successful xp gain.
+        """Set the range for the XP given on each successful XP gain.
 
-        Leaving the entries blank will reset the xp to the default."""
+        Leaving the entries blank will reset the XP to the default (Min: 15 - Max: 20)."""
         if (max_xp or min_xp) > 1000:
             return await ctx.send(
                 "Don't you think that number is a bit high? "
@@ -1431,21 +1440,21 @@ class Leveler(commands.Cog):
             return await ctx.send("Max XP can't be zero or less.")
         if min_xp >= max_xp:
             return await ctx.send(
-                "The minimum xp amount needs to be less than the maximum xp amount."
+                "The minimum XP amount needs to be less than the maximum XP amount."
             )
         if (min_xp or max_xp) < 0:
-            return await ctx.send("The xp amounts can't be less then zero.")
+            return await ctx.send("The XP amounts can't be less then zero.")
         await self.config.xp.set([min_xp, max_xp])
         await ctx.send(
-            f"XP given has been set to a range of {min_xp} to {max_xp} xp per message."
+            f"XP given has been set to a range of {min_xp} to {max_xp} XP per message."
         )
 
     @lvladmin.command()
     @checks.is_owner()
     async def length(self, ctx, message_length: int = 10):
-        """Set minimum message length for xp gain.
+        """Set minimum message length for XP gain.
 
-        Messages with attachments will give xp regardless of length"""
+        Messages with attachments will give XP regardless of length"""
         if message_length < 0:
             raise commands.BadArgument
         await self.config.message_length.set(message_length)
@@ -1453,15 +1462,16 @@ class Leveler(commands.Cog):
 
     @lvlset.group(autohelp=True)
     async def badge(self, ctx):
-        """Badge Configuration Options"""
+        """Badge Configuration Options."""
         pass
 
     @badge.command(name="available")
     @commands.guild_only()
     async def available(self, ctx, badge_type: str = "server"):
-        """Get a list of available badges for 'server' or 'global'.
+        """Get a list of available badges.
 
-        Defaults for server"""
+        Options: `server` or `global`.
+        Defaults for server."""
         server = ctx.guild
         if any([badge_type.casefold() == btype for btype in ["server", "guild"]]):
             servername = server.name
@@ -1472,7 +1482,7 @@ class Leveler(commands.Cog):
             icon_url = self.bot.user.avatar_url
             serverid = "global"
         else:
-            await ctx.send("**Invalid Badge Type. (profile, rank, levelup)**")
+            await ctx.send("**Invalid Badge Type. Must be `server` or `global`.**")
             return
         em = discord.Embed(title="Badges available", colour=await ctx.embed_color())
         em.set_author(name="{}".format(servername), icon_url=icon_url)
@@ -1513,7 +1523,7 @@ class Leveler(commands.Cog):
     @badge.command(name="list")
     @commands.guild_only()
     async def listuserbadges(self, ctx, user: discord.Member = None):
-        """Get the badges of a user."""
+        """Get all badges of a user."""
         if user is None:
             user = ctx.author
         if user.bot:
@@ -1568,9 +1578,9 @@ class Leveler(commands.Cog):
     @badge.command(name="buy")
     @commands.guild_only()
     async def buy(self, ctx, name: str, global_badge: str = None):
-        """Get a badge from repository.
+        """Buy a badge.
 
-        optional = "-global\""""
+        Option: `-global`."""
         user = ctx.author
         server = ctx.guild
         if global_badge == "-global":
@@ -1603,7 +1613,7 @@ class Leveler(commands.Cog):
                         await ctx.send("**`{}` has been obtained.**".format(name))
                     else:
                         await ctx.send(
-                            '**{}, you are about to buy the `{}` badge for `{}`. Confirm by typing "yes"**'.format(
+                            '**{}, you are about to buy the `{}` badge for `{}`. Confirm by typing `yes`.**'.format(
                                 await self._is_mention(user), name, badge_info["price"]
                             )
                         )
@@ -1641,13 +1651,13 @@ class Leveler(commands.Cog):
                     )
             else:
                 await ctx.send(
-                    "**The badge `{}` does not exist. (try `{}badge available`)**".format(
+                    "**The badge `{}` does not exist. Try `{}badge available`**".format(
                         name, ctx.prefix
                     )
                 )
         else:
             await ctx.send(
-                "**There are no badges to get! (try `{}badge get [name] -global`).**".format(
+                "**There are no badges to get! Try `{}badge get [badge name] -global`.**".format(
                     ctx.prefix
                 )
             )
@@ -1657,7 +1667,10 @@ class Leveler(commands.Cog):
     async def set_badge(self, ctx, name: str, priority_num: int):
         """Set a badge to profile.
 
-        -1(invis), 0(not on profile), max: 5000."""
+        Options for priority number :
+        `-1`: The badge will be invisible.
+        `0`: The badge won't be show on your profile.
+        Maximum to `5000`."""
         user = ctx.author
         server = ctx.guild
         await self._create_user(user, server)
@@ -1707,7 +1720,15 @@ class Leveler(commands.Cog):
     ):
         """Add a badge.
 
-        name = "Use Quotes", Colors = #hex. bg_img = url, price = -1(non-purchasable), 0,..."""
+        Options :
+        `name`: Indicate badge's name. If the badge has space, use quote.
+        `bg_img`: Indicate the image of the badge. (Only URL supported)
+        `border_color`: Indicate color of the badge's border. (HEX color)
+        `price`: Indicate the badge's price. (Indicate `-1` and it won't be purchasable, `0` for free.)
+        `description`: Indicate a description for your badge.
+        eg: `[p]lvlset badge add Leveler [my_url] #b60047 0 My super badge!`
+
+        If you are the bot owner, you can `-global` to the description to make the badge available everywhere."""
 
         user = ctx.author
         server = ctx.guild
@@ -1739,7 +1760,7 @@ class Leveler(commands.Cog):
             return
 
         if not await self._valid_image_url(bg_img):
-            await ctx.send("**Background is not valid. Enter hex or image url!**")
+            await ctx.send("**Background is not valid. Enter HEX color or image URL!**")
             return
 
         if not self._is_hex(border_color):
@@ -1751,7 +1772,7 @@ class Leveler(commands.Cog):
             return
 
         if len(description.split(" ")) > 40:
-            await ctx.send("**Description is too long! <=40**")
+            await ctx.send("**Description is too long! Must be 40 or less.**")
             return
 
         badges = await db.badges.find_one({"server_id": str(serverid)})
@@ -1813,7 +1834,7 @@ class Leveler(commands.Cog):
     @badge.command()
     @commands.guild_only()
     async def type(self, ctx, name: str):
-        """circles or bars."""
+        """Define if badge must be circle or bars."""
         valid_types = ["circles", "bars"]
         if name.lower() not in valid_types:
             await ctx.send("**That is not a valid badge type!**")
@@ -1833,7 +1854,9 @@ class Leveler(commands.Cog):
     @badge.command(name="delete")
     @commands.guild_only()
     async def delbadge(self, ctx, *, name: str):
-        """Delete a badge and remove from all users."""
+        """Delete a badge and remove from all users.
+
+        Option : `-global`."""
         user = ctx.author
         server = ctx.guild
 
@@ -1849,7 +1872,7 @@ class Leveler(commands.Cog):
         await self._create_user(user, server)
 
         if await self.config.guild(server).disabled():
-            await ctx.send("Leveler commands for this server are disabled.")
+            await ctx.send("**Leveler commands for this server are disabled!**")
             return
 
         serverbadges = await db.badges.find_one({"server_id": str(serverid)})
@@ -1884,7 +1907,9 @@ class Leveler(commands.Cog):
     @badge.command()
     @commands.guild_only()
     async def give(self, ctx, user: discord.Member, name: str):
-        """Give a user a badge with a certain name"""
+        """Give a user a badge with a certain name
+        
+        Indicate the user and the badge's name."""
         org_user = ctx.message.author
         server = ctx.guild
         # creates user if doesn't exist
@@ -1896,7 +1921,7 @@ class Leveler(commands.Cog):
         userinfo = await self._badge_convert_dict(userinfo)
 
         if await self.config.guild(server).disabled():
-            await ctx.send("Leveler commands for this server are disabled.")
+            await ctx.send("**Leveler commands for this server are disabled!**")
             return
 
         serverbadges = await db.badges.find_one({"server_id": str(server.id)})
@@ -1925,7 +1950,9 @@ class Leveler(commands.Cog):
     @badge.command()
     @commands.guild_only()
     async def take(self, ctx, user: discord.Member, name: str):
-        """Take a user's badge."""
+        """Take a user's badge.
+
+        Indicate the user and the badge's name."""
         if user.bot:
             await ctx.send_help()
             return
@@ -1937,7 +1964,7 @@ class Leveler(commands.Cog):
         userinfo = await self._badge_convert_dict(userinfo)
 
         if await self.config.guild(server).disabled():
-            await ctx.send("Leveler commands for this server are disabled.")
+            await ctx.send("**Leveler commands for this server are disabled!**")
             return
 
         serverbadges = await db.badges.find_one({"server_id": str(server.id)})
@@ -1970,7 +1997,9 @@ class Leveler(commands.Cog):
     @badge.command(name="link")
     @commands.guild_only()
     async def linkbadge(self, ctx, badge_name: str, level: int):
-        """Associate a badge with a level."""
+        """Associate a badge with a level.
+
+        Indicate the badge's name and the level."""
         server = ctx.guild
         serverbadges = await db.badges.find_one({"server_id": str(server.id)})
 
@@ -2062,91 +2091,75 @@ class Leveler(commands.Cog):
 
     @lvladmin.group()
     async def role(self, ctx):
-        """Admin Background Configuration"""
+        """Admin role configuration."""
         pass
 
     @checks.mod_or_permissions(manage_roles=True)
     @role.command(name="link")
     @commands.guild_only()
-    async def linkrole(self, ctx, role_name: str, level: int, remove_role=None):
+    async def linkrole(self, ctx, add_role: discord.Role, level: int, remove_role: discord.Role = None):
         """Associate a role with a level.
 
         Removes previous role if given."""
         server = ctx.guild
 
-        role_obj = discord.utils.find(lambda r: r.name == role_name, server.roles)
-        remove_role_obj = discord.utils.find(
-            lambda r: r.name == remove_role, server.roles
-        )
-        if role_obj is None or (remove_role is not None and remove_role_obj is None):
-            if remove_role is None:
-                await ctx.send(
-                    "**Please make sure the `{}` role exists!**".format(role_name)
-                )
-            else:
-                await ctx.send(
-                    "**Please make sure the `{}` and/or `{}` roles exist!**".format(
-                        role_name, remove_role
-                    )
-                )
+        server_roles = await db.roles.find_one({"server_id": str(server.id)})
+        if not server_roles:
+            new_server = {
+                "server_id": str(server.id),
+                "roles": {
+                    add_role.name: {"level": str(level), "remove_role": remove_role.name if remove_role else None}
+                },
+            }
+            await db.roles.insert_one(new_server)
         else:
-            server_roles = await db.roles.find_one({"server_id": str(server.id)})
-            if not server_roles:
-                new_server = {
-                    "server_id": str(server.id),
-                    "roles": {
-                        role_name: {"level": str(level), "remove_role": remove_role}
-                    },
-                }
-                await db.roles.insert_one(new_server)
-            else:
-                if role_name not in server_roles["roles"]:
-                    server_roles["roles"][role_name] = {}
+            if add_role.name not in server_roles["roles"]:
+                server_roles["roles"][add_role.name] = {}
 
-                server_roles["roles"][role_name]["level"] = str(level)
-                server_roles["roles"][role_name]["remove_role"] = remove_role
-                await db.roles.update_one(
-                    {"server_id": str(server.id)},
-                    {"$set": {"roles": server_roles["roles"]}},
-                )
+            server_roles["roles"][add_role.name]["level"] = str(level)
+            server_roles["roles"][add_role.name]["remove_role"] = remove_role.name if remove_role else None
+            await db.roles.update_one(
+                {"server_id": str(server.id)},
+                {"$set": {"roles": server_roles["roles"]}},
+            )
 
-            if remove_role is None:
-                await ctx.send(
-                    "**The `{}` role has been linked to level `{}`**".format(
-                        role_name, level
-                    )
+        if remove_role:
+            await ctx.send(
+                "**The `{}` role has been linked to level `{}`. "
+                "Will also remove `{}` role.**".format(
+                    add_role, level, remove_role
                 )
-            else:
-                await ctx.send(
-                    "**The `{}` role has been linked to level `{}`. "
-                    "Will also remove `{}` role.**".format(
-                        role_name, level, remove_role
-                    )
+            )
+        else:
+            await ctx.send(
+                "**The `{}` role has been linked to level `{}`**".format(
+                    add_role, level
                 )
+            )
 
     @checks.mod_or_permissions(manage_roles=True)
-    @role.command(name="unlink")
+    @role.command(name="unlink", usage="<role>")
     @commands.guild_only()
-    async def unlinkrole(self, ctx, role_name: str):
+    async def unlinkrole(self, ctx, *, role_to_unlink: discord.Role):
         """Delete a role/level association."""
         server = ctx.guild
 
         server_roles = await db.roles.find_one({"server_id": str(server.id)})
         roles = server_roles["roles"]
 
-        if role_name in roles:
+        if role_to_unlink.name in roles:
             await ctx.send(
                 "**Role/Level association `{}`/`{}` removed.**".format(
-                    role_name, roles[role_name]["level"]
+                    role_to_unlink.name, roles[role_to_unlink.name]["level"]
                 )
             )
-            del roles[role_name]
+            del roles[role_to_unlink.name]
             await db.roles.update_one(
                 {"server_id": str(server.id)}, {"$set": {"roles": roles}}
             )
         else:
             await ctx.send(
-                "**The `{}` role is not linked to any levels!**".format(role_name)
+                "**The `{}` role is not linked to any levels!**".format(role_to_unlink.name)
             )
 
     @checks.mod_or_permissions(manage_roles=True)
@@ -2188,7 +2201,7 @@ class Leveler(commands.Cog):
 
     @lvladmin.group(name="bg")
     async def lvladminbg(self, ctx):
-        """Admin Background Configuration"""
+        """Admin background configuration"""
         pass
 
     @checks.is_owner()
@@ -2197,12 +2210,12 @@ class Leveler(commands.Cog):
     async def addprofilebg(self, ctx, name: str, url: str):
         """Add a profile background. 
         
-        Proportions: (290px x 290px)"""
+        The proportions must be 290px x 290px."""
         backgrounds = await self.config.backgrounds()
         if name in backgrounds["profile"].keys():
             await ctx.send("**That profile background name already exists!**")
         elif not await self._valid_image_url(url):
-            await ctx.send("**That is not a valid image url!**")
+            await ctx.send("**That is not a valid image URL!**")
         else:
             async with self.config.backgrounds() as backgrounds:
                 backgrounds["profile"][name] = url
@@ -2214,12 +2227,12 @@ class Leveler(commands.Cog):
     async def addrankbg(self, ctx, name: str, url: str):
         """Add a rank background.
 
-        Proportions: (360px x 100px)"""
+        The proportions must be 360px x 100px."""
         backgrounds = await self.config.backgrounds()
         if name in backgrounds["profile"].keys():
             await ctx.send("**That rank background name already exists!**")
         elif not await self._valid_image_url(url):
-            await ctx.send("**That is not a valid image url!**")
+            await ctx.send("**That is not a valid image URL!**")
         else:
             async with self.config.backgrounds() as backgrounds:
                 backgrounds["rank"][name] = url
@@ -2231,12 +2244,12 @@ class Leveler(commands.Cog):
     async def addlevelbg(self, ctx, name: str, url: str):
         """Add a level-up background.
 
-        Proportions: (175px x 65px)"""
+        The proportions must be 175px x 65px."""
         backgrounds = await self.config.backgrounds()
         if name in backgrounds["levelup"].keys():
             await ctx.send("**That level-up background name already exists!**")
         elif not await self._valid_image_url(url):
-            await ctx.send("**That is not a valid image url!**")
+            await ctx.send("**That is not a valid image URL!**")
         else:
             async with self.config.backgrounds() as backgrounds:
                 backgrounds["levelup"][name] = url
@@ -2246,13 +2259,15 @@ class Leveler(commands.Cog):
     @lvladminbg.command()
     @commands.guild_only()
     async def setcustombg(self, ctx, bg_type: str, user_id: str, img_url: str):
-        """Set one-time custom background"""
+        """Set one-time custom background
+
+        bg_type can be: `profile`, `rank` or `levelup`."""
         valid_types = ["profile", "rank", "levelup"]
         type_input = bg_type.lower()
 
         if type_input not in valid_types:
             await ctx.send(
-                "**Please choose a valid type: `profile`, `rank`, `levelup`."
+                "**Please choose a valid type. Must be `profile`, `rank` or `levelup`."
             )
             return
 
@@ -2263,7 +2278,7 @@ class Leveler(commands.Cog):
             return
 
         if not await self._valid_image_url(img_url):
-            await ctx.send("**That is not a valid image url!**")
+            await ctx.send("**That is not a valid image URL!**")
             return
 
         await db.users.update_one(
@@ -2314,12 +2329,12 @@ class Leveler(commands.Cog):
         else:
             await ctx.send("**That level-up background name doesn't exist.**")
 
-    @commands.command(name="backgrounds")
+    @commands.command(name="backgrounds", usage="<type>")
     @commands.guild_only()
-    async def disp_backgrounds(self, ctx, bg_type):
+    async def disp_backgrounds(self, ctx, bg_type: str):
         """Gives a list of backgrounds.
 
-        [p]backgrounds [profile|rank|levelup]"""
+        type can be: `profile`, `rank` or `levelup`."""
         server = ctx.guild
         backgrounds = await self.config.backgrounds()
 
@@ -2365,7 +2380,7 @@ class Leveler(commands.Cog):
                 cnt += 1
             await menu(ctx, embeds, DEFAULT_CONTROLS)
         else:
-            await ctx.send("**Invalid Background Type. (profile, rank, levelup)**")
+            await ctx.send("**Invalid background type. Must be `profile`, `rank` or `levelup`.**")
 
     async def draw_profile(self, user, server):
         font_thin_file = f"{bundled_data_path(self)}/Uni_Sans_Thin.ttf"
