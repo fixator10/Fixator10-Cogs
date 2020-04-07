@@ -68,7 +68,7 @@ async def non_global_bank(ctx):
 class Leveler(commands.Cog):
     """A level up thing with image generation!"""
 
-    __version__ = "2.0.7b"
+    __version__ = "2.0.8b"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -270,9 +270,8 @@ class Leveler(commands.Cog):
             return user.mention
         return user.name
 
-    @commands.command()
+    @commands.command(usage="[page] [-rep] [-global]")
     @commands.guild_only()
-    @commands.cooldown(1, 30, commands.BucketType.guild)
     async def top(self, ctx, *options):
         """Displays leaderboard.
 
@@ -3426,7 +3425,7 @@ class Leveler(commands.Cog):
         sorted_list = sorted(users, key=operator.itemgetter(1), reverse=True)
 
         rank = 1
-        for a_user in sorted_list:
+        async for a_user in self.asyncit(sorted_list):
             if a_user[0] == targetid:
                 return rank
             rank += 1
@@ -3441,7 +3440,7 @@ class Leveler(commands.Cog):
         sorted_list = sorted(users, key=operator.itemgetter(1), reverse=True)
 
         rank = 1
-        for a_user in sorted_list:
+        async for a_user in self.asyncit(sorted_list):
             if a_user[0] == targetid:
                 return rank
             rank += 1
@@ -3470,7 +3469,7 @@ class Leveler(commands.Cog):
         sorted_list = sorted(users, key=operator.itemgetter(1), reverse=True)
 
         rank = 1
-        for stats in sorted_list:
+        async for stats in self.asyncit(sorted_list):
             if stats[0] == str(user.id):
                 return rank
             rank += 1
@@ -3487,7 +3486,7 @@ class Leveler(commands.Cog):
         sorted_list = sorted(users, key=operator.itemgetter(1), reverse=True)
 
         rank = 1
-        for stats in sorted_list:
+        async for stats in self.asyncit(sorted_list):
             if stats[0] == str(user.id):
                 return rank
             rank += 1
