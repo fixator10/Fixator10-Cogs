@@ -32,7 +32,7 @@ USERAGENT = (
 class Translators(commands.Cog):
     """Useful (and not) translators"""
 
-    __version__ = "2.1.1"
+    __version__ = "2.1.2"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -65,6 +65,7 @@ class Translators(commands.Cog):
         Language may be just "ru" (target language to translate)
         or "en-ru" (original text's language - target language)"""
         text = chat.escape(text, formatting=True)
+        language = language.casefold()
         apikeys = await self.bot.get_shared_api_tokens("yandex")
         try:
             translator = yandextranslate.YTranslateAPI(
