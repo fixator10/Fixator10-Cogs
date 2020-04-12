@@ -164,7 +164,8 @@ angular.module('permissionsCalc', ['themes'])
                     {active: false, id: 'move_members',       name: 'Move Members',       value: 0x1000000, auto: true },
                     {active: false, id: 'speak',              name: 'Speak',              value: 0x200000,  auto: true },
                     {active: false, id: 'deafen_members',     name: 'Deafen Members',     value: 0x800000,  auto: true },
-                    {active: false, id: 'use_voice_activity', name: 'Use Voice Activity', value: 0x2000000, auto: true }
+                    {active: false, id: 'use_voice_activity', name: 'Use Voice Activity', value: 0x2000000, auto: true },
+                    {active: false, id: 'go_live',            name: 'Go Live',            value: 0x200,     auto: true }
                 ]
             }
         ];
