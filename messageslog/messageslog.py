@@ -30,7 +30,8 @@ async def ignore_config_add(config: list, item):
 @cog_i18n(_)
 class MessagesLog(commands.Cog):
     """Log deleted and redacted messages to the defined channel"""
-    __version__ = "2.0.1"
+
+    __version__ = "2.0.2"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -93,9 +94,9 @@ class MessagesLog(commands.Cog):
     @messageslog.command()
     @commands.check(is_channel_set)
     async def ignore(
-            self,
-            ctx,
-            *ignore: Union[discord.Member, discord.TextChannel, discord.CategoryChannel],
+        self,
+        ctx,
+        *ignore: Union[discord.Member, discord.TextChannel, discord.CategoryChannel],
     ):
         """Manage message logging blacklist
 
@@ -165,9 +166,9 @@ class MessagesLog(commands.Cog):
         if not logchannel:
             return
         if (
-                message.channel.category
-                and message.channel.category.id
-                in await self.config.guild(message.guild).ignored_categories()
+            message.channel.category
+            and message.channel.category.id
+            in await self.config.guild(message.guild).ignored_categories()
         ):
             return
         if any(
@@ -199,7 +200,10 @@ class MessagesLog(commands.Cog):
             embed.add_field(
                 name=_("Attachments"),
                 value="\n".join(
-                    [f"[{a.filename}]({a.url})" for a in message.attachments]
+                    [
+                        _("[{0.filename}]({0.url}) ([Cached]({0.proxy_url}))").format(a)
+                        for a in message.attachments
+                    ]
                 ),
             )
         embed.set_author(name=message.author, icon_url=message.author.avatar_url)
@@ -220,9 +224,9 @@ class MessagesLog(commands.Cog):
         if not logchannel:
             return
         if (
-                before.channel.category
-                and before.channel.category.id
-                in await self.config.guild(before.guild).ignored_categories()
+            before.channel.category
+            and before.channel.category.id
+            in await self.config.guild(before.guild).ignored_categories()
         ):
             return
         if any(
@@ -258,7 +262,10 @@ class MessagesLog(commands.Cog):
             embed.add_field(
                 name=_("Attachments"),
                 value="\n".join(
-                    [f"[{a.filename}]({a.url})" for a in before.attachments]
+                    [
+                        _("[{0.filename}]({0.url}) ([Cached]({0.proxy_url}))").format(a)
+                        for a in before.attachments
+                    ]
                 ),
             )
         embed.set_author(name=before.author, icon_url=before.author.avatar_url)
