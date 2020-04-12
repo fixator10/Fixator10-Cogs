@@ -1,4 +1,5 @@
 from typing import Union
+from datetime import datetime
 
 import discord
 from redbot.core import checks
@@ -31,7 +32,7 @@ async def ignore_config_add(config: list, item):
 class MessagesLog(commands.Cog):
     """Log deleted and redacted messages to the defined channel"""
 
-    __version__ = "2.0.2"
+    __version__ = "2.1.0"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -209,6 +210,84 @@ class MessagesLog(commands.Cog):
         embed.set_author(name=message.author, icon_url=message.author.avatar_url)
         embed.set_footer(text=_("ID: {} • Sent at").format(message.id))
         embed.add_field(name=_("Channel"), value=message.channel.mention)
+        try:
+            await logchannel.send(embed=embed)
+        except discord.Forbidden:
+            pass
+
+    @commands.Cog.listener("on_raw_message_delete")
+    async def raw_message_deleted(self, payload: discord.RawMessageDeleteEvent):
+        if payload.cached_message:
+            return
+        if not payload.guild_id:
+            return
+        guild = self.bot.get_guild(payload.guild_id)
+        channel = self.bot.get_channel(payload.channel_id)
+        logchannel = guild.get_channel(
+            await self.config.guild(guild).channel()
+        )
+        if not logchannel:
+            return
+        if (
+            channel.category
+            and channel.category.id
+            in await self.config.guild(guild).ignored_categories()
+        ):
+            return
+        if any(
+            [
+                not await self.config.guild(guild).deletion(),
+                not guild.get_channel(await self.config.guild(guild).channel()),
+                channel.id in await self.config.guild(guild).ignored_channels(),
+                channel.nsfw and not logchannel.nsfw,
+            ]
+        ):
+            return
+        embed = discord.Embed(
+            title=_("Old message deleted"),
+            timestamp=discord.utils.snowflake_time(payload.message_id),
+            color=await self.bot.get_embed_colour(channel),
+        )
+        embed.set_footer(text=_("ID: {} • Sent at").format(payload.message_id))
+        embed.add_field(name=_("Channel"), value=channel.mention)
+        try:
+            await logchannel.send(embed=embed)
+        except discord.Forbidden:
+            pass
+    
+    @commands.Cog.listener("on_raw_bulk_message_delete")
+    async def raw_bulk_message_deleted(self, payload: discord.RawBulkMessageDeleteEvent):
+        if not payload.guild_id:
+            return
+        guild = self.bot.get_guild(payload.guild_id)
+        channel = self.bot.get_channel(payload.channel_id)
+        logchannel = guild.get_channel(
+            await self.config.guild(guild).channel()
+        )
+        if not logchannel:
+            return
+        if (
+            channel.category
+            and channel.category.id
+            in await self.config.guild(guild).ignored_categories()
+        ):
+            return
+        if any(
+            [
+                not await self.config.guild(guild).deletion(),
+                not guild.get_channel(await self.config.guild(guild).channel()),
+                channel.id in await self.config.guild(guild).ignored_channels(),
+                channel.nsfw and not logchannel.nsfw,
+            ]
+        ):
+            return
+        embed = discord.Embed(
+            title=_("Multiple messages deleted"),
+            description=_("{} messages removed").format(len(payload.message_ids)),
+            timestamp=datetime.utcnow(),
+            color=await self.bot.get_embed_colour(channel),
+        )
+        embed.add_field(name=_("Channel"), value=channel.mention)
         try:
             await logchannel.send(embed=embed)
         except discord.Forbidden:
