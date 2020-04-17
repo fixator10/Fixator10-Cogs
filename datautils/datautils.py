@@ -63,7 +63,7 @@ async def get_twemoji(emoji: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.2.17"
+    __version__ = "2.2.18"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot: commands.Bot):
@@ -587,7 +587,7 @@ class DataUtils(commands.Cog):
             await ctx.send(_("Failed to get server with provided ID"))
             return
         roles = []
-        for role in server.roles:
+        for role in reversed(server.roles):
             dic = {_("Name"): shorten(role.name, 32, placeholder="…"), _("ID"): role.id}
             roles.append(dic)
         pages = list(chat.pagify(tabulate.tabulate(roles, tablefmt="orgtbl")))
