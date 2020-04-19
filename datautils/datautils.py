@@ -1,5 +1,6 @@
 import unicodedata
 from asyncio import TimeoutError as AsyncTimeoutError
+from asyncio import sleep
 from textwrap import shorten
 from types import SimpleNamespace
 from typing import Union
@@ -21,6 +22,7 @@ def bool_emojify(bool_var: bool) -> str:
 _ = Translator("DataUtils", __file__)
 
 TWEMOJI_URL = "https://twemoji.maxcdn.com/v/latest/72x72"
+APP_ICON_URL = "https://cdn.discordapp.com/app-icons/{app_id}/{icon_hash}.png"
 
 GUILD_FEATURES = {
     "VIP_REGIONS": _("384kbps voice bitrate"),
@@ -48,6 +50,12 @@ ACTIVITY_TYPES = {
 }
 
 
+async def asyncit(iterable):
+    for i in iterable:
+        yield i
+        await sleep(0)
+
+
 async def get_twemoji(emoji: str):
     emoji_unicode = []
     for char in emoji:
@@ -59,11 +67,18 @@ async def get_twemoji(emoji: str):
     return f"{TWEMOJI_URL}/{emoji_unicode}.png"
 
 
+async def find_app_by_id(where: list, app_id: int):
+    async for item in asyncit(where):
+        for k, v in item.items():
+            if v == str(app_id):
+                return item
+
+
 @cog_i18n(_)
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.2.18"
+    __version__ = "2.2.19"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot: commands.Bot):
@@ -128,9 +143,7 @@ class DataUtils(commands.Cog):
         if member.nick:
             em.add_field(name=_("Nickname"), value=member.nick)
         else:
-            em.add_field(
-                name=_("Name"), value=member.name
-            )
+            em.add_field(name=_("Name"), value=member.name)
         em.add_field(
             name=_("Client"),
             value="📱: {}\n"
@@ -759,6 +772,17 @@ class DataUtils(commands.Cog):
                 )
             if activity.application_id:
                 em.add_field(name=_("Application ID"), value=activity.application_id)
+                apps = await self.bot.http.request(
+                    discord.http.Route("GET", "/applications/detectable")
+                )
+                app = await find_app_by_id(apps, activity.application_id)
+                if app:
+                    em.set_thumbnail(
+                        url=APP_ICON_URL.format(
+                            app_id=activity.application_id,
+                            icon_hash=app.get("icon", ""),
+                        )
+                    )
             if activity.start:
                 em.add_field(
                     name=_("Started at"),
