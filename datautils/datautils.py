@@ -67,10 +67,10 @@ async def get_twemoji(emoji: str):
     return f"{TWEMOJI_URL}/{emoji_unicode}.png"
 
 
-async def find_app_by_id(where: list, app_id: int):
+async def find_app_by_name(where: list, name: str):
     async for item in asyncit(where):
         for k, v in item.items():
-            if v == str(app_id):
+            if v == name:
                 return item
 
 
@@ -78,7 +78,7 @@ async def find_app_by_id(where: list, app_id: int):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.2.19"
+    __version__ = "2.2.20"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot: commands.Bot):
@@ -748,6 +748,17 @@ class DataUtils(commands.Cog):
                 timestamp=activity.start or discord.Embed.Empty,
                 color=await ctx.embed_color(),
             )
+            apps = await self.bot.http.request(
+                discord.http.Route("GET", "/applications/detectable")
+            )
+            app = await find_app_by_name(apps, activity.name)
+            if app:
+                em.set_thumbnail(
+                    url=APP_ICON_URL.format(
+                        app_id=app.get("id", ""),
+                        icon_hash=app.get("icon", ""),
+                    )
+                )
             if activity.end:
                 em.add_field(
                     name=_("This game will end at"),
@@ -764,6 +775,17 @@ class DataUtils(commands.Cog):
                 f"{activity.state and activity.state or ''}{party_size}",
                 color=await ctx.embed_color(),
             )
+            apps = await self.bot.http.request(
+                discord.http.Route("GET", "/applications/detectable")
+            )
+            app = await find_app_by_name(apps, activity.name)
+            if app:
+                em.set_thumbnail(
+                    url=APP_ICON_URL.format(
+                        app_id=app.get("id", activity.application_id or ""),
+                        icon_hash=app.get("icon", ""),
+                    )
+                )
             if activity.small_image_text:
                 em.add_field(
                     name=_("Small image text"),
@@ -772,17 +794,6 @@ class DataUtils(commands.Cog):
                 )
             if activity.application_id:
                 em.add_field(name=_("Application ID"), value=activity.application_id)
-                apps = await self.bot.http.request(
-                    discord.http.Route("GET", "/applications/detectable")
-                )
-                app = await find_app_by_id(apps, activity.application_id)
-                if app:
-                    em.set_thumbnail(
-                        url=APP_ICON_URL.format(
-                            app_id=activity.application_id,
-                            icon_hash=app.get("icon", ""),
-                        )
-                    )
             if activity.start:
                 em.add_field(
                     name=_("Started at"),
