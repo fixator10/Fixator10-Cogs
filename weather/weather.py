@@ -132,7 +132,7 @@ PRECIP_TYPE_I18N = {"rain": _("Rain"), "snow": _("Snow"), "sleet": _("Sleet")}
 @cog_i18n(_)
 class Weather(commands.Cog):
     """Weather forecast"""
-    __version__ = "2.0.1"
+    __version__ = "2.0.2"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -160,8 +160,6 @@ class Weather(commands.Cog):
         await ctx.maybe_send_embed(message)
 
     @commands.group(invoke_without_command=True)
-    @checks.admin_or_permissions(manage_guild=True)
-    @commands.guild_only()
     async def forecastunits(self, ctx, units: str = None):
         """Set forecast units for yourself
 
@@ -172,16 +170,25 @@ class Weather(commands.Cog):
         ca - Same as si, but speed in km/h
         reset - reset your unit preference"""
         if not units:
-            await ctx.send(
-                chat.info(
-                    _("Your current units are: {}").format(
-                        await self.config.user(ctx.author).units()
-                        or _("Not set, using server's default {}").format(
-                            await self.config.guild(ctx.guild).units()
+            if ctx.guild:
+                await ctx.send(
+                    chat.info(
+                        _("Your current units are: {}").format(
+                            await self.config.user(ctx.author).units()
+                            or _("Not set, using server's default {}").format(
+                                await self.config.guild(ctx.guild).units()
+                            )
                         )
                     )
                 )
-            )
+            else:
+                await ctx.send(
+                    chat.info(
+                        _("Your current units are: {}").format(
+                            await self.config.user(ctx.author).units() or "si"
+                        )
+                    )
+                )
             return
         units = units.casefold()
         if units == "reset":
@@ -201,6 +208,7 @@ class Weather(commands.Cog):
         await ctx.tick()
 
     @forecastunits.command(name="guild")
+    @commands.guild_only()
     @checks.admin_or_permissions(manage_guild=True)
     async def set_guild_units(self, ctx, units: str = None):
         """Set forecast units for this guild
@@ -526,9 +534,11 @@ class Weather(commands.Cog):
         await menu(ctx, pages, DEFAULT_CONTROLS)
 
     async def get_units(self, ctx: commands.Context):
-        if ctx.guild:
-            return await self.config.guild(ctx.guild).units()
-        return await self.config.user(ctx.author).units() or "si"
+        return (
+            await self.config.user(ctx.author).units()
+            or (await self.config.guild(ctx.guild).units() if ctx.guild else None)
+            or "si"
+        )
 
     async def get_localized_units(self, ctx: commands.Context, units_type: str):
         """Get translated contextual units for type"""
