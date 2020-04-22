@@ -78,7 +78,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.2.20"
+    __version__ = "2.2.21"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot: commands.Bot):
@@ -518,24 +518,41 @@ class DataUtils(commands.Cog):
         voice_channels = "\n".join(
             [chat.escape(x.name, formatting=True) for x in server.voice_channels]
         ) or _("No voice channels")
-        em = discord.Embed(title=_("Channels list"), color=await ctx.embed_color())
-        em.add_field(name=_("Categories:"), value=categories, inline=False)
-        em.add_field(name=_("Text channels:"), value=text_channels, inline=False)
-        em.add_field(name=_("Voice channels:"), value=voice_channels, inline=False)
-        em.set_footer(
-            text=_(
-                "Total count of channels: {} • "
-                "Categories: {} • "
-                "Text Channels: {} • "
-                "Voice Channels: {}"
-            ).format(
-                len(server.channels),
-                len(server.categories),
-                len(server.text_channels),
-                len(server.voice_channels),
+        categories = list(chat.pagify(categories, page_length=2048))
+        text_channels = list(chat.pagify(text_channels, page_length=2048))
+        voice_channels = list(chat.pagify(voice_channels, page_length=2048))
+        embeds = []
+        for n, page in enumerate(categories, start=1):
+            em = discord.Embed(title="Categories:", description=chat.box(page))
+            em.set_footer(
+                text=_("Page {}/{} • Categories: {} • Total channels: {}").format(
+                    n, len(categories), len(server.categories), len(server.channels)
+                )
             )
-        )
-        await ctx.send(embed=em)
+            embeds.append(em)
+        for n, page in enumerate(text_channels, start=1):
+            em = discord.Embed(title="Text channels:", description=chat.box(page))
+            em.set_footer(
+                text=_("Page {}/{} • Text channels: {} • Total channels: {}").format(
+                    n,
+                    len(text_channels),
+                    len(server.text_channels),
+                    len(server.channels),
+                )
+            )
+            embeds.append(em)
+        for n, page in enumerate(voice_channels, start=1):
+            em = discord.Embed(title="Voice channels:", description=chat.box(page))
+            em.set_footer(
+                text=_("Page {}/{} • Voice channels: {} • Total channels: {}").format(
+                    n,
+                    len(voice_channels),
+                    len(server.voice_channels),
+                    len(server.channels),
+                )
+            )
+            embeds.append(em)
+        await menu(ctx, embeds, DEFAULT_CONTROLS)
 
     @commands.command(aliases=["roleinfo"])
     @commands.guild_only()
@@ -755,8 +772,7 @@ class DataUtils(commands.Cog):
             if app:
                 em.set_thumbnail(
                     url=APP_ICON_URL.format(
-                        app_id=app.get("id", ""),
-                        icon_hash=app.get("icon", ""),
+                        app_id=app.get("id", ""), icon_hash=app.get("icon", ""),
                     )
                 )
             if activity.end:
