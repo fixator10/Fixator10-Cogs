@@ -78,7 +78,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.2.21"
+    __version__ = "2.2.22"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot: commands.Bot):
@@ -509,15 +509,15 @@ class DataUtils(commands.Cog):
         if server is None:
             await ctx.send(_("Failed to get server with provided ID"))
             return
-        categories = "\n".join(
-            [chat.escape(x.name, formatting=True) for x in server.categories]
-        ) or _("No categories")
-        text_channels = "\n".join(
-            [chat.escape(x.name, formatting=True) for x in server.text_channels]
-        ) or _("No text channels")
-        voice_channels = "\n".join(
-            [chat.escape(x.name, formatting=True) for x in server.voice_channels]
-        ) or _("No voice channels")
+        categories = "\n".join([x.name for x in server.categories]) or _(
+            "No categories"
+        )
+        text_channels = "\n".join([x.name for x in server.text_channels]) or _(
+            "No text channels"
+        )
+        voice_channels = "\n".join([x.name for x in server.voice_channels]) or _(
+            "No voice channels"
+        )
         categories = list(chat.pagify(categories, page_length=2048))
         text_channels = list(chat.pagify(text_channels, page_length=2048))
         voice_channels = list(chat.pagify(voice_channels, page_length=2048))
