@@ -78,7 +78,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.2.23"
+    __version__ = "2.2.24"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot: commands.Bot):
@@ -653,10 +653,10 @@ class DataUtils(commands.Cog):
         self,
         ctx,
         *,
-        emoji: commands.Greedy[Union[discord.Emoji, discord.PartialEmoji]] = None,
+        emojis: commands.Greedy[Union[discord.Emoji, discord.PartialEmoji]] = None,
     ):
         """Get info about emoji(s)"""
-        if not emoji:
+        if not emojis:
             if ctx.channel.permissions_for(ctx.author).add_reactions:
                 m = await ctx.send(_("React to this message with your emoji"))
                 try:
@@ -667,7 +667,7 @@ class DataUtils(commands.Cog):
                         ),
                         timeout=30,
                     )
-                    emoji = [reaction[0].emoji]
+                    emojis = [reaction[0].emoji]
                 except AsyncTimeoutError:
                     return
                 finally:
@@ -675,11 +675,11 @@ class DataUtils(commands.Cog):
             else:
                 await ctx.send_help()
                 return
-        emoji = [await self.emoji_embed(ctx, emoji) for emoji in emoji]
-        if len(emoji) > 1:
-            await menu(ctx, emoji, DEFAULT_CONTROLS)
+        emojis = [await self.emoji_embed(ctx, emoji) for emoji in emojis]
+        if len(emojis) > 1:
+            await menu(ctx, emojis, DEFAULT_CONTROLS)
         else:
-            await ctx.send(embed=emoji)
+            await ctx.send(embed=emojis)
 
     @commands.command(aliases=["emojilist", "listemojis"])
     @commands.guild_only()
