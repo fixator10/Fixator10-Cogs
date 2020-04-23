@@ -32,7 +32,7 @@ async def ignore_config_add(config: list, item):
 class MessagesLog(commands.Cog):
     """Log deleted and redacted messages to the defined channel"""
 
-    __version__ = "2.1.0"
+    __version__ = "2.1.1"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -178,10 +178,7 @@ class MessagesLog(commands.Cog):
                 not message.guild.get_channel(
                     await self.config.guild(message.guild).channel()
                 ),
-                any(
-                    message.content.startswith(prefix)
-                    for prefix in await self.bot.get_prefix(message)
-                ),
+                (await self.bot.get_context(message)).command,
                 message.channel.id
                 in await self.config.guild(message.guild).ignored_channels(),
                 message.author.id
@@ -314,10 +311,7 @@ class MessagesLog(commands.Cog):
                 not before.guild.get_channel(
                     await self.config.guild(before.guild).channel()
                 ),
-                any(
-                    before.content.startswith(prefix)
-                    for prefix in await self.bot.get_prefix(before)
-                ),
+                (await self.bot.get_context(before)).command,
                 before.channel.id
                 in await self.config.guild(before.guild).ignored_channels(),
                 before.author.id
