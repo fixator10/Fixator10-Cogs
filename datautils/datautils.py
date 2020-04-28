@@ -1,6 +1,5 @@
 import unicodedata
 from asyncio import TimeoutError as AsyncTimeoutError
-from asyncio import sleep
 from textwrap import shorten
 from types import SimpleNamespace
 from typing import Union
@@ -11,6 +10,7 @@ from redbot.core import checks
 from redbot.core import commands
 from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils import chat_formatting as chat
+from redbot.core.utils import AsyncIter
 from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
 from redbot.core.utils.predicates import ReactionPredicate
 
@@ -50,12 +50,6 @@ ACTIVITY_TYPES = {
 }
 
 
-async def asyncit(iterable):
-    for i in iterable:
-        yield i
-        await sleep(0)
-
-
 async def get_twemoji(emoji: str):
     emoji_unicode = []
     for char in emoji:
@@ -68,7 +62,7 @@ async def get_twemoji(emoji: str):
 
 
 async def find_app_by_name(where: list, name: str):
-    async for item in asyncit(where):
+    async for item in AsyncIter(where):
         for k, v in item.items():
             if v == name:
                 return item
@@ -78,7 +72,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.2.22"
+    __version__ = "2.2.23"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot: commands.Bot):
