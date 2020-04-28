@@ -7,7 +7,6 @@ import re
 import textwrap
 import time
 from asyncio import TimeoutError as AsyncTimeoutError
-from asyncio import sleep
 from collections import OrderedDict
 from datetime import timedelta
 from io import BytesIO
@@ -21,6 +20,7 @@ from redbot.core import bank
 from redbot.core import checks
 from redbot.core import commands
 from redbot.core.data_manager import bundled_data_path
+from redbot.core.utils import AsyncIter
 from redbot.core.utils.chat_formatting import pagify, box
 from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
 from redbot.core.utils.predicates import MessagePredicate
@@ -68,7 +68,7 @@ async def non_global_bank(ctx):
 class Leveler(commands.Cog):
     """A level up thing with image generation!"""
 
-    __version__ = "2.0.8b"
+    __version__ = "2.0.9b"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -396,7 +396,7 @@ class Leveler(commands.Cog):
             default_label = "   "
             special_labels = ["♔", "♕", "♖", "♗", "♘", "♙"]
 
-            async for single_user in self.asyncit(sorted_list[start_index:end_index]):
+            async for single_user in AsyncIter(sorted_list[start_index:end_index]):
                 if rank - 1 < len(special_labels):
                     label = special_labels[rank - 1]
                 else:
@@ -3425,7 +3425,7 @@ class Leveler(commands.Cog):
         sorted_list = sorted(users, key=operator.itemgetter(1), reverse=True)
 
         rank = 1
-        async for a_user in self.asyncit(sorted_list):
+        async for a_user in AsyncIter(sorted_list):
             if a_user[0] == targetid:
                 return rank
             rank += 1
@@ -3440,7 +3440,7 @@ class Leveler(commands.Cog):
         sorted_list = sorted(users, key=operator.itemgetter(1), reverse=True)
 
         rank = 1
-        async for a_user in self.asyncit(sorted_list):
+        async for a_user in AsyncIter(sorted_list):
             if a_user[0] == targetid:
                 return rank
             rank += 1
@@ -3469,7 +3469,7 @@ class Leveler(commands.Cog):
         sorted_list = sorted(users, key=operator.itemgetter(1), reverse=True)
 
         rank = 1
-        async for stats in self.asyncit(sorted_list):
+        async for stats in AsyncIter(sorted_list):
             if stats[0] == str(user.id):
                 return rank
             rank += 1
@@ -3486,7 +3486,7 @@ class Leveler(commands.Cog):
         sorted_list = sorted(users, key=operator.itemgetter(1), reverse=True)
 
         rank = 1
-        async for stats in self.asyncit(sorted_list):
+        async for stats in AsyncIter(sorted_list):
             if stats[0] == str(user.id):
                 return rank
             rank += 1
@@ -3549,11 +3549,6 @@ class Leveler(commands.Cog):
         if len(text) > max_length:
             return text[: max_length - 1] + "…"
         return text
-
-    async def asyncit(self, iterable):
-        for i in iterable:
-            yield i
-            await sleep(0)
 
     # finds the the pixel to center the text
     async def _center(self, start, end, text, font):
