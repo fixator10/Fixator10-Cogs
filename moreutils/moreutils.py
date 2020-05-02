@@ -44,7 +44,7 @@ def bool_emojify(bool_var: bool) -> str:
 class MoreUtils(commands.Cog):
     """Some (maybe) useful utils."""
 
-    __version__ = "2.0.1"
+    __version__ = "2.0.2"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot: commands.Bot):
@@ -68,15 +68,19 @@ class MoreUtils(commands.Cog):
         colorhls = colorsys.rgb_to_hls(colorrgb[0], colorrgb[1], colorrgb[2])
         coloryiq = colorsys.rgb_to_yiq(colorrgb[0], colorrgb[1], colorrgb[2])
         colorcmyk = rgb_to_cmyk(colorrgb[0], colorrgb[1], colorrgb[2])
+        async with self.session.get(f"https://api.alexflipnote.dev/color/{str(color)[1:]}") as data:
+            color_name = (await data.json()).get("name", "?")
         em = discord.Embed(
             title=str(color),
-            description="HEX: {}\n"
+            description="Name: {}\n"
+            "HEX: {}\n"
             "RGB: {}\n"
             "CMYK: {}\n"
             "HSV: {}\n"
             "HLS: {}\n"
             "YIQ: {}\n"
             "int: {}".format(
+                color_name,
                 str(color),
                 colorrgb,
                 colorcmyk,
