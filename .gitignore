@@ -111,3 +111,6 @@ dull/
 
 # update requirements.txt
 requirements_generator.py
+
+# markdown table generator
+description_table_generator.py
