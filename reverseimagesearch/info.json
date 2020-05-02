@@ -4,13 +4,14 @@
   ],
   "install_msg": "Thanks for install.",
   "short": "This cog allows users to reverse search images",
-  "description": "This cog allows users to reverse search images\nCurrently, only SauceNAO supported",
+  "description": "This cog allows users to reverse search images",
   "min_bot_version": "3.2.1",
   "tags": [
     "reverse",
     "image",
     "search",
-    "saucenao"
+    "saucenao",
+    "tracemoe"
   ],
   "requirements": [
     "python-dateutil",
