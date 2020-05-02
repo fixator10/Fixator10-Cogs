@@ -68,7 +68,9 @@ class MoreUtils(commands.Cog):
         colorhls = colorsys.rgb_to_hls(colorrgb[0], colorrgb[1], colorrgb[2])
         coloryiq = colorsys.rgb_to_yiq(colorrgb[0], colorrgb[1], colorrgb[2])
         colorcmyk = rgb_to_cmyk(colorrgb[0], colorrgb[1], colorrgb[2])
-        async with self.session.get(f"https://api.alexflipnote.dev/color/{str(color)[1:]}") as data:
+        async with self.session.get(
+            f"https://api.alexflipnote.dev/color/{str(color)[1:]}"
+        ) as data:
             color_name = (await data.json()).get("name", "?")
         em = discord.Embed(
             title=str(color),
