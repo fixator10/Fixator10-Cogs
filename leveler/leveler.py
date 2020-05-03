@@ -19,6 +19,7 @@ from fontTools.ttLib import TTFont
 from redbot.core import bank
 from redbot.core import checks
 from redbot.core import commands
+from redbot.core import Config
 from redbot.core.data_manager import bundled_data_path
 from redbot.core.utils import AsyncIter
 from redbot.core.utils.chat_formatting import pagify, box
@@ -32,18 +33,17 @@ except Exception as e:
         f"Can't load pymongo/motor:{e}\nInstall 'pymongo' and 'motor' packages"
     )
 try:
-    import scipy
+    import numpy
+    from scipy import cluster
 except Exception as e:
     print(
-        f"{__file__}: scipy is unable to import: {e}\nAutocolor feature will be unavailable"
+        f"{__file__}: numpy/scipy is unable to import: {e}\nAutocolor feature will be unavailable"
     )
 try:
     from PIL import Image, ImageDraw, ImageFont, ImageColor, ImageOps, ImageFilter
     from PIL import features as pil_features
 except Exception as e:
-    raise RuntimeError(f"Can't load pillow: {e}\nDo '[p] pipinstall pillow'.")
-
-from redbot.core import Config
+    raise RuntimeError(f"Can't load pillow: {e}\nDo '[p]pipinstall pillow'.")
 
 try:
     client = AsyncIOMotorClient()
@@ -68,7 +68,7 @@ async def non_global_bank(ctx):
 class Leveler(commands.Cog):
     """A level up thing with image generation!"""
 
-    __version__ = "2.0.9b"
+    __version__ = "2.0.10b"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -615,6 +615,13 @@ class Leveler(commands.Cog):
 
         # get correct color choice
         if color == "auto":
+            if not all(
+                lib in globals().keys() for lib in ["numpy", "cluster"]
+            ):
+                await ctx.send(
+                    "**Missing required package. Autocolor feature unavailable**"
+                )
+                return
             if section == "exp":
                 color_ranks = [random.randint(2, 3)]
             elif section == "rep":
@@ -752,6 +759,13 @@ class Leveler(commands.Cog):
 
         # get correct color choice
         if color == "auto":
+            if not all(
+                lib in globals().keys() for lib in ["numpy", "cluster"]
+            ):
+                await ctx.send(
+                    "**Missing required package. Autocolor feature unavailable**"
+                )
+                return
             if section == "exp":
                 color_ranks = [random.randint(2, 3)]
             elif section == "info":
@@ -862,6 +876,13 @@ class Leveler(commands.Cog):
 
         # get correct color choice
         if color == "auto":
+            if not all(
+                lib in globals().keys() for lib in ["numpy", "cluster"]
+            ):
+                await ctx.send(
+                    "**Missing required package. Autocolor feature unavailable**"
+                )
+                return
             if section == "info":
                 color_ranks = [random.randint(0, 1)]
             hex_colors = await self._auto_color(
@@ -879,7 +900,9 @@ class Leveler(commands.Cog):
         elif self._is_hex(color):
             set_color = [self._hex_to_rgb(color, default_a)]
         else:
-            await ctx.send("**Not a valid color. Must be `default` `HEX color`, `white` or `auto`.**")
+            await ctx.send(
+                "**Not a valid color. Must be `default` `HEX color`, `white` or `auto`.**"
+            )
             return
 
         await db.users.update_one(
@@ -889,9 +912,6 @@ class Leveler(commands.Cog):
 
     # uses k-means algorithm to find color from bg, rank is abundance of color, descending
     async def _auto_color(self, ctx, url: str, ranks):
-        if "scipy" not in globals():
-            await ctx.send("**Bot missing a required package. Cannot use Autocolor feature.**")
-            return
         phrases = ["Calculating colors..."]  # in case I want more
         await ctx.send("**{}**".format(random.choice(phrases)))
         clusters = 10
@@ -902,13 +922,13 @@ class Leveler(commands.Cog):
 
         im = Image.open(image).convert("RGBA")
         im = im.resize((290, 290))  # resized to reduce time
-        ar = scipy.asarray(im)
+        ar = numpy.asarray(im)
         shape = ar.shape
-        ar = ar.reshape(scipy.product(shape[:2]), shape[2])
+        ar = ar.reshape(numpy.product(shape[:2]), shape[2])
 
-        codes, dist = scipy.cluster.vq.kmeans(ar.astype(float), clusters)
-        vecs, dist = scipy.cluster.vq.vq(ar, codes)  # assign codes
-        counts, bins = scipy.histogram(vecs, len(codes))  # count occurrences
+        codes, dist = cluster.vq.kmeans(ar.astype(float), clusters)
+        vecs, dist = cluster.vq.vq(ar, codes)  # assign codes
+        counts, bins = numpy.histogram(vecs, len(codes))  # count occurrences
 
         # sort counts
         freq_index = []
@@ -1104,7 +1124,9 @@ class Leveler(commands.Cog):
             await ctx.send("**Your title has been succesfully set!**")
         else:
             await ctx.send(
-                "**Your title has too many characters! Must be {} or less.**".format(max_char)
+                "**Your title has too many characters! Must be {} or less.**".format(
+                    max_char
+                )
             )
 
     @checks.admin_or_permissions(manage_guild=True)
@@ -1325,7 +1347,11 @@ class Leveler(commands.Cog):
                 await ctx.send("Discord user with ID `{}` not found.".format(user))
                 return
             except discord.HTTPException:
-                await ctx.send("I was unable to get data about user with ID `{}`. Try again later.".format(user))
+                await ctx.send(
+                    "I was unable to get data about user with ID `{}`. Try again later.".format(
+                        user
+                    )
+                )
                 return
         if user is None:
             await ctx.send_help()
@@ -1612,7 +1638,7 @@ class Leveler(commands.Cog):
                         await ctx.send("**`{}` has been obtained.**".format(name))
                     else:
                         await ctx.send(
-                            '**{}, you are about to buy the `{}` badge for `{}`. Confirm by typing `yes`.**'.format(
+                            "**{}, you are about to buy the `{}` badge for `{}`. Confirm by typing `yes`.**".format(
                                 await self._is_mention(user), name, badge_info["price"]
                             )
                         )
@@ -2096,7 +2122,9 @@ class Leveler(commands.Cog):
     @checks.mod_or_permissions(manage_roles=True)
     @role.command(name="link")
     @commands.guild_only()
-    async def linkrole(self, ctx, add_role: discord.Role, level: int, remove_role: discord.Role = None):
+    async def linkrole(
+        self, ctx, add_role: discord.Role, level: int, remove_role: discord.Role = None
+    ):
         """Associate a role with a level.
 
         Removes previous role if given."""
@@ -2107,7 +2135,10 @@ class Leveler(commands.Cog):
             new_server = {
                 "server_id": str(server.id),
                 "roles": {
-                    add_role.name: {"level": str(level), "remove_role": remove_role.name if remove_role else None}
+                    add_role.name: {
+                        "level": str(level),
+                        "remove_role": remove_role.name if remove_role else None,
+                    }
                 },
             }
             await db.roles.insert_one(new_server)
@@ -2116,7 +2147,9 @@ class Leveler(commands.Cog):
                 server_roles["roles"][add_role.name] = {}
 
             server_roles["roles"][add_role.name]["level"] = str(level)
-            server_roles["roles"][add_role.name]["remove_role"] = remove_role.name if remove_role else None
+            server_roles["roles"][add_role.name]["remove_role"] = (
+                remove_role.name if remove_role else None
+            )
             await db.roles.update_one(
                 {"server_id": str(server.id)},
                 {"$set": {"roles": server_roles["roles"]}},
@@ -2125,9 +2158,7 @@ class Leveler(commands.Cog):
         if remove_role:
             await ctx.send(
                 "**The `{}` role has been linked to level `{}`. "
-                "Will also remove `{}` role.**".format(
-                    add_role, level, remove_role
-                )
+                "Will also remove `{}` role.**".format(add_role, level, remove_role)
             )
         else:
             await ctx.send(
@@ -2158,7 +2189,9 @@ class Leveler(commands.Cog):
             )
         else:
             await ctx.send(
-                "**The `{}` role is not linked to any levels!**".format(role_to_unlink.name)
+                "**The `{}` role is not linked to any levels!**".format(
+                    role_to_unlink.name
+                )
             )
 
     @checks.mod_or_permissions(manage_roles=True)
@@ -2379,7 +2412,9 @@ class Leveler(commands.Cog):
                 cnt += 1
             await menu(ctx, embeds, DEFAULT_CONTROLS)
         else:
-            await ctx.send("**Invalid background type. Must be `profile`, `rank` or `levelup`.**")
+            await ctx.send(
+                "**Invalid background type. Must be `profile`, `rank` or `levelup`.**"
+            )
 
     async def draw_profile(self, user, server):
         font_thin_file = f"{bundled_data_path(self)}/Uni_Sans_Thin.ttf"
