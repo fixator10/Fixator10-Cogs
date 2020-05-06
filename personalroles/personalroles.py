@@ -24,7 +24,7 @@ class PersonalRoles(commands.Cog):
     __version__ = "2.0.4"
 
     # noinspection PyMissingConstructor
-    def __init__(self, bot: commands.Bot):
+    def __init__(self, bot):
         self.bot = bot
         self.config = Config.get_conf(
             self, identifier=0x3D86BBD3E2B744AE8AA8B5D986EB4DD8

@@ -32,7 +32,7 @@ class MinecraftData(commands.Cog):
     __version__ = "2.0.0"
 
     # noinspection PyMissingConstructor
-    def __init__(self, bot: commands.Bot):
+    def __init__(self, bot):
         self.bot = bot
         self.session = aiohttp.ClientSession(loop=self.bot.loop)
 
