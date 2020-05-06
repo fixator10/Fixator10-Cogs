@@ -75,7 +75,7 @@ class DataUtils(commands.Cog):
     __version__ = "2.2.23"
 
     # noinspection PyMissingConstructor
-    def __init__(self, bot: commands.Bot):
+    def __init__(self, bot):
         self.bot = bot
         self.TIME_FORMAT = _("%d.%m.%Y %H:%M:%S %Z")
 

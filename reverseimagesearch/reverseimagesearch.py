@@ -112,7 +112,7 @@ class ReverseImageSearch(commands.Cog):
             "4. Use `{}set api reverseimagesearch saucenao <your_api_key>`\n\n"
             "Note: These tokens are sensitive and should only be used in a private channel\n"
             "or in DM with the bot."
-        ).format(ctx.prefix)
+        ).format(ctx.clean_prefix)
         await ctx.maybe_send_embed(message)
 
     @saucenao.command(alises=["numres"])

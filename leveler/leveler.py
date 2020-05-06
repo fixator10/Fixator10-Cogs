@@ -1132,7 +1132,7 @@ class Leveler(commands.Cog):
                 )
         else:
             await ctx.send(
-                f"That is not a valid background. See available backgrounds at `{ctx.prefix}backgrounds levelup`."
+                f"That is not a valid background. See available backgrounds at `{ctx.clean_prefix}backgrounds levelup`."
             )
 
     @profileset.command(name="bg")
@@ -1168,7 +1168,7 @@ class Leveler(commands.Cog):
                 )
         else:
             await ctx.send(
-                f"That is not a valid background. See available backgrounds at `{ctx.prefix}backgrounds profile`."
+                f"That is not a valid background. See available backgrounds at `{ctx.clean_prefix}backgrounds profile`."
             )
 
     @rankset.command(name="bg")
@@ -1198,7 +1198,7 @@ class Leveler(commands.Cog):
                 await ctx.send("**Your new rank background has been succesfully set!**")
         else:
             await ctx.send(
-                f"That is not a valid background. See available backgrounds at `{ctx.prefix}backgrounds rank`."
+                f"That is not a valid background. See available backgrounds at `{ctx.clean_prefix}backgrounds rank`."
             )
 
     @profileset.command()
@@ -1777,13 +1777,13 @@ class Leveler(commands.Cog):
             else:
                 await ctx.send(
                     "**The badge `{}` does not exist. Try `{}badge available`**".format(
-                        name, ctx.prefix
+                        name, ctx.clean_prefix
                     )
                 )
         else:
             await ctx.send(
                 "**There are no badges to get! Try `{}badge get [badge name] -global`.**".format(
-                    ctx.prefix
+                    ctx.clean_prefix
                 )
             )
 

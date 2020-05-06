@@ -150,7 +150,7 @@ class SteamCommunity(commands.Cog):
             "5. Use `{}set api steam web <your_apikey>`\n"
             "Note: These tokens are sensitive and should only be used in a private channel\n"
             "or in DM with the bot."
-        ).format(ctx.prefix)
+        ).format(ctx.clean_prefix)
         await ctx.maybe_send_embed(message)
 
     @steamcommunity.command(name="profile", aliases=["p"])
