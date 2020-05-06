@@ -156,7 +156,7 @@ class Weather(commands.Cog):
             "1. Register/login at [DarkSky](https://darksky.net/dev/register)\n"
             '2. Copy ["Your Secret Key"](https://darksky.net/dev/account)\n'
             "3. Use `{}set api forecastio secret <your_apikey>`"
-        ).format(ctx.prefix)
+        ).format(ctx.clean_prefix)
         await ctx.maybe_send_embed(message)
 
     @commands.group(invoke_without_command=True)
@@ -200,7 +200,7 @@ class Weather(commands.Cog):
                 chat.error(
                     _(
                         'Units "{}" are not supported, check {}help forecastunits'
-                    ).format(units, ctx.prefix)
+                    ).format(units, ctx.clean_prefix)
                 )
             )
             return
@@ -233,7 +233,7 @@ class Weather(commands.Cog):
                 chat.error(
                     _(
                         'Units "{}" are not supported, check {}help forecastunits guild'
-                    ).format(units, ctx.prefix)
+                    ).format(units, ctx.clean_prefix)
                 )
             )
             return
@@ -289,7 +289,7 @@ class Weather(commands.Cog):
                         _(
                             "This command requires API key. "
                             "Use {}forecastapi to get more information"
-                        ).format(ctx.prefix)
+                        ).format(ctx.clean_prefix)
                     )
                 )
                 return
@@ -421,7 +421,7 @@ class Weather(commands.Cog):
                         _(
                             "This command requires API key. "
                             "Use {}forecastapi to get more information"
-                        ).format(ctx.prefix)
+                        ).format(ctx.clean_prefix)
                     )
                 )
                 return

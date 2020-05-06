@@ -54,7 +54,7 @@ class Translators(commands.Cog):
             "3. Enter description for key\n"
             "4. Copy `trnsl.*` key\n"
             "5. Use `{}set api yandex translate <your_apikey>`"
-        ).format(ctx.prefix)
+        ).format(ctx.clean_prefix)
         await ctx.maybe_send_embed(message)
 
     @commands.command()
@@ -77,7 +77,7 @@ class Translators(commands.Cog):
                 chat.error(
                     _(
                         "This command requires valid API key, check {}ytapikey to get more information"
-                    ).format(ctx.prefix)
+                    ).format(ctx.clean_prefix)
                 )
             )
         except yandextranslate.Exceptions.IncorrectLang:
