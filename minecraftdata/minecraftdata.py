@@ -29,6 +29,7 @@ SERVICE_STATUS = {
 @cog_i18n(_)
 class MinecraftData(commands.Cog):
     """Minecraft-Related data"""
+
     __version__ = "2.0.0"
 
     # noinspection PyMissingConstructor
@@ -54,8 +55,8 @@ class MinecraftData(commands.Cog):
         async with ctx.channel.typing():
             try:
                 async with self.session.get(
-                        f"https://crafatar.com/renders/head/{uuid}",
-                        params="overlay" if overlay else None,
+                    f"https://crafatar.com/renders/head/{uuid}",
+                    params="overlay" if overlay else None,
                 ) as s:
                     files.append(
                         discord.File(
@@ -69,8 +70,8 @@ class MinecraftData(commands.Cog):
                         )
                     )
                 async with self.session.get(
-                        f"https://crafatar.com/renders/body/{uuid}.png",
-                        params="overlay" if overlay else None,
+                    f"https://crafatar.com/renders/body/{uuid}.png",
+                    params="overlay" if overlay else None,
                 ) as s:
                     files.append(
                         discord.File(
@@ -160,7 +161,7 @@ class MinecraftData(commands.Cog):
         uuid = player.dashed_uuid
         try:
             async with self.session.get(
-                    f"http://capes.labymod.net/capes/{uuid}", raise_for_status=True
+                f"http://capes.labymod.net/capes/{uuid}", raise_for_status=True
             ) as data:
                 cape = await data.read()
         except aiohttp.ClientResponseError as e:
@@ -221,7 +222,7 @@ class MinecraftData(commands.Cog):
         uuid = player.uuid
         try:
             async with self.session.get(
-                    f"http://textures.5zig.net/textures/2/{uuid}", raise_for_status=True
+                f"http://textures.5zig.net/textures/2/{uuid}", raise_for_status=True
             ) as data:
                 response_data = await data.json(content_type=None)
             cape = response_data["cape"]
@@ -250,7 +251,7 @@ class MinecraftData(commands.Cog):
         uuid = player.uuid
         try:
             async with self.session.get(
-                    f"http://textures.5zig.net/textures/2/{uuid}", raise_for_status=True
+                f"http://textures.5zig.net/textures/2/{uuid}", raise_for_status=True
             ) as data:
                 response_data = await data.json(content_type=None)
             if "animatedCape" not in response_data:

@@ -20,8 +20,8 @@ class MCPlayer:
     async def convert(cls, ctx, argument):
         try:
             async with ctx.cog.session.get(
-                    f"https://api.mojang.com/users/profiles/minecraft/{argument}",
-                    raise_for_status=True,
+                f"https://api.mojang.com/users/profiles/minecraft/{argument}",
+                raise_for_status=True,
             ) as data:
                 response_data = await data.json()
         except ContentTypeError:
