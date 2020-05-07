@@ -153,16 +153,10 @@ class Leveler(commands.Cog):
         if self.client:
             self.client.close()
 
-    async def cog_before_invoke(self, ctx):
-        if ctx.command.qualified_name in [
-            "levelerset",
-            "levelerset host",
-            "levelerset port",
-            "levelerset credentials",
-        ]:
-            return
-        if not self._db_ready:
-            return
+    async def cog_check(self, ctx):
+        if ctx.command.parent is self.bot.get_command("levelerset"):
+            return True
+        return self._db_ready
 
     def cog_unload(self):
         self.session.detach()
