@@ -557,6 +557,7 @@ class Leveler(commands.Cog):
             settings = [
                 (setting.title(), value)
                 for setting, value in (await self.config.custom("MONGODB").get_raw()).items()
+                if value
             ]
             await ctx.send(box(tabulate(settings, tablefmt="plain")))
 
