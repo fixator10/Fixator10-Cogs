@@ -138,9 +138,7 @@ class Weather(commands.Cog):
     # noinspection PyMissingConstructor
     def __init__(self, bot):
         self.bot = bot
-        self.config = Config.get_conf(
-            self, identifier=0xDC5A74E677F24720AA82AD1C237721E7
-        )
+        self.config = Config.get_conf(self, identifier=0xDC5A74E677F24720AA82AD1C237721E7)
         default_guild = {"units": "si"}
         self.config.register_guild(**default_guild)
         self.session = aiohttp.ClientSession(loop=self.bot.loop, raise_for_status=True,)
@@ -199,9 +197,9 @@ class Weather(commands.Cog):
         if units not in UNITS.keys():
             await ctx.send(
                 chat.error(
-                    _(
-                        'Units "{}" are not supported, check {}help forecastunits'
-                    ).format(units, ctx.clean_prefix)
+                    _('Units "{}" are not supported, check {}help forecastunits').format(
+                        units, ctx.clean_prefix
+                    )
                 )
             )
             return
@@ -222,9 +220,7 @@ class Weather(commands.Cog):
         if not units:
             await ctx.send(
                 chat.info(
-                    _("Current units are: {}").format(
-                        await self.config.guild(ctx.guild).units()
-                    )
+                    _("Current units are: {}").format(await self.config.guild(ctx.guild).units())
                 )
             )
             return
@@ -232,9 +228,9 @@ class Weather(commands.Cog):
         if units not in UNITS.keys():
             await ctx.send(
                 chat.error(
-                    _(
-                        'Units "{}" are not supported, check {}help forecastunits guild'
-                    ).format(units, ctx.clean_prefix)
+                    _('Units "{}" are not supported, check {}help forecastunits guild').format(
+                        units, ctx.clean_prefix
+                    )
                 )
             )
             return
@@ -267,9 +263,7 @@ class Weather(commands.Cog):
                 )
                 return
             if not location:
-                await ctx.send(
-                    chat.error(_("Cannot find a place {}").format(chat.inline(place)))
-                )
+                await ctx.send(chat.error(_("Cannot find a place {}").format(chat.inline(place))))
                 return
             location = location[0]
             try:
@@ -301,19 +295,15 @@ class Weather(commands.Cog):
 
         em = discord.Embed(
             title=_("Weather in {}").format(
-                shorten(
-                    location.get("display_name", UNKNOWN_EMOJI), 244, placeholder="…"
-                )
+                shorten(location.get("display_name", UNKNOWN_EMOJI), 244, placeholder="…")
             ),
-            description=_(
-                "[View on Google Maps](https://www.google.com/maps/place/{},{})"
-            ).format(location.get("lat", 0), location.get("lon", 0)),
+            description=_("[View on Google Maps](https://www.google.com/maps/place/{},{})").format(
+                location.get("lat", 0), location.get("lon", 0)
+            ),
             color=await ctx.embed_color(),
             timestamp=by_hour.time,
         )
-        em.set_author(
-            name=_("Powered by Dark Sky"), url="https://darksky.net/poweredby/"
-        )
+        em.set_author(name=_("Powered by Dark Sky"), url="https://darksky.net/poweredby/")
         em.add_field(
             name=_("Summary"),
             value="{} {}".format(
@@ -349,9 +339,7 @@ class Weather(commands.Cog):
         em.add_field(name=_("Cloud cover"), value=f"{int(by_hour.cloudCover * 100)}%")
         em.add_field(
             name=_("Ozone density"),
-            value="{} [DU](https://en.wikipedia.org/wiki/Dobson_unit)".format(
-                by_hour.ozone
-            ),
+            value="{} [DU](https://en.wikipedia.org/wiki/Dobson_unit)".format(by_hour.ozone),
         )
         em.add_field(name=_("UV index"), value=by_hour.uvIndex)
         try:
@@ -399,9 +387,7 @@ class Weather(commands.Cog):
                 )
                 return
             if not location:
-                await ctx.send(
-                    chat.error(_("Cannot find a place {}").format(chat.inline(place)))
-                )
+                await ctx.send(chat.error(_("Cannot find a place {}").format(chat.inline(place))))
                 return
             location = location[0]
             try:
@@ -435,22 +421,16 @@ class Weather(commands.Cog):
             data = by_day.data[i]
             em = discord.Embed(
                 title=_("Weather in {}").format(
-                    shorten(
-                        location.get("display_name", UNKNOWN_EMOJI),
-                        244,
-                        placeholder="…",
-                    )
+                    shorten(location.get("display_name", UNKNOWN_EMOJI), 244, placeholder="…",)
                 ),
                 description=f"{by_day.summary}\n"
-                + _(
-                    "[View on Google Maps](https://www.google.com/maps/place/{},{})"
-                ).format(location.get("lat", 0), location.get("lon", 0),),
+                + _("[View on Google Maps](https://www.google.com/maps/place/{},{})").format(
+                    location.get("lat", 0), location.get("lon", 0),
+                ),
                 color=await ctx.embed_color(),
                 timestamp=data.time,
             )
-            em.set_author(
-                name=_("Powered by Dark Sky"), url="https://darksky.net/poweredby/"
-            )
+            em.set_author(name=_("Powered by Dark Sky"), url="https://darksky.net/poweredby/")
             em.set_footer(text=_("Page {}/8").format(i + 1))
             try:
                 # FIXME: find a better way to do that
@@ -459,9 +439,7 @@ class Weather(commands.Cog):
                 summary = _("No summary for this day")
             em.add_field(
                 name=_("Summary"),
-                value="{} {}".format(
-                    WEATHER_STATES.get(data.icon, UNKNOWN_EMOJI), summary,
-                ),
+                value="{} {}".format(WEATHER_STATES.get(data.icon, UNKNOWN_EMOJI), summary,),
             )
             em.add_field(
                 name=_("Temperature"),
@@ -492,9 +470,7 @@ class Weather(commands.Cog):
             em.add_field(name=_("Cloud cover"), value=f"{int(data.cloudCover * 100)}%")
             em.add_field(
                 name=_("Ozone density"),
-                value="{} [DU](https://en.wikipedia.org/wiki/Dobson_unit)".format(
-                    data.ozone
-                ),
+                value="{} [DU](https://en.wikipedia.org/wiki/Dobson_unit)".format(data.ozone),
             )
             em.add_field(name=_("UV index"), value=data.uvIndex)
             try:
@@ -514,23 +490,18 @@ class Weather(commands.Cog):
                 )
                 + (
                     preciptype
-                    and _("\nType: {}").format(
-                        PRECIP_TYPE_I18N.get(preciptype, preciptype)
-                    )
+                    and _("\nType: {}").format(PRECIP_TYPE_I18N.get(preciptype, preciptype))
                     or ""
                 )
                 + (
                     precipaccumulation
                     and _("\nSnowfall accumulation: {} {}").format(
-                        precipaccumulation,
-                        await self.get_localized_units(ctx, "accumulation"),
+                        precipaccumulation, await self.get_localized_units(ctx, "accumulation"),
                     )
                     or ""
                 ),
             )
-            em.add_field(
-                name=_("Moon phase"), value=await self.num_to_moon(data.moonPhase)
-            )
+            em.add_field(name=_("Moon phase"), value=await self.num_to_moon(data.moonPhase))
             pages.append(em)
         await menu(ctx, pages, DEFAULT_CONTROLS)
 
@@ -544,9 +515,9 @@ class Weather(commands.Cog):
     async def get_localized_units(self, ctx: commands.Context, units_type: str):
         """Get translated contextual units for type"""
         if not ctx.guild:
-            return UNITS.get(
-                await self.config.user(ctx.author).units(), UNITS["si"]
-            ).get(units_type, "?")
+            return UNITS.get(await self.config.user(ctx.author).units(), UNITS["si"]).get(
+                units_type, "?"
+            )
         current_system = (
             await self.config.user(ctx.author).units()
             or await self.config.guild(ctx.guild).units()

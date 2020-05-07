@@ -46,15 +46,11 @@ class Level:
         self.preview = data.select_one(".course-image > .course-image").get("src")
         self.map = data.select_one(".course-image-full").get("src")
         self.creator = data.select_one(".creator-info > .name").string
-        self.creator_url = SMMB_BASE_URL + data.select_one(
-            ".mii-wrapper.creator > .link"
-        ).get("href")
-        self.creator_img = data.select_one(".mii-wrapper.creator > .link > img").get(
-            "src"
+        self.creator_url = SMMB_BASE_URL + data.select_one(".mii-wrapper.creator > .link").get(
+            "href"
         )
-        if data.select_one(
-            ".fastest-time-wrapper > .user-wrapper > .mii-wrapper > .link"
-        ):
+        self.creator_img = data.select_one(".mii-wrapper.creator > .link > img").get("src")
+        if data.select_one(".fastest-time-wrapper > .user-wrapper > .mii-wrapper > .link"):
             self.best_player_name = data.select_one(
                 ".fastest-time-wrapper > .user-wrapper > .user-info > .name"
             ).string
@@ -68,9 +64,7 @@ class Level:
             self.best_player_name = None
             self.best_player_url = None
             self.best_player_img = None
-        if data.select_one(
-            ".first-user > .body > .user-wrapper > .mii-wrapper > .link"
-        ):
+        if data.select_one(".first-user > .body > .user-wrapper > .mii-wrapper > .link"):
             self.first_clear_name = data.select_one(
                 ".first-user > .body > .user-wrapper > .user-info > .name"
             ).string
@@ -87,12 +81,10 @@ class Level:
         self.stars = _cleanup_typography_int(data, ".liked-count > .typography")
         self.players = _cleanup_typography_int(data, ".played-count > .typography")
         self.shares = _cleanup_typography_int(data, ".shared-count > .typography")
-        self.clears = _cleanup_typography_int(
-            data, ".tried-count > .typography", split="slash"
-        )[0]
-        self.attempts = _cleanup_typography_int(
-            data, ".tried-count > .typography", split="slash"
-        )[1]
+        self.clears = _cleanup_typography_int(data, ".tried-count > .typography", split="slash")[0]
+        self.attempts = _cleanup_typography_int(data, ".tried-count > .typography", split="slash")[
+            1
+        ]
 
     @property
     def gameskin(self):
@@ -141,9 +133,7 @@ class Level:
     @property
     def best_player_time(self):
         clear_time = ""
-        for char in self._data.select(
-            ".fastest-time-wrapper > .clear-time > .typography"
-        ):
+        for char in self._data.select(".fastest-time-wrapper > .clear-time > .typography"):
             char = char.get("class", "")[1].replace("typography-", "")
             if char.isdigit():
                 clear_time += char
@@ -188,9 +178,7 @@ class Maker:
         self.name = data.select_one(".user-info > .name").string
         self.image = data.select_one(".mii").get("src")
         self.country = data.select_one(".user-info > .flag").get("class")[1].lower()
-        self.stars = _cleanup_typography_int(
-            self._data, ".star > .liked-count > .typography"
-        )
+        self.stars = _cleanup_typography_int(self._data, ".star > .liked-count > .typography")
         challenge = namedtuple("challenge", "easy, normal, expert, super_expert")
         self.challenge = challenge(
             self.parsetable("Easy clears"),
@@ -205,9 +193,7 @@ class Maker:
             self.parsetable("Total plays"),
             self.parsetable("Lives lost"),
         )
-        self.uploads = _cleanup_typography_int(
-            self._data, ".user-courses-wrapper > .typography"
-        )
+        self.uploads = _cleanup_typography_int(self._data, ".user-courses-wrapper > .typography")
 
     @property
     def medals(self) -> int:
@@ -244,9 +230,7 @@ class Maker:
 
         :param line: name of line"""
         numbers = ""
-        typograhpies = [
-            x for x in self._data.find(string=line).next if x.get("class") is not None
-        ]
+        typograhpies = [x for x in self._data.find(string=line).next if x.get("class") is not None]
         for char in typograhpies:
             char = char.get("class", "")[1].replace("typography-", "")
             if char.isdigit():

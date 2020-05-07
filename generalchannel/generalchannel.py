@@ -26,9 +26,7 @@ class GeneralChannel(commands.Cog):
     # noinspection PyMissingConstructor
     def __init__(self, bot):
         self.bot = bot
-        self.config = Config.get_conf(
-            self, identifier=0x8A87069DB515498281C88D41675BF85B
-        )
+        self.config = Config.get_conf(self, identifier=0x8A87069DB515498281C88D41675BF85B)
         default_guild = {"channel": None}
         self.config.register_guild(**default_guild)
 
@@ -66,18 +64,13 @@ class GeneralChannel(commands.Cog):
             name = name[:100]
         try:
             await channel.edit(
-                name=name,
-                reason=get_audit_reason(ctx.author, _("General channel name change")),
+                name=name, reason=get_audit_reason(ctx.author, _("General channel name change")),
             )
         except discord.Forbidden:
-            await ctx.send(
-                chat.error(_("Unable to change channel's name: Missing permissions"))
-            )
+            await ctx.send(chat.error(_("Unable to change channel's name: Missing permissions")))
         except discord.HTTPException as e:
             ctx.command.reset_cooldown(ctx)
-            await ctx.send(
-                chat.error(_("Unable to change channel's name: Failed: {}").format(e))
-            )
+            await ctx.send(chat.error(_("Unable to change channel's name: Failed: {}").format(e)))
         else:
             await ctx.tick()
 
@@ -105,13 +98,9 @@ class GeneralChannel(commands.Cog):
                 reason=get_audit_reason(ctx.author, _("General channel topic change")),
             )
         except discord.Forbidden:
-            await ctx.send(
-                chat.error(_("Unable to change channel's topic: Missing permissions"))
-            )
+            await ctx.send(chat.error(_("Unable to change channel's topic: Missing permissions")))
         except discord.HTTPException as e:
             ctx.command.reset_cooldown(ctx)
-            await ctx.send(
-                chat.error(_("Unable to change channel's topic: Failed: {}").format(e))
-            )
+            await ctx.send(chat.error(_("Unable to change channel's topic: Failed: {}").format(e)))
         else:
             await ctx.tick()

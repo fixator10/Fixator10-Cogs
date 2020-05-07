@@ -29,9 +29,7 @@ class ReverseImageSearch(commands.Cog):
             "short_remaining": None,
         }
         self.session = aiohttp.ClientSession(loop=self.bot.loop)
-        self.config = Config.get_conf(
-            self, identifier=0x02E801D017C140A9A0C840BA01A25066
-        )
+        self.config = Config.get_conf(self, identifier=0x02E801D017C140A9A0C840BA01A25066)
         default_global = {"numres": 6}
         self.config.register_global(**default_global)
 
@@ -75,13 +73,10 @@ class ReverseImageSearch(commands.Cog):
                 description="\n".join(
                     [
                         _("Similarity: {}%").format(entry.similarity),
-                        "\n".join([n for n in [entry.eng_name, entry.jp_name] if n])
-                        or "",
+                        "\n".join([n for n in [entry.eng_name, entry.jp_name] if n]) or "",
                         entry.part and _("Part/Episode: {}").format(entry.part) or "",
                         entry.year and _("Year: {}").format(entry.year) or "",
-                        entry.est_time
-                        and _("Est. Time: {}").format(entry.est_time)
-                        or "",
+                        entry.est_time and _("Est. Time: {}").format(entry.est_time) or "",
                     ]
                 ),
                 url=url,
@@ -89,9 +84,7 @@ class ReverseImageSearch(commands.Cog):
                 timestamp=entry.created_at or Embed.Empty,
             )
             e.set_footer(
-                text=_("Via SauceNAO • Page {}/{}").format(
-                    page, search.results_returned
-                ),
+                text=_("Via SauceNAO • Page {}/{}").format(page, search.results_returned),
                 icon_url="https://www.google.com/s2/favicons?domain=saucenao.com",
             )
             e.set_thumbnail(url=entry.thumbnail)
@@ -132,9 +125,7 @@ class ReverseImageSearch(commands.Cog):
         if any(limit is not None for limit in self.saucenao_limits.values()):
             await ctx.send(
                 _(
-                    "Remaining requests:\n"
-                    "Short (30 seconds): {}/{}\n"
-                    "Long: (24 hours): {}/{}"
+                    "Remaining requests:\nShort (30 seconds): {}/{}\nLong: (24 hours): {}/{}"
                 ).format(
                     self.saucenao_limits["short_remaining"],
                     self.saucenao_limits["short"],
@@ -143,9 +134,7 @@ class ReverseImageSearch(commands.Cog):
                 )
             )
         else:
-            await ctx.send(
-                _("Command `{}` has not been used yet").format(self.saucenao)
-            )
+            await ctx.send(_("Command `{}` has not been used yet").format(self.saucenao))
 
     @commands.group(invoke_without_command=True, aliases=["WAIT"])
     async def tracemoe(self, ctx, image: ImageFinder = None):
@@ -181,14 +170,11 @@ class ReverseImageSearch(commands.Cog):
                             doc.title_native
                             and "🇯🇵 " + _("Native title: {}").format(doc.title_native),
                             doc.title_romaji
-                            and "🇯🇵 "
-                            + _("Romaji transcription: {}").format(doc.title_romaji),
+                            and "🇯🇵 " + _("Romaji transcription: {}").format(doc.title_romaji),
                             doc.title_chinese
-                            and "🇨🇳 "
-                            + _("Chinese title: {}").format(doc.title_chinese),
+                            and "🇨🇳 " + _("Chinese title: {}").format(doc.title_chinese),
                             doc.title_english
-                            and "🇺🇸 "
-                            + _("English title: {}").format(doc.title_english),
+                            and "🇺🇸 " + _("English title: {}").format(doc.title_english),
                             _("Est. Time: {}").format(doc.time_str),
                             _("Episode: {}").format(doc.episode),
                             doc.synonyms
@@ -204,9 +190,7 @@ class ReverseImageSearch(commands.Cog):
             )
             e.set_thumbnail(url=doc.thumbnail)
             e.set_footer(
-                text=_("Via WAIT (trace.moe) • Page {}/{}").format(
-                    page, len(search.docs)
-                ),
+                text=_("Via WAIT (trace.moe) • Page {}/{}").format(page, len(search.docs)),
                 icon_url="https://trace.moe/favicon128.png",
             )
             embeds.append(e)

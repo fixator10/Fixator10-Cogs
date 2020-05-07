@@ -23,13 +23,9 @@ class SauceNAOEntry:
         data = result.get("data", {})
         self.urls = data.get("ext_urls", [])
         self.title = data.get("title")
-        self.created_at = (
-            parse(data.get("created_at")) if data.get("created_at") else None
-        )
+        self.created_at = parse(data.get("created_at")) if data.get("created_at") else None
         self.member_name = (
-            data.get("member_name")
-            or data.get("author_name")
-            or data.get("pawoo_user_username")
+            data.get("member_name") or data.get("author_name") or data.get("pawoo_user_username")
         )
         self.creator = data.get("creator")
         self.material = data.get("material")
@@ -96,16 +92,13 @@ class SauceNAO:
                                     "Unable to search for provided image, SauceNAO returned {status} ({message})\n"
                                     "This is server issue, try again later."
                                 ).format(
-                                    status=data.get("status"),
-                                    message=data.get("message"),
+                                    status=data.get("status"), message=data.get("message"),
                                 )
                             )
                         raise ValueError(
                             _(
                                 "Unable to search for provided image, SauceNAO returned {status} ({message})"
-                            ).format(
-                                status=data.get("status"), message=data.get("message")
-                            )
+                            ).format(status=data.get("status"), message=data.get("message"))
                         )
                     return cls(data)
             except ClientResponseError as e:

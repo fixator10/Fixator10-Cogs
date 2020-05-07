@@ -95,12 +95,8 @@ class MoreUtils(commands.Cog):
             colour=color,
             timestamp=ctx.message.created_at,
         )
-        em.set_thumbnail(
-            url=f"https://api.alexflipnote.dev/color/image/{str(color)[1:]}"
-        )
-        em.set_image(
-            url=f"https://api.alexflipnote.dev/color/image/gradient/{str(color)[1:]}"
-        )
+        em.set_thumbnail(url=f"https://api.alexflipnote.dev/color/image/{str(color)[1:]}")
+        em.set_image(url=f"https://api.alexflipnote.dev/color/image/gradient/{str(color)[1:]}")
         await ctx.send(embed=em)
 
     @commands.command(pass_context=True, no_pm=True)
@@ -143,9 +139,7 @@ class MoreUtils(commands.Cog):
         except Exception as e:
             await ctx.send(
                 chat.error(
-                    _(
-                        "Unable to get data from https://status.discordapp.com: {}"
-                    ).format(e)
+                    _("Unable to get data from https://status.discordapp.com: {}").format(e)
                 )
             )
             return
@@ -163,12 +157,9 @@ class MoreUtils(commands.Cog):
             color=await ctx.embed_color(),
             url="https://status.discordapp.com",
         )
-        embed.description = status_indicators.get(
-            status["indicator"], status["indicator"]
-        )
+        embed.description = status_indicators.get(status["indicator"], status["indicator"])
         for component in components:
             embed.add_field(
-                name=component["name"],
-                value=component["status"].capitalize().replace("_", " "),
+                name=component["name"], value=component["status"].capitalize().replace("_", " "),
             )
         await ctx.send(embed=embed)
