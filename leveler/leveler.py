@@ -556,55 +556,52 @@ class Leveler(commands.Cog):
         pass
 
     @levelerset.command()
-    async def host(self, ctx, host: str):
+    async def host(self, ctx, host: str = "localhost"):
         """Set the MongoDB server host."""
-        async with ctx.typing():
-            await self.config.custom("MONGODB").host.set(host)
-            message = await ctx.send(
-                f"MongoDB host set to {host}.\nNow trying to connect to the new host..."
+        await self.config.custom("MONGODB").host.set(host)
+        message = await ctx.send(
+            f"MongoDB host set to {host}.\nNow trying to connect to the new host..."
+        )
+        client = await self._connect_to_mongo()
+        if not client:
+            return await message.edit(
+                content=message.content.replace("Now trying to connect to the new host...", "")
+                + "Failed to connect. Please try again with a valid host."
             )
-            client = await self._connect_to_mongo()
-            if not client:
-                return await message.edit(
-                    content=message.content.replace("Now trying to connect to the new host...", "")
-                    + "Failed to connect. Please try again with a valid host."
-                )
-        return await message.edit(
+        await message.edit(
             content=message.content.replace("Now trying to connect to the new host...", "")
         )
 
     @levelerset.command()
-    async def port(self, ctx, port: int):
+    async def port(self, ctx, port: int = 21017):
         """Set the MongoDB server port."""
-        async with ctx.typing():
-            await self.config.custom("MONGODB").port.set(port)
-            message = await ctx.send(
-                f"MongoDB port set to {port}.\nNow trying to connect to the new port..."
+        await self.config.custom("MONGODB").port.set(port)
+        message = await ctx.send(
+            f"MongoDB port set to {port}.\nNow trying to connect to the new port..."
+        )
+        client = await self._connect_to_mongo()
+        if not client:
+            return await message.edit(
+                content=message.content.replace("Now trying to connect to the new port...", "")
+                + "Failed to connect. Please try again with a valid port."
             )
-            client = await self._connect_to_mongo()
-            if not client:
-                return await message.edit(
-                    content=message.content.replace("Now trying to connect to the new port...", "")
-                    + "Failed to connect. Please try again with a valid port."
-                )
-        return await message.edit(
+        await message.edit(
             content=message.content.replace("Now trying to connect to the new port...", "")
         )
 
     @levelerset.command(aliases=["creds"])
-    async def credentials(self, ctx, username: str, password: str):
+    async def credentials(self, ctx, username: str = None, password: str = None)
         """Set the MongoDB server credentials."""
-        async with ctx.typing():
-            await self.config.custom("MONGODB").username.set(username)
-            await self.config.custom("MONGODB").password.set(password)
-            message = await ctx.send(f"MongoDB credentials set.\nNow trying to connect...")
-            client = await self._connect_to_mongo()
-            if not client:
-                return await message.edit(
-                    content=message.content.replace("Now trying to connect...", "")
-                    + "Failed to connect. Please try again with valid credentials."
-                )
-        return await message.edit(content=message.content.replace("Now trying to connect...", ""))
+        await self.config.custom("MONGODB").username.set(username)
+        await self.config.custom("MONGODB").password.set(password)
+        message = await ctx.send("MongoDB credentials set.\nNow trying to connect...")
+        client = await self._connect_to_mongo()
+        if not client:
+            return await message.edit(
+                content=message.content.replace("Now trying to connect...", "")
+                + "Failed to connect. Please try again with valid credentials."
+            )
+        await message.edit(content=message.content.replace("Now trying to connect...", ""))
 
     @commands.group(name="lvlset", pass_context=True)
     async def lvlset(self, ctx):
