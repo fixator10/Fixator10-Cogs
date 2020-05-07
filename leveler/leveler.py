@@ -10,6 +10,7 @@ import time
 from asyncio import TimeoutError as AsyncTimeoutError
 from collections import OrderedDict
 from datetime import timedelta
+from tabulate import tabulate
 from io import BytesIO
 from typing import Union
 
@@ -547,8 +548,17 @@ class Leveler(commands.Cog):
     @checks.is_owner()
     @commands.group()
     async def levelerset(self, ctx):
-        """MongoDB server configuration options."""
-        pass
+        """
+        MongoDB server configuration options.
+        
+        Use that command in DM to see current settings.
+        """
+        if not ctx.invoked_subcommand and ctx.channel.type == discord.ChannelType.private:
+            settings = [
+                (setting.title(), value)
+                for setting, value in (await self.config.custom("MONGODB").get_raw()).items()
+            ]
+            await ctx.send(box(tabulate(settings, tablefmt="plain")))
 
     @levelerset.command()
     async def host(self, ctx, host: str = "localhost"):
