@@ -35,7 +35,13 @@ class AdminUtils(commands.Cog):
     async def cleanup_users(self, ctx, days: int = 1):
         """Cleanup inactive server members"""
         if days > 30:
-            await ctx.send(chat.info(_("Due to Discord Restrictions, you cannot use more than 30 days for that cmd.")))
+            await ctx.send(
+                chat.info(
+                    _(
+                        "Due to Discord Restrictions, you cannot use more than 30 days for that cmd."
+                    )
+                )
+            )
             days = 30
         elif days <= 0:
             await ctx.send(chat.info(_('"days" arg cannot be less than 1...')))
@@ -59,7 +65,8 @@ class AdminUtils(commands.Cog):
             await ctx.send(
                 chat.info(
                     _(
-                        "**{removed}**/**{all}** inactive members removed.\n" "(They was inactive for **{days}** days)"
+                        "**{removed}**/**{all}** inactive members removed.\n"
+                        "(They was inactive for **{days}** days)"
                     ).format(removed=cleanup, all=to_kick, days=days)
                 )
             )
@@ -76,7 +83,11 @@ class AdminUtils(commands.Cog):
         Useful to reinitate all voice connections"""
         current_region = ctx.guild.region
         random_region = choice(
-            [r for r in discord.VoiceRegion if not r.value.startswith("vip") and current_region != r]
+            [
+                r
+                for r in discord.VoiceRegion
+                if not r.value.startswith("vip") and current_region != r
+            ]
         )
         await ctx.guild.edit(region=random_region)
         await ctx.guild.edit(
@@ -89,18 +100,24 @@ class AdminUtils(commands.Cog):
     @commands.cooldown(1, 60, commands.BucketType.guild)
     @checks.admin_or_permissions(move_members=True)
     @checks.bot_has_permissions(move_members=True)
-    async def massmove(self, ctx, from_channel: discord.VoiceChannel, to_channel: discord.VoiceChannel):
+    async def massmove(
+        self, ctx, from_channel: discord.VoiceChannel, to_channel: discord.VoiceChannel
+    ):
         """Move all members from one voice channel to another
 
         Use double quotes if channel name has spaces"""
         fails = 0
         if not from_channel.members:
-            await ctx.send(chat.error(_("There is no users in channel {}.").format(from_channel.mention)))
+            await ctx.send(
+                chat.error(_("There is no users in channel {}.").format(from_channel.mention))
+            )
             return
         async with ctx.typing():
             for member in from_channel.members:
                 try:
-                    await member.move_to(to_channel, reason=get_audit_reason(ctx.author, _("Massmove")))
+                    await member.move_to(
+                        to_channel, reason=get_audit_reason(ctx.author, _("Massmove"))
+                    )
                 except discord.HTTPException:
                     fails += 1
                     continue
@@ -125,7 +142,9 @@ class AdminUtils(commands.Cog):
                 except discord.HTTPException:
                     counter += 1
                     continue
-        await ctx.send(_("Finished nicknaming server. {} nicknames could not be completed.").format(counter))
+        await ctx.send(
+            _("Finished nicknaming server. {} nicknames could not be completed.").format(counter)
+        )
 
     @commands.command()
     @commands.guild_only()
@@ -139,12 +158,16 @@ class AdminUtils(commands.Cog):
         async with ctx.typing():
             for user in server.members:
                 try:
-                    await user.edit(nick=None, reason=get_audit_reason(ctx.author, _("Reset nicks")))
+                    await user.edit(
+                        nick=None, reason=get_audit_reason(ctx.author, _("Reset nicks"))
+                    )
                     await sleep(1)
                 except discord.HTTPException:
                     counter += 1
                     continue
-        await ctx.send(_("Finished resetting server nicknames. Unable to reset {} nicknames.").format(counter))
+        await ctx.send(
+            _("Finished resetting server nicknames. Unable to reset {} nicknames.").format(counter)
+        )
 
     @commands.group()
     @commands.guild_only()
@@ -177,7 +200,9 @@ class AdminUtils(commands.Cog):
                 roles=roles,
                 reason=get_audit_reason(
                     ctx.author,
-                    _("Restricted to roles: {}").format(", ".join([f"{role.name}" for role in roles]))
+                    _("Restricted to roles: {}").format(
+                        ", ".join([f"{role.name}" for role in roles])
+                    )
                     if roles
                     else None,
                 ),
@@ -209,7 +234,11 @@ class AdminUtils(commands.Cog):
                 roles=roles,
                 reason=get_audit_reason(
                     ctx.author,
-                    _("Restricted to roles: ").format(", ".join([f"{role.name}" for role in roles])) if roles else None,
+                    _("Restricted to roles: ").format(
+                        ", ".join([f"{role.name}" for role in roles])
+                    )
+                    if roles
+                    else None,
                 ),
             )
         except discord.Forbidden:

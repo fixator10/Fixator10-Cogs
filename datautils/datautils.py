@@ -93,11 +93,17 @@ class DataUtils(commands.Cog):
             return
         except discord.HTTPException:
             await ctx.send(
-                chat.warning(_("I was unable to get data about user with ID `{}`. Try again later").format(user_id))
+                chat.warning(
+                    _("I was unable to get data about user with ID `{}`. Try again later").format(
+                        user_id
+                    )
+                )
             )
             return
         em = discord.Embed(
-            title=chat.escape(str(user), formatting=True), timestamp=user.created_at, color=await ctx.embed_color(),
+            title=chat.escape(str(user), formatting=True),
+            timestamp=user.created_at,
+            color=await ctx.embed_color(),
         )
         em.add_field(name=_("ID"), value=user.id)
         em.add_field(name=_("Bot?"), value=bool_emojify(user.bot))
@@ -108,7 +114,8 @@ class DataUtils(commands.Cog):
         )
         if user.avatar:
             em.add_field(
-                name=_("Avatar"), value=f"[`{user.avatar}`]({user.avatar_url_as(static_format='png', size=2048)})",
+                name=_("Avatar"),
+                value=f"[`{user.avatar}`]({user.avatar_url_as(static_format='png', size=2048)})",
             )
         em.set_image(url=user.avatar_url_as(static_format="png", size=2048))
         em.set_thumbnail(url=user.default_avatar_url)
@@ -155,12 +162,16 @@ class DataUtils(commands.Cog):
         em.add_field(name=_("System?"), value=bool_emojify(member.system))
         em.add_field(
             name=_("Server permissions"),
-            value="[{0}](https://discordapi.com/permissions.html#{0})".format(member.guild_permissions.value),
+            value="[{0}](https://discordapi.com/permissions.html#{0})".format(
+                member.guild_permissions.value
+            ),
         )
         if member.voice:
             em.add_field(name=_("In voice channel"), value=member.voice.channel.mention)
         em.add_field(
-            name=_("Mention"), value=f"{member.mention}\n{chat.inline(member.mention)}", inline=False,
+            name=_("Mention"),
+            value=f"{member.mention}\n{chat.inline(member.mention)}",
+            inline=False,
         )
         em.add_field(
             name=_("Roles"),
@@ -218,7 +229,9 @@ class DataUtils(commands.Cog):
         em.add_field(name=_("Owner"), value=chat.escape(str(server.owner), formatting=True))
         em.add_field(
             name=_("AFK timeout and channel"),
-            value=_("{} min in {}").format(afk, chat.escape(str(server.afk_channel), formatting=True)),
+            value=_("{} min in {}").format(
+                afk, chat.escape(str(server.afk_channel), formatting=True)
+            ),
         )
         em.add_field(
             name=_("Verification level"),
@@ -256,7 +269,11 @@ class DataUtils(commands.Cog):
         if server.system_channel:
             em.add_field(
                 name=_("System messages channel"),
-                value=_("**Channel:** {channel}\n" "**Welcome message:** {welcome}\n" "**Boosts:** {boost}").format(
+                value=_(
+                    "**Channel:** {channel}\n"
+                    "**Welcome message:** {welcome}\n"
+                    "**Boosts:** {boost}"
+                ).format(
                     channel=chat.escape(str(server.system_channel), formatting=True),
                     welcome=bool_emojify(server.system_channel_flags.join_notifications),
                     boost=bool_emojify(server.system_channel_flags.premium_subscriptions),
@@ -298,7 +315,9 @@ class DataUtils(commands.Cog):
                 value="\n".join(GUILD_FEATURES.get(f, f) for f in server.features).format(
                     banner=server.banner and f" [🔗]({server.banner_url_as(format='png')})" or "",
                     splash=server.splash and f" [🔗]({server.splash_url_as(format='png')})" or "",
-                    discovery=server.discovery_splash and f" [🔗]({server.discovery_splash_url_as(format='png')})" or "",
+                    discovery=server.discovery_splash
+                    and f" [🔗]({server.discovery_splash_url_as(format='png')})"
+                    or "",
                 ),
                 inline=False,
             )
@@ -345,7 +364,9 @@ class DataUtils(commands.Cog):
             await ctx.send(_("Failed to get server with provided ID"))
             return
         if not server.me.guild_permissions.manage_guild:
-            await ctx.send(_('I need permission "Manage Server" to access list of invites on server'))
+            await ctx.send(
+                _('I need permission "Manage Server" to access list of invites on server')
+            )
             return
         invites = await server.invites()
         if invites:
@@ -358,7 +379,12 @@ class DataUtils(commands.Cog):
     @commands.guild_only()
     @checks.bot_has_permissions(embed_links=True)
     async def cinfo(
-        self, ctx, *, channel: Union[discord.TextChannel, discord.VoiceChannel, discord.CategoryChannel, None] = None,
+        self,
+        ctx,
+        *,
+        channel: Union[
+            discord.TextChannel, discord.VoiceChannel, discord.CategoryChannel, None
+        ] = None,
     ):
         """Get info about channel"""
         if channel is None:
@@ -389,13 +415,15 @@ class DataUtils(commands.Cog):
         )
         em.add_field(
             name=_("Category"),
-            value=chat.escape(str(channel.category), formatting=True) or chat.inline(_("Not in category")),
+            value=chat.escape(str(channel.category), formatting=True)
+            or chat.inline(_("Not in category")),
         )
         em.add_field(name=_("Position"), value=channel.position)
         if isinstance(channel, discord.TextChannel):
             em.add_field(name=_("Users"), value=str(len(channel.members)))
         em.add_field(
-            name=_("Changed roles permissions"), value="\n".join([str(x) for x in changed_roles]) or _("Not set"),
+            name=_("Changed roles permissions"),
+            value="\n".join([str(x) for x in changed_roles]) or _("Not set"),
         )
         em.add_field(
             name=_("Mention"), value=f"{channel.mention}\n{chat.inline(channel.mention)}",
@@ -406,7 +434,10 @@ class DataUtils(commands.Cog):
                     name=_("Slowmode delay"), value=_("{} seconds").format(channel.slowmode_delay),
                 )
             em.add_field(name=_("NSFW"), value=bool_emojify(channel.is_nsfw()))
-            if channel.guild.me.permissions_in(channel).manage_webhooks and await channel.webhooks():
+            if (
+                channel.guild.me.permissions_in(channel).manage_webhooks
+                and await channel.webhooks()
+            ):
                 em.add_field(name=_("Webhooks count"), value=str(len(await channel.webhooks())))
         elif isinstance(channel, discord.VoiceChannel):
             em.add_field(name=_("Bitrate"), value=_("{}kbps").format(channel.bitrate / 1000))
@@ -435,7 +466,9 @@ class DataUtils(commands.Cog):
             return
         categories = "\n".join([x.name for x in server.categories]) or _("No categories")
         text_channels = "\n".join([x.name for x in server.text_channels]) or _("No text channels")
-        voice_channels = "\n".join([x.name for x in server.voice_channels]) or _("No voice channels")
+        voice_channels = "\n".join([x.name for x in server.voice_channels]) or _(
+            "No voice channels"
+        )
         categories = list(chat.pagify(categories, page_length=2048))
         text_channels = list(chat.pagify(text_channels, page_length=2048))
         voice_channels = list(chat.pagify(voice_channels, page_length=2048))
@@ -478,7 +511,9 @@ class DataUtils(commands.Cog):
         em.add_field(name=_("ID"), value=role.id)
         em.add_field(
             name=_("Permissions"),
-            value="[{0}](https://discordapi.com/permissions.html#{0})".format(role.permissions.value),
+            value="[{0}](https://discordapi.com/permissions.html#{0})".format(
+                role.permissions.value
+            ),
         )
         em.add_field(
             name=_("Has existed since"), value=role.created_at.strftime(self.TIME_FORMAT),
@@ -541,7 +576,9 @@ class DataUtils(commands.Cog):
         ctx,
         member: discord.Member,
         *,
-        channel: Union[discord.TextChannel, discord.VoiceChannel, discord.CategoryChannel, None] = None,
+        channel: Union[
+            discord.TextChannel, discord.VoiceChannel, discord.CategoryChannel, None
+        ] = None,
     ):
         """Check user's permission for current or provided channel"""
         if channel is None:
@@ -549,7 +586,8 @@ class DataUtils(commands.Cog):
         perms = channel.permissions_for(member)
         await ctx.send(
             "{}\n{}".format(
-                chat.inline(str(member.guild_permissions.value)), chat.box(chat.format_perms_list(perms), lang="py"),
+                chat.inline(str(member.guild_permissions.value)),
+                chat.box(chat.format_perms_list(perms), lang="py"),
             )
         )
 
@@ -562,7 +600,9 @@ class DataUtils(commands.Cog):
                 m = await ctx.send(_("React to this message with your emoji"))
                 try:
                     reaction = await ctx.bot.wait_for(
-                        "reaction_add", check=ReactionPredicate.same_context(message=m, user=ctx.author), timeout=30,
+                        "reaction_add",
+                        check=ReactionPredicate.same_context(message=m, user=ctx.author),
+                        timeout=30,
                     )
                     emoji = reaction[0].emoji
                 except AsyncTimeoutError:
@@ -608,10 +648,13 @@ class DataUtils(commands.Cog):
             # em.add_field(name=_("Unicode emoji"), value="✅")
             em.add_field(
                 name=_("Unicode character"),
-                value="\n".join(f"\\{c}" if c not in NON_ESCAPEABLE_CHARACTERS else c for c in emoji),
+                value="\n".join(
+                    f"\\{c}" if c not in NON_ESCAPEABLE_CHARACTERS else c for c in emoji
+                ),
             )
             em.add_field(
-                name=_("Unicode category"), value="\n".join(unicodedata.category(c) for c in emoji),
+                name=_("Unicode category"),
+                value="\n".join(unicodedata.category(c) for c in emoji),
             )
             em.set_image(url=await get_twemoji(emoji))
         if not isinstance(emoji, str):
@@ -629,7 +672,8 @@ class DataUtils(commands.Cog):
                 em.add_field(name=_("Roles"), value="\n".join([x.name for x in emoji.roles]))
         elif isinstance(emoji, discord.PartialEmoji):
             em.add_field(
-                name=_("Has existed since"), value=discord.utils.snowflake_time(emoji.id).strftime(self.TIME_FORMAT),
+                name=_("Has existed since"),
+                value=discord.utils.snowflake_time(emoji.id).strftime(self.TIME_FORMAT),
             )
             em.add_field(name=_("Custom emoji"), value=bool_emojify(emoji.is_custom_emoji()))
             # em.add_field(
@@ -658,10 +702,16 @@ class DataUtils(commands.Cog):
                 timestamp=activity.start or discord.Embed.Empty,
                 color=await ctx.embed_color(),
             )
-            apps = await self.bot.http.request(discord.http.Route("GET", "/applications/detectable"))
+            apps = await self.bot.http.request(
+                discord.http.Route("GET", "/applications/detectable")
+            )
             app = await find_app_by_name(apps, activity.name)
             if app:
-                em.set_thumbnail(url=APP_ICON_URL.format(app_id=app.get("id", ""), icon_hash=app.get("icon", ""),))
+                em.set_thumbnail(
+                    url=APP_ICON_URL.format(
+                        app_id=app.get("id", ""), icon_hash=app.get("icon", ""),
+                    )
+                )
             if activity.end:
                 em.add_field(
                     name=_("This game will end at"), value=activity.end.strftime(self.TIME_FORMAT),
@@ -677,12 +727,15 @@ class DataUtils(commands.Cog):
                 f"{activity.state and activity.state or ''}{party_size}",
                 color=await ctx.embed_color(),
             )
-            apps = await self.bot.http.request(discord.http.Route("GET", "/applications/detectable"))
+            apps = await self.bot.http.request(
+                discord.http.Route("GET", "/applications/detectable")
+            )
             app = await find_app_by_name(apps, activity.name)
             if app:
                 em.set_thumbnail(
                     url=APP_ICON_URL.format(
-                        app_id=app.get("id", activity.application_id or ""), icon_hash=app.get("icon", ""),
+                        app_id=app.get("id", activity.application_id or ""),
+                        icon_hash=app.get("icon", ""),
                     )
                 )
             if activity.small_image_text:
@@ -709,7 +762,9 @@ class DataUtils(commands.Cog):
                 em.set_image(url=activity.large_image_url)
         elif isinstance(activity, discord.Streaming):
             em = discord.Embed(
-                title=activity.name, description=_("Streaming on {}").format(activity.platform), url=activity.url,
+                title=activity.name,
+                description=_("Streaming on {}").format(activity.platform),
+                url=activity.url,
             )
             if activity.game:
                 em.add_field(name=_("Game"), value=activity.game)

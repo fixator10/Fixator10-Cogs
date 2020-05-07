@@ -45,9 +45,9 @@ class PersonalRoles(commands.Cog):
         """Assign personal role to someone"""
         await self.config.member(user).role.set(role.id)
         await ctx.send(
-            _("Ok. I just assigned {user.name} ({user.id}) to role {role.name} ({role.id}).").format(
-                user=user, role=role
-            )
+            _(
+                "Ok. I just assigned {user.name} ({user.id}) to role {role.name} ({role.id})."
+            ).format(user=user, role=role)
         )
 
     @myrole.command()
@@ -65,10 +65,18 @@ class PersonalRoles(commands.Cog):
                 return
             except discord.HTTPException:
                 await ctx.send(
-                    chat.warning(_("I was unable to get data about user with ID `{}`. Try again later").format(user))
+                    chat.warning(
+                        _(
+                            "I was unable to get data about user with ID `{}`. Try again later"
+                        ).format(user)
+                    )
                 )
                 return
-        await ctx.send(_("Ok. I just unassigned {user.name} ({user.id}) from his personal role.").format(user=user))
+        await ctx.send(
+            _("Ok. I just unassigned {user.name} ({user.id}) from his personal role.").format(
+                user=user
+            )
+        )
 
     @myrole.command(name="list")
     @checks.admin_or_permissions(manage_roles=True)
@@ -85,7 +93,9 @@ class PersonalRoles(commands.Cog):
             dic = {
                 _("User"): ctx.guild.get_member(member) or f"[X] {member}",
                 _("Role"): shorten(
-                    str(ctx.guild.get_role(data["role"]) or "[X] {}".format(data["role"])), 32, placeholder="…",
+                    str(ctx.guild.get_role(data["role"]) or "[X] {}".format(data["role"])),
+                    32,
+                    placeholder="…",
                 ),
             }
             assigned_roles.append(dic)
@@ -111,7 +121,9 @@ class PersonalRoles(commands.Cog):
                 await ctx.send(chat.error(_("`{}` is already in blacklist").format(rolename)))
             else:
                 blacklist.append(rolename)
-                await ctx.send(chat.info(_("Added `{}` to blacklisted roles list").format(rolename)))
+                await ctx.send(
+                    chat.info(_("Added `{}` to blacklisted roles list").format(rolename))
+                )
 
     @blacklist.command()
     @checks.admin_or_permissions(manage_roles=True)
@@ -123,7 +135,9 @@ class PersonalRoles(commands.Cog):
                 await ctx.send(chat.error(_("`{}` is not blacklisted").format(rolename)))
             else:
                 blacklist.remove(rolename)
-                await ctx.send(chat.info(_("Removed `{}` from blacklisted roles list").format(rolename)))
+                await ctx.send(
+                    chat.info(_("Removed `{}` from blacklisted roles list").format(rolename))
+                )
 
     @blacklist.command(name="list")
     @checks.admin_or_permissions(manage_roles=True)
@@ -161,7 +175,9 @@ class PersonalRoles(commands.Cog):
             await ctx.send(chat.error(_("Unable to edit role: {}").format(e)))
         else:
             if not colour.value:
-                await ctx.send(_("Reset {user}'s personal role color").format(user=ctx.message.author.name))
+                await ctx.send(
+                    _("Reset {user}'s personal role color").format(user=ctx.message.author.name)
+                )
             else:
                 await ctx.send(
                     _("Changed color of {user}'s personal role to {color}").format(
@@ -199,7 +215,9 @@ class PersonalRoles(commands.Cog):
             await ctx.send(chat.error(_("Unable to edit role: {}").format(e)))
         else:
             await ctx.send(
-                _("Changed name of {user}'s personal role to {name}").format(user=ctx.message.author.name, name=name)
+                _("Changed name of {user}'s personal role to {name}").format(
+                    user=ctx.message.author.name, name=name
+                )
             )
 
     @commands.Cog.listener("on_member_join")

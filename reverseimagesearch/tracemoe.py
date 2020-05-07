@@ -82,9 +82,9 @@ class TraceMoe:
                     return cls(await data.json())
             except ClientResponseError as e:
                 raise ValueError(
-                    _("Unable to search for provided image, trace.moe returned {status} ({message})").format(
-                        status=e.status, message=e.message
-                    )
+                    _(
+                        "Unable to search for provided image, trace.moe returned {status} ({message})"
+                    ).format(status=e.status, message=e.message)
                 )
 
     @classmethod

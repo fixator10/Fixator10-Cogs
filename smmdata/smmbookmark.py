@@ -46,10 +46,14 @@ class Level:
         self.preview = data.select_one(".course-image > .course-image").get("src")
         self.map = data.select_one(".course-image-full").get("src")
         self.creator = data.select_one(".creator-info > .name").string
-        self.creator_url = SMMB_BASE_URL + data.select_one(".mii-wrapper.creator > .link").get("href")
+        self.creator_url = SMMB_BASE_URL + data.select_one(".mii-wrapper.creator > .link").get(
+            "href"
+        )
         self.creator_img = data.select_one(".mii-wrapper.creator > .link > img").get("src")
         if data.select_one(".fastest-time-wrapper > .user-wrapper > .mii-wrapper > .link"):
-            self.best_player_name = data.select_one(".fastest-time-wrapper > .user-wrapper > .user-info > .name").string
+            self.best_player_name = data.select_one(
+                ".fastest-time-wrapper > .user-wrapper > .user-info > .name"
+            ).string
             self.best_player_url = SMMB_BASE_URL + data.select_one(
                 ".fastest-time-wrapper > .user-wrapper > .mii-wrapper > .link"
             ).get("href")
@@ -61,7 +65,9 @@ class Level:
             self.best_player_url = None
             self.best_player_img = None
         if data.select_one(".first-user > .body > .user-wrapper > .mii-wrapper > .link"):
-            self.first_clear_name = data.select_one(".first-user > .body > .user-wrapper > .user-info > .name").string
+            self.first_clear_name = data.select_one(
+                ".first-user > .body > .user-wrapper > .user-info > .name"
+            ).string
             self.first_clear_url = SMMB_BASE_URL + data.select_one(
                 ".first-user > .body > .user-wrapper > .mii-wrapper > .link"
             ).get("href")
@@ -76,7 +82,9 @@ class Level:
         self.players = _cleanup_typography_int(data, ".played-count > .typography")
         self.shares = _cleanup_typography_int(data, ".shared-count > .typography")
         self.clears = _cleanup_typography_int(data, ".tried-count > .typography", split="slash")[0]
-        self.attempts = _cleanup_typography_int(data, ".tried-count > .typography", split="slash")[1]
+        self.attempts = _cleanup_typography_int(data, ".tried-count > .typography", split="slash")[
+            1
+        ]
 
     @property
     def gameskin(self):
@@ -104,7 +112,9 @@ class Level:
                 created_at = datetime.utcnow() - timedelta(minutes=created_at_ago)
         else:
             created_at = created_at.split("/")
-            created_at = datetime(int(created_at[2]), int(created_at[0]), int(created_at[1]))  # [MM, DD, YYYY]
+            created_at = datetime(
+                int(created_at[2]), int(created_at[0]), int(created_at[1])
+            )  # [MM, DD, YYYY]
         return created_at
 
     @property
@@ -149,10 +159,16 @@ class Level:
     async def convert(cls, ctx, argument):
         async with ctx.typing():
             try:
-                async with ctx.cog.session.get(f"{SMMB_BASE_URL}/courses/{argument}", raise_for_status=True) as page:
+                async with ctx.cog.session.get(
+                    f"{SMMB_BASE_URL}/courses/{argument}", raise_for_status=True
+                ) as page:
                     return cls(BeautifulSoup(await page.read(), "html.parser"))
             except ClientResponseError as e:
-                raise BadArgument(_("Unable to find level {level}: {status}").format(level=argument, status=e.message))
+                raise BadArgument(
+                    _("Unable to find level {level}: {status}").format(
+                        level=argument, status=e.message
+                    )
+                )
 
 
 class Maker:
@@ -183,7 +199,11 @@ class Maker:
     def medals(self) -> int:
         if self._data.select_one(".medal-count"):
             return _cleanup_typography_int(self._data, ".medal-count > .typography")
-        medals = [m for m in self._data.select(".medal.bg-image") if m.get("class")[2] != "profile_icon_medal_non"]
+        medals = [
+            m
+            for m in self._data.select(".medal.bg-image")
+            if m.get("class")[2] != "profile_icon_medal_non"
+        ]
         if medals:
             return len(medals)
         return 0
@@ -192,12 +212,18 @@ class Maker:
     async def convert(cls, ctx, argument):
         async with ctx.typing():
             try:
-                async with ctx.cog.session.get(f"{SMMB_BASE_URL}/profile/{argument}", raise_for_status=True) as page:
+                async with ctx.cog.session.get(
+                    f"{SMMB_BASE_URL}/profile/{argument}", raise_for_status=True
+                ) as page:
                     return cls(BeautifulSoup(await page.read(), "html.parser"))
             except ClientResponseError as e:
                 if e.status == 404:
                     raise BadArgument(_("The specified user could not be found."))
-                raise BadArgument(_("Unable to find user {user}: {status}").format(user=argument, status=e.message))
+                raise BadArgument(
+                    _("Unable to find user {user}: {status}").format(
+                        user=argument, status=e.message
+                    )
+                )
 
     def parsetable(self, line: str):
         """Parses line in table of profile

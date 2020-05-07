@@ -16,7 +16,8 @@ class GodConverter(commands.MemberConverter):
         :param game: type of account ("godville" or "godvillegame")"""
         if not any(g == game for g in ["godville", "godvillegame"]):
             raise ValueError(
-                f"{game} is not right type of account\n" 'only "godville" and "godvillegame" are supported'
+                f"{game} is not right type of account\n"
+                'only "godville" and "godvillegame" are supported'
             )
         users = await ctx.cog.config.all_users()
         for user, data in users.items():
@@ -63,10 +64,16 @@ class GodvilleData(commands.Cog):
         godname, apikey = god
         async with self.session.get(f"{BASE_API}/{godname}/{apikey}") as sg:
             if sg.status == 404:
-                await ctx.send(chat.error("404 — Sorry, but there is nothing here\nCheck god name and try again"))
+                await ctx.send(
+                    chat.error(
+                        "404 — Sorry, but there is nothing here\nCheck god name and try again"
+                    )
+                )
                 return
             if sg.status != 200:
-                await ctx.send(chat.error("Something went wrong. Server returned {}.".format(sg.status)))
+                await ctx.send(
+                    chat.error("Something went wrong. Server returned {}.".format(sg.status))
+                )
                 return
             profile = await sg.json()
         profile = GodvilleUser(profile)
@@ -108,7 +115,9 @@ class GodvilleData(commands.Cog):
         text += "Кирпичей: {} ({}%)\n".format(profile.bricks, profile.bricks / 10)
         if profile.inventory:
             text += "Инвентарь: {}/{} ({}%)\n".format(
-                profile.inventory, profile.inventory_max, int(profile.inventory / profile.inventory_max * 100),
+                profile.inventory,
+                profile.inventory_max,
+                int(profile.inventory / profile.inventory_max * 100),
             )
         else:
             text += "Вместимость инвентаря: {}\n".format(profile.inventory_max)
@@ -170,10 +179,16 @@ class GodvilleData(commands.Cog):
         """Get data about godvillegame.com (Global) god by name"""
         async with self.session.get("{}/{}".format(BASE_API_GLOBAL, godname.casefold())) as sg:
             if sg.status == 404:
-                await ctx.send(chat.error("404 — Sorry, but there is nothing here\nCheck god name and try again"))
+                await ctx.send(
+                    chat.error(
+                        "404 — Sorry, but there is nothing here\nCheck god name and try again"
+                    )
+                )
                 return
             if sg.status != 200:
-                await ctx.send(chat.error("Something went wrong. Server returned {}.".format(sg.status)))
+                await ctx.send(
+                    chat.error("Something went wrong. Server returned {}.".format(sg.status))
+                )
                 return
             profile = await sg.json()
         profile = GodvilleUser(profile)
@@ -203,17 +218,23 @@ class GodvilleData(commands.Cog):
             text += "Exp for next level: {}%\n".format(profile.experience)
         text += "Level: {}\n".format(profile.level)
         if profile.godpower:
-            text += "Godpower: {}/{}\n".format(profile.godpower, 200 if profile.savings_date else 100)
+            text += "Godpower: {}/{}\n".format(
+                profile.godpower, 200 if profile.savings_date else 100
+            )
         text += "Personality: {}\n".format(profile.alignment)
         text += "Gender: {}\n".format(profile.gender)
         text += "Wins / Losses: {}/{}\n".format(profile.arena_won, profile.arena_lost)
         text += (
-            "Guild: {} ({})\n".format(profile.clan, profile.clan_position) if profile.clan else "Guild: Not in guild\n"
+            "Guild: {} ({})\n".format(profile.clan, profile.clan_position)
+            if profile.clan
+            else "Guild: Not in guild\n"
         )
         text += "Bricks: {} ({}%)\n".format(profile.bricks, profile.bricks / 10)
         if profile.inventory:
             text += "Inventory: {}/{} ({}%)\n".format(
-                profile.inventory, profile.inventory_max, int(profile.inventory / profile.inventory_max * 100),
+                profile.inventory,
+                profile.inventory_max,
+                int(profile.inventory / profile.inventory_max * 100),
             )
         else:
             text += "Inventory max: {}\n".format(profile.inventory_max)

@@ -54,7 +54,9 @@ class SMMData(commands.Cog):
             embed.add_field(
                 name=_("World record"),
                 value=_("{time} by [{player}]({url})").format(
-                    time=lvl.best_player_time, player=lvl.best_player_name, url=lvl.best_player_url,
+                    time=lvl.best_player_time,
+                    player=lvl.best_player_name,
+                    url=lvl.best_player_url,
                 ),
             )
         embed.set_thumbnail(url=lvl.preview)

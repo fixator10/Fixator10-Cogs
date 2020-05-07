@@ -124,7 +124,9 @@ class ReverseImageSearch(commands.Cog):
         """See how many requests are left"""
         if any(limit is not None for limit in self.saucenao_limits.values()):
             await ctx.send(
-                _("Remaining requests:\n" "Short (30 seconds): {}/{}\n" "Long: (24 hours): {}/{}").format(
+                _(
+                    "Remaining requests:\nShort (30 seconds): {}/{}\nLong: (24 hours): {}/{}"
+                ).format(
                     self.saucenao_limits["short_remaining"],
                     self.saucenao_limits["short"],
                     self.saucenao_limits["long_remaining"],
@@ -165,13 +167,18 @@ class ReverseImageSearch(commands.Cog):
                         s
                         for s in [
                             _("Similarity: {:.2f}%").format(doc.similarity * 100),
-                            doc.title_native and "🇯🇵 " + _("Native title: {}").format(doc.title_native),
-                            doc.title_romaji and "🇯🇵 " + _("Romaji transcription: {}").format(doc.title_romaji),
-                            doc.title_chinese and "🇨🇳 " + _("Chinese title: {}").format(doc.title_chinese),
-                            doc.title_english and "🇺🇸 " + _("English title: {}").format(doc.title_english),
+                            doc.title_native
+                            and "🇯🇵 " + _("Native title: {}").format(doc.title_native),
+                            doc.title_romaji
+                            and "🇯🇵 " + _("Romaji transcription: {}").format(doc.title_romaji),
+                            doc.title_chinese
+                            and "🇨🇳 " + _("Chinese title: {}").format(doc.title_chinese),
+                            doc.title_english
+                            and "🇺🇸 " + _("English title: {}").format(doc.title_english),
                             _("Est. Time: {}").format(doc.time_str),
                             _("Episode: {}").format(doc.episode),
-                            doc.synonyms and _("Also known as: {}").format(", ".join(doc.synonyms)),
+                            doc.synonyms
+                            and _("Also known as: {}").format(", ".join(doc.synonyms)),
                         ]
                         if s
                     ]

@@ -34,7 +34,9 @@ class ImageFinder(Converter):
         if emojis:
             for emoji in emojis:
                 ext = "gif" if emoji.group(2) else "png"
-                url = "https://cdn.discordapp.com/emojis/{id}.{ext}?v=1".format(id=emoji.group(3), ext=ext)
+                url = "https://cdn.discordapp.com/emojis/{id}.{ext}?v=1".format(
+                    id=emoji.group(3), ext=ext
+                )
                 urls.append(url)
         if mentions:
             for mention in mentions:

@@ -55,21 +55,33 @@ class MinecraftData(commands.Cog):
         async with ctx.channel.typing():
             try:
                 async with self.session.get(
-                    f"https://crafatar.com/renders/head/{uuid}", params="overlay" if overlay else None,
+                    f"https://crafatar.com/renders/head/{uuid}",
+                    params="overlay" if overlay else None,
                 ) as s:
-                    files.append(discord.File(BytesIO(await s.read()), filename=f"{stripname}_head.png"))
+                    files.append(
+                        discord.File(BytesIO(await s.read()), filename=f"{stripname}_head.png")
+                    )
                 async with self.session.get(f"https://crafatar.com/skins/{uuid}") as s:
-                    files.append(discord.File(BytesIO(await s.read()), filename=f"{stripname}.png"))
+                    files.append(
+                        discord.File(BytesIO(await s.read()), filename=f"{stripname}.png")
+                    )
                 async with self.session.get(
-                    f"https://crafatar.com/renders/body/{uuid}.png", params="overlay" if overlay else None,
+                    f"https://crafatar.com/renders/body/{uuid}.png",
+                    params="overlay" if overlay else None,
                 ) as s:
-                    files.append(discord.File(BytesIO(await s.read()), filename=f"{stripname}_body.png"))
+                    files.append(
+                        discord.File(BytesIO(await s.read()), filename=f"{stripname}_body.png")
+                    )
             except aiohttp.ClientResponseError as e:
-                await ctx.send(chat.error(_("Unable to get data from Crafatar: {}").format(e.message)))
+                await ctx.send(
+                    chat.error(_("Unable to get data from Crafatar: {}").format(e.message))
+                )
                 return
         em = discord.Embed(timestamp=ctx.message.created_at, color=await ctx.embed_color())
         em.set_author(
-            name=player.name, icon_url=f"attachment://{stripname}_head.png", url=f"https://crafatar.com/skins/{uuid}",
+            name=player.name,
+            icon_url=f"attachment://{stripname}_head.png",
+            url=f"https://crafatar.com/skins/{uuid}",
         )
         em.set_thumbnail(url=f"attachment://{stripname}.png")
         em.set_image(url=f"attachment://{stripname}_body.png")
@@ -81,7 +93,9 @@ class MinecraftData(commands.Cog):
     async def cape(self, ctx, player: MCPlayer):
         """Get Minecraft capes by nickname"""
         try:
-            await self.session.get(f"https://crafatar.com/capes/{player.uuid}", raise_for_status=True)
+            await self.session.get(
+                f"https://crafatar.com/capes/{player.uuid}", raise_for_status=True
+            )
         except aiohttp.ClientResponseError as e:
             if e.status == 404:
                 await ctx.send(chat.error(_("{} doesn't have cape").format(player.name)))
@@ -97,7 +111,9 @@ class MinecraftData(commands.Cog):
     async def optifine(self, ctx, player: MCPlayer):
         """Get OptiFine cape by nickname"""
         try:
-            await self.session.get(f"http://s.optifine.net/capes/{player.name}.png", raise_for_status=True)
+            await self.session.get(
+                f"http://s.optifine.net/capes/{player.name}.png", raise_for_status=True
+            )
         except aiohttp.ClientResponseError as e:
             if e.status == 404:
                 await ctx.send(chat.error(_("{} doesn't have OptiFine cape").format(player.name)))
@@ -120,14 +136,20 @@ class MinecraftData(commands.Cog):
         """Get LabyMod cape by nickname"""
         uuid = player.dashed_uuid
         try:
-            async with self.session.get(f"http://capes.labymod.net/capes/{uuid}", raise_for_status=True) as data:
+            async with self.session.get(
+                f"http://capes.labymod.net/capes/{uuid}", raise_for_status=True
+            ) as data:
                 cape = await data.read()
         except aiohttp.ClientResponseError as e:
             if e.status == 404:
                 await ctx.send(chat.error(_("{} doesn't have LabyMod cape").format(player.name)))
             else:
                 await ctx.send(
-                    chat.error(_("Unable to get data: {message} ({status})").format(status=e.status, message=e.message))
+                    chat.error(
+                        _("Unable to get data: {message} ({status})").format(
+                            status=e.status, message=e.message
+                        )
+                    )
                 )
             return
         cape = io.BytesIO(cape)
@@ -144,7 +166,9 @@ class MinecraftData(commands.Cog):
             )
         except aiohttp.ClientResponseError as e:
             if e.status == 404:
-                await ctx.send(chat.error(_("{} doesn't have MinecraftCapes cape").format(player.name)))
+                await ctx.send(
+                    chat.error(_("{} doesn't have MinecraftCapes cape").format(player.name))
+                )
             else:
                 await ctx.send(
                     chat.error(
@@ -164,7 +188,9 @@ class MinecraftData(commands.Cog):
         """Get 5zig cape by nickname"""
         uuid = player.uuid
         try:
-            async with self.session.get(f"http://textures.5zig.net/textures/2/{uuid}", raise_for_status=True) as data:
+            async with self.session.get(
+                f"http://textures.5zig.net/textures/2/{uuid}", raise_for_status=True
+            ) as data:
                 response_data = await data.json(content_type=None)
             cape = response_data["cape"]
         except aiohttp.ClientResponseError as e:
@@ -173,7 +199,9 @@ class MinecraftData(commands.Cog):
             else:
                 await ctx.send(
                     chat.error(
-                        _("Unable to get {player}'s 5zig cape: {message}").format(player=player.name, message=e.message)
+                        _("Unable to get {player}'s 5zig cape: {message}").format(
+                            player=player.name, message=e.message
+                        )
                     )
                 )
             return
@@ -187,10 +215,14 @@ class MinecraftData(commands.Cog):
         """Get 5zig animated cape by nickname"""
         uuid = player.uuid
         try:
-            async with self.session.get(f"http://textures.5zig.net/textures/2/{uuid}", raise_for_status=True) as data:
+            async with self.session.get(
+                f"http://textures.5zig.net/textures/2/{uuid}", raise_for_status=True
+            ) as data:
                 response_data = await data.json(content_type=None)
             if "animatedCape" not in response_data:
-                await ctx.send(chat.error(_("{} doesn't have animated 5zig cape")).format(player.name))
+                await ctx.send(
+                    chat.error(_("{} doesn't have animated 5zig cape")).format(player.name)
+                )
                 return
             cape = response_data["animatedCape"]
         except aiohttp.ClientResponseError as e:
@@ -199,7 +231,9 @@ class MinecraftData(commands.Cog):
             else:
                 await ctx.send(
                     chat.error(
-                        _("Unable to get {player}'s 5zig cape: {message}").format(player=player.name, message=e.message)
+                        _("Unable to get {player}'s 5zig cape: {message}").format(
+                            player=player.name, message=e.message
+                        )
                     )
                 )
             return
@@ -249,7 +283,9 @@ class MinecraftData(commands.Cog):
                 and chat.box(
                     list(
                         chat.pagify(
-                            await self.clear_mcformatting("\n".join([p.name for p in status.players.sample])),
+                            await self.clear_mcformatting(
+                                "\n".join([p.name for p in status.players.sample])
+                            ),
                             page_length=992,
                         )
                     )[0]
@@ -258,7 +294,8 @@ class MinecraftData(commands.Cog):
             ),
         )
         embed.add_field(
-            name=_("Version"), value=_("{}\nProtocol: {}").format(status.version.name, status.version.protocol),
+            name=_("Version"),
+            value=_("{}\nProtocol: {}").format(status.version.name, status.version.protocol),
         )
         if query:
             embed.add_field(name=_("World"), value=f"{query.map}")
@@ -286,20 +323,28 @@ class MinecraftData(commands.Cog):
                     em.add_field(name=entry, value=SERVICE_STATUS.get(status, status))
             await ctx.send(embed=em)
         except Exception as e:
-            await ctx.send(chat.error(_("Unable to check. An error has been occurred: {}").format(chat.inline(str(e)))))
+            await ctx.send(
+                chat.error(
+                    _("Unable to check. An error has been occurred: {}").format(
+                        chat.inline(str(e))
+                    )
+                )
+            )
 
     @minecraft.command(aliases=["nicknames", "nickhistory", "names"])
     async def nicks(self, ctx, current_nick: MCPlayer):
         """Check history of player's nicks"""
         uuid = current_nick.uuid
         try:
-            async with self.session.get("https://api.mojang.com/user/profiles/{}/names".format(uuid)) as data:
+            async with self.session.get(
+                "https://api.mojang.com/user/profiles/{}/names".format(uuid)
+            ) as data:
                 data_history = await data.json()
             for nick in data_history:
                 try:
-                    nick["changedToAt"] = datetime.utcfromtimestamp(nick["changedToAt"] / 1000).strftime(
-                        _("%d.%m.%Y %H:%M:%S")
-                    )
+                    nick["changedToAt"] = datetime.utcfromtimestamp(
+                        nick["changedToAt"] / 1000
+                    ).strftime(_("%d.%m.%Y %H:%M:%S"))
                 except KeyError:
                     nick["changedToAt"] = _("Initial")
             table = tabulate.tabulate(
@@ -311,7 +356,10 @@ class MinecraftData(commands.Cog):
             await menu(ctx, pages, DEFAULT_CONTROLS)
         except Exception as e:
             await ctx.send(
-                chat.error(_("Unable to check name history.\nAn error has been occurred: ") + chat.inline(str(e)))
+                chat.error(
+                    _("Unable to check name history.\nAn error has been occurred: ")
+                    + chat.inline(str(e))
+                )
             )
 
     async def clear_mcformatting(self, formatted_str) -> str:

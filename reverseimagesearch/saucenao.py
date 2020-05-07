@@ -24,7 +24,9 @@ class SauceNAOEntry:
         self.urls = data.get("ext_urls", [])
         self.title = data.get("title")
         self.created_at = parse(data.get("created_at")) if data.get("created_at") else None
-        self.member_name = data.get("member_name") or data.get("author_name") or data.get("pawoo_user_username")
+        self.member_name = (
+            data.get("member_name") or data.get("author_name") or data.get("pawoo_user_username")
+        )
         self.creator = data.get("creator")
         self.material = data.get("material")
         self.characters = data.get("characters")
@@ -79,7 +81,9 @@ class SauceNAO:
         }
         async with ctx.typing():
             try:
-                async with ctx.cog.session.get(BASE_API_URL, params=params, raise_for_status=True) as data:
+                async with ctx.cog.session.get(
+                    BASE_API_URL, params=params, raise_for_status=True
+                ) as data:
                     data = await data.json()
                     if data.get("status", 0) != 0:
                         if data.get("status") > 0:
@@ -92,14 +96,14 @@ class SauceNAO:
                                 )
                             )
                         raise ValueError(
-                            _("Unable to search for provided image, SauceNAO returned {status} ({message})").format(
-                                status=data.get("status"), message=data.get("message")
-                            )
+                            _(
+                                "Unable to search for provided image, SauceNAO returned {status} ({message})"
+                            ).format(status=data.get("status"), message=data.get("message"))
                         )
                     return cls(data)
             except ClientResponseError as e:
                 raise ValueError(
-                    _("Unable to search for provided image, SauceNAO returned {status} ({message})").format(
-                        status=e.status, message=e.message
-                    )
+                    _(
+                        "Unable to search for provided image, SauceNAO returned {status} ({message})"
+                    ).format(status=e.status, message=e.message)
                 )

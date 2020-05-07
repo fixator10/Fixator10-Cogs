@@ -82,7 +82,9 @@ async def gen_steam_cm_graph(graphdata: dict):
         "%d %b %Y %H:%M",
     ]
 
-    converter = mdates.ConciseDateConverter(formats=formats, zero_formats=zero_formats, offset_formats=offset_formats)
+    converter = mdates.ConciseDateConverter(
+        formats=formats, zero_formats=zero_formats, offset_formats=offset_formats
+    )
     munits.registry[datetime] = converter
     cur = graphdata["start"]
     x = []
@@ -126,7 +128,9 @@ class SteamCommunity(commands.Cog):
     async def initialize(self):
         """Should be called straight after cog instantiation."""
         apikeys = await self.bot.get_shared_api_tokens("steam")
-        self.steam = await self.bot.loop.run_in_executor(None, partial(interface.API, key=apikeys.get("web")))
+        self.steam = await self.bot.loop.run_in_executor(
+            None, partial(interface.API, key=apikeys.get("web"))
+        )
 
     @commands.group(aliases=["sc"])
     async def steamcommunity(self, ctx):
@@ -159,7 +163,9 @@ class SteamCommunity(commands.Cog):
             title=profile.personaname,
             description=profile.personastate(),
             url=profile.profileurl,
-            timestamp=datetime.utcfromtimestamp(profile.lastlogoff) if profile.lastlogoff else discord.Embed.Empty,
+            timestamp=datetime.utcfromtimestamp(profile.lastlogoff)
+            if profile.lastlogoff
+            else discord.Embed.Empty,
             color=profile.personastatecolor,
         )
         if profile.gameid:
@@ -181,7 +187,9 @@ class SteamCommunity(commands.Cog):
         if profile.createdat:
             em.add_field(
                 name=_("Created at"),
-                value=datetime.utcfromtimestamp(profile.createdat).strftime(_("%d.%m.%Y %H:%M:%S")),
+                value=datetime.utcfromtimestamp(profile.createdat).strftime(
+                    _("%d.%m.%Y %H:%M:%S")
+                ),
             )
         em.add_field(name="SteamID", value="{}\n{}".format(profile.steamid, profile.sid3))
         em.add_field(name="SteamID64", value=profile.steamid64)
@@ -194,13 +202,16 @@ class SteamCommunity(commands.Cog):
         em.add_field(name=_("🛡 Bans"), value=bansdescription, inline=False)
         em.add_field(name=_("Community ban"), value=bool_emojify(profile.communitybanned))
         em.add_field(
-            name=_("Economy ban"), value=profile.economyban.capitalize() if profile.economyban else "❌",
+            name=_("Economy ban"),
+            value=profile.economyban.capitalize() if profile.economyban else "❌",
         )
         em.add_field(
-            name=_("VAC bans"), value=_("{} VAC bans").format(profile.VACbans) if profile.VACbans else "❌",
+            name=_("VAC bans"),
+            value=_("{} VAC bans").format(profile.VACbans) if profile.VACbans else "❌",
         )
         em.add_field(
-            name=_("Game bans"), value=_("{} game bans").format(profile.gamebans) if profile.gamebans else "❌",
+            name=_("Game bans"),
+            value=_("{} game bans").format(profile.gamebans) if profile.gamebans else "❌",
         )
         em.set_thumbnail(url=profile.avatar184)
         em.set_footer(
@@ -222,7 +233,11 @@ class SteamCommunity(commands.Cog):
                     data = await gravity.json()
             except aiohttp.ClientResponseError as e:
                 await ctx.send(
-                    chat.error(_("Unable to get data from steamstat.us: {} ({})").format(e.status, e.message))
+                    chat.error(
+                        _("Unable to get data from steamstat.us: {} ({})").format(
+                            e.status, e.message
+                        )
+                    )
                 )
                 return
             except aiohttp.ClientError as e:
@@ -309,12 +324,18 @@ class SteamCommunity(commands.Cog):
 
         async with ctx.typing():
             try:
-                server = await self.bot.loop.run_in_executor(None, valve.source.a2s.ServerQuerier, serverc)
+                server = await self.bot.loop.run_in_executor(
+                    None, valve.source.a2s.ServerQuerier, serverc
+                )
                 info = server.info()
                 server.close()
 
             except valve.source.a2s.NoResponseError:
-                await ctx.send(chat.error(_("Could not fetch Server or the Server is not on the Steam masterlist")))
+                await ctx.send(
+                    chat.error(
+                        _("Could not fetch Server or the Server is not on the Steam masterlist")
+                    )
+                )
                 return
             except Exception as e:
                 await ctx.send(chat.error(_("An Error has been occurred: {}").format(e)))
@@ -323,7 +344,9 @@ class SteamCommunity(commands.Cog):
         _map = info.values["map"]
 
         if _map.lower().startswith("workshop"):
-            link = "https://steamcommunity.com/sharedfiles/filedetails/?id={}".format(_map.split("/")[1])
+            link = "https://steamcommunity.com/sharedfiles/filedetails/?id={}".format(
+                _map.split("/")[1]
+            )
             _map = "{} [(Workshop map)]({})".format(_map.split("/")[2], link)
 
         game = info.values["folder"]
@@ -357,7 +380,8 @@ class SteamCommunity(commands.Cog):
         )
         if botnumber:
             em.add_field(
-                name=_("Players"), value=_("{}/{}\nBots: {}").format(playernumber, maxplayers, botnumber),
+                name=_("Players"),
+                value=_("{}/{}\nBots: {}").format(playernumber, maxplayers, botnumber),
             )
         else:
             em.add_field(name=_("Players"), value="{}/{}\n".format(playernumber, maxplayers))
@@ -367,4 +391,6 @@ class SteamCommunity(commands.Cog):
     @commands.Cog.listener()
     async def on_red_api_tokens_update(self, service_name, api_tokens):
         if service_name == "steam":
-            self.steam = await self.bot.loop.run_in_executor(None, partial(interface.API, key=api_tokens.get("web")))
+            self.steam = await self.bot.loop.run_in_executor(
+                None, partial(interface.API, key=api_tokens.get("web"))
+            )

@@ -95,8 +95,12 @@ class MessagesLog(commands.Cog):
             channels = await self.config.guild(ctx.guild).ignored_channels()
             categories = await self.config.guild(ctx.guild).ignored_categories()
             users = [ctx.guild.get_member(m).mention for m in users if ctx.guild.get_member(m)]
-            channels = [ctx.guild.get_channel(m).mention for m in channels if ctx.guild.get_channel(m)]
-            categories = [ctx.guild.get_channel(m).mention for m in categories if ctx.guild.get_channel(m)]
+            channels = [
+                ctx.guild.get_channel(m).mention for m in channels if ctx.guild.get_channel(m)
+            ]
+            categories = [
+                ctx.guild.get_channel(m).mention for m in categories if ctx.guild.get_channel(m)
+            ]
             if not any([users, channels, categories]):
                 await ctx.send(chat.info(_("Nothing is ignored")))
                 return
@@ -108,7 +112,9 @@ class MessagesLog(commands.Cog):
             for page in chat.pagify("\n".join(channels), page_length=2048):
                 channels_pages.append(discord.Embed(title=_("Ignored channels"), description=page))
             for page in chat.pagify("\n".join(categories), page_length=2048):
-                categories_pages.append(discord.Embed(title=_("Ignored categories"), description=page))
+                categories_pages.append(
+                    discord.Embed(title=_("Ignored categories"), description=page)
+                )
             pages = users_pages + channels_pages + categories_pages
             await menu(ctx, pages, DEFAULT_CONTROLS)
         else:
@@ -134,7 +140,8 @@ class MessagesLog(commands.Cog):
             return
         if (
             message.channel.category
-            and message.channel.category.id in await self.config.guild(message.guild).ignored_categories()
+            and message.channel.category.id
+            in await self.config.guild(message.guild).ignored_categories()
         ):
             return
         if any(
@@ -159,7 +166,10 @@ class MessagesLog(commands.Cog):
             embed.add_field(
                 name=_("Attachments"),
                 value="\n".join(
-                    [_("[{0.filename}]({0.url}) ([Cached]({0.proxy_url}))").format(a) for a in message.attachments]
+                    [
+                        _("[{0.filename}]({0.url}) ([Cached]({0.proxy_url}))").format(a)
+                        for a in message.attachments
+                    ]
                 ),
             )
         embed.set_author(name=message.author, icon_url=message.author.avatar_url)
@@ -181,7 +191,10 @@ class MessagesLog(commands.Cog):
         logchannel = guild.get_channel(await self.config.guild(guild).channel())
         if not logchannel:
             return
-        if channel.category and channel.category.id in await self.config.guild(guild).ignored_categories():
+        if (
+            channel.category
+            and channel.category.id in await self.config.guild(guild).ignored_categories()
+        ):
             return
         if any(
             [
@@ -213,7 +226,10 @@ class MessagesLog(commands.Cog):
         logchannel = guild.get_channel(await self.config.guild(guild).channel())
         if not logchannel:
             return
-        if channel.category and channel.category.id in await self.config.guild(guild).ignored_categories():
+        if (
+            channel.category
+            and channel.category.id in await self.config.guild(guild).ignored_categories()
+        ):
             return
         if any(
             [
@@ -245,7 +261,8 @@ class MessagesLog(commands.Cog):
             return
         if (
             before.channel.category
-            and before.channel.category.id in await self.config.guild(before.guild).ignored_categories()
+            and before.channel.category.id
+            in await self.config.guild(before.guild).ignored_categories()
         ):
             return
         if any(
@@ -272,7 +289,10 @@ class MessagesLog(commands.Cog):
             embed.add_field(
                 name=_("Attachments"),
                 value="\n".join(
-                    [_("[{0.filename}]({0.url}) ([Cached]({0.proxy_url}))").format(a) for a in before.attachments]
+                    [
+                        _("[{0.filename}]({0.url}) ([Cached]({0.proxy_url}))").format(a)
+                        for a in before.attachments
+                    ]
                 ),
             )
         embed.set_author(name=before.author, icon_url=before.author.avatar_url)

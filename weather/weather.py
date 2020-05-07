@@ -183,7 +183,9 @@ class Weather(commands.Cog):
             else:
                 await ctx.send(
                     chat.info(
-                        _("Your current units are: {}").format(await self.config.user(ctx.author).units() or "si")
+                        _("Your current units are: {}").format(
+                            await self.config.user(ctx.author).units() or "si"
+                        )
                     )
                 )
             return
@@ -195,7 +197,9 @@ class Weather(commands.Cog):
         if units not in UNITS.keys():
             await ctx.send(
                 chat.error(
-                    _('Units "{}" are not supported, check {}help forecastunits').format(units, ctx.clean_prefix)
+                    _('Units "{}" are not supported, check {}help forecastunits').format(
+                        units, ctx.clean_prefix
+                    )
                 )
             )
             return
@@ -214,13 +218,19 @@ class Weather(commands.Cog):
         uk2 - Same as si, but distance in miles and speed in mph
         ca - Same as si, but speed in km/h"""
         if not units:
-            await ctx.send(chat.info(_("Current units are: {}").format(await self.config.guild(ctx.guild).units())))
+            await ctx.send(
+                chat.info(
+                    _("Current units are: {}").format(await self.config.guild(ctx.guild).units())
+                )
+            )
             return
         units = units.casefold()
         if units not in UNITS.keys():
             await ctx.send(
                 chat.error(
-                    _('Units "{}" are not supported, check {}help forecastunits guild').format(units, ctx.clean_prefix)
+                    _('Units "{}" are not supported, check {}help forecastunits guild').format(
+                        units, ctx.clean_prefix
+                    )
                 )
             )
             return
@@ -245,7 +255,11 @@ class Weather(commands.Cog):
                     location = await r.json()
             except aiohttp.ClientResponseError as e:
                 await ctx.send(
-                    chat.error(_("Cannot find a place {}. OSM returned {}").format(chat.inline(place), e.status))
+                    chat.error(
+                        _("Cannot find a place {}. OSM returned {}").format(
+                            chat.inline(place), e.status
+                        )
+                    )
                 )
                 return
             if not location:
@@ -267,9 +281,10 @@ class Weather(commands.Cog):
             except HTTPError:
                 await ctx.send(
                     chat.error(
-                        _("This command requires API key. " "Use {}forecastapi to get more information").format(
-                            ctx.clean_prefix
-                        )
+                        _(
+                            "This command requires API key. "
+                            "Use {}forecastapi to get more information"
+                        ).format(ctx.clean_prefix)
                     )
                 )
                 return
@@ -279,7 +294,9 @@ class Weather(commands.Cog):
         by_hour = forecast.currently()
 
         em = discord.Embed(
-            title=_("Weather in {}").format(shorten(location.get("display_name", UNKNOWN_EMOJI), 244, placeholder="…")),
+            title=_("Weather in {}").format(
+                shorten(location.get("display_name", UNKNOWN_EMOJI), 244, placeholder="…")
+            ),
             description=_("[View on Google Maps](https://www.google.com/maps/place/{},{})").format(
                 location.get("lat", 0), location.get("lon", 0)
             ),
@@ -288,7 +305,10 @@ class Weather(commands.Cog):
         )
         em.set_author(name=_("Powered by Dark Sky"), url="https://darksky.net/poweredby/")
         em.add_field(
-            name=_("Summary"), value="{} {}".format(WEATHER_STATES.get(by_hour.icon, UNKNOWN_EMOJI), by_hour.summary,),
+            name=_("Summary"),
+            value="{} {}".format(
+                WEATHER_STATES.get(by_hour.icon, UNKNOWN_EMOJI), by_hour.summary,
+            ),
         )
         em.add_field(
             name=_("Temperature"),
@@ -297,12 +317,16 @@ class Weather(commands.Cog):
         )
         em.add_field(
             name=_("Air pressure"),
-            value="{} {}".format(by_hour.pressure, await self.get_localized_units(ctx, "pressure")),
+            value="{} {}".format(
+                by_hour.pressure, await self.get_localized_units(ctx, "pressure")
+            ),
         )
         em.add_field(name=_("Humidity"), value=f"{int(by_hour.humidity * 100)}%")
         em.add_field(
             name=_("Visibility"),
-            value="{} {}".format(by_hour.visibility, await self.get_localized_units(ctx, "distance")),
+            value="{} {}".format(
+                by_hour.visibility, await self.get_localized_units(ctx, "distance")
+            ),
         )
         em.add_field(
             name=_("Wind speed"),
@@ -314,7 +338,8 @@ class Weather(commands.Cog):
         )
         em.add_field(name=_("Cloud cover"), value=f"{int(by_hour.cloudCover * 100)}%")
         em.add_field(
-            name=_("Ozone density"), value="{} [DU](https://en.wikipedia.org/wiki/Dobson_unit)".format(by_hour.ozone),
+            name=_("Ozone density"),
+            value="{} [DU](https://en.wikipedia.org/wiki/Dobson_unit)".format(by_hour.ozone),
         )
         em.add_field(name=_("UV index"), value=by_hour.uvIndex)
         try:
@@ -325,9 +350,14 @@ class Weather(commands.Cog):
             name=_("Precipitation"),
             value=_("Probability: {}%\n").format(int(by_hour.precipProbability * 100))
             + _("Intensity: {} {}").format(
-                int(by_hour.precipIntensity * 100), await self.get_localized_units(ctx, "intensity"),
+                int(by_hour.precipIntensity * 100),
+                await self.get_localized_units(ctx, "intensity"),
             )
-            + (preciptype and _("\nType: {}").format(PRECIP_TYPE_I18N.get(preciptype, preciptype)) or ""),
+            + (
+                preciptype
+                and _("\nType: {}").format(PRECIP_TYPE_I18N.get(preciptype, preciptype))
+                or ""
+            ),
         )
         await ctx.send(embed=em)
 
@@ -349,7 +379,11 @@ class Weather(commands.Cog):
                     location = await r.json()
             except aiohttp.ClientResponseError as e:
                 await ctx.send(
-                    chat.error(_("Cannot find a place {}. OSM returned {}").format(chat.inline(place), e.status))
+                    chat.error(
+                        _("Cannot find a place {}. OSM returned {}").format(
+                            chat.inline(place), e.status
+                        )
+                    )
                 )
                 return
             if not location:
@@ -371,9 +405,10 @@ class Weather(commands.Cog):
             except HTTPError:
                 await ctx.send(
                     chat.error(
-                        _("This command requires API key. " "Use {}forecastapi to get more information").format(
-                            ctx.clean_prefix
-                        )
+                        _(
+                            "This command requires API key. "
+                            "Use {}forecastapi to get more information"
+                        ).format(ctx.clean_prefix)
                     )
                 )
                 return
@@ -403,7 +438,8 @@ class Weather(commands.Cog):
             except PropertyUnavailable:
                 summary = _("No summary for this day")
             em.add_field(
-                name=_("Summary"), value="{} {}".format(WEATHER_STATES.get(data.icon, UNKNOWN_EMOJI), summary,),
+                name=_("Summary"),
+                value="{} {}".format(WEATHER_STATES.get(data.icon, UNKNOWN_EMOJI), summary,),
             )
             em.add_field(
                 name=_("Temperature"),
@@ -412,12 +448,16 @@ class Weather(commands.Cog):
             )
             em.add_field(
                 name=_("Air pressure"),
-                value="{} {}".format(data.pressure, await self.get_localized_units(ctx, "pressure")),
+                value="{} {}".format(
+                    data.pressure, await self.get_localized_units(ctx, "pressure")
+                ),
             )
             em.add_field(name=_("Humidity"), value=f"{int(data.humidity * 100)}%")
             em.add_field(
                 name=_("Visibility"),
-                value="{} {}".format(data.visibility, await self.get_localized_units(ctx, "distance")),
+                value="{} {}".format(
+                    data.visibility, await self.get_localized_units(ctx, "distance")
+                ),
             )
             em.add_field(
                 name=_("Wind speed"),
@@ -429,7 +469,8 @@ class Weather(commands.Cog):
             )
             em.add_field(name=_("Cloud cover"), value=f"{int(data.cloudCover * 100)}%")
             em.add_field(
-                name=_("Ozone density"), value="{} [DU](https://en.wikipedia.org/wiki/Dobson_unit)".format(data.ozone),
+                name=_("Ozone density"),
+                value="{} [DU](https://en.wikipedia.org/wiki/Dobson_unit)".format(data.ozone),
             )
             em.add_field(name=_("UV index"), value=data.uvIndex)
             try:
@@ -444,9 +485,14 @@ class Weather(commands.Cog):
                 name=_("Precipitation"),
                 value=_("Probability: {}%\n").format(int(data.precipProbability * 100))
                 + _("Intensity: {} {}").format(
-                    int(data.precipIntensity * 100), await self.get_localized_units(ctx, "intensity"),
+                    int(data.precipIntensity * 100),
+                    await self.get_localized_units(ctx, "intensity"),
                 )
-                + (preciptype and _("\nType: {}").format(PRECIP_TYPE_I18N.get(preciptype, preciptype)) or "")
+                + (
+                    preciptype
+                    and _("\nType: {}").format(PRECIP_TYPE_I18N.get(preciptype, preciptype))
+                    or ""
+                )
                 + (
                     precipaccumulation
                     and _("\nSnowfall accumulation: {} {}").format(
@@ -469,8 +515,13 @@ class Weather(commands.Cog):
     async def get_localized_units(self, ctx: commands.Context, units_type: str):
         """Get translated contextual units for type"""
         if not ctx.guild:
-            return UNITS.get(await self.config.user(ctx.author).units(), UNITS["si"]).get(units_type, "?")
-        current_system = await self.config.user(ctx.author).units() or await self.config.guild(ctx.guild).units()
+            return UNITS.get(await self.config.user(ctx.author).units(), UNITS["si"]).get(
+                units_type, "?"
+            )
+        current_system = (
+            await self.config.user(ctx.author).units()
+            or await self.config.guild(ctx.guild).units()
+        )
         return UNITS.get(current_system, {}).get(units_type, "?")
 
     async def get_lang(self):

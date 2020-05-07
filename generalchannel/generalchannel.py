@@ -94,7 +94,8 @@ class GeneralChannel(commands.Cog):
                     topic = topic[-1024:]
         try:
             await channel.edit(
-                topic=topic, reason=get_audit_reason(ctx.author, _("General channel topic change")),
+                topic=topic,
+                reason=get_audit_reason(ctx.author, _("General channel topic change")),
             )
         except discord.Forbidden:
             await ctx.send(chat.error(_("Unable to change channel's topic: Missing permissions")))

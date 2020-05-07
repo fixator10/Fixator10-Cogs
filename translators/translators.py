@@ -73,9 +73,9 @@ class Translators(commands.Cog):
         except yandextranslate.Exceptions.InvalidKey:
             await ctx.send(
                 chat.error(
-                    _("This command requires valid API key, check {}ytapikey to get more information").format(
-                        ctx.clean_prefix
-                    )
+                    _(
+                        "This command requires valid API key, check {}ytapikey to get more information"
+                    ).format(ctx.clean_prefix)
                 )
             )
         except yandextranslate.Exceptions.IncorrectLang:
@@ -89,14 +89,26 @@ class Translators(commands.Cog):
                 )
             )
         except yandextranslate.Exceptions.MaxTextLengthExceeded:
-            await ctx.send(chat.error(_("An error has been occurred: Text that you provided is too big to translate")))
+            await ctx.send(
+                chat.error(
+                    _("An error has been occurred: Text that you provided is too big to translate")
+                )
+            )
         except yandextranslate.Exceptions.KeyBlocked:
-            await ctx.send(chat.error(_("API key is blocked. Bot owner needs to get new api key or unlock current.")))
+            await ctx.send(
+                chat.error(
+                    _("API key is blocked. Bot owner needs to get new api key or unlock current.")
+                )
+            )
         except yandextranslate.Exceptions.DailyLimitExceeded:
             await ctx.send(chat.error(_("Daily requests limit reached. Try again later.")))
         except yandextranslate.Exceptions.UnableToTranslate:
             await ctx.send(
-                chat.error(_("An error has been occurred: Yandex.Translate is unable to translate your text"))
+                chat.error(
+                    _(
+                        "An error has been occurred: Yandex.Translate is unable to translate your text"
+                    )
+                )
             )
         except yandextranslate.Exceptions.UnknownException as e:
             await ctx.send(chat.error(_("An error has been occurred: {}").format(e)))
@@ -131,9 +143,13 @@ class Translators(commands.Cog):
                     speech = await data.read()
             except aiohttp.ClientResponseError as e:
                 if e.status == 404:
-                    await ctx.send(_("Language {} is not supported or incorrect").format(lang.lower()))
+                    await ctx.send(
+                        _("Language {} is not supported or incorrect").format(lang.lower())
+                    )
                 else:
-                    await ctx.send(_("Unable to get data from Google Translate TTS: {}").format(e.status))
+                    await ctx.send(
+                        _("Unable to get data from Google Translate TTS: {}").format(e.status)
+                    )
                 return
         speechfile = BytesIO(speech)
         file = discord.File(speechfile, filename="{}.mp3".format(text[:32]))
@@ -186,8 +202,8 @@ class Translators(commands.Cog):
     @commands.command()
     async def fullwidth(self, ctx, *, text: str):
         """Switches text to Ｆｕｌｌ－ｗｉｄｔｈ　ｃｈａｒａｃｔｅｒｓ"""
-        halfwidth = "qwertyuiopasdfghjklzxcvbnm1234567890!?" "@#$%^&*()_+-=<>.,/;:'\"[]{}|\\`~ "
-        fullwidth = "ｑｗｅｒｔｙｕｉｏｐａｓｄｆｇｈｊｋｌｚｘｃｖｂｎｍ１２３４５６７８９０！？" "＠＃＄％＾＆＊（）＿＋－＝＜＞．，／；：＇＂［］｛｝｜＼｀～　"
+        halfwidth = "qwertyuiopasdfghjklzxcvbnm1234567890!?@#$%^&*()_+-=<>.,/;:'\"[]{}|\\`~ "
+        fullwidth = "ｑｗｅｒｔｙｕｉｏｐａｓｄｆｇｈｊｋｌｚｘｃｖｂｎｍ１２３４５６７８９０！？＠＃＄％＾＆＊（）＿＋－＝＜＞．，／；：＇＂［］｛｝｜＼｀～　"
         table = str.maketrans(halfwidth, fullwidth)
         text = text.translate(table)
         halfwidth = halfwidth.upper()

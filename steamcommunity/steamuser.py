@@ -63,8 +63,12 @@ class SteamUser:
         self.idpart = int(self.steamid64) & 0b1
         self.accountnumber = (int(self.steamid64) & 0b11111111111111111111111111111110) >> 1
         self.accountid = int(self.steamid64) & 0b11111111111111111111111111111111
-        self.idinstance = (int(self.steamid64) & 0b1111111111111111111100000000000000000000000000000000) >> 32
-        self.idtype = (int(self.steamid64) & 0b11110000000000000000000000000000000000000000000000000000) >> 52
+        self.idinstance = (
+            int(self.steamid64) & 0b1111111111111111111100000000000000000000000000000000
+        ) >> 32
+        self.idtype = (
+            int(self.steamid64) & 0b11110000000000000000000000000000000000000000000000000000
+        ) >> 52
 
         self.steamid = "STEAM_{}:{}:{}".format(self.iduniverse, self.idpart, self.accountnumber)
         self.sid3 = "[{}:{}:{}]".format(acctypes[self.idtype], self.iduniverse, self.accountid)
@@ -90,7 +94,10 @@ class SteamUser:
                     id64 = userapi.ResolveVanityURL(argument)["response"].get("steamid", "")
                 except JSONDecodeError:
                     raise BadArgument(
-                        _("Unable to resolve {} into SteamID. " "Check your input or try again later.").format(argument)
+                        _(
+                            "Unable to resolve {} into SteamID. "
+                            "Check your input or try again later."
+                        ).format(argument)
                     )
         if not id64.isnumeric():
             raise BadArgument(_("User with SteamID {} not found.").format(argument))
@@ -98,7 +105,9 @@ class SteamUser:
             profile = await ctx.bot.loop.run_in_executor(None, SteamUser, steam, id64)
         except IndexError:
             raise BadArgument(
-                _("Unable to get profile for {} ({}). " "Check your input or try again later.").format(argument, id64)
+                _(
+                    "Unable to get profile for {} ({}). Check your input or try again later."
+                ).format(argument, id64)
             )
         return profile
 
@@ -122,9 +131,9 @@ class SteamUser:
     def shared_by(self):
         if self.gameid:
             try:
-                sharedbyid = self._player.IsPlayingSharedGame(self.gameid, self.steamid64)["response"].get(
-                    "lender_steamid", 0
-                )
+                sharedbyid = self._player.IsPlayingSharedGame(self.gameid, self.steamid64)[
+                    "response"
+                ].get("lender_steamid", 0)
             except ValueError:
                 return None
             if int(sharedbyid) != 0:
