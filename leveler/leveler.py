@@ -590,7 +590,7 @@ class Leveler(commands.Cog):
         )
 
     @levelerset.command(aliases=["creds"])
-    async def credentials(self, ctx, username: str = None, password: str = None)
+    async def credentials(self, ctx, username: str = None, password: str = None):
         """Set the MongoDB server credentials."""
         await self.config.custom("MONGODB").username.set(username)
         await self.config.custom("MONGODB").password.set(password)
