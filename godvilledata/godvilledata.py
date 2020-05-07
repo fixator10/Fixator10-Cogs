@@ -16,8 +16,7 @@ class GodConverter(commands.MemberConverter):
         :param game: type of account ("godville" or "godvillegame")"""
         if not any(g == game for g in ["godville", "godvillegame"]):
             raise ValueError(
-                f"{game} is not right type of account\n"
-                'only "godville" and "godvillegame" are supported'
+                f"{game} is not right type of account\n" 'only "godville" and "godvillegame" are supported'
             )
         users = await ctx.cog.config.all_users()
         for user, data in users.items():
@@ -46,9 +45,7 @@ class GodvilleData(commands.Cog):
     # noinspection PyMissingConstructor
     def __init__(self, bot):
         self.bot = bot
-        self.config = Config.get_conf(
-            self, identifier=0x7894D37506AB41B0A1C9F63388EC3A25
-        )
+        self.config = Config.get_conf(self, identifier=0x7894D37506AB41B0A1C9F63388EC3A25)
         default_user = {
             "godville": {"apikey": None, "godname": None},
             "godvillegame": {"apikey": None, "godname": None},
@@ -66,18 +63,10 @@ class GodvilleData(commands.Cog):
         godname, apikey = god
         async with self.session.get(f"{BASE_API}/{godname}/{apikey}") as sg:
             if sg.status == 404:
-                await ctx.send(
-                    chat.error(
-                        "404 — Sorry, but there is nothing here\nCheck god name and try again"
-                    )
-                )
+                await ctx.send(chat.error("404 — Sorry, but there is nothing here\nCheck god name and try again"))
                 return
             if sg.status != 200:
-                await ctx.send(
-                    chat.error(
-                        "Something went wrong. Server returned {}.".format(sg.status)
-                    )
-                )
+                await ctx.send(chat.error("Something went wrong. Server returned {}.".format(sg.status)))
                 return
             profile = await sg.json()
         profile = GodvilleUser(profile)
@@ -107,9 +96,7 @@ class GodvilleData(commands.Cog):
             text += "Опыта до следующего уровня: {}%\n".format(profile.experience)
         text += "Уровень: {}\n".format(profile.level)
         if profile.godpower:
-            text += "Праны: {}/{}\n".format(
-                profile.godpower, 200 if profile.savings_date else 100
-            )
+            text += "Праны: {}/{}\n".format(profile.godpower, 200 if profile.savings_date else 100)
         text += "Характер: {}\n".format(profile.alignment)
         text += "Пол: {}\n".format(profile.gender)
         text += "Побед/Поражений: {}/{}\n".format(profile.arena_won, profile.arena_lost)
@@ -121,28 +108,20 @@ class GodvilleData(commands.Cog):
         text += "Кирпичей: {} ({}%)\n".format(profile.bricks, profile.bricks / 10)
         if profile.inventory:
             text += "Инвентарь: {}/{} ({}%)\n".format(
-                profile.inventory,
-                profile.inventory_max,
-                int(profile.inventory / profile.inventory_max * 100),
+                profile.inventory, profile.inventory_max, int(profile.inventory / profile.inventory_max * 100),
             )
         else:
             text += "Вместимость инвентаря: {}\n".format(profile.inventory_max)
         if profile.health:
             text += "Здоровье: {}/{} ({}%)\n".format(
-                profile.health,
-                profile.health_max,
-                int(profile.health / profile.health_max * 100),
+                profile.health, profile.health_max, int(profile.health / profile.health_max * 100),
             )
         else:
             text += "Максимум здоровья: {}\n".format(profile.health_max)
         if profile.ark_male:
-            text += "Тварей ♂: {} ({}%)\n".format(
-                profile.ark_male, profile.ark_male / 10
-            )
+            text += "Тварей ♂: {} ({}%)\n".format(profile.ark_male, profile.ark_male / 10)
         if profile.ark_female:
-            text += "Тварей ♀: {} ({}%)\n".format(
-                profile.ark_female, profile.ark_female / 10
-            )
+            text += "Тварей ♀: {} ({}%)\n".format(profile.ark_female, profile.ark_female / 10)
         if profile.savings:
             text += "Сбережений: {}\n".format(profile.savings)
         if profile.trading_level:
@@ -154,9 +133,7 @@ class GodvilleData(commands.Cog):
         if profile.diary_last:
             text += "Дневник: {}\n".format(profile.diary_last)
         if profile.activatables:
-            text += "Активируемое в инвентаре: {}\n".format(
-                ", ".join(profile.activatables)
-            )
+            text += "Активируемое в инвентаре: {}\n".format(", ".join(profile.activatables))
         if profile.aura:
             text += "Аура: {}\n".format(profile.aura)
 
@@ -191,22 +168,12 @@ class GodvilleData(commands.Cog):
     @commands.cooldown(30, 10 * 60, commands.BucketType.user)
     async def godvillegame(self, ctx, *, godname: str):
         """Get data about godvillegame.com (Global) god by name"""
-        async with self.session.get(
-            "{}/{}".format(BASE_API_GLOBAL, godname.casefold())
-        ) as sg:
+        async with self.session.get("{}/{}".format(BASE_API_GLOBAL, godname.casefold())) as sg:
             if sg.status == 404:
-                await ctx.send(
-                    chat.error(
-                        "404 — Sorry, but there is nothing here\nCheck god name and try again"
-                    )
-                )
+                await ctx.send(chat.error("404 — Sorry, but there is nothing here\nCheck god name and try again"))
                 return
             if sg.status != 200:
-                await ctx.send(
-                    chat.error(
-                        "Something went wrong. Server returned {}.".format(sg.status)
-                    )
-                )
+                await ctx.send(chat.error("Something went wrong. Server returned {}.".format(sg.status)))
                 return
             profile = await sg.json()
         profile = GodvilleUser(profile)
@@ -236,42 +203,30 @@ class GodvilleData(commands.Cog):
             text += "Exp for next level: {}%\n".format(profile.experience)
         text += "Level: {}\n".format(profile.level)
         if profile.godpower:
-            text += "Godpower: {}/{}\n".format(
-                profile.godpower, 200 if profile.savings_date else 100
-            )
+            text += "Godpower: {}/{}\n".format(profile.godpower, 200 if profile.savings_date else 100)
         text += "Personality: {}\n".format(profile.alignment)
         text += "Gender: {}\n".format(profile.gender)
         text += "Wins / Losses: {}/{}\n".format(profile.arena_won, profile.arena_lost)
         text += (
-            "Guild: {} ({})\n".format(profile.clan, profile.clan_position)
-            if profile.clan
-            else "Guild: Not in guild\n"
+            "Guild: {} ({})\n".format(profile.clan, profile.clan_position) if profile.clan else "Guild: Not in guild\n"
         )
         text += "Bricks: {} ({}%)\n".format(profile.bricks, profile.bricks / 10)
         if profile.inventory:
             text += "Inventory: {}/{} ({}%)\n".format(
-                profile.inventory,
-                profile.inventory_max,
-                int(profile.inventory / profile.inventory_max * 100),
+                profile.inventory, profile.inventory_max, int(profile.inventory / profile.inventory_max * 100),
             )
         else:
             text += "Inventory max: {}\n".format(profile.inventory_max)
         if profile.health:
             text += "Health: {}/{} ({}%)\n".format(
-                profile.health,
-                profile.health_max,
-                int(profile.health / profile.health_max * 100),
+                profile.health, profile.health_max, int(profile.health / profile.health_max * 100),
             )
         else:
             text += "Health maximum: {}\n".format(profile.health_max)
         if profile.ark_male:
-            text += "Manimals: {} ({}%)\n".format(
-                profile.ark_male, profile.ark_male / 10
-            )
+            text += "Manimals: {} ({}%)\n".format(profile.ark_male, profile.ark_male / 10)
         if profile.ark_female:
-            text += "Fenimals: {} ({}%)\n".format(
-                profile.ark_female, profile.ark_female / 10
-            )
+            text += "Fenimals: {} ({}%)\n".format(profile.ark_female, profile.ark_female / 10)
         if profile.savings:
             text += "Savings: {}\n".format(profile.savings)
         if profile.trading_level:
@@ -302,9 +257,7 @@ class GodvilleData(commands.Cog):
         if profile.ark_date:
             times += "Ark completed: {}\n".format(profile.date_string("ark"))
         if profile.savings_date:
-            times += "Pension collected: {}\n".format(
-                profile.date_string("savings")
-            )  # ?
+            times += "Pension collected: {}\n".format(profile.date_string("savings"))  # ?
 
         finaltext = ""
         finaltext += text_header

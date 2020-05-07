@@ -68,9 +68,7 @@ class MoreUtils(commands.Cog):
         colorhls = colorsys.rgb_to_hls(colorrgb[0], colorrgb[1], colorrgb[2])
         coloryiq = colorsys.rgb_to_yiq(colorrgb[0], colorrgb[1], colorrgb[2])
         colorcmyk = rgb_to_cmyk(colorrgb[0], colorrgb[1], colorrgb[2])
-        async with self.session.get(
-            f"https://api.alexflipnote.dev/color/{str(color)[1:]}"
-        ) as data:
+        async with self.session.get(f"https://api.alexflipnote.dev/color/{str(color)[1:]}") as data:
             color_name = (await data.json()).get("name", "?")
         em = discord.Embed(
             title=str(color),
@@ -81,26 +79,13 @@ class MoreUtils(commands.Cog):
             "HSV: {}\n"
             "HLS: {}\n"
             "YIQ: {}\n"
-            "int: {}".format(
-                color_name,
-                str(color),
-                colorrgb,
-                colorcmyk,
-                colorhsv,
-                colorhls,
-                coloryiq,
-                color.value,
-            ),
+            "int: {}".format(color_name, str(color), colorrgb, colorcmyk, colorhsv, colorhls, coloryiq, color.value,),
             url=f"http://www.color-hex.com/color/{str(color)[1:]}",
             colour=color,
             timestamp=ctx.message.created_at,
         )
-        em.set_thumbnail(
-            url=f"https://api.alexflipnote.dev/color/image/{str(color)[1:]}"
-        )
-        em.set_image(
-            url=f"https://api.alexflipnote.dev/color/image/gradient/{str(color)[1:]}"
-        )
+        em.set_thumbnail(url=f"https://api.alexflipnote.dev/color/image/{str(color)[1:]}")
+        em.set_image(url=f"https://api.alexflipnote.dev/color/image/gradient/{str(color)[1:]}")
         await ctx.send(embed=em)
 
     @commands.command(pass_context=True, no_pm=True)
@@ -136,18 +121,10 @@ class MoreUtils(commands.Cog):
     async def discordstatus(self, ctx):
         """Get current discord status from status.discordapp.com"""
         try:
-            async with self.session.get(
-                "https://srhpyqt94yxb.statuspage.io/api/v2/summary.json"
-            ) as data:
+            async with self.session.get("https://srhpyqt94yxb.statuspage.io/api/v2/summary.json") as data:
                 response = await data.json()
         except Exception as e:
-            await ctx.send(
-                chat.error(
-                    _(
-                        "Unable to get data from https://status.discordapp.com: {}"
-                    ).format(e)
-                )
-            )
+            await ctx.send(chat.error(_("Unable to get data from https://status.discordapp.com: {}").format(e)))
             return
         status = response["status"]
         status_indicators = {
@@ -163,12 +140,9 @@ class MoreUtils(commands.Cog):
             color=await ctx.embed_color(),
             url="https://status.discordapp.com",
         )
-        embed.description = status_indicators.get(
-            status["indicator"], status["indicator"]
-        )
+        embed.description = status_indicators.get(status["indicator"], status["indicator"])
         for component in components:
             embed.add_field(
-                name=component["name"],
-                value=component["status"].capitalize().replace("_", " "),
+                name=component["name"], value=component["status"].capitalize().replace("_", " "),
             )
         await ctx.send(embed=embed)

@@ -63,9 +63,7 @@ class TraceMoe:
         apikey = apikeys.get("tracemoe", "")
         async with ctx.typing():
             try:
-                async with ctx.cog.session.get(
-                    image_url, raise_for_status=True
-                ) as resp:
+                async with ctx.cog.session.get(image_url, raise_for_status=True) as resp:
                     image = BytesIO(await resp.read())
                     image = Image.open(image)
                     image = image.convert("RGB")
@@ -84,9 +82,9 @@ class TraceMoe:
                     return cls(await data.json())
             except ClientResponseError as e:
                 raise ValueError(
-                    _(
-                        "Unable to search for provided image, trace.moe returned {status} ({message})"
-                    ).format(status=e.status, message=e.message)
+                    _("Unable to search for provided image, trace.moe returned {status} ({message})").format(
+                        status=e.status, message=e.message
+                    )
                 )
 
     @classmethod
