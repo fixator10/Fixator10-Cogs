@@ -129,7 +129,7 @@ class Leveler(commands.Cog):
     async def _connect_to_mongo(self):
         if self._db_ready:
             self._db_ready = False
-        await self._disconnect_mongo()
+        self._disconnect_mongo()
         config = await self.config.custom("MONGODB").all()
         try:
             self.client = AsyncIOMotorClient(**config)
@@ -149,7 +149,7 @@ class Leveler(commands.Cog):
             self.db = None
         return self.client
 
-    async def _disconnect_mongo(self):
+    def _disconnect_mongo(self):
         if self.client:
             self.client.close()
 
@@ -160,7 +160,7 @@ class Leveler(commands.Cog):
 
     def cog_unload(self):
         self.session.detach()
-        self.bot.loop.create_task(self._disconnect_mongo())
+        self._disconnect_mongo()
 
     @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.command(name="profile")
