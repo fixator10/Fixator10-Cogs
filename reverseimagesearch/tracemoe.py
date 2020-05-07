@@ -63,9 +63,7 @@ class TraceMoe:
         apikey = apikeys.get("tracemoe", "")
         async with ctx.typing():
             try:
-                async with ctx.cog.session.get(
-                    image_url, raise_for_status=True
-                ) as resp:
+                async with ctx.cog.session.get(image_url, raise_for_status=True) as resp:
                     image = BytesIO(await resp.read())
                     image = Image.open(image)
                     image = image.convert("RGB")

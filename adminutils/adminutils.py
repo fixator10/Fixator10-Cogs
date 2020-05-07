@@ -61,9 +61,7 @@ class AdminUtils(commands.Cog):
         except AsyncTimeoutError:
             pass
         if pred.result:
-            cleanup = await ctx.guild.prune_members(
-                days=days, reason=get_audit_reason(ctx.author)
-            )
+            cleanup = await ctx.guild.prune_members(days=days, reason=get_audit_reason(ctx.author))
             await ctx.send(
                 chat.info(
                     _(
@@ -93,8 +91,7 @@ class AdminUtils(commands.Cog):
         )
         await ctx.guild.edit(region=random_region)
         await ctx.guild.edit(
-            region=current_region,
-            reason=get_audit_reason(ctx.author, _("Voice restart")),
+            region=current_region, reason=get_audit_reason(ctx.author, _("Voice restart")),
         )
         await ctx.tick()
 
@@ -112,9 +109,7 @@ class AdminUtils(commands.Cog):
         fails = 0
         if not from_channel.members:
             await ctx.send(
-                chat.error(
-                    _("There is no users in channel {}.").format(from_channel.mention)
-                )
+                chat.error(_("There is no users in channel {}.").format(from_channel.mention))
             )
             return
         async with ctx.typing():
@@ -126,9 +121,7 @@ class AdminUtils(commands.Cog):
                 except discord.HTTPException:
                     fails += 1
                     continue
-        await ctx.send(
-            _("Finished moving users. {} members could not be moved.").format(fails)
-        )
+        await ctx.send(_("Finished moving users. {} members could not be moved.").format(fails))
 
     @commands.command()
     @commands.guild_only()
@@ -143,17 +136,14 @@ class AdminUtils(commands.Cog):
             for user in server.members:
                 try:
                     await user.edit(
-                        nick=nickname,
-                        reason=get_audit_reason(ctx.author, _("Massnick")),
+                        nick=nickname, reason=get_audit_reason(ctx.author, _("Massnick")),
                     )
                     await sleep(1)
                 except discord.HTTPException:
                     counter += 1
                     continue
         await ctx.send(
-            _(
-                "Finished nicknaming server. {} nicknames could not be completed."
-            ).format(counter)
+            _("Finished nicknaming server. {} nicknames could not be completed.").format(counter)
         )
 
     @commands.command()
@@ -176,9 +166,7 @@ class AdminUtils(commands.Cog):
                     counter += 1
                     continue
         await ctx.send(
-            _(
-                "Finished resetting server nicknames. Unable to reset {} nicknames."
-            ).format(counter)
+            _("Finished resetting server nicknames. Unable to reset {} nicknames.").format(counter)
         )
 
     @commands.group()
@@ -203,9 +191,7 @@ class AdminUtils(commands.Cog):
             async with self.session.get(url) as r:
                 data = await r.read()
         except Exception as e:
-            await ctx.send(
-                chat.error(_("Unable to get emoji from provided url: {}").format(e))
-            )
+            await ctx.send(chat.error(_("Unable to get emoji from provided url: {}").format(e)))
             return
         try:
             await ctx.guild.create_custom_emoji(
@@ -222,20 +208,14 @@ class AdminUtils(commands.Cog):
                 ),
             )
         except discord.InvalidArgument:
-            await ctx.send(
-                chat.error(_("This image type is unsupported, or link is incorrect"))
-            )
+            await ctx.send(chat.error(_("This image type is unsupported, or link is incorrect")))
         except discord.HTTPException as e:
-            await ctx.send(
-                chat.error(_("An error occured on adding an emoji: {}").format(e))
-            )
+            await ctx.send(chat.error(_("An error occured on adding an emoji: {}").format(e)))
         else:
             await ctx.tick()
 
     @emoji.command(name="rename")
-    async def emoji_rename(
-        self, ctx, emoji: discord.Emoji, name: str, *roles: discord.Role
-    ):
+    async def emoji_rename(self, ctx, emoji: discord.Emoji, name: str, *roles: discord.Role):
         """Rename emoji and restrict to certain roles
         Only this roles will be able to use this emoji
 

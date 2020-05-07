@@ -7,9 +7,7 @@ from .smmbookmark import Level, Maker, SMMB_BASE_URL
 
 _ = Translator("SMMData", __file__)
 
-BOOKMARKS_ICON_URL = (
-    f"{SMMB_BASE_URL}/assets/favicon/icon76-08f927f066250b84f628e92e0b94f58d.png"
-)
+BOOKMARKS_ICON_URL = f"{SMMB_BASE_URL}/assets/favicon/icon76-08f927f066250b84f628e92e0b94f58d.png"
 EMBED_EMPTY_VALUE = "\N{Invisible Separator}"
 
 
@@ -47,13 +45,10 @@ class SMMData(commands.Cog):
         embed.add_field(name="\N{White Medium Star} " + _("Stars"), value=lvl.stars)
         embed.add_field(name="\N{Footprints} " + _("Unique Players"), value=lvl.players)
         embed.add_field(name=_("Share count"), value=lvl.shares)
-        embed.add_field(
-            name=_("Clears"), value=f"{lvl.clears}/{lvl.attempts} ({lvl.clear_rate}%)"
-        )
+        embed.add_field(name=_("Clears"), value=f"{lvl.clears}/{lvl.attempts} ({lvl.clear_rate}%)")
         if lvl.first_clear_name:
             embed.add_field(
-                name=_("First clear"),
-                value=f"[{lvl.first_clear_name}]({lvl.first_clear_url})",
+                name=_("First clear"), value=f"[{lvl.first_clear_name}]({lvl.first_clear_url})",
             )
         if lvl.best_player_name:
             embed.add_field(
@@ -66,9 +61,7 @@ class SMMData(commands.Cog):
             )
         embed.set_thumbnail(url=lvl.preview)
         embed.set_image(url=lvl.map)
-        embed.set_author(
-            name=lvl.creator, url=lvl.creator_url, icon_url=lvl.creator_img
-        )
+        embed.set_author(name=lvl.creator, url=lvl.creator_url, icon_url=lvl.creator_img)
         embed.set_footer(text=lvl.tag or "Untagged", icon_url=BOOKMARKS_ICON_URL)
         await ctx.send(embed=embed)
 
@@ -84,15 +77,11 @@ class SMMData(commands.Cog):
         em.add_field(name=_("Stars Received"), value=f"★ {profile.stars}")
         em.add_field(name=_("Medals Earned"), value=profile.medals)
         em.add_field(name=_("Uploaded Courses"), value=profile.uploads)
-        em.add_field(
-            name=_("100 Mario Challenge"), value=EMBED_EMPTY_VALUE, inline=False
-        )
+        em.add_field(name=_("100 Mario Challenge"), value=EMBED_EMPTY_VALUE, inline=False)
         em.add_field(name=_("Easy clears"), value=profile.challenge.easy)
         em.add_field(name=_("Normal clears"), value=profile.challenge.normal)
         em.add_field(name=_("Expert clears"), value=profile.challenge.expert)
-        em.add_field(
-            name=_("Super Expert clears"), value=profile.challenge.super_expert
-        )
+        em.add_field(name=_("Super Expert clears"), value=profile.challenge.super_expert)
         em.add_field(name=_("Play History"), value=EMBED_EMPTY_VALUE, inline=False)
         em.add_field(name=_("Courses played"), value=profile.statistics.played)
         em.add_field(name=_("Courses cleared"), value=profile.statistics.cleared)

@@ -59,35 +59,25 @@ class MinecraftData(commands.Cog):
                     params="overlay" if overlay else None,
                 ) as s:
                     files.append(
-                        discord.File(
-                            BytesIO(await s.read()), filename=f"{stripname}_head.png"
-                        )
+                        discord.File(BytesIO(await s.read()), filename=f"{stripname}_head.png")
                     )
                 async with self.session.get(f"https://crafatar.com/skins/{uuid}") as s:
                     files.append(
-                        discord.File(
-                            BytesIO(await s.read()), filename=f"{stripname}.png"
-                        )
+                        discord.File(BytesIO(await s.read()), filename=f"{stripname}.png")
                     )
                 async with self.session.get(
                     f"https://crafatar.com/renders/body/{uuid}.png",
                     params="overlay" if overlay else None,
                 ) as s:
                     files.append(
-                        discord.File(
-                            BytesIO(await s.read()), filename=f"{stripname}_body.png"
-                        )
+                        discord.File(BytesIO(await s.read()), filename=f"{stripname}_body.png")
                     )
             except aiohttp.ClientResponseError as e:
                 await ctx.send(
-                    chat.error(
-                        _("Unable to get data from Crafatar: {}").format(e.message)
-                    )
+                    chat.error(_("Unable to get data from Crafatar: {}").format(e.message))
                 )
                 return
-        em = discord.Embed(
-            timestamp=ctx.message.created_at, color=await ctx.embed_color()
-        )
+        em = discord.Embed(timestamp=ctx.message.created_at, color=await ctx.embed_color())
         em.set_author(
             name=player.name,
             icon_url=f"attachment://{stripname}_head.png",
@@ -95,9 +85,7 @@ class MinecraftData(commands.Cog):
         )
         em.set_thumbnail(url=f"attachment://{stripname}.png")
         em.set_image(url=f"attachment://{stripname}_body.png")
-        em.set_footer(
-            text=_("Provided by Crafatar"), icon_url="https://crafatar.com/logo.png"
-        )
+        em.set_footer(text=_("Provided by Crafatar"), icon_url="https://crafatar.com/logo.png")
         await ctx.send(embed=em, files=files)
 
     @minecraft.group(invoke_without_command=True)
@@ -110,17 +98,11 @@ class MinecraftData(commands.Cog):
             )
         except aiohttp.ClientResponseError as e:
             if e.status == 404:
-                await ctx.send(
-                    chat.error(_("{} doesn't have cape").format(player.name))
-                )
+                await ctx.send(chat.error(_("{} doesn't have cape").format(player.name)))
             else:
-                await ctx.send(
-                    chat.error(_("Unable to get cape: {}").format(e.message))
-                )
+                await ctx.send(chat.error(_("Unable to get cape: {}").format(e.message)))
             return
-        em = discord.Embed(
-            timestamp=ctx.message.created_at, color=await ctx.embed_color()
-        )
+        em = discord.Embed(timestamp=ctx.message.created_at, color=await ctx.embed_color())
         em.set_author(name=player.name, url=f"https://crafatar.com/capes/{player.uuid}")
         em.set_image(url=f"https://crafatar.com/capes/{player.uuid}")
         await ctx.send(embed=em)
@@ -134,9 +116,7 @@ class MinecraftData(commands.Cog):
             )
         except aiohttp.ClientResponseError as e:
             if e.status == 404:
-                await ctx.send(
-                    chat.error(_("{} doesn't have OptiFine cape").format(player.name))
-                )
+                await ctx.send(chat.error(_("{} doesn't have OptiFine cape").format(player.name)))
             else:
                 await ctx.send(
                     chat.error(
@@ -146,12 +126,8 @@ class MinecraftData(commands.Cog):
                     )
                 )
             return
-        em = discord.Embed(
-            timestamp=ctx.message.created_at, color=await ctx.embed_color()
-        )
-        em.set_author(
-            name=player.name, url=f"http://s.optifine.net/capes/{player.name}.png"
-        )
+        em = discord.Embed(timestamp=ctx.message.created_at, color=await ctx.embed_color())
+        em.set_author(name=player.name, url=f"http://s.optifine.net/capes/{player.name}.png")
         em.set_image(url=f"http://s.optifine.net/capes/{player.name}.png")
         await ctx.send(embed=em)
 
@@ -166,9 +142,7 @@ class MinecraftData(commands.Cog):
                 cape = await data.read()
         except aiohttp.ClientResponseError as e:
             if e.status == 404:
-                await ctx.send(
-                    chat.error(_("{} doesn't have LabyMod cape").format(player.name))
-                )
+                await ctx.send(chat.error(_("{} doesn't have LabyMod cape").format(player.name)))
             else:
                 await ctx.send(
                     chat.error(
@@ -188,31 +162,24 @@ class MinecraftData(commands.Cog):
         """Get MinecraftCapes.co.uk cape by nickname"""
         try:
             await self.session.get(
-                f"https://minecraftcapes.co.uk/getCape/{player.uuid}",
-                raise_for_status=True,
+                f"https://minecraftcapes.co.uk/getCape/{player.uuid}", raise_for_status=True,
             )
         except aiohttp.ClientResponseError as e:
             if e.status == 404:
                 await ctx.send(
-                    chat.error(
-                        _("{} doesn't have MinecraftCapes cape").format(player.name)
-                    )
+                    chat.error(_("{} doesn't have MinecraftCapes cape").format(player.name))
                 )
             else:
                 await ctx.send(
                     chat.error(
-                        _(
-                            "Unable to get {player}'s MinecraftCapes cape: {message}"
-                        ).format(player=player.name, message=e.message)
+                        _("Unable to get {player}'s MinecraftCapes cape: {message}").format(
+                            player=player.name, message=e.message
+                        )
                     )
                 )
             return
-        em = discord.Embed(
-            timestamp=ctx.message.created_at, color=await ctx.embed_color()
-        )
-        em.set_author(
-            name=player.name, url=f"https://minecraftcapes.co.uk/getCape/{player.uuid}"
-        )
+        em = discord.Embed(timestamp=ctx.message.created_at, color=await ctx.embed_color())
+        em.set_author(name=player.name, url=f"https://minecraftcapes.co.uk/getCape/{player.uuid}")
         em.set_image(url=f"https://minecraftcapes.co.uk/getCape/{player.uuid}")
         await ctx.send(embed=em)
 
@@ -228,9 +195,7 @@ class MinecraftData(commands.Cog):
             cape = response_data["cape"]
         except aiohttp.ClientResponseError as e:
             if e.status == 404:
-                await ctx.send(
-                    chat.error(_("{} doesn't have 5zig cape").format(player.name))
-                )
+                await ctx.send(chat.error(_("{} doesn't have 5zig cape").format(player.name)))
             else:
                 await ctx.send(
                     chat.error(
@@ -256,17 +221,13 @@ class MinecraftData(commands.Cog):
                 response_data = await data.json(content_type=None)
             if "animatedCape" not in response_data:
                 await ctx.send(
-                    chat.error(_("{} doesn't have animated 5zig cape")).format(
-                        player.name
-                    )
+                    chat.error(_("{} doesn't have animated 5zig cape")).format(player.name)
                 )
                 return
             cape = response_data["animatedCape"]
         except aiohttp.ClientResponseError as e:
             if e.status == 404:
-                await ctx.send(
-                    chat.error(_("{} doesn't have 5zig cape").format(player.name))
-                )
+                await ctx.send(chat.error(_("{} doesn't have 5zig cape").format(player.name)))
             else:
                 await ctx.send(
                     chat.error(
@@ -287,9 +248,7 @@ class MinecraftData(commands.Cog):
     async def server(self, ctx, server_ip: str):
         """Get info about server"""
         try:
-            server = await self.bot.loop.run_in_executor(
-                None, MinecraftServer.lookup, server_ip
-            )
+            server = await self.bot.loop.run_in_executor(None, MinecraftServer.lookup, server_ip)
         except Exception as e:
             await ctx.send(chat.error(_("Unable to resolve IP: {}").format(e)))
             return
@@ -297,18 +256,14 @@ class MinecraftData(commands.Cog):
             try:
                 status = await self.bot.loop.run_in_executor(None, server.status)
             except OSError as e:
-                await ctx.send(
-                    chat.error(_("Unable to get server's status: {}").format(e))
-                )
+                await ctx.send(chat.error(_("Unable to get server's status: {}").format(e)))
                 return
             try:
                 query = await self.bot.loop.run_in_executor(None, server.query)
             except (ConnectionResetError, OSError):
                 query = None
         icon = (
-            discord.File(
-                BytesIO(b64decode(status.favicon.split(",", 1)[1])), filename="icon.png"
-            )
+            discord.File(BytesIO(b64decode(status.favicon.split(",", 1)[1])), filename="icon.png")
             if status.favicon
             else None
         )
@@ -340,17 +295,13 @@ class MinecraftData(commands.Cog):
         )
         embed.add_field(
             name=_("Version"),
-            value=_("{}\nProtocol: {}").format(
-                status.version.name, status.version.protocol
-            ),
+            value=_("{}\nProtocol: {}").format(status.version.name, status.version.protocol),
         )
         if query:
             embed.add_field(name=_("World"), value=f"{query.map}")
             embed.add_field(
                 name=_("Software"),
-                value=_("{}\nVersion: {}").format(
-                    query.software.brand, query.software.version
-                )
+                value=_("{}\nVersion: {}").format(query.software.brand, query.software.version)
                 # f"Plugins: {query.software.plugins}"
             )
         await ctx.send(file=icon, embed=embed)
@@ -398,10 +349,7 @@ class MinecraftData(commands.Cog):
                     nick["changedToAt"] = _("Initial")
             table = tabulate.tabulate(
                 data_history,
-                headers={
-                    "name": _("Nickname"),
-                    "changedToAt": _("Changed to at... (UTC)"),
-                },
+                headers={"name": _("Nickname"), "changedToAt": _("Changed to at... (UTC)"),},
                 tablefmt="orgtbl",
             )
             pages = [chat.box(page) for page in list(chat.pagify(table))]

@@ -169,9 +169,9 @@ class SteamCommunity(commands.Cog):
             color=profile.personastatecolor,
         )
         if profile.gameid:
-            em.description = _(
-                "In game: [{}](http://store.steampowered.com/app/{})"
-            ).format(profile.gameextrainfo or "Unknown", profile.gameid)
+            em.description = _("In game: [{}](http://store.steampowered.com/app/{})").format(
+                profile.gameextrainfo or "Unknown", profile.gameid
+            )
             if profile.gameserver:
                 em.description += _(" on server {}").format(profile.gameserver)
             if profile.shared_by:
@@ -182,9 +182,7 @@ class SteamCommunity(commands.Cog):
             em.add_field(name=_("Real name"), value=profile.realname, inline=False)
         em.add_field(name=_("Level"), value=profile.level or "0")
         if profile.country:
-            em.add_field(
-                name=_("Country"), value=":flag_{}:".format(profile.country.lower())
-            )
+            em.add_field(name=_("Country"), value=":flag_{}:".format(profile.country.lower()))
         em.add_field(name=_("Visibility"), value=profile.visibility)
         if profile.createdat:
             em.add_field(
@@ -193,9 +191,7 @@ class SteamCommunity(commands.Cog):
                     _("%d.%m.%Y %H:%M:%S")
                 ),
             )
-        em.add_field(
-            name="SteamID", value="{}\n{}".format(profile.steamid, profile.sid3)
-        )
+        em.add_field(name="SteamID", value="{}\n{}".format(profile.steamid, profile.sid3))
         em.add_field(name="SteamID64", value=profile.steamid64)
         if any([profile.VACbanned, profile.gamebans]):
             bansdescription = _("Days since last ban: {}").format(profile.sincelastban)
@@ -204,9 +200,7 @@ class SteamCommunity(commands.Cog):
         else:
             bansdescription = _("No bans on record")
         em.add_field(name=_("🛡 Bans"), value=bansdescription, inline=False)
-        em.add_field(
-            name=_("Community ban"), value=bool_emojify(profile.communitybanned)
-        )
+        em.add_field(name=_("Community ban"), value=bool_emojify(profile.communitybanned))
         em.add_field(
             name=_("Economy ban"),
             value=profile.economyban.capitalize() if profile.economyban else "❌",
@@ -217,9 +211,7 @@ class SteamCommunity(commands.Cog):
         )
         em.add_field(
             name=_("Game bans"),
-            value=_("{} game bans").format(profile.gamebans)
-            if profile.gamebans
-            else "❌",
+            value=_("{} game bans").format(profile.gamebans) if profile.gamebans else "❌",
         )
         em.set_thumbnail(url=profile.avatar184)
         em.set_footer(
@@ -249,9 +241,7 @@ class SteamCommunity(commands.Cog):
                 )
                 return
             except aiohttp.ClientError as e:
-                await ctx.send(
-                    chat.error(_("Unable to get data from steamstat.us: {}").format(e))
-                )
+                await ctx.send(chat.error(_("Unable to get data from steamstat.us: {}").format(e)))
         services = data.get("services", {})
         graph = data.get("graph")
         em = discord.Embed(
@@ -343,16 +333,12 @@ class SteamCommunity(commands.Cog):
             except valve.source.a2s.NoResponseError:
                 await ctx.send(
                     chat.error(
-                        _(
-                            "Could not fetch Server or the Server is not on the Steam masterlist"
-                        )
+                        _("Could not fetch Server or the Server is not on the Steam masterlist")
                     )
                 )
                 return
             except Exception as e:
-                await ctx.send(
-                    chat.error(_("An Error has been occurred: {}").format(e))
-                )
+                await ctx.send(chat.error(_("An Error has been occurred: {}").format(e)))
                 return
 
         _map = info.values["map"]
@@ -379,8 +365,7 @@ class SteamCommunity(commands.Cog):
 
         em = discord.Embed(colour=await ctx.embed_color())
         em.add_field(
-            name=_("Game"),
-            value=f"[{game}](http://store.steampowered.com/app/{gameid})",
+            name=_("Game"), value=f"[{game}](http://store.steampowered.com/app/{gameid})",
         )
         em.add_field(name=_("Gamemode"), value=gamemode)
         em.add_field(name=_("Server name"), value=servername, inline=False)
@@ -391,8 +376,7 @@ class SteamCommunity(commands.Cog):
         em.add_field(name=_("Version"), value=version)
         em.add_field(name="VAC", value=bool_emojify(bool(info.values["vac_enabled"])))
         em.add_field(
-            name=_("Password"),
-            value=bool_emojify(bool(info.values["password_protected"])),
+            name=_("Password"), value=bool_emojify(bool(info.values["password_protected"])),
         )
         if botnumber:
             em.add_field(
@@ -400,9 +384,7 @@ class SteamCommunity(commands.Cog):
                 value=_("{}/{}\nBots: {}").format(playernumber, maxplayers, botnumber),
             )
         else:
-            em.add_field(
-                name=_("Players"), value="{}/{}\n".format(playernumber, maxplayers)
-            )
+            em.add_field(name=_("Players"), value="{}/{}\n".format(playernumber, maxplayers))
 
         await ctx.send(embed=em)
 
