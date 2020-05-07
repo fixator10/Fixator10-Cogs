@@ -118,7 +118,7 @@ class Leveler(commands.Cog):
         self.config.register_global(**default_global)
         self.config.register_guild(**default_guild)
 
-        self._ready_event = asyncio.Event()
+        self._db_ready = False
         self.client = None
         self.db = None
         self.session = aiohttp.ClientSession(loop=self.bot.loop)
@@ -127,15 +127,15 @@ class Leveler(commands.Cog):
         await self._connect_to_mongo()
 
     async def _connect_to_mongo(self):
-        if self._ready_event.is_set():
-            self._ready_event.clear()
+        if self._db_ready:
+            self._db_ready = False
         await self._disconnect_mongo()
         config = await self.config.custom("MONGODB").all()
         try:
             self.client = AsyncIOMotorClient(**config)
             await self.client.server_info()
             self.db = self.client["leveler"]
-            self._ready_event.set()
+            self._db_ready = True
         except (
             mongoerrors.ServerSelectionTimeoutError,
             mongoerrors.ConfigurationError,
@@ -161,7 +161,8 @@ class Leveler(commands.Cog):
             "levelerset credentials",
         ]:
             return
-        await self._ready_event.wait()
+        if not self._db_ready:
+            return
 
     def cog_unload(self):
         self.session.detach()
@@ -2355,7 +2356,8 @@ class Leveler(commands.Cog):
             await ctx.send("**Invalid background type. Must be `profile`, `rank` or `levelup`.**")
 
     async def draw_profile(self, user, server):
-        await self._ready_event.wait()
+        if not self._db_ready:
+            return
         font_thin_file = f"{bundled_data_path(self)}/Uni_Sans_Thin.ttf"
         font_heavy_file = f"{bundled_data_path(self)}/Uni_Sans_Heavy.ttf"
         font_file = f"{bundled_data_path(self)}/Ubuntu-R_0.ttf"
@@ -3011,7 +3013,8 @@ class Leveler(commands.Cog):
         return im
 
     async def draw_levelup(self, user, server):
-        await self._ready_event.wait()
+        if not self._db_ready:
+            return
         # fonts
         font_thin_file = f"{bundled_data_path(self)}/Uni_Sans_Thin.ttf"
         level_fnt = ImageFont.truetype(font_thin_file, 23)
@@ -3117,7 +3120,8 @@ class Leveler(commands.Cog):
 
     @commands.Cog.listener("on_message_without_command")
     async def _handle_on_message(self, message):
-        await self._ready_event.wait()
+        if not self._db_ready:
+            return
         server = message.guild
         user = message.author
         xp = await self.config.xp()
@@ -3149,7 +3153,8 @@ class Leveler(commands.Cog):
             await self._give_chat_credit(user, server)
 
     async def _process_exp(self, message, userinfo, exp: int):
-        await self._ready_event.wait()
+        if not self._db_ready:
+            return
         server = message.guild
         channel = message.channel
         user = message.author
@@ -3198,7 +3203,8 @@ class Leveler(commands.Cog):
             )
 
     async def _handle_levelup(self, user, userinfo, server, channel):
-        await self._ready_event.wait()
+        if not self._db_ready:
+            return
         # channel lock implementation
         channel_id = await self.config.guild(server).lvl_msg_lock()
         if channel_id:
@@ -3281,7 +3287,8 @@ class Leveler(commands.Cog):
                     )
 
     async def _find_server_rank(self, user, server):
-        await self._ready_event.wait()
+        if not self._db_ready:
+            return
         targetid = str(user.id)
         users = []
 
@@ -3305,7 +3312,8 @@ class Leveler(commands.Cog):
             rank += 1
 
     async def _find_server_rep_rank(self, user, server):
-        await self._ready_event.wait()
+        if not self._db_ready:
+            return
         targetid = str(user.id)
         users = []
         async for userinfo in self.db.users.find({}):
@@ -3321,7 +3329,8 @@ class Leveler(commands.Cog):
             rank += 1
 
     async def _find_server_exp(self, user, server):
-        await self._ready_event.wait()
+        if not self._db_ready:
+            return
         server_exp = 0
         userinfo = await self.db.users.find_one({"user_id": str(user.id)})
 
@@ -3334,7 +3343,8 @@ class Leveler(commands.Cog):
             return server_exp
 
     async def _find_global_rank(self, user):
-        await self._ready_event.wait()
+        if not self._db_ready:
+            return
         users = []
 
         async for userinfo in self.db.users.find({}):
@@ -3352,7 +3362,8 @@ class Leveler(commands.Cog):
             rank += 1
 
     async def _find_global_rep_rank(self, user):
-        await self._ready_event.wait()
+        if not self._db_ready:
+            return
         users = []
 
         async for userinfo in self.db.users.find({}):
@@ -3371,7 +3382,8 @@ class Leveler(commands.Cog):
 
     # handles user creation, adding new server, blocking
     async def _create_user(self, user, server):
-        await self._ready_event.wait()
+        if not self._db_ready:
+            return
         backgrounds = await self.config.backgrounds()
         if user.bot:
             return
