@@ -620,7 +620,7 @@ class Leveler(commands.Cog):
     @levelerset.command()
     async def dbname(self, ctx, dbname: str = "leveler"):
         """Set the MongoDB db name."""
-        await self.config.custom("MONGODB").db_name.set(db_name)
+        await self.config.custom("MONGODB").db_name.set(dbname)
         message = await ctx.send("MongoDB db name set.\nNow trying to connect...")
         client = await self._connect_to_mongo()
         if not client:
