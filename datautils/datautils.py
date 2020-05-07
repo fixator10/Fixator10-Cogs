@@ -23,6 +23,7 @@ _ = Translator("DataUtils", __file__)
 
 TWEMOJI_URL = "https://twemoji.maxcdn.com/v/latest/72x72"
 APP_ICON_URL = "https://cdn.discordapp.com/app-icons/{app_id}/{icon_hash}.png"
+NON_ESCAPEABLE_CHARACTERS = ["\N{VARIATION SELECTOR-16}"]
 
 GUILD_FEATURES = {
     "VIP_REGIONS": _("384kbps voice bitrate"),
@@ -72,7 +73,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.2.23"
+    __version__ = "2.2.24"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -701,10 +702,14 @@ class DataUtils(commands.Cog):
         if isinstance(emoji, str):
             # em.add_field(name=_("Unicode emoji"), value="✅")
             em.add_field(
-                name=_("Unicode character"), value="".join(f"\\{e}" for e in emoji)
+                name=_("Unicode character"),
+                value="\n".join(
+                    f"\\{c}" if c not in NON_ESCAPEABLE_CHARACTERS else c for c in emoji
+                ),
             )
             em.add_field(
-                name=_("Unicode category"), value=unicodedata.category(emoji[0])
+                name=_("Unicode category"),
+                value="\n".join(unicodedata.category(c) for c in emoji),
             )
             em.set_image(url=await get_twemoji(emoji))
         if not isinstance(emoji, str):
