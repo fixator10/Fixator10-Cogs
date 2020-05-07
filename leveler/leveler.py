@@ -73,7 +73,13 @@ class Leveler(commands.Cog):
         self.font_unicode_file = f"{bundled_data_path(self)}/unicode.ttf"
 
         self.config = Config.get_conf(self, identifier=0x3AAFD05EA4AA4FDF8DDEAD8224328191)
-        default_mongodb = {"host": "localhost", "port": 27017, "username": None, "password": None}
+        default_mongodb = {
+            "host": "localhost",
+            "port": 27017,
+            "username": None,
+            "password": None,
+            "db_name": "leveler",
+        }
         default_global = {
             "bg_price": 0,
             "badge_type": "circles",
@@ -133,9 +139,11 @@ class Leveler(commands.Cog):
         self._disconnect_mongo()
         config = await self.config.custom("MONGODB").all()
         try:
-            self.client = AsyncIOMotorClient(**config)
+            self.client = AsyncIOMotorClient(
+                **{k: v for k, v in config.items() if not k == "db_name"}
+            )
             await self.client.server_info()
-            self.db = self.client["leveler"]
+            self.db = self.client[config["db_name"]]
             self._db_ready = True
         except (
             mongoerrors.ServerSelectionTimeoutError,
@@ -555,7 +563,7 @@ class Leveler(commands.Cog):
         """
         if not ctx.invoked_subcommand and ctx.channel.type == discord.ChannelType.private:
             settings = [
-                (setting.title(), value)
+                (setting.replace("_", " ").title(), value)
                 for setting, value in (await self.config.custom("MONGODB").get_raw()).items()
                 if value
             ]
@@ -606,6 +614,19 @@ class Leveler(commands.Cog):
             return await message.edit(
                 content=message.content.replace("Now trying to connect...", "")
                 + "Failed to connect. Please try again with valid credentials."
+            )
+        await message.edit(content=message.content.replace("Now trying to connect...", ""))
+
+    @levelerset.command()
+    async def dbname(self, ctx, dbname: str = "leveler"):
+        """Set the MongoDB db name."""
+        await self.config.custom("MONGODB").db_name.set(db_name)
+        message = await ctx.send("MongoDB db name set.\nNow trying to connect...")
+        client = await self._connect_to_mongo()
+        if not client:
+            return await message.edit(
+                content=message.content.replace("Now trying to connect...", "")
+                + "Failed to connect. Please try again with a valid db name."
             )
         await message.edit(content=message.content.replace("Now trying to connect...", ""))
 
