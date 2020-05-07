@@ -11,7 +11,7 @@
     </a>
     <a href="https://github.com/ambv/black">
         <img alt="GitHub Workflow Status" 
-        src="https://img.shields.io/github/workflow/status/fixator10/Fixator10-Cogs/black?label=Black&style=for-the-badge">
+        src="https://img.shields.io/github/workflow/status/fixator10/Fixator10-Cogs/black/V3?label=Black&style=for-the-badge&labelColor=000">
     </a>
     <br>
     <a href="https://i18n.fixator10.ru/project/fixator10-cogs">
