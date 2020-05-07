@@ -132,6 +132,7 @@ PRECIP_TYPE_I18N = {"rain": _("Rain"), "snow": _("Snow"), "sleet": _("Sleet")}
 @cog_i18n(_)
 class Weather(commands.Cog):
     """Weather forecast"""
+
     __version__ = "2.0.2"
 
     # noinspection PyMissingConstructor

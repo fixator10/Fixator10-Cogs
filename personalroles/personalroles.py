@@ -21,6 +21,7 @@ async def has_assigned_role(ctx):
 @cog_i18n(_)
 class PersonalRoles(commands.Cog):
     """Assign and edit personal roles"""
+
     __version__ = "2.0.4"
 
     # noinspection PyMissingConstructor
@@ -98,7 +99,10 @@ class PersonalRoles(commands.Cog):
             dic = {
                 _("User"): ctx.guild.get_member(member) or f"[X] {member}",
                 _("Role"): shorten(
-                    str(ctx.guild.get_role(data["role"]) or "[X] {}".format(data["role"])),
+                    str(
+                        ctx.guild.get_role(data["role"])
+                        or "[X] {}".format(data["role"])
+                    ),
                     32,
                     placeholder="…",
                 ),
@@ -192,7 +196,11 @@ class PersonalRoles(commands.Cog):
             await ctx.send(chat.error(_("Unable to edit role: {}").format(e)))
         else:
             if not colour.value:
-                await ctx.send(_("Reset {user}'s personal role color").format(user=ctx.message.author.name))
+                await ctx.send(
+                    _("Reset {user}'s personal role color").format(
+                        user=ctx.message.author.name
+                    )
+                )
             else:
                 await ctx.send(
                     _("Changed color of {user}'s personal role to {color}").format(

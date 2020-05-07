@@ -53,7 +53,7 @@ class Level:
             "src"
         )
         if data.select_one(
-                ".fastest-time-wrapper > .user-wrapper > .mii-wrapper > .link"
+            ".fastest-time-wrapper > .user-wrapper > .mii-wrapper > .link"
         ):
             self.best_player_name = data.select_one(
                 ".fastest-time-wrapper > .user-wrapper > .user-info > .name"
@@ -69,7 +69,7 @@ class Level:
             self.best_player_url = None
             self.best_player_img = None
         if data.select_one(
-                ".first-user > .body > .user-wrapper > .mii-wrapper > .link"
+            ".first-user > .body > .user-wrapper > .mii-wrapper > .link"
         ):
             self.first_clear_name = data.select_one(
                 ".first-user > .body > .user-wrapper > .user-info > .name"
@@ -142,7 +142,7 @@ class Level:
     def best_player_time(self):
         clear_time = ""
         for char in self._data.select(
-                ".fastest-time-wrapper > .clear-time > .typography"
+            ".fastest-time-wrapper > .clear-time > .typography"
         ):
             char = char.get("class", "")[1].replace("typography-", "")
             if char.isdigit():
@@ -170,7 +170,7 @@ class Level:
         async with ctx.typing():
             try:
                 async with ctx.cog.session.get(
-                        f"{SMMB_BASE_URL}/courses/{argument}", raise_for_status=True
+                    f"{SMMB_BASE_URL}/courses/{argument}", raise_for_status=True
                 ) as page:
                     return cls(BeautifulSoup(await page.read(), "html.parser"))
             except ClientResponseError as e:
@@ -227,7 +227,7 @@ class Maker:
         async with ctx.typing():
             try:
                 async with ctx.cog.session.get(
-                        f"{SMMB_BASE_URL}/profile/{argument}", raise_for_status=True
+                    f"{SMMB_BASE_URL}/profile/{argument}", raise_for_status=True
                 ) as page:
                     return cls(BeautifulSoup(await page.read(), "html.parser"))
             except ClientResponseError as e:

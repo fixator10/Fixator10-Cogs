@@ -64,7 +64,7 @@ class TraceMoe:
         async with ctx.typing():
             try:
                 async with ctx.cog.session.get(
-                        image_url, raise_for_status=True
+                    image_url, raise_for_status=True
                 ) as resp:
                     image = BytesIO(await resp.read())
                     image = Image.open(image)
@@ -76,10 +76,10 @@ class TraceMoe:
                 raise ValueError(_("Unable to get image: {}").format(e.message))
             try:
                 async with ctx.cog.session.post(
-                        f"{BASE_API_URL}/search",
-                        params={"token": apikey},
-                        json={"image": b64encode(image_file.getvalue()).decode()},
-                        raise_for_status=True,
+                    f"{BASE_API_URL}/search",
+                    params={"token": apikey},
+                    json={"image": b64encode(image_file.getvalue()).decode()},
+                    raise_for_status=True,
                 ) as data:
                     return cls(await data.json())
             except ClientResponseError as e:

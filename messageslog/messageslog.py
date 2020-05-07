@@ -220,9 +220,7 @@ class MessagesLog(commands.Cog):
             return
         guild = self.bot.get_guild(payload.guild_id)
         channel = self.bot.get_channel(payload.channel_id)
-        logchannel = guild.get_channel(
-            await self.config.guild(guild).channel()
-        )
+        logchannel = guild.get_channel(await self.config.guild(guild).channel())
         if not logchannel:
             return
         if (
@@ -251,16 +249,16 @@ class MessagesLog(commands.Cog):
             await logchannel.send(embed=embed)
         except discord.Forbidden:
             pass
-    
+
     @commands.Cog.listener("on_raw_bulk_message_delete")
-    async def raw_bulk_message_deleted(self, payload: discord.RawBulkMessageDeleteEvent):
+    async def raw_bulk_message_deleted(
+        self, payload: discord.RawBulkMessageDeleteEvent
+    ):
         if not payload.guild_id:
             return
         guild = self.bot.get_guild(payload.guild_id)
         channel = self.bot.get_channel(payload.channel_id)
-        logchannel = guild.get_channel(
-            await self.config.guild(guild).channel()
-        )
+        logchannel = guild.get_channel(await self.config.guild(guild).channel())
         if not logchannel:
             return
         if (

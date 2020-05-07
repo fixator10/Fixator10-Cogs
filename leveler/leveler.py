@@ -615,9 +615,7 @@ class Leveler(commands.Cog):
 
         # get correct color choice
         if color == "auto":
-            if not all(
-                lib in globals().keys() for lib in ["numpy", "cluster"]
-            ):
+            if not all(lib in globals().keys() for lib in ["numpy", "cluster"]):
                 await ctx.send(
                     "**Missing required package. Autocolor feature unavailable**"
                 )
@@ -759,9 +757,7 @@ class Leveler(commands.Cog):
 
         # get correct color choice
         if color == "auto":
-            if not all(
-                lib in globals().keys() for lib in ["numpy", "cluster"]
-            ):
+            if not all(lib in globals().keys() for lib in ["numpy", "cluster"]):
                 await ctx.send(
                     "**Missing required package. Autocolor feature unavailable**"
                 )
@@ -876,9 +872,7 @@ class Leveler(commands.Cog):
 
         # get correct color choice
         if color == "auto":
-            if not all(
-                lib in globals().keys() for lib in ["numpy", "cluster"]
-            ):
+            if not all(lib in globals().keys() for lib in ["numpy", "cluster"]):
                 await ctx.send(
                     "**Missing required package. Autocolor feature unavailable**"
                 )

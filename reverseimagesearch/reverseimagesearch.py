@@ -16,6 +16,7 @@ _ = Translator("ReverseImageSearch", __file__)
 @cog_i18n(_)
 class ReverseImageSearch(commands.Cog):
     """(Anime) Reverse Image Search"""
+
     __version__ = "2.0.2"
 
     # noinspection PyMissingConstructor
@@ -176,29 +177,29 @@ class ReverseImageSearch(commands.Cog):
                     [
                         s
                         for s in [
-                        _("Similarity: {:.2f}%").format(doc.similarity * 100),
-                        doc.title_native
-                        and "🇯🇵 " + _("Native title: {}").format(doc.title_native),
-                        doc.title_romaji
-                        and "🇯🇵 "
-                        + _("Romaji transcription: {}").format(doc.title_romaji),
-                        doc.title_chinese
-                        and "🇨🇳 "
-                        + _("Chinese title: {}").format(doc.title_chinese),
-                        doc.title_english
-                        and "🇺🇸 "
-                        + _("English title: {}").format(doc.title_english),
-                        _("Est. Time: {}").format(doc.time_str),
-                        _("Episode: {}").format(doc.episode),
-                        doc.synonyms
-                        and _("Also known as: {}").format(", ".join(doc.synonyms)),
-                    ]
+                            _("Similarity: {:.2f}%").format(doc.similarity * 100),
+                            doc.title_native
+                            and "🇯🇵 " + _("Native title: {}").format(doc.title_native),
+                            doc.title_romaji
+                            and "🇯🇵 "
+                            + _("Romaji transcription: {}").format(doc.title_romaji),
+                            doc.title_chinese
+                            and "🇨🇳 "
+                            + _("Chinese title: {}").format(doc.title_chinese),
+                            doc.title_english
+                            and "🇺🇸 "
+                            + _("English title: {}").format(doc.title_english),
+                            _("Est. Time: {}").format(doc.time_str),
+                            _("Episode: {}").format(doc.episode),
+                            doc.synonyms
+                            and _("Also known as: {}").format(", ".join(doc.synonyms)),
+                        ]
                         if s
                     ]
                 ),
                 url=doc.mal_id
-                    and f"https://myanimelist.net/anime/{doc.mal_id}"
-                    or f"https://anilist.co/anime/{doc.anilist_id}",
+                and f"https://myanimelist.net/anime/{doc.mal_id}"
+                or f"https://anilist.co/anime/{doc.anilist_id}",
                 color=await ctx.embed_color(),
             )
             e.set_thumbnail(url=doc.thumbnail)
