@@ -70,7 +70,7 @@ class Leveler(commands.Cog):
         self.font_file = f"{bundled_data_path(self)}/font.ttf"
         self.font_bold_file = f"{bundled_data_path(self)}/font_bold.ttf"
         self.font_unicode_file = f"{bundled_data_path(self)}/unicode.ttf"
-
+ 
         self.config = Config.get_conf(self, identifier=0x3AAFD05EA4AA4FDF8DDEAD8224328191)
         default_mongodb = {"host": "localhost", "port": 27017, "username": None, "password": None}
         default_global = {
