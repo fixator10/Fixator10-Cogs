@@ -154,7 +154,7 @@ class Leveler(commands.Cog):
             self.client.close()
 
     async def cog_check(self, ctx):
-        if ctx.command.parent is self.bot.get_command("levelerset"):
+        if (ctx.command.parent is self.levelerset) or ctx.command is self.levelerset:
             return True
         return self._db_ready
 
