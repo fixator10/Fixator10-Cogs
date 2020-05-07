@@ -573,7 +573,7 @@ class Leveler(commands.Cog):
         )
 
     @levelerset.command()
-    async def port(self, ctx, port: int = 21017):
+    async def port(self, ctx, port: int = 27017):
         """Set the MongoDB server port."""
         await self.config.custom("MONGODB").port.set(port)
         message = await ctx.send(
