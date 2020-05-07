@@ -1,4 +1,5 @@
 import unicodedata
+import string
 from asyncio import TimeoutError as AsyncTimeoutError
 from textwrap import shorten
 from types import SimpleNamespace
@@ -23,7 +24,7 @@ _ = Translator("DataUtils", __file__)
 
 TWEMOJI_URL = "https://twemoji.maxcdn.com/v/latest/72x72"
 APP_ICON_URL = "https://cdn.discordapp.com/app-icons/{app_id}/{icon_hash}.png"
-NON_ESCAPEABLE_CHARACTERS = ["\N{VARIATION SELECTOR-16}"]
+NON_ESCAPEABLE_CHARACTERS = string.ascii_letters + string.digits
 
 GUILD_FEATURES = {
     "VIP_REGIONS": _("384kbps voice bitrate"),
@@ -73,7 +74,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.2.24"
+    __version__ = "2.2.25"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
