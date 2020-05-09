@@ -3,7 +3,7 @@ import string
 from asyncio import TimeoutError as AsyncTimeoutError
 from textwrap import shorten
 from types import SimpleNamespace
-from typing import Union
+from typing import Union, Optional
 
 import discord
 import tabulate
@@ -74,7 +74,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.2.26"
+    __version__ = "2.2.27"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -574,14 +574,14 @@ class DataUtils(commands.Cog):
     async def chanperms(
         self,
         ctx,
-        member: discord.Member,
+        member: Optional[discord.Member],
         *,
-        channel: Union[
-            discord.TextChannel, discord.VoiceChannel, discord.CategoryChannel, None
-        ] = None,
+        channel: Union[discord.TextChannel, discord.VoiceChannel, discord.CategoryChannel] = None,
     ):
         """Check user's permission for current or provided channel"""
-        if channel is None:
+        if not member:
+            member = ctx.author
+        if not channel:
             channel = ctx.channel
         perms = channel.permissions_for(member)
         await ctx.send(
