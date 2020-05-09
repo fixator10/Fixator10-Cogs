@@ -586,8 +586,7 @@ class DataUtils(commands.Cog):
         perms = channel.permissions_for(member)
         await ctx.send(
             "{}\n{}".format(
-                chat.inline(str(perms.value)),
-                chat.box(chat.format_perms_list(perms), lang="py"),
+                chat.inline(str(perms.value)), chat.box(chat.format_perms_list(perms), lang="py"),
             )
         )
 
