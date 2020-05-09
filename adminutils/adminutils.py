@@ -18,7 +18,7 @@ _ = Translator("AdminUtils", __file__)
 class AdminUtils(commands.Cog):
     """Useful commands for server administrators."""
 
-    __version__ = "2.2.1"
+    __version__ = "2.2.2"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -123,7 +123,7 @@ class AdminUtils(commands.Cog):
                     continue
         await ctx.send(_("Finished moving users. {} members could not be moved.").format(fails))
 
-    @commands.command()
+    @commands.command(hidden=True)
     @commands.guild_only()
     @commands.cooldown(1, 300, commands.BucketType.guild)
     @checks.admin_or_permissions(manage_nicknames=True)
@@ -146,7 +146,7 @@ class AdminUtils(commands.Cog):
             _("Finished nicknaming server. {} nicknames could not be completed.").format(counter)
         )
 
-    @commands.command()
+    @commands.command(hidden=True)
     @commands.guild_only()
     @commands.cooldown(1, 300, commands.BucketType.guild)
     @checks.admin_or_permissions(manage_nicknames=True)
