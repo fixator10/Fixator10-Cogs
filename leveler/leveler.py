@@ -2450,7 +2450,13 @@ class Leveler(commands.Cog):
             image = await r.content.read()
             profile_background = BytesIO(image)
         profile_avatar = BytesIO()
-        await user.avatar_url_as(format=AVATAR_FORMAT).save(profile_avatar, seek_begin=True)
+        try:
+            await user.avatar_url_as(format=AVATAR_FORMAT).save(profile_avatar, seek_begin=True)
+        except (discord.NotFound, discord.HTTPException):
+            blank_avatar_url = "https://i.imgur.com/8Pi7FBH.png"
+            async with self.session.get(blank_avatar_url) as r:
+                blank_avatar_image = await r.content.read()
+                profile_avatar = BytesIO(blank_avatar_image)
 
         bg_image = Image.open(profile_background).convert("RGBA")
         profile_image = Image.open(profile_avatar).convert("RGBA")
@@ -2854,7 +2860,13 @@ class Leveler(commands.Cog):
             image = await r.content.read()
         rank_background = BytesIO(image)
         rank_avatar = BytesIO()
-        await user.avatar_url_as(format=AVATAR_FORMAT).save(rank_avatar, seek_begin=True)
+        try:
+            await user.avatar_url_as(format=AVATAR_FORMAT).save(rank_avatar, seek_begin=True)
+        except (discord.NotFound, discord.HTTPException):
+            blank_avatar_url = "https://i.imgur.com/8Pi7FBH.png"
+            async with self.session.get(blank_avatar_url) as r:
+                blank_avatar_image = await r.content.read()
+                rank_avatar = BytesIO(blank_avatar_image)
 
         bg_image = Image.open(rank_background).convert("RGBA")
         profile_image = Image.open(rank_avatar).convert("RGBA")
@@ -3054,7 +3066,13 @@ class Leveler(commands.Cog):
             image = await r.content.read()
         level_background = BytesIO(image)
         level_avatar = BytesIO()
-        await user.avatar_url_as(format=AVATAR_FORMAT).save(level_avatar, seek_begin=True)
+        try:
+            await user.avatar_url_as(format=AVATAR_FORMAT).save(level_avatar, seek_begin=True)
+        except (discord.NotFound, discord.HTTPException):
+            blank_avatar_url = "https://i.imgur.com/8Pi7FBH.png"
+            async with self.session.get(blank_avatar_url) as r:
+                blank_avatar_image = await r.content.read()
+                level_avatar = BytesIO(blank_avatar_image)
 
         bg_image = Image.open(level_background).convert("RGBA")
         profile_image = Image.open(level_avatar).convert("RGBA")
