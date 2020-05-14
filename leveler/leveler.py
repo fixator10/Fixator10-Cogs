@@ -62,7 +62,7 @@ async def non_global_bank(ctx):
 class Leveler(commands.Cog):
     """A level up thing with image generation!"""
 
-    __version__ = "2.1.0b"
+    __version__ = "2.1.1b"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot: Red):
@@ -2450,7 +2450,10 @@ class Leveler(commands.Cog):
             image = await r.content.read()
             profile_background = BytesIO(image)
         profile_avatar = BytesIO()
-        await user.avatar_url_as(format=AVATAR_FORMAT).save(profile_avatar, seek_begin=True)
+        try:
+            await user.avatar_url_as(format=AVATAR_FORMAT).save(profile_avatar, seek_begin=True)
+        except discord.HTTPException:
+            profile_avatar = f"{bundled_data_path(self)}/defaultavatar.png"
 
         bg_image = Image.open(profile_background).convert("RGBA")
         profile_image = Image.open(profile_avatar).convert("RGBA")
@@ -2854,7 +2857,10 @@ class Leveler(commands.Cog):
             image = await r.content.read()
         rank_background = BytesIO(image)
         rank_avatar = BytesIO()
-        await user.avatar_url_as(format=AVATAR_FORMAT).save(rank_avatar, seek_begin=True)
+        try:
+            await user.avatar_url_as(format=AVATAR_FORMAT).save(rank_avatar, seek_begin=True)
+        except discord.HTTPException:
+            rank_avatar = f"{bundled_data_path(self)}/defaultavatar.png"
 
         bg_image = Image.open(rank_background).convert("RGBA")
         profile_image = Image.open(rank_avatar).convert("RGBA")
@@ -3054,7 +3060,10 @@ class Leveler(commands.Cog):
             image = await r.content.read()
         level_background = BytesIO(image)
         level_avatar = BytesIO()
-        await user.avatar_url_as(format=AVATAR_FORMAT).save(level_avatar, seek_begin=True)
+        try:
+            await user.avatar_url_as(format=AVATAR_FORMAT).save(level_avatar, seek_begin=True)
+        except discord.HTTPException:
+            level_avatar = f"{bundled_data_path(self)}/defaultavatar.png"
 
         bg_image = Image.open(level_background).convert("RGBA")
         profile_image = Image.open(level_avatar).convert("RGBA")
