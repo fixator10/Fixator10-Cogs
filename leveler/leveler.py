@@ -2452,7 +2452,7 @@ class Leveler(commands.Cog):
         profile_avatar = BytesIO()
         try:
             await user.avatar_url_as(format=AVATAR_FORMAT).save(profile_avatar, seek_begin=True)
-        except (discord.NotFound, discord.HTTPException):
+        except discord.HTTPException:
             blank_avatar_url = "https://i.imgur.com/8Pi7FBH.png"
             async with self.session.get(blank_avatar_url) as r:
                 blank_avatar_image = await r.content.read()
@@ -2862,7 +2862,7 @@ class Leveler(commands.Cog):
         rank_avatar = BytesIO()
         try:
             await user.avatar_url_as(format=AVATAR_FORMAT).save(rank_avatar, seek_begin=True)
-        except (discord.NotFound, discord.HTTPException):
+        except discord.HTTPException:
             blank_avatar_url = "https://i.imgur.com/8Pi7FBH.png"
             async with self.session.get(blank_avatar_url) as r:
                 blank_avatar_image = await r.content.read()
@@ -3068,7 +3068,7 @@ class Leveler(commands.Cog):
         level_avatar = BytesIO()
         try:
             await user.avatar_url_as(format=AVATAR_FORMAT).save(level_avatar, seek_begin=True)
-        except (discord.NotFound, discord.HTTPException):
+        except discord.HTTPException:
             blank_avatar_url = "https://i.imgur.com/8Pi7FBH.png"
             async with self.session.get(blank_avatar_url) as r:
                 blank_avatar_image = await r.content.read()
