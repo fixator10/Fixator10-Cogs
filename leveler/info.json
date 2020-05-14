@@ -15,6 +15,7 @@
     "pymongo>=3.10",
     "motor",
     "fonttools",
-    "pillow>=6.2.1"
+    "pillow>=6.2.1",
+    "tabulate"
   ]
 }

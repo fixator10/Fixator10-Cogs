@@ -3,7 +3,7 @@ import string
 from asyncio import TimeoutError as AsyncTimeoutError
 from textwrap import shorten
 from types import SimpleNamespace
-from typing import Union
+from typing import Union, Optional
 
 import discord
 import tabulate
@@ -74,7 +74,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.2.25"
+    __version__ = "2.2.28"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -162,7 +162,7 @@ class DataUtils(commands.Cog):
         em.add_field(name=_("System?"), value=bool_emojify(member.system))
         em.add_field(
             name=_("Server permissions"),
-            value="[{0}](https://discordapi.com/permissions.html#{0})".format(
+            value="[{0}](https://fixator10.ru/permissions-calculator/?v={0})".format(
                 member.guild_permissions.value
             ),
         )
@@ -511,7 +511,7 @@ class DataUtils(commands.Cog):
         em.add_field(name=_("ID"), value=role.id)
         em.add_field(
             name=_("Permissions"),
-            value="[{0}](https://discordapi.com/permissions.html#{0})".format(
+            value="[{0}](https://fixator10.ru/permissions-calculator/?v=#{0})".format(
                 role.permissions.value
             ),
         )
@@ -574,20 +574,19 @@ class DataUtils(commands.Cog):
     async def chanperms(
         self,
         ctx,
-        member: discord.Member,
+        member: Optional[discord.Member],
         *,
-        channel: Union[
-            discord.TextChannel, discord.VoiceChannel, discord.CategoryChannel, None
-        ] = None,
+        channel: Union[discord.TextChannel, discord.VoiceChannel, discord.CategoryChannel] = None,
     ):
         """Check user's permission for current or provided channel"""
-        if channel is None:
+        if not member:
+            member = ctx.author
+        if not channel:
             channel = ctx.channel
         perms = channel.permissions_for(member)
         await ctx.send(
             "{}\n{}".format(
-                chat.inline(str(member.guild_permissions.value)),
-                chat.box(chat.format_perms_list(perms), lang="py"),
+                chat.inline(str(perms.value)), chat.box(chat.format_perms_list(perms), lang="py"),
             )
         )
 

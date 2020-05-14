@@ -26,7 +26,10 @@ class GodConverter(commands.MemberConverter):
         return ""
 
     async def convert(self, ctx, argument):
-        member = await super().convert(ctx, argument)
+        try:
+            member = await super().convert(ctx, argument)
+        except commands.BadArgument:
+            member = None
         godname = None
         apikey = ""
         if member:
@@ -41,7 +44,7 @@ class GodConverter(commands.MemberConverter):
 class GodvilleData(commands.Cog):
     """Get data about Godville profiles"""
 
-    __version__ = "2.1.1"
+    __version__ = "2.1.2"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):

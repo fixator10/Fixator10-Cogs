@@ -18,7 +18,7 @@ _ = Translator("AdminUtils", __file__)
 class AdminUtils(commands.Cog):
     """Useful commands for server administrators."""
 
-    __version__ = "2.2.1"
+    __version__ = "2.2.3"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -76,7 +76,7 @@ class AdminUtils(commands.Cog):
     @commands.command()
     @commands.guild_only()
     @checks.admin_or_permissions(manage_guild=True)
-    @checks.bot_has_permissions(manage_guild=True)
+    @commands.bot_has_permissions(manage_guild=True)
     async def restartvoice(self, ctx):
         """Change server's voice region to random and back
 
@@ -99,7 +99,7 @@ class AdminUtils(commands.Cog):
     @commands.guild_only()
     @commands.cooldown(1, 60, commands.BucketType.guild)
     @checks.admin_or_permissions(move_members=True)
-    @checks.bot_has_permissions(move_members=True)
+    @commands.bot_has_guild_permissions(move_members=True)
     async def massmove(
         self, ctx, from_channel: discord.VoiceChannel, to_channel: discord.VoiceChannel
     ):
@@ -112,6 +112,12 @@ class AdminUtils(commands.Cog):
                 chat.error(_("There is no users in channel {}.").format(from_channel.mention))
             )
             return
+        if not from_channel.permissions_for(ctx.me).move_members:
+            await ctx.send(chat.error(_("I cant move users from that channel")))
+            return
+        if not to_channel.permissions_for(ctx.me).connect:
+            await ctx.send(chat.error(_("I cant move users to that channel")))
+            return
         async with ctx.typing():
             for member in from_channel.members:
                 try:
@@ -123,11 +129,11 @@ class AdminUtils(commands.Cog):
                     continue
         await ctx.send(_("Finished moving users. {} members could not be moved.").format(fails))
 
-    @commands.command()
+    @commands.command(hidden=True)
     @commands.guild_only()
     @commands.cooldown(1, 300, commands.BucketType.guild)
     @checks.admin_or_permissions(manage_nicknames=True)
-    @checks.bot_has_permissions(manage_nicknames=True)
+    @commands.bot_has_permissions(manage_nicknames=True)
     async def massnick(self, ctx, *, nickname: str):
         """Mass nicknames everyone on the server"""
         server = ctx.guild
@@ -146,11 +152,11 @@ class AdminUtils(commands.Cog):
             _("Finished nicknaming server. {} nicknames could not be completed.").format(counter)
         )
 
-    @commands.command()
+    @commands.command(hidden=True)
     @commands.guild_only()
     @commands.cooldown(1, 300, commands.BucketType.guild)
     @checks.admin_or_permissions(manage_nicknames=True)
-    @checks.bot_has_permissions(manage_nicknames=True)
+    @commands.bot_has_permissions(manage_nicknames=True)
     async def resetnicks(self, ctx):
         """Resets nicknames on the server"""
         server = ctx.guild
@@ -172,7 +178,7 @@ class AdminUtils(commands.Cog):
     @commands.group()
     @commands.guild_only()
     @checks.admin_or_permissions(manage_emojis=True)
-    @checks.bot_has_permissions(manage_emojis=True)
+    @commands.bot_has_permissions(manage_emojis=True)
     async def emoji(self, ctx):
         """Manage emoji"""
         pass
