@@ -62,7 +62,7 @@ async def non_global_bank(ctx):
 class Leveler(commands.Cog):
     """A level up thing with image generation!"""
 
-    __version__ = "2.1.0b"
+    __version__ = "2.1.1b"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot: Red):
@@ -2453,10 +2453,7 @@ class Leveler(commands.Cog):
         try:
             await user.avatar_url_as(format=AVATAR_FORMAT).save(profile_avatar, seek_begin=True)
         except discord.HTTPException:
-            blank_avatar_url = "https://i.imgur.com/8Pi7FBH.png"
-            async with self.session.get(blank_avatar_url) as r:
-                blank_avatar_image = await r.content.read()
-                profile_avatar = BytesIO(blank_avatar_image)
+            profile_avatar = f"{bundled_data_path(self)}/defaultavatar.png"
 
         bg_image = Image.open(profile_background).convert("RGBA")
         profile_image = Image.open(profile_avatar).convert("RGBA")
@@ -2863,10 +2860,7 @@ class Leveler(commands.Cog):
         try:
             await user.avatar_url_as(format=AVATAR_FORMAT).save(rank_avatar, seek_begin=True)
         except discord.HTTPException:
-            blank_avatar_url = "https://i.imgur.com/8Pi7FBH.png"
-            async with self.session.get(blank_avatar_url) as r:
-                blank_avatar_image = await r.content.read()
-                rank_avatar = BytesIO(blank_avatar_image)
+            rank_avatar = f"{bundled_data_path(self)}/defaultavatar.png"
 
         bg_image = Image.open(rank_background).convert("RGBA")
         profile_image = Image.open(rank_avatar).convert("RGBA")
@@ -3069,10 +3063,7 @@ class Leveler(commands.Cog):
         try:
             await user.avatar_url_as(format=AVATAR_FORMAT).save(level_avatar, seek_begin=True)
         except discord.HTTPException:
-            blank_avatar_url = "https://i.imgur.com/8Pi7FBH.png"
-            async with self.session.get(blank_avatar_url) as r:
-                blank_avatar_image = await r.content.read()
-                level_avatar = BytesIO(blank_avatar_image)
+            level_avatar = f"{bundled_data_path(self)}/defaultavatar.png"
 
         bg_image = Image.open(level_background).convert("RGBA")
         profile_image = Image.open(level_avatar).convert("RGBA")
