@@ -2410,8 +2410,7 @@ class Leveler(commands.Cog):
             if pred.result is False:
                 return await ctx.send("**Command cancelled.**")
         failed = 0
-        for i in range(pages):
-            await asyncio.sleep(0)
+        async for i in AsyncIter(range(pages)):
             async with self.session.get(
                 f"https://mee6.xyz/api/plugins/levels/leaderboard/{ctx.guild.id}?page={i}&limit=999"
             ) as r:
@@ -2421,8 +2420,7 @@ class Leveler(commands.Cog):
                 else:
                     return await ctx.send("No data was found within the Mee6 API.")
 
-            for userdata in data["players"]:
-                await asyncio.sleep(0)
+            async for userdata in AsyncIter(data["players"]):
                 # _handle_levelup requires a Member
                 user = ctx.guild.get_member(int(userdata["id"]))
 
@@ -2440,8 +2438,7 @@ class Leveler(commands.Cog):
 
                 # get rid of old level exp
                 old_server_exp = 0
-                for _i in range(userinfo["servers"][str(server.id)]["level"]):
-                    await asyncio.sleep(0)
+                async for _i in AsyncIter(range(userinfo["servers"][str(server.id)]["level"])):
                     old_server_exp += self._required_exp(_i)
                 userinfo["total_exp"] -= old_server_exp
                 userinfo["total_exp"] -= userinfo["servers"][str(server.id)]["current_exp"]
@@ -2480,12 +2477,12 @@ class Leveler(commands.Cog):
                 return await ctx.send("No data was found within the Mee6 API.")
         server = ctx.guild
         remove_role = None
-        for role in data["role_rewards"]:
-            await asyncio.sleep(0)
-            role_name = role["role"]["name"]
+        async for role in AsyncIter(data["role_rewards"]):
+            role_id = int(role["role"]["id"])
             level = role["rank"]
+            role_name = role["role"]["name"]
 
-            role_obj = discord.utils.find(lambda rol: rol.name == role_name, server.roles)
+            role_obj = ctx.guild.get_role(role_id)
             if role_obj is None:
                 await ctx.send("**Please make sure the `{}` roles exist!**".format(role_name))
             else:
