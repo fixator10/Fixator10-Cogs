@@ -62,7 +62,7 @@ async def non_global_bank(ctx):
 class Leveler(commands.Cog):
     """A level up thing with image generation!"""
 
-    __version__ = "2.1.3b"
+    __version__ = "2.1.4b"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot: Red):
@@ -2439,7 +2439,7 @@ class Leveler(commands.Cog):
                 # get rid of old level exp
                 old_server_exp = 0
                 async for _i in AsyncIter(range(userinfo["servers"][str(server.id)]["level"])):
-                    old_server_exp += self._required_exp(_i)
+                    old_server_exp += await self._required_exp(_i)
                 userinfo["total_exp"] -= old_server_exp
                 userinfo["total_exp"] -= userinfo["servers"][str(server.id)]["current_exp"]
 
