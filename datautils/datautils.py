@@ -74,7 +74,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.2.28"
+    __version__ = "2.2.29"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -201,15 +201,10 @@ class DataUtils(commands.Cog):
     @commands.command(aliases=["servinfo", "serv", "sv"])
     @commands.guild_only()
     @checks.bot_has_permissions(embed_links=True)
-    async def sinfo(self, ctx, *, server: int = None):
+    async def sinfo(self, ctx, *, server: commands.GuildConverter = None):
         """Shows server information"""
         if server is None or not await self.bot.is_owner(ctx.author):
             server = ctx.guild
-        else:
-            server = self.bot.get_guild(server)
-        if server is None:
-            await ctx.send(_("Failed to get server with provided ID"))
-            return
         afk = server.afk_timeout / 60
         try:
             widget = await server.widget()
@@ -330,15 +325,10 @@ class DataUtils(commands.Cog):
     @commands.guild_only()
     @checks.mod_or_permissions(ban_members=True)
     @checks.bot_has_permissions(embed_links=True)
-    async def bans(self, ctx: commands.Context, *, server: int = None):
+    async def bans(self, ctx: commands.Context, *, server: commands.GuildConverter = None):
         """Get bans from server by id"""
         if server is None or not await self.bot.is_owner(ctx.author):
             server = ctx.guild
-        else:
-            server = self.bot.get_guild(server)
-        if server is None:
-            await ctx.send(_("Failed to get server with provided ID"))
-            return
         if not server.me.guild_permissions.ban_members:
             await ctx.send(_('I need permission "Ban Members" to access banned members on server'))
             return
@@ -354,15 +344,10 @@ class DataUtils(commands.Cog):
     @commands.guild_only()
     @checks.admin_or_permissions(manage_guild=True)
     @checks.bot_has_permissions(embed_links=True)
-    async def invites(self, ctx: commands.Context, *, server: int = None):
+    async def invites(self, ctx: commands.Context, *, server: commands.GuildConverter = None):
         """Get invites from server by id"""
         if server is None or not await self.bot.is_owner(ctx.author):
             server = ctx.guild
-        else:
-            server = self.bot.get_guild(server)
-        if server is None:
-            await ctx.send(_("Failed to get server with provided ID"))
-            return
         if not server.me.guild_permissions.manage_guild:
             await ctx.send(
                 _('I need permission "Manage Server" to access list of invites on server')
@@ -455,15 +440,10 @@ class DataUtils(commands.Cog):
     @commands.guild_only()
     @commands.admin_or_permissions(manage_channels=True)
     @checks.bot_has_permissions(embed_links=True)
-    async def channels(self, ctx, *, server: int = None):
+    async def channels(self, ctx, *, server: commands.GuildConverter = None):
         """Get all channels on server"""
         if server is None or not await self.bot.is_owner(ctx.author):
             server = ctx.guild
-        else:
-            server = discord.utils.get(self.bot.guilds, id=server)
-        if server is None:
-            await ctx.send(_("Failed to get server with provided ID"))
-            return
         categories = "\n".join([x.name for x in server.categories]) or _("No categories")
         text_channels = "\n".join([x.name for x in server.text_channels]) or _("No text channels")
         voice_channels = "\n".join([x.name for x in server.voice_channels]) or _(
@@ -551,15 +531,10 @@ class DataUtils(commands.Cog):
     @commands.command(aliases=["listroles", "rolelist"])
     @commands.admin_or_permissions(manage_roles=True)
     @commands.guild_only()
-    async def roles(self, ctx, server: int = None):
+    async def roles(self, ctx, server: commands.GuildConverter = None):
         """Get all roles on server"""
         if server is None or not await self.bot.is_owner(ctx.author):
             server = ctx.guild
-        else:
-            server = self.bot.get_guild(server)
-        if server is None:
-            await ctx.send(_("Failed to get server with provided ID"))
-            return
         roles = []
         for role in reversed(server.roles):
             dic = {_("Name"): shorten(role.name, 32, placeholder="…"), _("ID"): role.id}
@@ -616,15 +591,10 @@ class DataUtils(commands.Cog):
 
     @commands.command(aliases=["emojilist", "listemojis"])
     @commands.guild_only()
-    async def emojis(self, ctx, server: int = None):
+    async def emojis(self, ctx, server: commands.GuildConverter = None):
         """Get all emojis on server"""
         if server is None or not await self.bot.is_owner(ctx.author):
             server = ctx.guild
-        else:
-            server = self.bot.get_guild(server)
-        if server is None:
-            await ctx.send(_("Failed to get server with provided ID"))
-            return
         emojis = [await self.emoji_embed(ctx, emoji) for emoji in server.emojis]
         pagenum = 1
         for page in emojis:
