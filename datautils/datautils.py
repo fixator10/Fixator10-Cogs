@@ -74,14 +74,14 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.2.29"
+    __version__ = "2.2.30"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
         self.bot = bot
         self.TIME_FORMAT = _("%d.%m.%Y %H:%M:%S %Z")
 
-    @commands.command(aliases=["fetchuser"])
+    @commands.command(aliases=["fetchuser"], hidden=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
     @checks.bot_has_permissions(embed_links=True)
     async def getuserinfo(self, ctx, user_id: int):
@@ -531,7 +531,7 @@ class DataUtils(commands.Cog):
     @commands.command(aliases=["listroles", "rolelist"])
     @commands.admin_or_permissions(manage_roles=True)
     @commands.guild_only()
-    async def roles(self, ctx, server: commands.GuildConverter = None):
+    async def roles(self, ctx, *, server: commands.GuildConverter = None):
         """Get all roles on server"""
         if server is None or not await self.bot.is_owner(ctx.author):
             server = ctx.guild
@@ -591,7 +591,7 @@ class DataUtils(commands.Cog):
 
     @commands.command(aliases=["emojilist", "listemojis"])
     @commands.guild_only()
-    async def emojis(self, ctx, server: commands.GuildConverter = None):
+    async def emojis(self, ctx, *, server: commands.GuildConverter = None):
         """Get all emojis on server"""
         if server is None or not await self.bot.is_owner(ctx.author):
             server = ctx.guild
