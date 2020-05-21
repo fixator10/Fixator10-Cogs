@@ -44,7 +44,7 @@ def bool_emojify(bool_var: bool) -> str:
 class MoreUtils(commands.Cog):
     """Some (maybe) useful utils."""
 
-    __version__ = "2.0.2"
+    __version__ = "2.0.3"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -59,7 +59,7 @@ class MoreUtils(commands.Cog):
         """Send bot's current time"""
         await ctx.send(datetime.datetime.now().strftime(_("%d.%m.%Y %H:%M:%S %Z")))
 
-    @commands.command(aliases=["HEX", "hex"])
+    @commands.command(aliases=["HEX", "hex", "colour"])
     @checks.bot_has_permissions(embed_links=True)
     async def color(self, ctx, color: discord.Color):
         """Shows some info about provided color"""
