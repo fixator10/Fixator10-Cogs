@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-03-23 11:06+0400\n"
+"POT-Creation-Date: 2020-05-22 00:12+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,103 +11,111 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: redgettext 3.1\n"
 
-#: adminutils.py:19
+#: adminutils\adminutils.py:19
 #, docstring
 msgid "Useful commands for server administrators."
 msgstr ""
 
-#: adminutils.py:36
+#: adminutils\adminutils.py:36
 #, docstring
 msgid "Cleanup inactive server members"
 msgstr ""
 
-#: adminutils.py:40
+#: adminutils\adminutils.py:40
 msgid ""
 "Due to Discord Restrictions, you cannot use more than 30 days for that cmd."
 msgstr ""
 
-#: adminutils.py:47
+#: adminutils\adminutils.py:47
 msgid "\\\"days\\\" arg cannot be less than 1..."
 msgstr ""
 
-#: adminutils.py:52
+#: adminutils\adminutils.py:52
 msgid ""
 "You about to kick **{to_kick}** inactive for **{days}** days members from "
 "this server. Are you sure?\\nTo agree, type \\\"yes\\\""
 msgstr ""
 
-#: adminutils.py:69
+#: adminutils\adminutils.py:67
 msgid ""
 "**{removed}**/**{all}** inactive members removed.\\n(They was inactive for "
 "**{days}** days)"
 msgstr ""
 
-#: adminutils.py:76
+#: adminutils\adminutils.py:74
 msgid "Inactive members cleanup canceled."
 msgstr ""
 
-#: adminutils.py:83
+#: adminutils\adminutils.py:81
 #, docstring
 msgid ""
 "Change server's voice region to random and back\\n\\n        Useful to "
 "reinitate all voice connections"
 msgstr ""
 
-#: adminutils.py:97
+#: adminutils\adminutils.py:94
 msgid "Voice restart"
 msgstr ""
 
-#: adminutils.py:109
+#: adminutils\adminutils.py:106
 #, docstring
 msgid ""
 "Move all members from one voice channel to another\\n\\n        Use double "
 "quotes if channel name has spaces"
 msgstr ""
 
-#: adminutils.py:116
+#: adminutils\adminutils.py:112
 msgid "There is no users in channel {}."
 msgstr ""
 
-#: adminutils.py:124
+#: adminutils\adminutils.py:116
+msgid "I cant move users from that channel"
+msgstr ""
+
+#: adminutils\adminutils.py:119
+msgid "I cant move users to that channel"
+msgstr ""
+
+#: adminutils\adminutils.py:125
 msgid "Massmove"
 msgstr ""
 
-#: adminutils.py:130
+#: adminutils\adminutils.py:130
 msgid "Finished moving users. {} members could not be moved."
 msgstr ""
 
-#: adminutils.py:139
+#: adminutils\adminutils.py:138
 #, docstring
 msgid "Mass nicknames everyone on the server"
 msgstr ""
 
-#: adminutils.py:147
+#: adminutils\adminutils.py:145
 msgid "Massnick"
 msgstr ""
 
-#: adminutils.py:154
+#: adminutils\adminutils.py:152
 msgid "Finished nicknaming server. {} nicknames could not be completed."
 msgstr ""
 
-#: adminutils.py:165
+#: adminutils\adminutils.py:161
 #, docstring
 msgid "Resets nicknames on the server"
 msgstr ""
 
-#: adminutils.py:172
+#: adminutils\adminutils.py:168
 msgid "Reset nicks"
 msgstr ""
 
-#: adminutils.py:179
+#: adminutils\adminutils.py:175
 msgid "Finished resetting server nicknames. Unable to reset {} nicknames."
 msgstr ""
 
-#: adminutils.py:189
+#: adminutils\adminutils.py:183
 #, docstring
 msgid "Manage emoji"
 msgstr ""
 
-#: adminutils.py:194
+#: adminutils\adminutils.py:188
 #, docstring
 msgid ""
 "Create custom emoji\\n\\n        Use double quotes if role name has "
@@ -116,23 +124,23 @@ msgid ""
 "https://example.com/image.png EmojiRole \\\"Test image\\\"`\\n        "
 msgstr ""
 
-#: adminutils.py:207
+#: adminutils\adminutils.py:200
 msgid "Unable to get emoji from provided url: {}"
 msgstr ""
 
-#: adminutils.py:217
+#: adminutils\adminutils.py:209
 msgid "Restricted to roles: {}"
 msgstr ""
 
-#: adminutils.py:226
+#: adminutils\adminutils.py:217
 msgid "This image type is unsupported, or link is incorrect"
 msgstr ""
 
-#: adminutils.py:230
+#: adminutils\adminutils.py:219
 msgid "An error occured on adding an emoji: {}"
 msgstr ""
 
-#: adminutils.py:239
+#: adminutils\adminutils.py:225
 #, docstring
 msgid ""
 "Rename emoji and restrict to certain roles\\n        Only this roles will be"
@@ -142,15 +150,15 @@ msgid ""
 "Administrator \\\"Allowed role\\\"`\\n        "
 msgstr ""
 
-#: adminutils.py:257
+#: adminutils\adminutils.py:243
 msgid "Restricted to roles: "
 msgstr ""
 
-#: adminutils.py:265
+#: adminutils\adminutils.py:251
 msgid "I can't edit this emoji"
 msgstr ""
 
-#: adminutils.py:270
+#: adminutils\adminutils.py:256
 #, docstring
 msgid "Remove emoji from server"
 msgstr ""

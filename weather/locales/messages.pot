@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-02-07 15:35+0400\n"
+"POT-Creation-Date: 2020-05-22 00:12+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,72 +11,77 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: redgettext 3.1\n"
 
-#: weather\weather.py:92 weather\weather.py:100
+#: weather\weather.py:96 weather\weather.py:104
 msgid "km"
 msgstr ""
 
-#: weather\weather.py:93 weather\weather.py:101 weather\weather.py:109
+#: weather\weather.py:97 weather\weather.py:105 weather\weather.py:113
 msgid "mm/h"
 msgstr ""
 
-#: weather\weather.py:94 weather\weather.py:102 weather\weather.py:110
+#: weather\weather.py:98 weather\weather.py:106 weather\weather.py:114
 msgid "cm"
 msgstr ""
 
-#: weather\weather.py:95 weather\weather.py:103 weather\weather.py:111
+#: weather\weather.py:99 weather\weather.py:107 weather\weather.py:115
 msgid "℃"
 msgstr ""
 
-#: weather\weather.py:96
+#: weather\weather.py:100
 msgid "m/s"
 msgstr ""
 
-#: weather\weather.py:97 weather\weather.py:105 weather\weather.py:113
+#: weather\weather.py:101 weather\weather.py:109 weather\weather.py:117
 msgid "hPa"
 msgstr ""
 
-#: weather\weather.py:104
+#: weather\weather.py:108
 msgid "km/h"
 msgstr ""
 
-#: weather\weather.py:108 weather\weather.py:116
+#: weather\weather.py:112 weather\weather.py:120
 msgid "mi"
 msgstr ""
 
-#: weather\weather.py:112 weather\weather.py:120
+#: weather\weather.py:116 weather\weather.py:124
 msgid "mph"
 msgstr ""
 
-#: weather\weather.py:117 weather\weather.py:118
+#: weather\weather.py:121 weather\weather.py:122
 msgid "″"
 msgstr ""
 
-#: weather\weather.py:119
+#: weather\weather.py:123
 msgid "℉"
 msgstr ""
 
-#: weather\weather.py:121
+#: weather\weather.py:125
 msgid "mbar"
 msgstr ""
 
-#: weather\weather.py:127
+#: weather\weather.py:129
 msgid "Rain"
 msgstr ""
 
-#: weather\weather.py:127
+#: weather\weather.py:129
 msgid "Snow"
 msgstr ""
 
-#: weather\weather.py:127
+#: weather\weather.py:129
 msgid "Sleet"
 msgstr ""
 
-#: weather\weather.py:146
+#: weather\weather.py:134
+#, docstring
+msgid "Weather forecast"
+msgstr ""
+
+#: weather\weather.py:152
 #, docstring
 msgid "Set API key for forecast.io"
 msgstr ""
 
-#: weather\weather.py:147
+#: weather\weather.py:153
 msgid ""
 "To get forecast.io API key:\\n1. Register/login at "
 "[DarkSky](https://darksky.net/dev/register)\\n2. Copy [\\\"Your Secret "
@@ -84,7 +89,7 @@ msgid ""
 "secret <your_apikey>`"
 msgstr ""
 
-#: weather\weather.py:159
+#: weather\weather.py:163
 #, docstring
 msgid ""
 "Set forecast units for yourself\\n\\n        Applicable units:\\n        si "
@@ -93,19 +98,19 @@ msgid ""
 "speed in km/h\\n        reset - reset your unit preference"
 msgstr ""
 
-#: weather\weather.py:170
+#: weather\weather.py:175 weather\weather.py:186
 msgid "Your current units are: {}"
 msgstr ""
 
-#: weather\weather.py:172
+#: weather\weather.py:177
 msgid "Not set, using server's default {}"
 msgstr ""
 
-#: weather\weather.py:187
+#: weather\weather.py:200
 msgid "Units \\\"{}\\\" are not supported, check {}help forecastunits"
 msgstr ""
 
-#: weather\weather.py:199
+#: weather\weather.py:213
 #, docstring
 msgid ""
 "Set forecast units for this guild\\n\\n        Applicable units:\\n        "
@@ -114,185 +119,189 @@ msgid ""
 " speed in km/h"
 msgstr ""
 
-#: weather\weather.py:209
+#: weather\weather.py:223
 msgid "Current units are: {}"
 msgstr ""
 
-#: weather\weather.py:219
+#: weather\weather.py:231
 msgid "Units \\\"{}\\\" are not supported, check {}help forecastunits guild"
 msgstr ""
 
-#: weather\weather.py:232
+#: weather\weather.py:244
 #, docstring
 msgid "Shows weather in provided place"
 msgstr ""
 
-#: weather\weather.py:240 weather\weather.py:352
+#: weather\weather.py:259 weather\weather.py:383
+msgid "Cannot find a place {}. OSM returned {}"
+msgstr ""
+
+#: weather\weather.py:266 weather\weather.py:390
 msgid "Cannot find a place {}"
 msgstr ""
 
-#: weather\weather.py:258 weather\weather.py:369
+#: weather\weather.py:284 weather\weather.py:408
 msgid ""
 "This command requires API key. Use {}forecastapi to get more information"
 msgstr ""
 
-#: weather\weather.py:266 weather\weather.py:377
+#: weather\weather.py:292 weather\weather.py:416
 msgid "Unable to get data from forecast.io"
 msgstr ""
 
-#: weather\weather.py:271 weather\weather.py:384
+#: weather\weather.py:297 weather\weather.py:423
 msgid "Weather in {}"
 msgstr ""
 
-#: weather\weather.py:272 weather\weather.py:388
+#: weather\weather.py:300 weather\weather.py:427
 msgid "[View on Google Maps](https://www.google.com/maps/place/{},{})"
 msgstr ""
 
-#: weather\weather.py:279 weather\weather.py:395
+#: weather\weather.py:306 weather\weather.py:433
 msgid "Powered by Dark Sky"
 msgstr ""
 
-#: weather\weather.py:282 weather\weather.py:404
+#: weather\weather.py:308 weather\weather.py:441
 msgid "Summary"
 msgstr ""
 
-#: weather\weather.py:289 weather\weather.py:411
+#: weather\weather.py:314 weather\weather.py:445
 msgid "Temperature"
 msgstr ""
 
-#: weather\weather.py:294 weather\weather.py:416
+#: weather\weather.py:319 weather\weather.py:450
 msgid "Air pressure"
 msgstr ""
 
-#: weather\weather.py:299 weather\weather.py:421
+#: weather\weather.py:324 weather\weather.py:455
 msgid "Humidity"
 msgstr ""
 
-#: weather\weather.py:301 weather\weather.py:423
+#: weather\weather.py:326 weather\weather.py:457
 msgid "Visibility"
 msgstr ""
 
-#: weather\weather.py:307 weather\weather.py:429
+#: weather\weather.py:332 weather\weather.py:463
 msgid "Wind speed"
 msgstr ""
 
-#: weather\weather.py:314 weather\weather.py:436
+#: weather\weather.py:339 weather\weather.py:470
 msgid "Cloud cover"
 msgstr ""
 
-#: weather\weather.py:316 weather\weather.py:438
+#: weather\weather.py:341 weather\weather.py:472
 msgid "Ozone density"
 msgstr ""
 
-#: weather\weather.py:321 weather\weather.py:443
+#: weather\weather.py:344 weather\weather.py:475
 msgid "UV index"
 msgstr ""
 
-#: weather\weather.py:327 weather\weather.py:453
+#: weather\weather.py:350 weather\weather.py:485
 msgid "Precipitation"
 msgstr ""
 
-#: weather\weather.py:328
+#: weather\weather.py:351
 msgid "Probability: {}%\\n"
 msgstr ""
 
-#: weather\weather.py:329 weather\weather.py:455
+#: weather\weather.py:352 weather\weather.py:487
 msgid "Intensity: {} {}"
 msgstr ""
 
-#: weather\weather.py:335
+#: weather\weather.py:358
 msgid "\\nType: {}"
 msgstr ""
 
-#: weather\weather.py:345
+#: weather\weather.py:368
 #, docstring
 msgid "Shows 7 days forecast for provided place"
 msgstr ""
 
-#: weather\weather.py:397
+#: weather\weather.py:434
 msgid "Page {}/8"
 msgstr ""
 
-#: weather\weather.py:402
+#: weather\weather.py:439
 msgid "No summary for this day"
 msgstr ""
 
-#: weather\weather.py:454
+#: weather\weather.py:486
 msgid "Probability: {}%\\n"
 msgstr ""
 
-#: weather\weather.py:461
+#: weather\weather.py:493
 msgid "\\nType: {}"
 msgstr ""
 
-#: weather\weather.py:468
+#: weather\weather.py:498
 msgid "\\nSnowfall accumulation: {} {}"
 msgstr ""
 
-#: weather\weather.py:476
+#: weather\weather.py:504
 msgid "Moon phase"
 msgstr ""
 
-#: weather\weather.py:511
+#: weather\weather.py:540
 msgid "N"
 msgstr ""
 
-#: weather\weather.py:512
+#: weather\weather.py:541
 msgid "NNE"
 msgstr ""
 
-#: weather\weather.py:513
+#: weather\weather.py:542
 msgid "NE"
 msgstr ""
 
-#: weather\weather.py:514
+#: weather\weather.py:543
 msgid "ENE"
 msgstr ""
 
-#: weather\weather.py:515
+#: weather\weather.py:544
 msgid "E"
 msgstr ""
 
-#: weather\weather.py:516
+#: weather\weather.py:545
 msgid "ESE"
 msgstr ""
 
-#: weather\weather.py:517
+#: weather\weather.py:546
 msgid "SE"
 msgstr ""
 
-#: weather\weather.py:518
+#: weather\weather.py:547
 msgid "SSE"
 msgstr ""
 
-#: weather\weather.py:519
+#: weather\weather.py:548
 msgid "S"
 msgstr ""
 
-#: weather\weather.py:520
+#: weather\weather.py:549
 msgid "SSW"
 msgstr ""
 
-#: weather\weather.py:521
+#: weather\weather.py:550
 msgid "SW"
 msgstr ""
 
-#: weather\weather.py:522
+#: weather\weather.py:551
 msgid "WSW"
 msgstr ""
 
-#: weather\weather.py:523
+#: weather\weather.py:552
 msgid "W"
 msgstr ""
 
-#: weather\weather.py:524
+#: weather\weather.py:553
 msgid "WNW"
 msgstr ""
 
-#: weather\weather.py:525
+#: weather\weather.py:554
 msgid "NW"
 msgstr ""
 
-#: weather\weather.py:526
+#: weather\weather.py:555
 msgid "NNW"
 msgstr ""

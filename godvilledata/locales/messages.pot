@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-02-07 15:35+0400\n"
+"POT-Creation-Date: 2020-05-22 00:12+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,22 +11,22 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: redgettext 3.1\n"
 
-#: godvilledata\godvilledata.py:50
+#: godvilledata\godvilledata.py:66
 #, docstring
 msgid "Get data about godville.net (Russian) god by name"
 msgstr ""
 
-#: godvilledata\godvilledata.py:183
+#: godvilledata\godvilledata.py:182
 #, docstring
 msgid "Get data about godvillegame.com (Global) god by name"
 msgstr ""
 
-#: godvilledata\godvilledata.py:311
+#: godvilledata\godvilledata.py:298
 #, docstring
 msgid "Set apikey for your character.\\n\\n        Only one character per user"
 msgstr ""
 
-#: godvilledata\godvilledata.py:320
+#: godvilledata\godvilledata.py:307
 #, docstring
 msgid "Remove your apikey and godname from bot's data"
 msgstr ""

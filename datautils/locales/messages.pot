@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-02-07 15:35+0400\n"
+"POT-Creation-Date: 2020-05-22 00:12+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,293 +11,305 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: redgettext 3.1\n"
 
-#: datautils\datautils.py:24
-msgid "VIP voice regions"
-msgstr ""
-
-#: datautils\datautils.py:25
-msgid "Vanity invite URL"
-msgstr ""
-
-#: datautils\datautils.py:26
-msgid "Invite splash{splash}"
-msgstr ""
-
-#: datautils\datautils.py:27
-msgid "Verified"
-msgstr ""
-
-#: datautils\datautils.py:28
-msgid "Discord Partner"
-msgstr ""
-
-#: datautils\datautils.py:29
-msgid "Extended emoji limit"
-msgstr ""
-
 #: datautils\datautils.py:30
-msgid "Shows in Server Discovery{discovery}"
+msgid "384kbps voice bitrate"
 msgstr ""
 
 #: datautils\datautils.py:31
-msgid "Store channels"
+msgid "Vanity invite URL"
 msgstr ""
 
 #: datautils\datautils.py:32
-msgid "\\\"Lurkable\\\""
+msgid "Invite splash{splash}"
 msgstr ""
 
 #: datautils\datautils.py:33
-msgid "News channels"
+msgid "Verified"
 msgstr ""
 
 #: datautils\datautils.py:34
-msgid "Banner{banner}"
+msgid "Discord Partner"
 msgstr ""
 
 #: datautils\datautils.py:35
-msgid "Animated icon"
+msgid "Extended emoji limit"
 msgstr ""
 
 #: datautils\datautils.py:36
-msgid "Cannot be public"
+msgid "Shows in Server Discovery{discovery}"
+msgstr ""
+
+#: datautils\datautils.py:37
+msgid "Can be in \\\"Featured\\\" section of Server Discovery"
+msgstr ""
+
+#: datautils\datautils.py:38
+msgid "Store channels"
+msgstr ""
+
+#: datautils\datautils.py:39
+msgid "Can be joined without an invite"
 msgstr ""
 
 #: datautils\datautils.py:40
-msgid "Playing"
+msgid "News channels"
 msgstr ""
 
 #: datautils\datautils.py:41
-msgid "Watching"
+msgid "Banner{banner}"
 msgstr ""
 
 #: datautils\datautils.py:42
+msgid "Animated icon"
+msgstr ""
+
+#: datautils\datautils.py:43
+msgid "Welcome screen"
+msgstr ""
+
+#: datautils\datautils.py:44
+msgid "Cannot be public"
+msgstr ""
+
+#: datautils\datautils.py:45
+msgid "Was in Server Discovery"
+msgstr ""
+
+#: datautils\datautils.py:49
+msgid "Playing"
+msgstr ""
+
+#: datautils\datautils.py:50
+msgid "Watching"
+msgstr ""
+
+#: datautils\datautils.py:51
 msgid "Listening"
 msgstr ""
 
-#: datautils\datautils.py:53
+#: datautils\datautils.py:75
+#, docstring
+msgid "Commands for getting information about users or servers."
+msgstr ""
+
+#: datautils\datautils.py:82
 msgid "%d.%m.%Y %H:%M:%S %Z"
 msgstr ""
 
-#: datautils\datautils.py:59
+#: datautils\datautils.py:88
 #, docstring
 msgid "Get info about any Discord's user by ID"
 msgstr ""
 
-#: datautils\datautils.py:64
+#: datautils\datautils.py:92
 msgid "Discord user with ID `{}` not found"
 msgstr ""
 
-#: datautils\datautils.py:70
+#: datautils\datautils.py:97
 msgid "I was unable to get data about user with ID `{}`. Try again later"
 msgstr ""
 
-#: datautils\datautils.py:81 datautils\datautils.py:398
-#: datautils\datautils.py:507 datautils\datautils.py:562
-#: datautils\datautils.py:653
+#: datautils\datautils.py:108 datautils\datautils.py:387
+#: datautils\datautils.py:491 datautils\datautils.py:540
+#: datautils\datautils.py:630
 msgid "ID"
 msgstr ""
 
-#: datautils\datautils.py:82 datautils\datautils.py:136
+#: datautils\datautils.py:109 datautils\datautils.py:161
 msgid "Bot?"
 msgstr ""
 
-#: datautils\datautils.py:83 datautils\datautils.py:137
+#: datautils\datautils.py:110 datautils\datautils.py:162
 msgid "System?"
 msgstr ""
 
-#: datautils\datautils.py:84 datautils\datautils.py:148
-#: datautils\datautils.py:426 datautils\datautils.py:524
+#: datautils\datautils.py:111 datautils\datautils.py:172
+#: datautils\datautils.py:414 datautils\datautils.py:507
 msgid "Mention"
 msgstr ""
 
-#: datautils\datautils.py:86
+#: datautils\datautils.py:113
 msgid "Default avatar"
 msgstr ""
 
-#: datautils\datautils.py:91
+#: datautils\datautils.py:117
 msgid "Avatar"
 msgstr ""
 
-#: datautils\datautils.py:96
+#: datautils\datautils.py:122
 msgid "Created at"
 msgstr ""
 
-#: datautils\datautils.py:103
+#: datautils\datautils.py:129
 #, docstring
 msgid "Information on a user"
 msgstr ""
 
-#: datautils\datautils.py:111
+#: datautils\datautils.py:137
 msgid "Nickname"
 msgstr ""
 
-#: datautils\datautils.py:112 datautils\datautils.py:203
-#: datautils\datautils.py:562
+#: datautils\datautils.py:139 datautils\datautils.py:218
+#: datautils\datautils.py:540
 msgid "Name"
 msgstr ""
 
-#: datautils\datautils.py:114
+#: datautils\datautils.py:141
 msgid "Client"
 msgstr ""
 
-#: datautils\datautils.py:124
+#: datautils\datautils.py:150
 msgid "Joined server"
 msgstr ""
 
-#: datautils\datautils.py:128 datautils\datautils.py:410
-#: datautils\datautils.py:515 datautils\datautils.py:658
+#: datautils\datautils.py:153 datautils\datautils.py:399
+#: datautils\datautils.py:499 datautils\datautils.py:635
+#: datautils\datautils.py:644
 msgid "Has existed since"
 msgstr ""
 
-#: datautils\datautils.py:131 datautils\datautils.py:521
+#: datautils\datautils.py:156 datautils\datautils.py:504
 msgid "Color"
 msgstr ""
 
-#: datautils\datautils.py:133
+#: datautils\datautils.py:159
 msgid "Boosted server"
 msgstr ""
 
-#: datautils\datautils.py:139
+#: datautils\datautils.py:164
 msgid "Server permissions"
 msgstr ""
 
-#: datautils\datautils.py:145
+#: datautils\datautils.py:170
 msgid "In voice channel"
 msgstr ""
 
-#: datautils\datautils.py:153 datautils\datautils.py:668
+#: datautils\datautils.py:177 datautils\datautils.py:641
 msgid "Roles"
 msgstr ""
 
-#: datautils\datautils.py:167
+#: datautils\datautils.py:189
 #, docstring
 msgid "List user's activities"
 msgstr ""
 
-#: datautils\datautils.py:177
+#: datautils\datautils.py:199
 msgid "Right now this user is doing nothing"
 msgstr ""
 
-#: datautils\datautils.py:183
+#: datautils\datautils.py:205
 #, docstring
 msgid "Shows server information"
 msgstr ""
 
-#: datautils\datautils.py:189 datautils\datautils.py:328
-#: datautils\datautils.py:354 datautils\datautils.py:468
-#: datautils\datautils.py:558 datautils\datautils.py:627
-msgid "Failed to get server with provided ID"
-msgstr ""
-
-#: datautils\datautils.py:197
+#: datautils\datautils.py:214
 msgid "Server info"
 msgstr ""
 
-#: datautils\datautils.py:204
+#: datautils\datautils.py:219
 msgid "Server ID"
 msgstr ""
 
-#: datautils\datautils.py:206
+#: datautils\datautils.py:220
 msgid "Existed since"
 msgstr ""
 
-#: datautils\datautils.py:208
+#: datautils\datautils.py:221
 msgid "Region"
 msgstr ""
 
-#: datautils\datautils.py:210
+#: datautils\datautils.py:223
 msgid "Discovery language"
 msgstr ""
 
-#: datautils\datautils.py:213
+#: datautils\datautils.py:224
 msgid "Owner"
 msgstr ""
 
-#: datautils\datautils.py:216
+#: datautils\datautils.py:226
 msgid "AFK timeout and channel"
 msgstr ""
 
-#: datautils\datautils.py:217
+#: datautils\datautils.py:227
 msgid "{} min in {}"
 msgstr ""
 
-#: datautils\datautils.py:222
+#: datautils\datautils.py:232
 msgid "Verification level"
 msgstr ""
 
-#: datautils\datautils.py:223
+#: datautils\datautils.py:233
 msgid "None"
 msgstr ""
 
-#: datautils\datautils.py:225
+#: datautils\datautils.py:235
 msgid "Low"
 msgstr ""
 
-#: datautils\datautils.py:227
+#: datautils\datautils.py:237
 msgid "Medium"
 msgstr ""
 
-#: datautils\datautils.py:229
+#: datautils\datautils.py:239
 msgid "(╯°□°）╯︵ ┻━┻"
 msgstr ""
 
-#: datautils\datautils.py:231
+#: datautils\datautils.py:241
 msgid "┻━┻ ﾐヽ(ಠ益ಠ)ノ彡┻━┻"
 msgstr ""
 
-#: datautils\datautils.py:233 datautils\datautils.py:243
-#: datautils\datautils.py:251
+#: datautils\datautils.py:243 datautils\datautils.py:253
+#: datautils\datautils.py:261
 msgid "Unknown"
 msgstr ""
 
-#: datautils\datautils.py:236
+#: datautils\datautils.py:246
 msgid "Explicit content filter"
 msgstr ""
 
-#: datautils\datautils.py:237
+#: datautils\datautils.py:247
 msgid "Don't scan any messages."
 msgstr ""
 
-#: datautils\datautils.py:239
+#: datautils\datautils.py:249
 msgid "Scan messages from members without a role."
 msgstr ""
 
-#: datautils\datautils.py:241
+#: datautils\datautils.py:251
 msgid "Scan messages sent by all members."
 msgstr ""
 
-#: datautils\datautils.py:246
+#: datautils\datautils.py:256
 msgid "Default notifications"
 msgstr ""
 
-#: datautils\datautils.py:247
+#: datautils\datautils.py:257
 msgid "All messages"
 msgstr ""
 
-#: datautils\datautils.py:249
+#: datautils\datautils.py:259
 msgid "Only @mentions"
 msgstr ""
 
-#: datautils\datautils.py:253
+#: datautils\datautils.py:263
 msgid "2FA admins"
 msgstr ""
 
-#: datautils\datautils.py:255
+#: datautils\datautils.py:266
 msgid "System messages channel"
 msgstr ""
 
-#: datautils\datautils.py:256
+#: datautils\datautils.py:267
 msgid ""
 "**Channel:** {channel}\\n**Welcome message:** {welcome}\\n**Boosts:** "
 "{boost}"
 msgstr ""
 
-#: datautils\datautils.py:268
+#: datautils\datautils.py:279
 msgid "Stats"
 msgstr ""
 
-#: datautils\datautils.py:269
+#: datautils\datautils.py:280
 msgid ""
 "**Bot's shard:** {shard}\\n**Member count:** "
 "{members}/{members_limit}\\n**Role count:** {roles}/250\\n**Channel count:**"
@@ -307,20 +319,20 @@ msgid ""
 "kbps\\n**Max filesize:** {files} MB"
 msgstr ""
 
-#: datautils\datautils.py:297
+#: datautils\datautils.py:309
 msgid "Features"
 msgstr ""
 
-#: datautils\datautils.py:312
+#: datautils\datautils.py:320
 msgid "Widget's invite"
 msgstr ""
 
-#: datautils\datautils.py:322
+#: datautils\datautils.py:329
 #, docstring
 msgid "Get bans from server by id"
 msgstr ""
 
-#: datautils\datautils.py:332
+#: datautils\datautils.py:333
 msgid "I need permission \\\"Ban Members\\\" to access banned members on server"
 msgstr ""
 
@@ -333,251 +345,246 @@ msgstr ""
 msgid "Get invites from server by id"
 msgstr ""
 
-#: datautils\datautils.py:358
+#: datautils\datautils.py:353
 msgid "I need permission \\\"Manage Server\\\" to access list of invites on server"
 msgstr ""
 
-#: datautils\datautils.py:368
+#: datautils\datautils.py:361
 msgid "There is no invites for this server"
 msgstr ""
 
-#: datautils\datautils.py:381
+#: datautils\datautils.py:374
 #, docstring
 msgid "Get info about channel"
 msgstr ""
 
-#: datautils\datautils.py:400
+#: datautils\datautils.py:389
 msgid "Type"
 msgstr ""
 
-#: datautils\datautils.py:414
+#: datautils\datautils.py:402
 msgid "Category"
 msgstr ""
 
-#: datautils\datautils.py:416
+#: datautils\datautils.py:404
 msgid "Not in category"
 msgstr ""
 
-#: datautils\datautils.py:418 datautils\datautils.py:520
+#: datautils\datautils.py:406 datautils\datautils.py:503
 msgid "Position"
 msgstr ""
 
-#: datautils\datautils.py:420 datautils\datautils.py:448
+#: datautils\datautils.py:408 datautils\datautils.py:430
 msgid "Users"
 msgstr ""
 
-#: datautils\datautils.py:422
+#: datautils\datautils.py:410
 msgid "Changed roles permissions"
 msgstr ""
 
-#: datautils\datautils.py:423
+#: datautils\datautils.py:411
 msgid "Not set"
 msgstr ""
 
-#: datautils\datautils.py:432
+#: datautils\datautils.py:419
 msgid "Slowmode delay"
 msgstr ""
 
-#: datautils\datautils.py:433
+#: datautils\datautils.py:419
 msgid "{} seconds"
 msgstr ""
 
-#: datautils\datautils.py:435 datautils\datautils.py:454
+#: datautils\datautils.py:421 datautils\datautils.py:436
 msgid "NSFW"
 msgstr ""
 
-#: datautils\datautils.py:441
+#: datautils\datautils.py:426
 msgid "Webhooks count"
 msgstr ""
 
-#: datautils\datautils.py:445
+#: datautils\datautils.py:428
 msgid "Bitrate"
 msgstr ""
 
-#: datautils\datautils.py:445
+#: datautils\datautils.py:428
 msgid "{}kbps"
 msgstr ""
 
-#: datautils\datautils.py:462
+#: datautils\datautils.py:444
 #, docstring
 msgid "Get all channels on server"
 msgstr ""
 
-#: datautils\datautils.py:472
+#: datautils\datautils.py:447
 msgid "No categories"
 msgstr ""
 
-#: datautils\datautils.py:475
+#: datautils\datautils.py:448
 msgid "No text channels"
 msgstr ""
 
-#: datautils\datautils.py:478
+#: datautils\datautils.py:449
 msgid "No voice channels"
 msgstr ""
 
-#: datautils\datautils.py:479
-msgid "Channels list"
+#: datautils\datautils.py:459
+msgid "Page {}/{} • Categories: {} • Total channels: {}"
 msgstr ""
 
-#: datautils\datautils.py:480
-msgid "Categories:"
+#: datautils\datautils.py:467
+msgid "Page {}/{} • Text channels: {} • Total channels: {}"
 msgstr ""
 
-#: datautils\datautils.py:481
-msgid "Text channels:"
+#: datautils\datautils.py:475
+msgid "Page {}/{} • Voice channels: {} • Total channels: {}"
 msgstr ""
 
-#: datautils\datautils.py:482
-msgid "Voice channels:"
-msgstr ""
-
-#: datautils\datautils.py:484
-msgid ""
-"Total count of channels: {} • Categories: {} • Text Channels: {} • Voice "
-"Channels: {}"
-msgstr ""
-
-#: datautils\datautils.py:502
+#: datautils\datautils.py:486
 #, docstring
 msgid "Get info about role"
 msgstr ""
 
-#: datautils\datautils.py:509
+#: datautils\datautils.py:493
 msgid "Permissions"
 msgstr ""
 
-#: datautils\datautils.py:518
+#: datautils\datautils.py:501
 msgid "Hoist"
 msgstr ""
 
-#: datautils\datautils.py:519
+#: datautils\datautils.py:502
 msgid "Members"
 msgstr ""
 
-#: datautils\datautils.py:522 datautils\datautils.py:664
+#: datautils\datautils.py:505 datautils\datautils.py:638
 msgid "Managed"
 msgstr ""
 
-#: datautils\datautils.py:523
+#: datautils\datautils.py:506
 msgid "Mentionable"
 msgstr ""
 
-#: datautils\datautils.py:533
+#: datautils\datautils.py:516
 #, docstring
 msgid "Get list of members that has provided role"
 msgstr ""
 
-#: datautils\datautils.py:536
+#: datautils\datautils.py:519
 msgid "There is no members in this role"
 msgstr ""
 
-#: datautils\datautils.py:544 datautils\datautils.py:632
+#: datautils\datautils.py:527 datautils\datautils.py:601
 msgid "Page {}/{}"
 msgstr ""
 
-#: datautils\datautils.py:552
+#: datautils\datautils.py:535
 #, docstring
 msgid "Get all roles on server"
 msgstr ""
 
-#: datautils\datautils.py:580
+#: datautils\datautils.py:556
 #, docstring
 msgid "Check user's permission for current or provided channel"
 msgstr ""
 
-#: datautils\datautils.py:597
+#: datautils\datautils.py:571
 #, docstring
 msgid "Get info about emoji"
 msgstr ""
 
-#: datautils\datautils.py:600
+#: datautils\datautils.py:574
 msgid "React to this message with your emoji"
 msgstr ""
 
-#: datautils\datautils.py:637
+#: datautils\datautils.py:595
+#, docstring
+msgid "Get all emojis on server"
+msgstr ""
+
+#: datautils\datautils.py:606
 msgid "No emojis on this server"
 msgstr ""
 
-#: datautils\datautils.py:650
+#: datautils\datautils.py:619
 msgid "Unicode character"
 msgstr ""
 
-#: datautils\datautils.py:651
+#: datautils\datautils.py:625
 msgid "Unicode category"
 msgstr ""
 
-#: datautils\datautils.py:654
+#: datautils\datautils.py:631
 msgid "Animated"
 msgstr ""
 
-#: datautils\datautils.py:662
+#: datautils\datautils.py:637
 msgid "\\\":\\\" required"
 msgstr ""
 
-#: datautils\datautils.py:665
+#: datautils\datautils.py:639
 msgid "Server"
 msgstr ""
 
-#: datautils\datautils.py:672
+#: datautils\datautils.py:647
 msgid "Custom emoji"
 msgstr ""
 
-#: datautils\datautils.py:685
+#: datautils\datautils.py:667
 msgid "Custom status"
 msgstr ""
 
-#: datautils\datautils.py:688
+#: datautils\datautils.py:670
 msgid "Playing {}"
 msgstr ""
 
-#: datautils\datautils.py:693
+#: datautils\datautils.py:686
 msgid "This game will end at"
 msgstr ""
 
-#: datautils\datautils.py:696
+#: datautils\datautils.py:689
 msgid "Playing since"
 msgstr ""
 
-#: datautils\datautils.py:707
+#: datautils\datautils.py:712
 msgid "Small image text"
 msgstr ""
 
-#: datautils\datautils.py:712
+#: datautils\datautils.py:715
 msgid "Application ID"
 msgstr ""
 
-#: datautils\datautils.py:715 datautils\datautils.py:745
+#: datautils\datautils.py:718 datautils\datautils.py:748
 msgid "Started at"
 msgstr ""
 
-#: datautils\datautils.py:718 datautils\datautils.py:751
+#: datautils\datautils.py:722 datautils\datautils.py:750
 msgid "Will end at"
 msgstr ""
 
-#: datautils\datautils.py:721
+#: datautils\datautils.py:726
 msgid "Large image text"
 msgstr ""
 
-#: datautils\datautils.py:730
+#: datautils\datautils.py:735
 msgid "Streaming on {}"
 msgstr ""
 
-#: datautils\datautils.py:733
+#: datautils\datautils.py:739
 msgid "Game"
 msgstr ""
 
-#: datautils\datautils.py:737
+#: datautils\datautils.py:743
 msgid "by {}\\non {}"
 msgstr ""
 
-#: datautils\datautils.py:748
+#: datautils\datautils.py:749
 msgid "Duration"
 msgstr ""
 
-#: datautils\datautils.py:754
+#: datautils\datautils.py:752
 msgid "Listening since"
 msgstr ""
 
-#: datautils\datautils.py:757
+#: datautils\datautils.py:754
 msgid "Unsupported activity type: {}"
 msgstr ""
