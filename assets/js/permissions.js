@@ -125,19 +125,20 @@ angular.module('permissionsCalc', ['themes'])
                 name: 'General',
                 active: false,
                 permissions: [
-                    {active: false, id: 'administrator',    name: 'Administrator',         value: 0x8,        auto: false},
-                    {active: false, id: 'manage_roles',     name: 'Manage Roles',          value: 0x10000000, auto: false},
-                    {active: false, id: 'kick_members',     name: 'Kick Members',          value: 0x2,        auto: false},
-                    {active: false, id: 'instant_invite',   name: 'Create Instant Invite', value: 0x1,        auto: true },
-                    {active: false, id: 'manage_nicknames', name: 'Manage Nicknames',      value: 0x8000000,  auto: true },
-                    {active: false, id: 'manage_server',    name: 'Manage Server',         value: 0x20,       auto: false},
-                    {active: false, id: 'manage_channels',  name: 'Manage Channels',       value: 0x10,       auto: false},
-                    {active: false, id: 'ban_members',      name: 'Ban Members',           value: 0x4,        auto: false},
-                    {active: false, id: 'change_nickname',  name: 'Change Nickname',       value: 0x4000000,  auto: true },
-                    {active: false, id: 'manage_webhooks',  name: 'Manage Webhooks',       value: 0x20000000, auto: false},
-                    {active: false, id: 'manage_emojis',    name: 'Manage Emojis',         value: 0x40000000, auto: true },
-                    {active: false, id: 'view_audit_log',   name: 'View Audit Log',        value: 0x80,       auto: true },
-                    {active: false, id: 'view_channel',     name: 'View Channel',          value: 0x400,      auto: true }
+                    {active: false, id: 'administrator',       name: 'Administrator',         value: 0x8,        auto: false},
+                    {active: false, id: 'manage_roles',        name: 'Manage Roles',          value: 0x10000000, auto: false},
+                    {active: false, id: 'kick_members',        name: 'Kick Members',          value: 0x2,        auto: false},
+                    {active: false, id: 'instant_invite',      name: 'Create Instant Invite', value: 0x1,        auto: true },
+                    {active: false, id: 'manage_nicknames',    name: 'Manage Nicknames',      value: 0x8000000,  auto: true },
+                    {active: false, id: 'manage_server',       name: 'Manage Server',         value: 0x20,       auto: false},
+                    {active: false, id: 'manage_channels',     name: 'Manage Channels',       value: 0x10,       auto: false},
+                    {active: false, id: 'ban_members',         name: 'Ban Members',           value: 0x4,        auto: false},
+                    {active: false, id: 'change_nickname',     name: 'Change Nickname',       value: 0x4000000,  auto: true },
+                    {active: false, id: 'manage_webhooks',     name: 'Manage Webhooks',       value: 0x20000000, auto: false},
+                    {active: false, id: 'manage_emojis',       name: 'Manage Emojis',         value: 0x40000000, auto: true },
+                    {active: false, id: 'view_audit_log',      name: 'View Audit Log',        value: 0x80,       auto: true },
+                    {active: false, id: 'view_guild_insights', name: 'View Server Insights',  value: 0x80000,    auto: true },
+                    {active: false, id: 'view_channel',        name: 'View Channel',          value: 0x400,      auto: true }
                 ]
             },
             {
@@ -165,7 +166,8 @@ angular.module('permissionsCalc', ['themes'])
                     {active: false, id: 'speak',              name: 'Speak',              value: 0x200000,  auto: true },
                     {active: false, id: 'deafen_members',     name: 'Deafen Members',     value: 0x800000,  auto: true },
                     {active: false, id: 'use_voice_activity', name: 'Use Voice Activity', value: 0x2000000, auto: true },
-                    {active: false, id: 'go_live',            name: 'Go Live',            value: 0x200,     auto: true }
+                    {active: false, id: 'go_live',            name: 'Go Live',            value: 0x200,     auto: true },
+                    {active: false, id: 'priority_speaker',   name: 'Priority Speaker',   value: 0x100,     auto: true }
                 ]
             }
         ];
