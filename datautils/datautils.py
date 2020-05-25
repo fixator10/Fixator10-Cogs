@@ -74,7 +74,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.2.30"
+    __version__ = "2.3.0"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -120,6 +120,39 @@ class DataUtils(commands.Cog):
         em.set_image(url=user.avatar_url_as(static_format="png", size=2048))
         em.set_thumbnail(url=user.default_avatar_url)
         em.set_footer(text=_("Created at"))
+        await ctx.send(embed=em)
+
+    @commands.command(aliases=["widgetinfo"], hidden=True)
+    @checks.bot_has_permissions(embed_links=True)
+    async def fetchwidget(self, ctx, *, server_id: int):
+        try:
+            widget = await self.bot.fetch_widget(server_id)
+        except discord.Forbidden:
+            await ctx.send(chat.error(_("Widget is disabled for this server.")))
+            return
+        except discord.HTTPException as e:
+            await ctx.send(chat.error(_("Widget for that server is not found: {}").format(e.text)))
+            return
+        try:
+            invite = await widget.fetch_invite()
+        except discord.HTTPException:
+            invite = None
+        em = discord.Embed(title=_("Server info"), color=await ctx.embed_color(),)
+        em.add_field(name=_("Name"), value=chat.escape(widget.name, formatting=True))
+        stats_text = _(
+            "**Online member count:** {members}\n" "**Voice channel count:** {channels}"
+        ).format(members=len(widget.members), channels=len(widget.channels))
+        if invite:
+            stats_text += "\n" + _(
+                "**Approximate member count:** {approx_members}\n"
+                "**Approx. active members count:** {approx_active}"
+            ).format(
+                approx_members=invite.approximate_member_count,
+                approx_active=invite.approximate_presence_count,
+            )
+        em.add_field(name=_("Stats"), value=stats_text, inline=False)
+        if widget.invite_url:
+            em.add_field(name=_("Widget's invite"), value=widget.invite_url)
         await ctx.send(embed=em)
 
     @commands.command(aliases=["memberinfo", "membinfo"])

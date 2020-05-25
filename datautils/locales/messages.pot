@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-05-22 00:12+0400\n"
+"POT-Creation-Date: 2020-05-25 17:15+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,305 +11,343 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: redgettext 3.1\n"
 
-#: datautils\datautils.py:30
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:30
 msgid "384kbps voice bitrate"
 msgstr ""
 
-#: datautils\datautils.py:31
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:31
 msgid "Vanity invite URL"
 msgstr ""
 
-#: datautils\datautils.py:32
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:32
 msgid "Invite splash{splash}"
 msgstr ""
 
-#: datautils\datautils.py:33
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:33
 msgid "Verified"
 msgstr ""
 
-#: datautils\datautils.py:34
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:34
 msgid "Discord Partner"
 msgstr ""
 
-#: datautils\datautils.py:35
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:35
 msgid "Extended emoji limit"
 msgstr ""
 
-#: datautils\datautils.py:36
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:36
 msgid "Shows in Server Discovery{discovery}"
 msgstr ""
 
-#: datautils\datautils.py:37
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:37
 msgid "Can be in \\\"Featured\\\" section of Server Discovery"
 msgstr ""
 
-#: datautils\datautils.py:38
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:38
 msgid "Store channels"
 msgstr ""
 
-#: datautils\datautils.py:39
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:39
 msgid "Can be joined without an invite"
 msgstr ""
 
-#: datautils\datautils.py:40
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:40
 msgid "News channels"
 msgstr ""
 
-#: datautils\datautils.py:41
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:41
 msgid "Banner{banner}"
 msgstr ""
 
-#: datautils\datautils.py:42
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:42
 msgid "Animated icon"
 msgstr ""
 
-#: datautils\datautils.py:43
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:43
 msgid "Welcome screen"
 msgstr ""
 
-#: datautils\datautils.py:44
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:44
 msgid "Cannot be public"
 msgstr ""
 
-#: datautils\datautils.py:45
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:45
 msgid "Was in Server Discovery"
 msgstr ""
 
-#: datautils\datautils.py:49
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:49
 msgid "Playing"
 msgstr ""
 
-#: datautils\datautils.py:50
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:50
 msgid "Watching"
 msgstr ""
 
-#: datautils\datautils.py:51
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:51
 msgid "Listening"
 msgstr ""
 
-#: datautils\datautils.py:75
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:75
 #, docstring
 msgid "Commands for getting information about users or servers."
 msgstr ""
 
-#: datautils\datautils.py:82
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:82
 msgid "%d.%m.%Y %H:%M:%S %Z"
 msgstr ""
 
-#: datautils\datautils.py:88
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:88
 #, docstring
 msgid "Get info about any Discord's user by ID"
 msgstr ""
 
-#: datautils\datautils.py:92
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:92
 msgid "Discord user with ID `{}` not found"
 msgstr ""
 
-#: datautils\datautils.py:97
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:97
 msgid "I was unable to get data about user with ID `{}`. Try again later"
 msgstr ""
 
-#: datautils\datautils.py:108 datautils\datautils.py:387
-#: datautils\datautils.py:491 datautils\datautils.py:540
-#: datautils\datautils.py:630
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:108
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:420
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:524
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:573
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:663
 msgid "ID"
 msgstr ""
 
-#: datautils\datautils.py:109 datautils\datautils.py:161
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:109
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:194
 msgid "Bot?"
 msgstr ""
 
-#: datautils\datautils.py:110 datautils\datautils.py:162
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:110
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:195
 msgid "System?"
 msgstr ""
 
-#: datautils\datautils.py:111 datautils\datautils.py:172
-#: datautils\datautils.py:414 datautils\datautils.py:507
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:111
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:205
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:447
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:540
 msgid "Mention"
 msgstr ""
 
-#: datautils\datautils.py:113
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:113
 msgid "Default avatar"
 msgstr ""
 
-#: datautils\datautils.py:117
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:117
 msgid "Avatar"
 msgstr ""
 
-#: datautils\datautils.py:122
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:122
 msgid "Created at"
 msgstr ""
 
-#: datautils\datautils.py:129
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:131
+msgid "Widget is disabled for this server."
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:134
+msgid "Widget for that server is not found: {}"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:140
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:247
+msgid "Server info"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:141
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:172
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:251
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:573
+msgid "Name"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:142
+msgid "**Online member count:** {members}\\n**Voice channel count:** {channels}"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:146
+msgid ""
+"**Approximate member count:** {approx_members}\\n**Approx. active members "
+"count:** {approx_active}"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:153
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:312
+msgid "Stats"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:155
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:353
+msgid "Widget's invite"
+msgstr ""
+
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:162
 #, docstring
 msgid "Information on a user"
 msgstr ""
 
-#: datautils\datautils.py:137
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:170
 msgid "Nickname"
 msgstr ""
 
-#: datautils\datautils.py:139 datautils\datautils.py:218
-#: datautils\datautils.py:540
-msgid "Name"
-msgstr ""
-
-#: datautils\datautils.py:141
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:174
 msgid "Client"
 msgstr ""
 
-#: datautils\datautils.py:150
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:183
 msgid "Joined server"
 msgstr ""
 
-#: datautils\datautils.py:153 datautils\datautils.py:399
-#: datautils\datautils.py:499 datautils\datautils.py:635
-#: datautils\datautils.py:644
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:186
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:432
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:532
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:668
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:677
 msgid "Has existed since"
 msgstr ""
 
-#: datautils\datautils.py:156 datautils\datautils.py:504
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:189
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:537
 msgid "Color"
 msgstr ""
 
-#: datautils\datautils.py:159
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:192
 msgid "Boosted server"
 msgstr ""
 
-#: datautils\datautils.py:164
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:197
 msgid "Server permissions"
 msgstr ""
 
-#: datautils\datautils.py:170
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:203
 msgid "In voice channel"
 msgstr ""
 
-#: datautils\datautils.py:177 datautils\datautils.py:641
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:210
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:674
 msgid "Roles"
 msgstr ""
 
-#: datautils\datautils.py:189
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:222
 #, docstring
 msgid "List user's activities"
 msgstr ""
 
-#: datautils\datautils.py:199
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:232
 msgid "Right now this user is doing nothing"
 msgstr ""
 
-#: datautils\datautils.py:205
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:238
 #, docstring
 msgid "Shows server information"
 msgstr ""
 
-#: datautils\datautils.py:214
-msgid "Server info"
-msgstr ""
-
-#: datautils\datautils.py:219
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:252
 msgid "Server ID"
 msgstr ""
 
-#: datautils\datautils.py:220
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:253
 msgid "Existed since"
 msgstr ""
 
-#: datautils\datautils.py:221
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:254
 msgid "Region"
 msgstr ""
 
-#: datautils\datautils.py:223
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:256
 msgid "Discovery language"
 msgstr ""
 
-#: datautils\datautils.py:224
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:257
 msgid "Owner"
 msgstr ""
 
-#: datautils\datautils.py:226
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:259
 msgid "AFK timeout and channel"
 msgstr ""
 
-#: datautils\datautils.py:227
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:260
 msgid "{} min in {}"
 msgstr ""
 
-#: datautils\datautils.py:232
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:265
 msgid "Verification level"
 msgstr ""
 
-#: datautils\datautils.py:233
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:266
 msgid "None"
 msgstr ""
 
-#: datautils\datautils.py:235
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:268
 msgid "Low"
 msgstr ""
 
-#: datautils\datautils.py:237
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:270
 msgid "Medium"
 msgstr ""
 
-#: datautils\datautils.py:239
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:272
 msgid "(╯°□°）╯︵ ┻━┻"
 msgstr ""
 
-#: datautils\datautils.py:241
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:274
 msgid "┻━┻ ﾐヽ(ಠ益ಠ)ノ彡┻━┻"
 msgstr ""
 
-#: datautils\datautils.py:243 datautils\datautils.py:253
-#: datautils\datautils.py:261
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:276
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:286
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:294
 msgid "Unknown"
 msgstr ""
 
-#: datautils\datautils.py:246
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:279
 msgid "Explicit content filter"
 msgstr ""
 
-#: datautils\datautils.py:247
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:280
 msgid "Don't scan any messages."
 msgstr ""
 
-#: datautils\datautils.py:249
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:282
 msgid "Scan messages from members without a role."
 msgstr ""
 
-#: datautils\datautils.py:251
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:284
 msgid "Scan messages sent by all members."
 msgstr ""
 
-#: datautils\datautils.py:256
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:289
 msgid "Default notifications"
 msgstr ""
 
-#: datautils\datautils.py:257
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:290
 msgid "All messages"
 msgstr ""
 
-#: datautils\datautils.py:259
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:292
 msgid "Only @mentions"
 msgstr ""
 
-#: datautils\datautils.py:263
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:296
 msgid "2FA admins"
 msgstr ""
 
-#: datautils\datautils.py:266
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:299
 msgid "System messages channel"
 msgstr ""
 
-#: datautils\datautils.py:267
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:300
 msgid ""
 "**Channel:** {channel}\\n**Welcome message:** {welcome}\\n**Boosts:** "
 "{boost}"
 msgstr ""
 
-#: datautils\datautils.py:279
-msgid "Stats"
-msgstr ""
-
-#: datautils\datautils.py:280
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:313
 msgid ""
 "**Bot's shard:** {shard}\\n**Member count:** "
 "{members}/{members_limit}\\n**Role count:** {roles}/250\\n**Channel count:**"
@@ -319,272 +357,275 @@ msgid ""
 "kbps\\n**Max filesize:** {files} MB"
 msgstr ""
 
-#: datautils\datautils.py:309
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:342
 msgid "Features"
 msgstr ""
 
-#: datautils\datautils.py:320
-msgid "Widget's invite"
-msgstr ""
-
-#: datautils\datautils.py:329
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:362
 #, docstring
 msgid "Get bans from server by id"
 msgstr ""
 
-#: datautils\datautils.py:333
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:366
 msgid "I need permission \\\"Ban Members\\\" to access banned members on server"
 msgstr ""
 
-#: datautils\datautils.py:341
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:374
 msgid "Banlist is empty!"
 msgstr ""
 
-#: datautils\datautils.py:348
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:381
 #, docstring
 msgid "Get invites from server by id"
 msgstr ""
 
-#: datautils\datautils.py:353
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:386
 msgid "I need permission \\\"Manage Server\\\" to access list of invites on server"
 msgstr ""
 
-#: datautils\datautils.py:361
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:394
 msgid "There is no invites for this server"
 msgstr ""
 
-#: datautils\datautils.py:374
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:407
 #, docstring
 msgid "Get info about channel"
 msgstr ""
 
-#: datautils\datautils.py:389
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:422
 msgid "Type"
 msgstr ""
 
-#: datautils\datautils.py:402
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:435
 msgid "Category"
 msgstr ""
 
-#: datautils\datautils.py:404
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:437
 msgid "Not in category"
 msgstr ""
 
-#: datautils\datautils.py:406 datautils\datautils.py:503
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:439
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:536
 msgid "Position"
 msgstr ""
 
-#: datautils\datautils.py:408 datautils\datautils.py:430
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:441
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:463
 msgid "Users"
 msgstr ""
 
-#: datautils\datautils.py:410
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:443
 msgid "Changed roles permissions"
 msgstr ""
 
-#: datautils\datautils.py:411
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:444
 msgid "Not set"
 msgstr ""
 
-#: datautils\datautils.py:419
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:452
 msgid "Slowmode delay"
 msgstr ""
 
-#: datautils\datautils.py:419
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:452
 msgid "{} seconds"
 msgstr ""
 
-#: datautils\datautils.py:421 datautils\datautils.py:436
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:454
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:469
 msgid "NSFW"
 msgstr ""
 
-#: datautils\datautils.py:426
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:459
 msgid "Webhooks count"
 msgstr ""
 
-#: datautils\datautils.py:428
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:461
 msgid "Bitrate"
 msgstr ""
 
-#: datautils\datautils.py:428
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:461
 msgid "{}kbps"
 msgstr ""
 
-#: datautils\datautils.py:444
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:477
 #, docstring
 msgid "Get all channels on server"
 msgstr ""
 
-#: datautils\datautils.py:447
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:480
 msgid "No categories"
 msgstr ""
 
-#: datautils\datautils.py:448
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:481
 msgid "No text channels"
 msgstr ""
 
-#: datautils\datautils.py:449
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:482
 msgid "No voice channels"
 msgstr ""
 
-#: datautils\datautils.py:459
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:492
 msgid "Page {}/{} • Categories: {} • Total channels: {}"
 msgstr ""
 
-#: datautils\datautils.py:467
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:500
 msgid "Page {}/{} • Text channels: {} • Total channels: {}"
 msgstr ""
 
-#: datautils\datautils.py:475
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:508
 msgid "Page {}/{} • Voice channels: {} • Total channels: {}"
 msgstr ""
 
-#: datautils\datautils.py:486
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:519
 #, docstring
 msgid "Get info about role"
 msgstr ""
 
-#: datautils\datautils.py:493
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:526
 msgid "Permissions"
 msgstr ""
 
-#: datautils\datautils.py:501
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:534
 msgid "Hoist"
 msgstr ""
 
-#: datautils\datautils.py:502
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:535
 msgid "Members"
 msgstr ""
 
-#: datautils\datautils.py:505 datautils\datautils.py:638
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:538
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:671
 msgid "Managed"
 msgstr ""
 
-#: datautils\datautils.py:506
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:539
 msgid "Mentionable"
 msgstr ""
 
-#: datautils\datautils.py:516
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:549
 #, docstring
 msgid "Get list of members that has provided role"
 msgstr ""
 
-#: datautils\datautils.py:519
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:552
 msgid "There is no members in this role"
 msgstr ""
 
-#: datautils\datautils.py:527 datautils\datautils.py:601
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:560
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:634
 msgid "Page {}/{}"
 msgstr ""
 
-#: datautils\datautils.py:535
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:568
 #, docstring
 msgid "Get all roles on server"
 msgstr ""
 
-#: datautils\datautils.py:556
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:589
 #, docstring
 msgid "Check user's permission for current or provided channel"
 msgstr ""
 
-#: datautils\datautils.py:571
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:604
 #, docstring
 msgid "Get info about emoji"
 msgstr ""
 
-#: datautils\datautils.py:574
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:607
 msgid "React to this message with your emoji"
 msgstr ""
 
-#: datautils\datautils.py:595
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:628
 #, docstring
 msgid "Get all emojis on server"
 msgstr ""
 
-#: datautils\datautils.py:606
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:639
 msgid "No emojis on this server"
 msgstr ""
 
-#: datautils\datautils.py:619
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:652
 msgid "Unicode character"
 msgstr ""
 
-#: datautils\datautils.py:625
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:658
 msgid "Unicode category"
 msgstr ""
 
-#: datautils\datautils.py:631
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:664
 msgid "Animated"
 msgstr ""
 
-#: datautils\datautils.py:637
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:670
 msgid "\\\":\\\" required"
 msgstr ""
 
-#: datautils\datautils.py:639
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:672
 msgid "Server"
 msgstr ""
 
-#: datautils\datautils.py:647
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:680
 msgid "Custom emoji"
 msgstr ""
 
-#: datautils\datautils.py:667
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:700
 msgid "Custom status"
 msgstr ""
 
-#: datautils\datautils.py:670
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:703
 msgid "Playing {}"
 msgstr ""
 
-#: datautils\datautils.py:686
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:719
 msgid "This game will end at"
 msgstr ""
 
-#: datautils\datautils.py:689
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:722
 msgid "Playing since"
 msgstr ""
 
-#: datautils\datautils.py:712
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:745
 msgid "Small image text"
 msgstr ""
 
-#: datautils\datautils.py:715
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:748
 msgid "Application ID"
 msgstr ""
 
-#: datautils\datautils.py:718 datautils\datautils.py:748
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:751
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:781
 msgid "Started at"
 msgstr ""
 
-#: datautils\datautils.py:722 datautils\datautils.py:750
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:755
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:783
 msgid "Will end at"
 msgstr ""
 
-#: datautils\datautils.py:726
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:759
 msgid "Large image text"
 msgstr ""
 
-#: datautils\datautils.py:735
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:768
 msgid "Streaming on {}"
 msgstr ""
 
-#: datautils\datautils.py:739
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:772
 msgid "Game"
 msgstr ""
 
-#: datautils\datautils.py:743
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:776
 msgid "by {}\\non {}"
 msgstr ""
 
-#: datautils\datautils.py:749
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:782
 msgid "Duration"
 msgstr ""
 
-#: datautils\datautils.py:752
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:785
 msgid "Listening since"
 msgstr ""
 
-#: datautils\datautils.py:754
+#: D:\CodeProjects\Fixator10-Cogs\datautils\datautils.py:787
 msgid "Unsupported activity type: {}"
 msgstr ""
