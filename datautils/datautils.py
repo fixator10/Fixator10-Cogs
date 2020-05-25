@@ -74,7 +74,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.3.0"
+    __version__ = "2.3.1"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -125,6 +125,7 @@ class DataUtils(commands.Cog):
     @commands.command(aliases=["widgetinfo"], hidden=True)
     @checks.bot_has_permissions(embed_links=True)
     async def fetchwidget(self, ctx, *, server_id: int):
+        """Get data about server by ID via server's widget"""
         try:
             widget = await self.bot.fetch_widget(server_id)
         except discord.Forbidden:
