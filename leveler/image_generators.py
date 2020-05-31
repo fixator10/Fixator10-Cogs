@@ -153,7 +153,6 @@ class ImageGenerators(MixinMeta):
         back.paste(image, (image_left, image_top))
         return back
 
-
     async def _add_corners(self, im, rad, multiplier=6):
         raw_length = rad * 2 * multiplier
         circle = Image.new("L", (raw_length, raw_length), 0)

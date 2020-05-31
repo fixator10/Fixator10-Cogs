@@ -52,7 +52,9 @@ class CompositeMetaClass(type(commands.Cog), type(ABC)):
     pass
 
 
-class Leveler(MongoDB, XP, DBConverters, commands.Cog, ImageGenerators, metaclass=CompositeMetaClass):
+class Leveler(
+    MongoDB, XP, DBConverters, commands.Cog, ImageGenerators, metaclass=CompositeMetaClass
+):
     """A level up thing with image generation!"""
 
     __version__ = "2.1.4b"
