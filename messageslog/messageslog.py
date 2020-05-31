@@ -6,6 +6,7 @@ from redbot.core import checks
 from redbot.core import commands
 from redbot.core.config import Config
 from redbot.core.i18n import Translator, cog_i18n
+from redbot.core.utils import AsyncIter
 from redbot.core.utils import chat_formatting as chat
 from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
 
@@ -32,7 +33,7 @@ async def ignore_config_add(config: list, item):
 class MessagesLog(commands.Cog):
     """Log deleted and redacted messages to the defined channel"""
 
-    __version__ = "2.2.0"
+    __version__ = "2.2.1"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -261,7 +262,7 @@ class MessagesLog(commands.Cog):
                         f"[Created at]: {m.created_at}\n"
                         f"[Content]:\n"
                         f"{m.system_content}"
-                        for m in payload.cached_messages
+                        async for m in AsyncIter(payload.cached_messages)
                         if m.guild.id == guild.id
                     ]
                 ),
