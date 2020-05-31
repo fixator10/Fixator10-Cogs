@@ -7,6 +7,7 @@ import random
 import re
 import textwrap
 import time
+from abc import ABC
 from asyncio import TimeoutError as AsyncTimeoutError
 from collections import OrderedDict
 from datetime import timedelta
@@ -59,7 +60,16 @@ async def non_global_bank(ctx):
     return not await bank.is_global()
 
 
-class Leveler(commands.Cog):
+class CompositeMetaClass(type(commands.Cog), type(ABC)):
+    """
+    This allows the metaclass used for proper type detection to
+    coexist with discord.py's metaclass
+    """
+
+    pass
+
+
+class Leveler(commands.Cog, metaclass=CompositeMetaClass):
     """A level up thing with image generation!"""
 
     __version__ = "2.1.4b"
