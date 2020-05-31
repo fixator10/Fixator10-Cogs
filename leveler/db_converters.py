@@ -8,6 +8,10 @@ from redbot.core.utils.predicates import MessagePredicate
 
 class DBConverters(MixinMeta):
     """Converters for 3rd party leveling databases"""
+    # not sure that is right way to do it
+    # any ideas?
+    @commands.group()
+    async def lvladmin(*args, **kwargs): ...
 
     @checks.is_owner()
     @lvladmin.group()
@@ -27,7 +31,8 @@ class DBConverters(MixinMeta):
                 "**{}, levelup mentions are on in this server.**\n"
                 "The bot will ping every user that will be leveled up through this process if you continue.\n"
                 "Reply with `yes` if you want this conversion to continue.\n"
-                "If not, reply with `no` and then run `{}lvladmin mention` to turn off mentions before running this command again."
+                "If not, reply with `no` and then run `{}lvladmin mention` "
+                "to turn off mentions before running this command again."
             ).format(ctx.author.display_name, ctx.prefix)
             await ctx.send(msg)
             pred = MessagePredicate.yes_or_no(ctx)
