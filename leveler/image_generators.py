@@ -1,7 +1,6 @@
 from .abc import MixinMeta
 
 import textwrap
-import platform
 import operator
 import random
 from logging import getLogger
@@ -18,6 +17,14 @@ try:
     from PIL import features as pil_features
 except Exception as e:
     raise RuntimeError(f"Can't load pillow: {e}\nDo '[p]pipinstall pillow'.")
+
+try:
+    import numpy
+    from scipy import cluster
+except Exception as e:
+    print(
+        f"{__file__}: numpy/scipy is unable to import: {e}\nAutocolor feature will be unavailable"
+    )
 
 
 log = getLogger("red.fixator10-cogs.leveler")
@@ -174,13 +181,14 @@ class ImageGenerators(MixinMeta):
         font_thin_file = f"{bundled_data_path(self)}/Uni_Sans_Thin.ttf"
         font_heavy_file = f"{bundled_data_path(self)}/Uni_Sans_Heavy.ttf"
         font_bold_file = f"{bundled_data_path(self)}/SourceSansPro-Semibold.ttf"
+        font_unicode_file = f"{bundled_data_path(self)}/unicode.ttf"
 
         name_fnt = ImageFont.truetype(font_heavy_file, 24)
-        name_u_fnt = ImageFont.truetype(self.font_unicode_file, 24)
+        name_u_fnt = ImageFont.truetype(font_unicode_file, 24)
         label_fnt = ImageFont.truetype(font_bold_file, 16)
         exp_fnt = ImageFont.truetype(font_bold_file, 9)
         large_fnt = ImageFont.truetype(font_thin_file, 24)
-        symbol_u_fnt = ImageFont.truetype(self.font_unicode_file, 15)
+        symbol_u_fnt = ImageFont.truetype(font_unicode_file, 15)
 
         async def _write_unicode(text, init_x, y, font, unicode_font, fill):
             write_pos = init_x
@@ -326,10 +334,7 @@ class ImageGenerators(MixinMeta):
             font=label_fnt,
             fill=info_text_color,
         )  # Rank
-        if "linux" in platform.system().lower():
-            local_symbol = "\U0001F3E0 "
-        else:
-            local_symbol = "S. "
+        local_symbol = "\U0001F3E0 "
         await _write_unicode(
             local_symbol, 117, v_label_align + 4, label_fnt, symbol_u_fnt, info_text_color,
         )  # Symbol
@@ -486,19 +491,20 @@ class ImageGenerators(MixinMeta):
         font_heavy_file = f"{bundled_data_path(self)}/Uni_Sans_Heavy.ttf"
         font_file = f"{bundled_data_path(self)}/Ubuntu-R_0.ttf"
         font_bold_file = f"{bundled_data_path(self)}/Ubuntu-B_0.ttf"
+        font_unicode_file = f"{bundled_data_path(self)}/unicode.ttf"
 
         name_fnt = ImageFont.truetype(font_heavy_file, 30)
-        name_u_fnt = ImageFont.truetype(self.font_unicode_file, 30)
+        name_u_fnt = ImageFont.truetype(font_unicode_file, 30)
         title_fnt = ImageFont.truetype(font_heavy_file, 22)
-        title_u_fnt = ImageFont.truetype(self.font_unicode_file, 23)
+        title_u_fnt = ImageFont.truetype(font_unicode_file, 23)
         label_fnt = ImageFont.truetype(font_bold_file, 18)
         exp_fnt = ImageFont.truetype(font_bold_file, 13)
         large_fnt = ImageFont.truetype(font_thin_file, 33)
         rep_fnt = ImageFont.truetype(font_heavy_file, 26)
-        rep_u_fnt = ImageFont.truetype(self.font_unicode_file, 30)
+        rep_u_fnt = ImageFont.truetype(font_unicode_file, 30)
         text_fnt = ImageFont.truetype(font_file, 14)
-        text_u_fnt = ImageFont.truetype(self.font_unicode_file, 14)
-        symbol_u_fnt = ImageFont.truetype(self.font_unicode_file, 15)
+        text_u_fnt = ImageFont.truetype(font_unicode_file, 14)
+        symbol_u_fnt = ImageFont.truetype(font_unicode_file, 15)
 
         async def _write_unicode(text, init_x, y, font, unicode_font, fill):
             write_pos = init_x
@@ -663,10 +669,7 @@ class ImageGenerators(MixinMeta):
             fill=info_text_color,
         )  # Credits
 
-        if "linux" in platform.system().lower():
-            global_symbol = "\U0001F30E "
-        else:
-            global_symbol = "G."
+        global_symbol = "\U0001F30E "
 
         await _write_unicode(
             global_symbol, 36, label_align + 5, label_fnt, symbol_u_fnt, info_text_color

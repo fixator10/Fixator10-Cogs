@@ -1,7 +1,6 @@
 import math
 import operator
 import random
-import re
 import time
 from abc import ABC
 from logging import getLogger
@@ -18,9 +17,8 @@ from redbot.core import checks
 from redbot.core import commands
 from redbot.core import Config
 from redbot.core.bot import Red
-from redbot.core.data_manager import bundled_data_path
 from redbot.core.utils import AsyncIter
-from redbot.core.utils.chat_formatting import pagify, box
+from redbot.core.utils import chat_formatting as chat
 from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
 from redbot.core.utils.predicates import MessagePredicate
 
@@ -36,6 +34,7 @@ from .mongodb import MongoDB
 from .exp import XP
 from .db_converters import DBConverters
 from .image_generators import ImageGenerators
+from .utils import Utils
 
 
 # noinspection PyUnusedLocal
@@ -53,21 +52,16 @@ class CompositeMetaClass(type(commands.Cog), type(ABC)):
 
 
 class Leveler(
-    MongoDB, XP, DBConverters, commands.Cog, ImageGenerators, metaclass=CompositeMetaClass
+    MongoDB, XP, DBConverters, ImageGenerators, Utils, commands.Cog, metaclass=CompositeMetaClass
 ):
     """A level up thing with image generation!"""
 
-    __version__ = "2.1.4b"
+    __version__ = "2.2.0b1"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot: Red):
         self.bot = bot
         self.log = getLogger("red.fixator10-cogs.leveler")
-        # fonts
-        self.font_file = f"{bundled_data_path(self)}/font.ttf"
-        self.font_bold_file = f"{bundled_data_path(self)}/font_bold.ttf"
-        self.font_unicode_file = f"{bundled_data_path(self)}/unicode.ttf"
-
         self.config = Config.get_conf(self, identifier=0x3AAFD05EA4AA4FDF8DDEAD8224328191)
         default_mongodb = {
             "host": "localhost",
@@ -162,7 +156,6 @@ class Leveler(
             await ctx.send("**Leveler commands for this server are disabled!**")
             return
 
-        # no cooldown for text only
         if await self.config.guild(ctx.guild).text_only():
             em = await self.profile_text(user, server, userinfo)
             await channel.send(embed=em)
@@ -178,7 +171,6 @@ class Leveler(
             )
 
     async def profile_text(self, user, server, userinfo):
-
         em = discord.Embed(colour=user.colour)
         em.add_field(name="Title:", value=userinfo["title"] or None)
         em.add_field(name="Reps:", value=userinfo["rep"])
@@ -256,12 +248,6 @@ class Leveler(
         em.set_author(name="Rank & Statistics for {}".format(user.name), url=user.avatar_url)
         em.set_thumbnail(url=user.avatar_url)
         return em
-
-    # should the user be mentioned based on settings?
-    async def _is_mention(self, user):
-        if await self.config.mention():
-            return user.mention
-        return user.name
 
     @commands.command(usage="[page] [-rep] [-global]")
     @commands.guild_only()
@@ -394,7 +380,7 @@ class Leveler(
 
             em = discord.Embed(description="", colour=user.colour)
             em.set_author(name=title, icon_url=icon_url)
-            em.description = box(msg)
+            em.description = chat.box(msg)
 
         await ctx.send(embed=em)
 
@@ -443,12 +429,9 @@ class Leveler(
             if seconds < 0:
                 await ctx.send("**You can give a rep!**")
                 return
-
-            m, s = divmod(seconds, 60)
-            h, m = divmod(m, 60)
             await ctx.send(
-                "**You need to wait {} hours, {} minutes, and {} seconds until you can give reputation again!**".format(
-                    int(h), int(m), int(s)
+                "**You need to wait {} until you can give reputation again!**".format(
+                    chat.humanize_timedelta(seconds=seconds)
                 )
             )
 
@@ -516,10 +499,6 @@ class Leveler(
         )
         await ctx.send(embed=em)
 
-    def _rgb_to_hex(self, rgb):
-        rgb = tuple(rgb[:3])
-        return "#%02x%02x%02x" % rgb
-
     @checks.is_owner()
     @commands.group()
     async def levelerset(self, ctx):
@@ -534,7 +513,7 @@ class Leveler(
                 for setting, value in (await self.config.custom("MONGODB").get_raw()).items()
                 if value
             ]
-            await ctx.send(box(tabulate(settings, tablefmt="plain")))
+            await ctx.send(chat.box(tabulate(settings, tablefmt="plain")))
 
     @levelerset.command()
     async def host(self, ctx, host: str = "localhost"):
@@ -687,7 +666,7 @@ class Leveler(
             hex_colors = await self._auto_color(ctx, userinfo["profile_background"], color_ranks)
             set_color = []
             for hex_color in hex_colors:
-                color_temp = self._hex_to_rgb(hex_color, default_a)
+                color_temp = await self._hex_to_rgb(hex_color, default_a)
                 set_color.append(color_temp)
 
         elif color == "white":
@@ -708,8 +687,8 @@ class Leveler(
                     default_badge,
                     default_info_color,
                 ]
-        elif self._is_hex(color):
-            set_color = [self._hex_to_rgb(color, default_a)]
+        elif await self._is_hex(color):
+            set_color = [await self._hex_to_rgb(color, default_a)]
         else:
             await ctx.send(
                 "**Not a valid color. Must be `default`, `HEX color`, `white` or `auto`.**"
@@ -816,7 +795,7 @@ class Leveler(
             hex_colors = await self._auto_color(ctx, userinfo["rank_background"], color_ranks)
             set_color = []
             for hex_color in hex_colors:
-                color_temp = self._hex_to_rgb(hex_color, default_a)
+                color_temp = await self._hex_to_rgb(hex_color, default_a)
                 set_color.append(color_temp)
         elif color == "white":
             set_color = [white_info_color]
@@ -832,8 +811,8 @@ class Leveler(
                     default_badge,
                     default_info_color,
                 ]
-        elif self._is_hex(color):
-            set_color = [self._hex_to_rgb(color, default_a)]
+        elif await self._is_hex(color):
+            set_color = [await self._hex_to_rgb(color, default_a)]
         else:
             await ctx.send(
                 "**Not a valid color. Must be `default`, `HEX color`, `white or `auto`.**"
@@ -912,15 +891,15 @@ class Leveler(
             hex_colors = await self._auto_color(ctx, userinfo["levelup_background"], color_ranks)
             set_color = []
             for hex_color in hex_colors:
-                color_temp = self._hex_to_rgb(hex_color, default_a)
+                color_temp = await self._hex_to_rgb(hex_color, default_a)
                 set_color.append(color_temp)
         elif color == "white":
             set_color = [white_info_color]
         elif color == "default":
             if section == "info":
                 set_color = [default_info_color]
-        elif self._is_hex(color):
-            set_color = [self._hex_to_rgb(color, default_a)]
+        elif await self._is_hex(color):
+            set_color = [await self._hex_to_rgb(color, default_a)]
         else:
             await ctx.send(
                 "**Not a valid color. Must be `default` `HEX color`, `white` or `auto`.**"
@@ -931,32 +910,6 @@ class Leveler(
             {"user_id": str(user.id)}, {"$set": {section_name: set_color[0]}}
         )
         await ctx.send("**Color for level-up {} set.**".format(section))
-
-    # converts hex to rgb
-    def _hex_to_rgb(self, hex_num: str, a: int):
-        h = hex_num.lstrip("#")
-
-        # if only 3 characters are given
-        if len(str(h)) == 3:
-            expand = "".join([x * 2 for x in str(h)])
-            h = expand
-
-        colors = [int(h[i : i + 2], 16) for i in (0, 2, 4)]
-        colors.append(a)
-        return tuple(colors)
-
-    # dampens the color given a parameter
-    def _moderate_color(self, rgb, moderate_num):
-        new_colors = []
-        for color in rgb[:3]:
-            if color > 128:
-                color -= moderate_num
-            else:
-                color += moderate_num
-            new_colors.append(color)
-        new_colors.append(230)
-
-        return tuple(new_colors)
 
     @profileset.command()
     @commands.guild_only()
@@ -1104,44 +1057,35 @@ class Leveler(
         pass
 
     @checks.admin_or_permissions(manage_guild=True)
-    @lvladmin.group()
+    @lvladmin.command()
     async def overview(self, ctx):
         """A list of settings."""
-
-        disabled_servers = []
-        private_levels = []
-        disabled_levels = []
-        locked_channels = []
-
-        for guild in self.bot.guilds:
-            if await self.config.guild(guild).disabled():
-                disabled_servers.append(guild.name)
-            if await self.config.guild(guild).lvl_msg_lock():
-                locked_channels.append(
-                    "\n{} → #{}".format(
-                        guild.name,
-                        guild.get_channel(await self.config.guild(guild).lvl_msg_lock()),
-                    )
-                )
-            if await self.config.guild(guild).lvl_msg():
-                disabled_levels.append(guild.name)
-            if await self.config.guild(guild).private_lvl_message():
-                private_levels.append(guild.name)
-
         num_users = len(await self.db.users.find({}).to_list(None))
+        is_owner = await self.bot.is_owner(ctx.author)
 
+        em = discord.Embed(colour=await ctx.embed_color())
         msg = ""
-        msg += "**Servers:** {}\n".format(len(self.bot.guilds))
+        msg += "**Enabled:** {}\n".format(
+            self.bool_emojify(not await self.config.guild(ctx.guild).disabled())
+        )
         msg += "**Unique Users:** {}\n".format(num_users)
-        msg += "**Mentions:** {}\n".format(await self.config.mention())
-        msg += "**Background Price:** {}\n".format(await self.config.bg_price())
-        msg += "**Badge type:** {}\n".format(await self.config.badge_type())
-        msg += "**Disabled Servers:** {}\n".format(", ".join(disabled_servers))
-        msg += "**Enabled Level Messages:** {}\n".format(", ".join(disabled_levels))
-        msg += "**Private Level Messages:** {}\n".format(", ".join(private_levels))
-        msg += "**Channel Locks:** {}\n".format(", ".join(locked_channels))
-        em = discord.Embed(description=msg, colour=await ctx.embed_color())
-        em.set_author(name="Settings Overview for {}".format(self.bot.user.name))
+        if is_owner:
+            msg += "**Mentions:** {}\n".format(self.bool_emojify(await self.config.mention()))
+        if bg_price := await self.config.bg_price():
+            msg += "**Background Price:** {}\n".format(bg_price)
+        if is_owner:
+            msg += "**Badge type:** {}\n".format(await self.config.badge_type())
+        msg += "**Enabled Level Messages:** {}\n".format(
+            self.bool_emojify(await self.config.guild(ctx.guild).lvl_msg())
+        )
+        msg += "**Private Level Messages:** {}\n".format(
+            self.bool_emojify(await self.config.guild(ctx.guild).private_lvl_message())
+        )
+        if lvl_lock := await self.config.guild(ctx.guild).lvl_msg_lock():
+            msg += "**Level Messages Channel:** {}\n".format(
+                ctx.guild.get_channel(lvl_lock).mention
+            )
+        em.set_author(name="Settings Overview for {}".format(ctx.guild.name))
         await ctx.send(embed=em)
 
     @lvladmin.command()
@@ -1201,35 +1145,6 @@ class Leveler(
         else:
             await self.config.guild(server).lvl_msg_lock.set(channel.id)
             await ctx.send("**Level-up messages locked to `#{}`**".format(channel.name))
-
-    async def _process_purchase(self, ctx):
-        user = ctx.author
-        server = ctx.guild
-        bg_price = await self.config.bg_price()
-
-        if bg_price != 0:
-            if not await bank.can_spend(user, bg_price):
-                await ctx.send(
-                    f"**Insufficient funds. Backgrounds changes cost: "
-                    f"{bg_price}{(await bank.get_currency_name(server))[0]}**"
-                )
-                return False
-            await ctx.send(
-                "**{}, you are about to buy a background for `{}`. Confirm by typing `yes`.**".format(
-                    await self._is_mention(user), bg_price
-                )
-            )
-            pred = MessagePredicate.yes_or_no(ctx)
-            try:
-                await self.bot.wait_for("message", timeout=15, check=pred)
-            except AsyncTimeoutError:
-                pass
-            if not pred.result:
-                await ctx.send("**Purchase canceled.**")
-                return False
-            await bank.withdraw_credits(user, bg_price)
-            return True
-        return True
 
     @checks.is_owner()
     @lvladmin.command()
@@ -1468,7 +1383,7 @@ class Leveler(
             discord.Embed(
                 title="Badges available", description=page, colour=await ctx.embed_color(),
             )
-            for page in pagify(msg, page_length=2048)
+            for page in chat.pagify(msg, page_length=2048)
         ]
         pagenum = 1
         for page in pages:
@@ -1516,11 +1431,11 @@ class Leveler(
 
         em = discord.Embed(colour=user.colour)
 
-        total_pages = len(list(pagify(badge_ranks)))
+        total_pages = len(list(chat.pagify(badge_ranks)))
         embeds = []
 
         counter = 1
-        for page in pagify(badge_ranks, ["\n"]):
+        for page in chat.pagify(badge_ranks, ["\n"]):
             em.description = page
             em.set_author(name="Badges for {}".format(user.name), icon_url=user.avatar_url)
             em.set_footer(text="Page {} of {}".format(counter, total_pages))
@@ -1646,13 +1561,6 @@ class Leveler(
         else:
             await ctx.send("**You don't have that badge!**")
 
-    async def _badge_convert_dict(self, userinfo):
-        if "badges" not in userinfo or not isinstance(userinfo["badges"], dict):
-            await self.db.users.update_one(
-                {"user_id": userinfo["user_id"]}, {"$set": {"badges": {}}}
-            )
-        return await self.db.users.find_one({"user_id": userinfo["user_id"]})
-
     @checks.mod_or_permissions(manage_roles=True)
     @badge.command(name="add")
     @commands.guild_only()
@@ -1704,7 +1612,7 @@ class Leveler(
             await ctx.send("**Background is not valid. Enter HEX color or image URL!**")
             return
 
-        if not self._is_hex(border_color):
+        if not await self._is_hex(border_color):
             await ctx.send("**Border color is not valid!**")
             return
 
@@ -1778,13 +1686,6 @@ class Leveler(
 
         await self.config.badge_type.set(name.lower())
         await ctx.send("**Badge type set to `{}`**".format(name.lower()))
-
-    def _is_hex(self, color: str):
-        if color is not None and len(color) != 4 and len(color) != 7:
-            return False
-
-        reg_ex = r"^#(?:[0-9a-fA-F]{3}){1,2}$"
-        return re.search(reg_ex, str(color))
 
     @checks.mod_or_permissions(manage_roles=True)
     @badge.command(name="delete")

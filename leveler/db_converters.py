@@ -1,6 +1,5 @@
 from .abc import MixinMeta
 
-from redbot.core import checks
 from redbot.core import commands
 from redbot.core.utils import AsyncIter
 from redbot.core.utils.predicates import MessagePredicate
@@ -8,18 +7,19 @@ from redbot.core.utils.predicates import MessagePredicate
 
 class DBConverters(MixinMeta):
     """Converters for 3rd party leveling databases"""
+
     # not sure that is right way to do it
     # any ideas?
     @commands.group()
-    async def lvladmin(*args, **kwargs): ...
+    @commands.is_owner()
+    async def lvlconvert(self, ctx):
+        """Convert levels from other leveling systems."""
 
-    @checks.is_owner()
-    @lvladmin.group()
+    @lvlconvert.group()
     @commands.guild_only()
     async def mee6(self, ctx):
         """Manage mee6 conversions."""
 
-    @checks.is_owner()
     @mee6.command(name="levels")
     @commands.guild_only()
     async def convertlevels(self, ctx, pages: int):
@@ -95,7 +95,6 @@ class DBConverters(MixinMeta):
                 await self._handle_levelup(user, userinfo, server, channel)
         await ctx.send(f"{failed} users could not be found and were skipped.")
 
-    @checks.is_owner()
     @mee6.command(name="roles", aliases=["ranks"])
     @commands.guild_only()
     async def convertranks(self, ctx):
