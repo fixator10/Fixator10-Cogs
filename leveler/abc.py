@@ -28,68 +28,68 @@ class MixinMeta(ABC):
 
     @abstractmethod
     async def _create_user(self, user, server):
-        raise NotImplemented
+        raise NotImplementedError
 
     @abstractmethod
     async def _is_mention(self, user) -> str:
-        raise NotImplemented
+        raise NotImplementedError
 
     @abstractmethod
     async def _hex_to_rgb(self, hex_num: str, a: int) -> tuple:
-        raise NotImplemented
+        raise NotImplementedError
 
     @abstractmethod
     async def _rgb_to_hex(self, rgb) -> str:
-        raise NotImplemented
+        raise NotImplementedError
 
     @abstractmethod
     async def _badge_convert_dict(self, userinfo):
-        raise NotImplemented
+        raise NotImplementedError
 
     @abstractmethod
     async def _process_purchase(self, ctx) -> bool:
-        raise NotImplemented
+        raise NotImplementedError
 
     @abstractmethod
     async def _is_hex(self, color: str) -> Optional[Match]:
-        raise NotImplemented
+        raise NotImplementedError
 
     @abstractmethod
     def bool_emojify(self, bool_var: bool) -> str:
-        raise NotImplemented
+        raise NotImplementedError
 
     @abstractmethod
     async def _handle_levelup(self, user, userinfo, server, channel):
-        raise NotImplemented
+        raise NotImplementedError
 
     @abstractmethod
     async def _required_exp(self, level: int) -> int:
-        raise NotImplemented
+        raise NotImplementedError
 
     @abstractmethod
     async def _level_exp(self, level: int) -> int:
-        raise NotImplemented
+        raise NotImplementedError
 
     @abstractmethod
     async def _find_level(self, total_exp) -> int:
-        raise NotImplemented
+        raise NotImplementedError
 
     @abstractmethod
     async def _find_server_rank(self, user, server) -> int:
-        raise NotImplemented
+        raise NotImplementedError
 
     @abstractmethod
     async def _find_global_rank(self, user) -> int:
-        raise NotImplemented
+        raise NotImplementedError
 
     @abstractmethod
     async def draw_profile(self, user, server) -> BytesIO:
-        raise NotImplemented
+        raise NotImplementedError
 
     @abstractmethod
     async def draw_rank(self, user, server) -> BytesIO:
-        raise NotImplemented
+        raise NotImplementedError
 
     @abstractmethod
     async def draw_levelup(self, user, server) -> BytesIO:
-        raise NotImplemented
+        raise NotImplementedError
