@@ -32,7 +32,7 @@ async def ignore_config_add(config: list, item):
 class MessagesLog(commands.Cog):
     """Log deleted and redacted messages to the defined channel"""
 
-    __version__ = "2.1.1"
+    __version__ = "2.2.0"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -42,6 +42,7 @@ class MessagesLog(commands.Cog):
             "channel": None,
             "deletion": True,
             "editing": True,
+            "save_bulk": False,
             "ignored_channels": [],
             "ignored_users": [],
             "ignored_categories": [],
@@ -79,6 +80,15 @@ class MessagesLog(commands.Cog):
         await editing.set(not await editing())
         state = _("enabled") if await self.config.guild(ctx.guild).editing() else _("disabled")
         await ctx.send(chat.info(_("Message editing logging {}").format(state)))
+
+    @messageslog.command(name="bulk", alias=["savebulk"])
+    @commands.check(is_channel_set)
+    async def mess_bulk(self, ctx):
+        """Toggle saving of bulk message deletion"""
+        save_bulk = self.config.guild(ctx.guild).save_bulk
+        await save_bulk.set(not await save_bulk())
+        state = _("enabled") if await self.config.guild(ctx.guild).save_bulk() else _("disabled")
+        await ctx.send(chat.info(_("Bulk message removal saving {}").format(state)))
 
     @messageslog.command()
     @commands.check(is_channel_set)
@@ -240,15 +250,37 @@ class MessagesLog(commands.Cog):
             ]
         ):
             return
+        messages_dump = None
+        if payload.cached_messages and await self.config.guild(guild).save_bulk():
+            messages_dump = chat.text_to_file(
+                "\n\n".join(
+                    [
+                        f"[{m.id}]\n"
+                        f"[Author]:     {m.author}\n"
+                        f"[Channel]:    {m.channel.name} ({m.channel.id})\n"
+                        f"[Created at]: {m.created_at}\n"
+                        f"[Content]:\n"
+                        f"{m.system_content}"
+                        for m in payload.cached_messages
+                        if m.guild.id == guild.id
+                    ]
+                ),
+                filename=f"{guild.id}.txt",
+            )
         embed = discord.Embed(
             title=_("Multiple messages deleted"),
-            description=_("{} messages removed").format(len(payload.message_ids)),
+            description=_("{} messages removed").format(len(payload.message_ids))
+            + (
+                "\n" + _("{} messages saved to file above").format(len(payload.cached_messages))
+                if payload.cached_messages
+                else ""
+            ),
             timestamp=datetime.utcnow(),
             color=await self.bot.get_embed_colour(channel),
         )
         embed.add_field(name=_("Channel"), value=channel.mention)
         try:
-            await logchannel.send(embed=embed)
+            await logchannel.send(embed=embed, file=messages_dump)
         except discord.Forbidden:
             pass
 
