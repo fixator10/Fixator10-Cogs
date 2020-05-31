@@ -1,0 +1,94 @@
+from .abc import MixinMeta
+
+try:
+    from motor.motor_asyncio import AsyncIOMotorClient
+    from pymongo import errors as mongoerrors
+except Exception as e:
+    raise RuntimeError(f"Can't load pymongo/motor:{e}\nInstall 'pymongo' and 'motor' packages")
+
+
+class MongoDB(MixinMeta):
+    """MongoDB connection handling"""
+
+    async def _connect_to_mongo(self):
+        if self._db_ready:
+            self._db_ready = False
+        self._disconnect_mongo()
+        config = await self.config.custom("MONGODB").all()
+        try:
+            self.client = AsyncIOMotorClient(
+                **{k: v for k, v in config.items() if not k == "db_name"}
+            )
+            await self.client.server_info()
+            self.db = self.client[config["db_name"]]
+            self._db_ready = True
+        except (
+            mongoerrors.ServerSelectionTimeoutError,
+            mongoerrors.ConfigurationError,
+            mongoerrors.OperationFailure,
+        ) as error:
+            self.log.exception(
+                "Can't connect to the MongoDB server.\nFollow instructions on Git/online to install MongoDB.",
+                exc_info=error,
+            )
+            self.client = None
+            self.db = None
+        return self.client
+
+    def _disconnect_mongo(self):
+        if self.client:
+            self.client.close()
+
+    # handles user creation, adding new server, blocking
+    async def _create_user(self, user, server):
+        if not self._db_ready:
+            return
+        backgrounds = await self.config.backgrounds()
+        if user.bot:
+            return
+        try:
+            userinfo = await self.db.users.find_one({"user_id": str(user.id)})
+            if not userinfo:
+                new_account = {
+                    "user_id": str(user.id),
+                    "username": user.name,
+                    "servers": {},
+                    "total_exp": 0,
+                    "profile_background": backgrounds["profile"]["default"],
+                    "rank_background": backgrounds["rank"]["default"],
+                    "levelup_background": backgrounds["levelup"]["default"],
+                    "title": "",
+                    "info": "I am a mysterious person.",
+                    "rep": 0,
+                    "badges": {},
+                    "active_badges": {},
+                    "rep_color": [],
+                    "badge_col_color": [],
+                    "rep_block": 0,
+                    "chat_block": 0,
+                    "last_message": "",
+                    "profile_block": 0,
+                    "rank_block": 0,
+                }
+                await self.db.users.insert_one(new_account)
+
+            userinfo = await self.db.users.find_one({"user_id": str(user.id)})
+
+            if "username" not in userinfo or userinfo["username"] != user.name:
+                await self.db.users.update_one(
+                    {"user_id": str(user.id)}, {"$set": {"username": user.name}}, upsert=True,
+                )
+
+            if "servers" not in userinfo or str(server.id) not in userinfo["servers"]:
+                await self.db.users.update_one(
+                    {"user_id": str(user.id)},
+                    {
+                        "$set": {
+                            "servers.{}.level".format(server.id): 0,
+                            "servers.{}.current_exp".format(server.id): 0,
+                        }
+                    },
+                    upsert=True,
+                )
+        except AttributeError:
+            pass
