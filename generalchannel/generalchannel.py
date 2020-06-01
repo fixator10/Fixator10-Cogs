@@ -54,7 +54,7 @@ class GeneralChannel(commands.Cog):
         await ctx.tick()
 
     @gc.command(name="name")
-    @commands.cooldown(1, 60, commands.BucketType.user)
+    @commands.cooldown(2, 600, commands.BucketType.user)
     @commands.check(server_set)
     async def gcname(self, ctx, *, name: str):
         """Change name of #general"""
@@ -75,7 +75,7 @@ class GeneralChannel(commands.Cog):
             await ctx.tick()
 
     @gc.command(name="topic")
-    @commands.cooldown(1, 60, commands.BucketType.user)
+    @commands.cooldown(2, 600, commands.BucketType.user)
     @commands.check(server_set)
     async def gctopic(self, ctx, *, topic: str = None):
         """Change topic of #general
