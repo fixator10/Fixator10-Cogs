@@ -21,7 +21,7 @@ _ = Translator("GeneralChannel", __file__)
 class GeneralChannel(commands.Cog):
     """Allow users to manage #general channel's name and topic"""
 
-    __version__ = "2.0.1"
+    __version__ = "2.0.2"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -54,7 +54,8 @@ class GeneralChannel(commands.Cog):
         await ctx.tick()
 
     @gc.command(name="name")
-    @commands.cooldown(2, 600, commands.BucketType.user)
+    @commands.cooldown(2, 600, commands.BucketType.guild)
+    @commands.max_concurrency(1, commands.BucketType.guild)
     @commands.check(server_set)
     async def gcname(self, ctx, *, name: str):
         """Change name of #general"""
@@ -75,7 +76,8 @@ class GeneralChannel(commands.Cog):
             await ctx.tick()
 
     @gc.command(name="topic")
-    @commands.cooldown(2, 600, commands.BucketType.user)
+    @commands.cooldown(2, 600, commands.BucketType.guild)
+    @commands.max_concurrency(1, commands.BucketType.guild)
     @commands.check(server_set)
     async def gctopic(self, ctx, *, topic: str = None):
         """Change topic of #general
