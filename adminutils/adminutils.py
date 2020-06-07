@@ -18,7 +18,7 @@ _ = Translator("AdminUtils", __file__)
 class AdminUtils(commands.Cog):
     """Useful commands for server administrators."""
 
-    __version__ = "2.2.3"
+    __version__ = "2.2.4"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -56,11 +56,12 @@ class AdminUtils(commands.Cog):
             )
         )
         pred = MessagePredicate.yes_or_no(ctx)
-        try:
-            await self.bot.wait_for("message", check=pred, timeout=30)
-        except AsyncTimeoutError:
-            pass
-        if pred.result:
+        if not ctx.assume_yes:
+            try:
+                await self.bot.wait_for("message", check=pred, timeout=30)
+            except AsyncTimeoutError:
+                pass
+        if ctx.assume_yes or pred.result:
             cleanup = await ctx.guild.prune_members(days=days, reason=get_audit_reason(ctx.author))
             await ctx.send(
                 chat.info(
