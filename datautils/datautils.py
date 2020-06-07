@@ -74,7 +74,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.3.1"
+    __version__ = "2.3.2"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -595,7 +595,10 @@ class DataUtils(commands.Cog):
         perms = channel.permissions_for(member)
         await ctx.send(
             "{}\n{}".format(
-                chat.inline(str(perms.value)), chat.box(chat.format_perms_list(perms), lang="py"),
+                chat.inline(str(perms.value)),
+                chat.box(
+                    chat.format_perms_list(perms) if perms else _("No permissions"), lang="py"
+                ),
             )
         )
 
