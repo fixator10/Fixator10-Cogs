@@ -22,7 +22,7 @@ async def has_assigned_role(ctx):
 class PersonalRoles(commands.Cog):
     """Assign and edit personal roles"""
 
-    __version__ = "2.0.4"
+    __version__ = "2.0.5"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -58,20 +58,11 @@ class PersonalRoles(commands.Cog):
             await self.config.member(user).role.clear()
         elif isinstance(user, int):
             await self.config.member_from_ids(ctx.guild.id, user).role.clear()
-            try:
-                user = await self.bot.fetch_user(user)
-            except discord.NotFound:
-                await ctx.send(chat.error(_("Discord user with ID `{}` not found").format(user)))
-                return
-            except discord.HTTPException:
-                await ctx.send(
-                    chat.warning(
-                        _(
-                            "I was unable to get data about user with ID `{}`. Try again later"
-                        ).format(user)
-                    )
-                )
-                return
+            if _user := self.bot.get_user(user):
+                user = _user
+            else:
+                user = discord.Object(user)
+                user.name = _("[Unknown or Deleted User]")
         await ctx.send(
             _("Ok. I just unassigned {user.name} ({user.id}) from his personal role.").format(
                 user=user
@@ -83,9 +74,6 @@ class PersonalRoles(commands.Cog):
     async def mr_list(self, ctx):
         """Assigned roles list"""
         members_data = await self.config.all_members(ctx.guild)
-        if not members_data:
-            await ctx.send(chat.info(_("There is no assigned personal roles on this server")))
-            return
         assigned_roles = []
         for member, data in members_data.items():
             if not data["role"]:
@@ -101,6 +89,9 @@ class PersonalRoles(commands.Cog):
             assigned_roles.append(dic)
         pages = list(chat.pagify(tabulate(assigned_roles, headers="keys", tablefmt="orgtbl")))
         pages = [chat.box(page) for page in pages]
+        if not pages:
+            await ctx.send(chat.info(_("There is no assigned personal roles on this server")))
+            return
         await menu(ctx, pages, DEFAULT_CONTROLS)
 
     @myrole.group()
