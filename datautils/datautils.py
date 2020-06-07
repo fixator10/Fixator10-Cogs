@@ -74,7 +74,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.3.3"
+    __version__ = "2.3.4"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -115,9 +115,9 @@ class DataUtils(commands.Cog):
         if user.avatar:
             em.add_field(
                 name=_("Avatar"),
-                value=f"[`{user.avatar}`]({user.avatar_url_as(static_format='png', size=2048)})",
+                value=f"[`{user.avatar}`]({user.avatar_url_as(static_format='png', size=4096)})",
             )
-        em.set_image(url=user.avatar_url_as(static_format="png", size=2048))
+        em.set_image(url=user.avatar_url_as(static_format="png", size=4096))
         em.set_thumbnail(url=user.default_avatar_url)
         em.set_footer(text=_("Created at"))
         await ctx.send(embed=em)
@@ -212,7 +212,7 @@ class DataUtils(commands.Cog):
             value="\n".join([role.name for role in member.roles if not role.is_default()]) or "❌",
             inline=False,
         )
-        em.set_image(url=member.avatar_url_as(static_format="png", size=2048))
+        em.set_image(url=member.avatar_url_as(static_format="png", size=4096))
         # em.set_thumbnail(url=member.default_avatar_url)
         await ctx.send(embed=em)
 
@@ -352,7 +352,7 @@ class DataUtils(commands.Cog):
             )
         if widget.invite_url:
             em.add_field(name=_("Widget's invite"), value=widget.invite_url)
-        em.set_image(url=server.icon_url_as(format="png", size=2048))
+        em.set_image(url=server.icon_url_as(format="png", size=4096))
         await ctx.send(embed=em)
 
     @commands.command()
