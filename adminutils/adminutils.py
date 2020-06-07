@@ -18,7 +18,7 @@ _ = Translator("AdminUtils", __file__)
 class AdminUtils(commands.Cog):
     """Useful commands for server administrators."""
 
-    __version__ = "2.2.4"
+    __version__ = "2.2.5"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -47,16 +47,16 @@ class AdminUtils(commands.Cog):
             await ctx.send(chat.info(_('"days" arg cannot be less than 1...')))
             days = 1
         to_kick = await ctx.guild.estimate_pruned_members(days=days)
-        await ctx.send(
-            chat.warning(
-                _(
-                    "You about to kick **{to_kick}** inactive for **{days}** days members from this server. "
-                    'Are you sure?\nTo agree, type "yes"'
-                ).format(to_kick=to_kick, days=days)
-            )
-        )
         pred = MessagePredicate.yes_or_no(ctx)
         if not ctx.assume_yes:
+            await ctx.send(
+                chat.warning(
+                    _(
+                        "You about to kick **{to_kick}** inactive for **{days}** days members from this server. "
+                        'Are you sure?\nTo agree, type "yes"'
+                    ).format(to_kick=to_kick, days=days)
+                )
+            )
             try:
                 await self.bot.wait_for("message", check=pred, timeout=30)
             except AsyncTimeoutError:
