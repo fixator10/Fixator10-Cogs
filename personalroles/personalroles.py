@@ -89,10 +89,10 @@ class PersonalRoles(commands.Cog):
             assigned_roles.append(dic)
         pages = list(chat.pagify(tabulate(assigned_roles, headers="keys", tablefmt="orgtbl")))
         pages = [chat.box(page) for page in pages]
-        if not pages:
+        if pages:
+            await menu(ctx, pages, DEFAULT_CONTROLS)
+        else:
             await ctx.send(chat.info(_("There is no assigned personal roles on this server")))
-            return
-        await menu(ctx, pages, DEFAULT_CONTROLS)
 
     @myrole.group()
     @commands.guild_only()
