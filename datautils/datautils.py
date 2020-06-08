@@ -43,12 +43,23 @@ GUILD_FEATURES = {
     "WELCOME_SCREEN_ENABLED": _("Welcome screen"),
     "PUBLIC_DISABLED": _("Cannot be public"),
     "ENABLED_DISCOVERABLE_BEFORE": _("Was in Server Discovery"),
+    # COMMUNITY: _("")
 }
 
 ACTIVITY_TYPES = {
     discord.ActivityType.playing: _("Playing"),
     discord.ActivityType.watching: _("Watching"),
     discord.ActivityType.listening: _("Listening"),
+}
+
+CHANNEL_TYPE_EMOJIS = {
+    discord.ChannelType.text: "\N{SPEECH BALLOON}",
+    discord.ChannelType.voice: "\N{SPEAKER}",
+    discord.ChannelType.category: "\N{BOOKMARK TABS}",
+    discord.ChannelType.news: "\N{NEWSPAPER}",
+    discord.ChannelType.store: "\N{SHOPPING TROLLEY}",
+    discord.ChannelType.private: "\N{BUST IN SILHOUETTE}",
+    discord.ChannelType.group: "\N{BUSTS IN SILHOUETTE}",
 }
 
 
@@ -74,7 +85,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.3.4"
+    __version__ = "2.3.5"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -420,14 +431,7 @@ class DataUtils(commands.Cog):
         )
         em.add_field(name=_("ID"), value=channel.id)
         em.add_field(
-            name=_("Type"),
-            value="🔈"
-            if isinstance(channel, discord.VoiceChannel)
-            else "💬"
-            if isinstance(channel, discord.TextChannel)
-            else "📑"
-            if isinstance(channel, discord.CategoryChannel)
-            else "❔",
+            name=_("Type"), value=CHANNEL_TYPE_EMOJIS.get(channel.type, str(channel.type))
         )
         em.add_field(
             name=_("Has existed since"), value=channel.created_at.strftime(self.TIME_FORMAT),
@@ -597,7 +601,8 @@ class DataUtils(commands.Cog):
             "{}\n{}".format(
                 chat.inline(str(perms.value)),
                 chat.box(
-                    chat.format_perms_list(perms) if perms.value else _("No permissions"), lang="py"
+                    chat.format_perms_list(perms) if perms.value else _("No permissions"),
+                    lang="py",
                 ),
             )
         )
