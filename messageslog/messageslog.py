@@ -33,7 +33,7 @@ async def ignore_config_add(config: list, item):
 class MessagesLog(commands.Cog):
     """Log deleted and redacted messages to the defined channel"""
 
-    __version__ = "2.2.1"
+    __version__ = "2.2.2"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -251,8 +251,9 @@ class MessagesLog(commands.Cog):
             ]
         ):
             return
+        save_bulk = await self.config.guild(guild).save_bulk()
         messages_dump = None
-        if payload.cached_messages and await self.config.guild(guild).save_bulk():
+        if payload.cached_messages and save_bulk:
             messages_dump = chat.text_to_file(
                 "\n\n".join(
                     [
@@ -273,7 +274,7 @@ class MessagesLog(commands.Cog):
             description=_("{} messages removed").format(len(payload.message_ids))
             + (
                 "\n" + _("{} messages saved to file above").format(len(payload.cached_messages))
-                if payload.cached_messages
+                if payload.cached_messages and save_bulk
                 else ""
             ),
             timestamp=datetime.utcnow(),
