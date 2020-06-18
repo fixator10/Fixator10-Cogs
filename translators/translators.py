@@ -32,7 +32,7 @@ USERAGENT = (
 class Translators(commands.Cog):
     """Useful (and not) translators"""
 
-    __version__ = "2.1.2"
+    __version__ = "2.1.3"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -356,9 +356,25 @@ class Translators(commands.Cog):
             .replace("*", "*⃣")
         )
 
-    @commands.command(pass_context=True, name="urlencode", aliases=["url"])
-    async def _urlencode(self, ctx, *, text: str):
+    @commands.group()
+    async def url(self, ctx):
+        """Encode or decode text in URL-format ("%20"-format)"""
+        pass
+
+    @url.command(name="encode")
+    async def url_encode(self, ctx, encoding: Optional[PySupportedEncoding], *, text: str):
         """Encode text to url-like format
-        ('abc def') -> 'abc%20def'"""
-        encoded_url = parse.quote(text)
+        'abc def' -> 'abc%20def'"""
+        if not encoding:
+            encoding = "utf-8"
+        encoded_url = parse.quote(text, encoding=encoding, errors="replace")
         await ctx.send(chat.box(encoded_url))
+
+    @url.command(name="decode")
+    async def url_decode(self, ctx,encoding: Optional[PySupportedEncoding], *, url_formatted_text: str):
+        """Decode text from url-like format
+        'abc%20def' -> 'abc def'"""
+        if not encoding:
+            encoding = "utf-8"
+        decoded_text = parse.unquote(url_formatted_text, encoding=encoding)
+        await ctx.send(chat.box(decoded_text))
