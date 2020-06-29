@@ -371,7 +371,9 @@ class Translators(commands.Cog):
         await ctx.send(chat.box(encoded_url))
 
     @url.command(name="decode")
-    async def url_decode(self, ctx,encoding: Optional[PySupportedEncoding], *, url_formatted_text: str):
+    async def url_decode(
+        self, ctx, encoding: Optional[PySupportedEncoding], *, url_formatted_text: str
+    ):
         """Decode text from url-like format
         'abc%20def' -> 'abc def'"""
         if not encoding:
