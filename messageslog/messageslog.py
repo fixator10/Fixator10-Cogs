@@ -1,4 +1,5 @@
 from typing import Union
+from pprint import pformat
 from datetime import datetime
 
 import discord
@@ -33,7 +34,7 @@ async def ignore_config_add(config: list, item):
 class MessagesLog(commands.Cog):
     """Log deleted and redacted messages to the defined channel"""
 
-    __version__ = "2.2.3"
+    __version__ = "2.2.4"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -254,6 +255,7 @@ class MessagesLog(commands.Cog):
         save_bulk = await self.config.guild(guild).save_bulk()
         messages_dump = None
         if payload.cached_messages and save_bulk:
+            n = "\n"
             messages_dump = chat.text_to_file(
                 "\n\n".join(
                     [
@@ -262,7 +264,9 @@ class MessagesLog(commands.Cog):
                         f"[Channel]:    {m.channel.name} ({m.channel.id})\n"
                         f"[Created at]: {m.created_at}\n"
                         f"[Content]:\n"
-                        f"{m.system_content}"
+                        f"{m.system_content}\n"
+                        f"[Embeds]:\n"
+                        f"{n.join([pformat(e.to_dict()) for e in m.embeds])}"
                         async for m in AsyncIter(payload.cached_messages)
                         if m.guild.id == guild.id
                     ]
