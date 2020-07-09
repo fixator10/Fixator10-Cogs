@@ -431,7 +431,7 @@ class DataUtils(commands.Cog):
         )
         em.add_field(name=_("ID"), value=channel.id)
         em.add_field(
-            name=_("Type"), value=CHANNEL_TYPE_EMOJIS.get(channel.type, str(channel.type))
+            name=_("Type"), value=CHANNEL_TYPE_EMOJIS.get(channel.type, str(channel.type)),
         )
         em.add_field(
             name=_("Has existed since"), value=channel.created_at.strftime(self.TIME_FORMAT),

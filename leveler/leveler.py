@@ -2208,7 +2208,8 @@ class Leveler(commands.Cog):
         for i, page in enumerate(pages, start=1):
             em = discord.Embed(colour=await ctx.embed_color())
             em.set_author(
-                name="Current Role - Level Links for {}".format(server.name), icon_url=server.icon_url,
+                name="Current Role - Level Links for {}".format(server.name),
+                icon_url=server.icon_url,
             )
             em.set_footer(text=f"Page {i}/{len(pages)}")
             em.description = msg
@@ -2508,7 +2509,7 @@ class Leveler(commands.Cog):
                     server_roles["roles"][role_name]["level"] = str(level)
                     server_roles["roles"][role_name]["remove_role"] = remove_role
                     await self.db.roles.update_one(
-                        {"server_id": str(server.id)}, {"$set": {"roles": server_roles["roles"]}}
+                        {"server_id": str(server.id)}, {"$set": {"roles": server_roles["roles"]}},
                     )
 
                 await ctx.send(
