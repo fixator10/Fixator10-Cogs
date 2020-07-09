@@ -85,7 +85,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.3.5"
+    __version__ = "2.3.6"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -281,9 +281,9 @@ class DataUtils(commands.Cog):
             if server.verification_level == discord.VerificationLevel.low
             else _("Medium")
             if server.verification_level == discord.VerificationLevel.medium
-            else _("(╯°□°）╯︵ ┻━┻")
+            else _("High")
             if server.verification_level == discord.VerificationLevel.high
-            else _("┻━┻ ﾐヽ(ಠ益ಠ)ノ彡┻━┻")
+            else _("Highest")
             if server.verification_level == discord.VerificationLevel.extreme
             else _("Unknown"),
         )
