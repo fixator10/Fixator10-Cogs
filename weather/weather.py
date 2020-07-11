@@ -152,9 +152,11 @@ class Weather(commands.Cog):
         """Set API key for forecast.io"""
         message = _(
             "To get forecast.io API key:\n"
-            "1. Register/login at [DarkSky](https://darksky.net/dev/register)\n"
-            '2. Copy ["Your Secret Key"](https://darksky.net/dev/account)\n'
-            "3. Use `{}set api forecastio secret <your_apikey>`"
+            '1. Find your ["Your Secret Key"](https://darksky.net/dev/account)\n'
+            "2. Use `{}set api forecastio secret <your_apikey>`\n"
+            "Note: DarkSky API is going to close at end of 2021. "
+            "Im already aware of this issue and will change API later. "
+            "For now you can use cog with already existing API keys."
         ).format(ctx.clean_prefix)
         await ctx.maybe_send_embed(message)
 
