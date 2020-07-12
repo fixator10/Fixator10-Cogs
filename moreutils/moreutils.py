@@ -44,7 +44,7 @@ def bool_emojify(bool_var: bool) -> str:
 class MoreUtils(commands.Cog):
     """Some (maybe) useful utils."""
 
-    __version__ = "2.0.3"
+    __version__ = "2.0.4"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -61,7 +61,7 @@ class MoreUtils(commands.Cog):
 
     @commands.command(aliases=["HEX", "hex", "colour"])
     @checks.bot_has_permissions(embed_links=True)
-    async def color(self, ctx, color: discord.Color):
+    async def color(self, ctx, *, color: discord.Color):
         """Shows some info about provided color"""
         colorrgb = color.to_rgb()
         colorhsv = colorsys.rgb_to_hsv(colorrgb[0], colorrgb[1], colorrgb[2])
