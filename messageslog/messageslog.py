@@ -13,11 +13,12 @@ from redbot.core.utils import chat_formatting as chat
 from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
 
 
-async def is_channel_set(ctx: commands.Context):
+def is_channel_set(channel_type: str):
     """Checks if server has set channel for logging"""
-    if ctx.guild:
-        return ctx.guild.get_channel(await ctx.cog.config.guild(ctx.guild).channel())
-    return False
+    async def predicate(ctx):
+        if ctx.guild:
+            return ctx.guild.get_channel(await getattr(ctx.cog.config.guild(ctx.guild), f"{channel_type}_channel")())
+    return commands.check(predicate)
 
 
 async def ignore_config_add(config: list, item):
@@ -35,7 +36,7 @@ _ = Translator("MessagesLog", __file__)
 class MessagesLog(commands.Cog):
     """Log deleted and redacted messages to the defined channel"""
 
-    __version__ = "2.3.0"
+    __version__ = "2.3.1"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -108,7 +109,7 @@ class MessagesLog(commands.Cog):
         await ctx.tick()
 
     @messageslog.command(name="delete")
-    @commands.check(is_channel_set)
+    @is_channel_set("delete")
     async def mess_delete(self, ctx):
         """Toggle logging of message deletion"""
         deletion = self.config.guild(ctx.guild).deletion
@@ -117,7 +118,7 @@ class MessagesLog(commands.Cog):
         await ctx.send(chat.info(_("Message deletion logging {}").format(state)))
 
     @messageslog.command(name="edit")
-    @commands.check(is_channel_set)
+    @is_channel_set("edit")
     async def mess_edit(self, ctx):
         """Toggle logging of message editing"""
         editing = self.config.guild(ctx.guild).editing
@@ -126,7 +127,7 @@ class MessagesLog(commands.Cog):
         await ctx.send(chat.info(_("Message editing logging {}").format(state)))
 
     @messageslog.command(name="bulk", alias=["savebulk"])
-    @commands.check(is_channel_set)
+    @is_channel_set("bulk_delete")
     async def mess_bulk(self, ctx):
         """Toggle saving of bulk message deletion"""
         save_bulk = self.config.guild(ctx.guild).save_bulk
@@ -135,7 +136,6 @@ class MessagesLog(commands.Cog):
         await ctx.send(chat.info(_("Bulk message removal saving {}").format(state)))
 
     @messageslog.command()
-    @commands.check(is_channel_set)
     async def ignore(
         self, ctx, *ignore: Union[discord.Member, discord.TextChannel, discord.CategoryChannel],
     ):
@@ -189,7 +189,7 @@ class MessagesLog(commands.Cog):
     async def message_deleted(self, message: discord.Message):
         if not message.guild:
             return
-        logchannel = message.guild.get_channel(await self.config.guild(message.guild).channel())
+        logchannel = message.guild.get_channel(await self.config.guild(message.guild).delete_channel())
         if not logchannel:
             return
         if (
@@ -242,7 +242,7 @@ class MessagesLog(commands.Cog):
             return
         guild = self.bot.get_guild(payload.guild_id)
         channel = self.bot.get_channel(payload.channel_id)
-        logchannel = guild.get_channel(await self.config.guild(guild).channel())
+        logchannel = guild.get_channel(await self.config.guild(guild).delete_channel())
         if not logchannel:
             return
         if (
@@ -277,7 +277,7 @@ class MessagesLog(commands.Cog):
             return
         guild = self.bot.get_guild(payload.guild_id)
         channel = self.bot.get_channel(payload.channel_id)
-        logchannel = guild.get_channel(await self.config.guild(guild).channel())
+        logchannel = guild.get_channel(await self.config.guild(guild).bulk_delete_channel())
         if not logchannel:
             return
         if (
@@ -288,7 +288,6 @@ class MessagesLog(commands.Cog):
         if any(
             [
                 not await self.config.guild(guild).deletion(),
-                not guild.get_channel(await self.config.guild(guild).channel()),
                 channel.id in await self.config.guild(guild).ignored_channels(),
                 channel.nsfw and not logchannel.nsfw,
             ]
@@ -336,7 +335,7 @@ class MessagesLog(commands.Cog):
     async def message_redacted(self, before: discord.Message, after: discord.Message):
         if not before.guild:
             return
-        logchannel = before.guild.get_channel(await self.config.guild(before.guild).channel())
+        logchannel = before.guild.get_channel(await self.config.guild(before.guild).edit_channel())
         if not logchannel:
             return
         if (
@@ -348,7 +347,6 @@ class MessagesLog(commands.Cog):
         if any(
             [
                 not await self.config.guild(before.guild).editing(),
-                not before.guild.get_channel(await self.config.guild(before.guild).channel()),
                 (await self.bot.get_context(before)).command,
                 before.channel.id in await self.config.guild(before.guild).ignored_channels(),
                 before.author.id in await self.config.guild(before.guild).ignored_users(),
