@@ -1,5 +1,7 @@
 from .messageslog import MessagesLog
 
 
-def setup(bot):
-    bot.add_cog(MessagesLog(bot))
+async def setup(bot):
+    cog = MessagesLog(bot)
+    await cog.initialize()
+    bot.add_cog(cog)

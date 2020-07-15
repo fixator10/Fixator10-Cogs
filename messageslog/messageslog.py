@@ -3,6 +3,7 @@ from pprint import pformat
 from datetime import datetime
 
 import discord
+import logging
 from redbot.core import checks
 from redbot.core import commands
 from redbot.core.config import Config
@@ -19,9 +20,6 @@ async def is_channel_set(ctx: commands.Context):
     return False
 
 
-_ = Translator("MessagesLog", __file__)
-
-
 async def ignore_config_add(config: list, item):
     """Adds item to provided config list"""
     if item.id in config:
@@ -29,19 +27,24 @@ async def ignore_config_add(config: list, item):
     else:
         config.append(item.id)
 
+log = logging.getLogger("red.fixator10-cogs.messageslog")
+_ = Translator("MessagesLog", __file__)
+
 
 @cog_i18n(_)
 class MessagesLog(commands.Cog):
     """Log deleted and redacted messages to the defined channel"""
 
-    __version__ = "2.2.4"
+    __version__ = "2.3.0"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
         self.bot = bot
         self.config = Config.get_conf(self, identifier=0xB0FCB74A18A548D084B6312E018AC474)
         default_guild = {
-            "channel": None,
+            "delete_channel": None,
+            "edit_channel": None,
+            "bulk_delete_channel": None,
             "deletion": True,
             "editing": True,
             "save_bulk": False,
@@ -51,18 +54,57 @@ class MessagesLog(commands.Cog):
         }
         self.config.register_guild(**default_guild)
 
+    async def initialize(self):
+        """Update configs
+
+        Versions:
+        1. Copy channel to channel types"""
+        if not await self.config.config_version() or await self.config.config_version() < 1:
+            log.info("Updating config from version 1 to version 2")
+            for guild, data in (await self.config.all_guilds()).items():
+                if data["channel"]:
+                    log.info(f"Updating config for guild {guild}")
+                    guild_config = self.config.guild_from_id(guild)
+                    await guild_config.delete_channel.set(data["channel"])
+                    await guild_config.edit_channel.set(data["channel"])
+                    await guild_config.bulk_delete_channel.set(data["channel"])
+                    await guild_config.channel.clear()
+            log.info("Config updated to version 1")
+            await self.config.config_version.set(1)
+
     @commands.group(autohelp=True, aliases=["messagelog", "messageslogs", "messagelogs"])
     @checks.admin_or_permissions(manage_guild=True)
     async def messageslog(self, ctx):
         """Manage message logging"""
         pass
 
-    @messageslog.command()
+    @messageslog.group()
     async def channel(self, ctx, channel: discord.TextChannel = None):
-        """Set the channel for logs
+        """Set the channels for logs"""
+        pass
 
-        If channel is not provided, then logging will be disabled"""
-        await self.config.guild(ctx.guild).channel.set(channel.id if channel else None)
+    @channel.command(name="delete")
+    async def delete_channel(self, ctx, channel: discord.TextChannel = None):
+        """Set the channel for deleted messages logs
+
+        If channel is not specified, then logging will be disabled"""
+        await self.config.guild(ctx.guild).delete_channel.set(channel.id if channel else None)
+        await ctx.tick()
+
+    @channel.command(name="edit")
+    async def edit_channel(self, ctx, channel: discord.TextChannel = None):
+        """Set the channel for edited messages logs
+
+        If channel is not specified, then logging will be disabled"""
+        await self.config.guild(ctx.guild).edit_channel.set(channel.id if channel else None)
+        await ctx.tick()
+
+    @channel.command(name="bulk")
+    async def bulk_channel(self, ctx, channel: discord.TextChannel = None):
+        """Set the channel for bulk deletion logs
+
+        If channel is not specified, then logging will be disabled"""
+        await self.config.guild(ctx.guild).bulk_delete_channel.set(channel.id if channel else None)
         await ctx.tick()
 
     @messageslog.command(name="delete")
