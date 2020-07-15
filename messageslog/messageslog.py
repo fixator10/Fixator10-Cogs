@@ -41,7 +41,7 @@ _ = Translator("MessagesLog", __file__)
 class MessagesLog(commands.Cog):
     """Log deleted and redacted messages to the defined channel"""
 
-    __version__ = "2.3.3"
+    __version__ = "2.3.4"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -116,11 +116,14 @@ class MessagesLog(commands.Cog):
     @channel.command(name="settings")
     async def channel_settings(self, ctx):
         """View current channels settings"""
-        await ctx.send(
-            f"Deletion: {await self.config.guild(ctx.guild).delete_channel}\n"
-            f"Edit: {await self.config.guild(ctx.guild).edit_channel}"
-            f"Bulk deletion: {await self.config.guild(ctx.guild).bulk_delete_channel}"
-        )
+        settings = []
+        if delete := await self.config.guild(ctx.guild).delete_channel():
+            settings.append(_("Deletion: {}").format(ctx.guild.get_channel(delete)))
+        if edit := await self.config.guild(ctx.guild).edit_channel():
+            settings.append(_("Edit: {}").format(ctx.guild.get_channel(edit)))
+        if bulk := await self.config.guild(ctx.guild).bulk_delete_channel():
+            settings.append(_("Bulk deletion: {}").format(ctx.guild.get_channel(bulk)))
+        await ctx.send("\n".join(settings) or chat.info(_("No channels set")))
 
     @messageslog.group()
     async def toggle(self, ctx):
