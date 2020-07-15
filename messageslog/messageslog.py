@@ -15,9 +15,13 @@ from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
 
 def is_channel_set(channel_type: str):
     """Checks if server has set channel for logging"""
+
     async def predicate(ctx):
         if ctx.guild:
-            return ctx.guild.get_channel(await getattr(ctx.cog.config.guild(ctx.guild), f"{channel_type}_channel")())
+            return ctx.guild.get_channel(
+                await getattr(ctx.cog.config.guild(ctx.guild), f"{channel_type}_channel")()
+            )
+
     return commands.check(predicate)
 
 
@@ -28,6 +32,7 @@ async def ignore_config_add(config: list, item):
     else:
         config.append(item.id)
 
+
 log = logging.getLogger("red.fixator10-cogs.messageslog")
 _ = Translator("MessagesLog", __file__)
 
@@ -36,7 +41,7 @@ _ = Translator("MessagesLog", __file__)
 class MessagesLog(commands.Cog):
     """Log deleted and redacted messages to the defined channel"""
 
-    __version__ = "2.3.1"
+    __version__ = "2.3.2"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -107,6 +112,15 @@ class MessagesLog(commands.Cog):
         If channel is not specified, then logging will be disabled"""
         await self.config.guild(ctx.guild).bulk_delete_channel.set(channel.id if channel else None)
         await ctx.tick()
+
+    @channel.command(name="settings")
+    async def channel_settings(self, ctx):
+        """View current channels settings"""
+        await ctx.send(
+            f"Deletion: {await self.config.guild(ctx.guild).delete_channel}\n"
+            f"Edit: {await self.config.guild(ctx.guild).edit_channel}"
+            f"Bulk deletion: {await self.config.guild(ctx.guild).bulk_delete_channel}"
+        )
 
     @messageslog.command(name="delete")
     @is_channel_set("delete")
@@ -189,7 +203,9 @@ class MessagesLog(commands.Cog):
     async def message_deleted(self, message: discord.Message):
         if not message.guild:
             return
-        logchannel = message.guild.get_channel(await self.config.guild(message.guild).delete_channel())
+        logchannel = message.guild.get_channel(
+            await self.config.guild(message.guild).delete_channel()
+        )
         if not logchannel:
             return
         if (
@@ -201,7 +217,6 @@ class MessagesLog(commands.Cog):
         if any(
             [
                 not await self.config.guild(message.guild).deletion(),
-                not message.guild.get_channel(await self.config.guild(message.guild).channel()),
                 (await self.bot.get_context(message)).command,
                 message.channel.id in await self.config.guild(message.guild).ignored_channels(),
                 message.author.id in await self.config.guild(message.guild).ignored_users(),
@@ -253,7 +268,6 @@ class MessagesLog(commands.Cog):
         if any(
             [
                 not await self.config.guild(guild).deletion(),
-                not guild.get_channel(await self.config.guild(guild).channel()),
                 channel.id in await self.config.guild(guild).ignored_channels(),
                 channel.nsfw and not logchannel.nsfw,
             ]
