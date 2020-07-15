@@ -41,7 +41,7 @@ _ = Translator("MessagesLog", __file__)
 class MessagesLog(commands.Cog):
     """Log deleted and redacted messages to the defined channel"""
 
-    __version__ = "2.3.2"
+    __version__ = "2.3.3"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -85,7 +85,7 @@ class MessagesLog(commands.Cog):
         pass
 
     @messageslog.group()
-    async def channel(self, ctx, channel: discord.TextChannel = None):
+    async def channel(self, ctx):
         """Set the channels for logs"""
         pass
 
@@ -122,7 +122,12 @@ class MessagesLog(commands.Cog):
             f"Bulk deletion: {await self.config.guild(ctx.guild).bulk_delete_channel}"
         )
 
-    @messageslog.command(name="delete")
+    @messageslog.group()
+    async def toggle(self, ctx):
+        """Toggle logging"""
+        pass
+
+    @toggle.command(name="delete")
     @is_channel_set("delete")
     async def mess_delete(self, ctx):
         """Toggle logging of message deletion"""
@@ -131,7 +136,7 @@ class MessagesLog(commands.Cog):
         state = _("enabled") if await self.config.guild(ctx.guild).deletion() else _("disabled")
         await ctx.send(chat.info(_("Message deletion logging {}").format(state)))
 
-    @messageslog.command(name="edit")
+    @toggle.command(name="edit")
     @is_channel_set("edit")
     async def mess_edit(self, ctx):
         """Toggle logging of message editing"""
@@ -140,7 +145,7 @@ class MessagesLog(commands.Cog):
         state = _("enabled") if await self.config.guild(ctx.guild).editing() else _("disabled")
         await ctx.send(chat.info(_("Message editing logging {}").format(state)))
 
-    @messageslog.command(name="bulk", alias=["savebulk"])
+    @toggle.command(name="bulk", alias=["savebulk"])
     @is_channel_set("bulk_delete")
     async def mess_bulk(self, ctx):
         """Toggle saving of bulk message deletion"""
