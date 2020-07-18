@@ -18,7 +18,7 @@ _ = Translator("AdminUtils", __file__)
 class AdminUtils(commands.Cog):
     """Useful commands for server administrators."""
 
-    __version__ = "2.2.5"
+    __version__ = "2.3.0"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
