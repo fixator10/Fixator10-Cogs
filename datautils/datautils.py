@@ -85,7 +85,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.3.6"
+    __version__ = "2.4.0"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
