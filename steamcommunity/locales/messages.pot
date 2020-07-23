@@ -2,14 +2,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-05-22 00:12+0400\n"
+"POT-Creation-Date: 2020-07-23 15:59+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: redgettext 3.1\n"
+"Generated-By: redgettext 3.3\n"
 
 #: steamcommunity\steamcommunity.py:115 steamcommunity\steamcommunity.py:137
 #, docstring
@@ -23,12 +23,14 @@ msgstr ""
 
 #: steamcommunity\steamcommunity.py:144
 msgid ""
-"To get Steam Web API key:\\n1. Login to your Steam account\\n2. Visit "
-"[Register Steam Web API Key](https://steamcommunity.com/dev/apikey) "
-"page\\n3. Enter any domain name (e.g. `localhost`)\\n4. You will now see "
-"\\\"Key\\\" field\\n5. Use `{}set api steam web <your_apikey>`\\nNote: These"
-" tokens are sensitive and should only be used in a private channel\\nor in "
-"DM with the bot."
+"To get Steam Web API key:\n"
+"1. Login to your Steam account\n"
+"2. Visit [Register Steam Web API Key](https://steamcommunity.com/dev/apikey) page\n"
+"3. Enter any domain name (e.g. `localhost`)\n"
+"4. You will now see \"Key\" field\n"
+"5. Use `{}set api steam web <your_apikey>`\n"
+"Note: These tokens are sensitive and should only be used in a private channel\n"
+"or in DM with the bot."
 msgstr ""
 
 #: steamcommunity\steamcommunity.py:161
@@ -45,7 +47,9 @@ msgid " on server {}"
 msgstr ""
 
 #: steamcommunity\steamcommunity.py:178
-msgid "\\nFamily Shared by [{}]({})"
+msgid ""
+"\n"
+"Family Shared by [{}]({})"
 msgstr ""
 
 #: steamcommunity\steamcommunity.py:182
@@ -135,9 +139,13 @@ msgstr ""
 
 #: steamcommunity\steamcommunity.py:253
 msgid ""
-"**Online**: {}\\n**In-game**: {}\\n**Store**: {}\\n**Community**: {}\\n**Web"
-" API**: {}\\n**Steam Connection Managers**: {}\\n**SteamDB.info database**: "
-"{}"
+"**Online**: {}\n"
+"**In-game**: {}\n"
+"**Store**: {}\n"
+"**Community**: {}\n"
+"**Web API**: {}\n"
+"**Steam Connection Managers**: {}\n"
+"**SteamDB.info database**: {}"
 msgstr ""
 
 #: steamcommunity\steamcommunity.py:271
@@ -146,10 +154,14 @@ msgstr ""
 
 #: steamcommunity\steamcommunity.py:272
 msgid ""
-"**TF2 Game Coordinator**: {}\\n**Dota 2 Game Coordinator**: "
-"{}\\n**Underlords Game Coordinator**: {}\\n**Artifact Game Coordinator**: "
-"{}\\n**CS:GO Game Coordinator**: {}\\n**CS:GO Sessions Logon**: {}\\n**CS:GO"
-" Player Inventories**: {}\\n**CS:GO Matchmaking Scheduler**: {}\\n"
+"**TF2 Game Coordinator**: {}\n"
+"**Dota 2 Game Coordinator**: {}\n"
+"**Underlords Game Coordinator**: {}\n"
+"**Artifact Game Coordinator**: {}\n"
+"**CS:GO Game Coordinator**: {}\n"
+"**CS:GO Sessions Logon**: {}\n"
+"**CS:GO Player Inventories**: {}\n"
+"**CS:GO Matchmaking Scheduler**: {}\n"
 msgstr ""
 
 #: steamcommunity\steamcommunity.py:302
@@ -206,7 +218,9 @@ msgid "Players"
 msgstr ""
 
 #: steamcommunity\steamcommunity.py:384
-msgid "{}/{}\\nBots: {}"
+msgid ""
+"{}/{}\n"
+"Bots: {}"
 msgstr ""
 
 #: steamcommunity\steamuser.py:22

@@ -2,150 +2,193 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-05-31 17:48+0400\n"
+"POT-Creation-Date: 2020-07-23 15:59+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: redgettext 3.1\n"
+"Generated-By: redgettext 3.3\n"
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:33
+#: messageslog\messageslog.py:42
 #, docstring
 msgid "Log deleted and redacted messages to the defined channel"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:55
+#: messageslog\messageslog.py:84
 #, docstring
 msgid "Manage message logging"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:60
+#: messageslog\messageslog.py:89
 #, docstring
-msgid ""
-"Set the channel for logs\\n\\n        If channel is not provided, then "
-"logging will be disabled"
+msgid "Set the channels for logs"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:69
+#: messageslog\messageslog.py:94
+#, docstring
+msgid ""
+"Set the channel for deleted messages logs\n"
+"\n"
+"        If channel is not specified, then logging will be disabled"
+msgstr ""
+
+#: messageslog\messageslog.py:102
+#, docstring
+msgid ""
+"Set the channel for edited messages logs\n"
+"\n"
+"        If channel is not specified, then logging will be disabled"
+msgstr ""
+
+#: messageslog\messageslog.py:110
+#, docstring
+msgid ""
+"Set the channel for bulk deletion logs\n"
+"\n"
+"        If channel is not specified, then logging will be disabled"
+msgstr ""
+
+#: messageslog\messageslog.py:118
+#, docstring
+msgid "View current channels settings"
+msgstr ""
+
+#: messageslog\messageslog.py:121
+msgid "Deletion: {}"
+msgstr ""
+
+#: messageslog\messageslog.py:123
+msgid "Edit: {}"
+msgstr ""
+
+#: messageslog\messageslog.py:125
+msgid "Bulk deletion: {}"
+msgstr ""
+
+#: messageslog\messageslog.py:126
+msgid "No channels set"
+msgstr ""
+
+#: messageslog\messageslog.py:130
+#, docstring
+msgid "Toggle logging"
+msgstr ""
+
+#: messageslog\messageslog.py:136
 #, docstring
 msgid "Toggle logging of message deletion"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:72
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:81
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:90
+#: messageslog\messageslog.py:139 messageslog\messageslog.py:148
+#: messageslog\messageslog.py:157
 msgid "enabled"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:72
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:81
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:90
+#: messageslog\messageslog.py:139 messageslog\messageslog.py:148
+#: messageslog\messageslog.py:157
 msgid "disabled"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:73
+#: messageslog\messageslog.py:140
 msgid "Message deletion logging {}"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:78
+#: messageslog\messageslog.py:145
 #, docstring
 msgid "Toggle logging of message editing"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:82
+#: messageslog\messageslog.py:149
 msgid "Message editing logging {}"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:87
+#: messageslog\messageslog.py:154
 #, docstring
 msgid "Toggle saving of bulk message deletion"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:91
+#: messageslog\messageslog.py:158
 msgid "Bulk message removal saving {}"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:98
+#: messageslog\messageslog.py:164
 #, docstring
 msgid ""
-"Manage message logging blacklist\\n\\n        Shows blacklist if no "
-"arguments provided\\n        You can ignore text channels, categories and "
-"members\\n        If item is in blacklist, removes it"
+"Manage message logging blacklist\n"
+"\n"
+"        Shows blacklist if no arguments provided\n"
+"        You can ignore text channels, categories and members\n"
+"        If item is in blacklist, removes it"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:115
+#: messageslog\messageslog.py:181
 msgid "Nothing is ignored"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:121
+#: messageslog\messageslog.py:187
 msgid "Ignored users"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:123
+#: messageslog\messageslog.py:189
 msgid "Ignored channels"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:126
+#: messageslog\messageslog.py:192
 msgid "Ignored categories"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:170
+#: messageslog\messageslog.py:237
 msgid "Message deleted"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:171
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:315
+#: messageslog\messageslog.py:238 messageslog\messageslog.py:383
 msgid "No text"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:177
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:322
+#: messageslog\messageslog.py:244 messageslog\messageslog.py:390
 msgid "Attachments"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:180
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:325
+#: messageslog\messageslog.py:247 messageslog\messageslog.py:393
 msgid "[{0.filename}]({0.url}) ([Cached]({0.proxy_url}))"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:186
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:223
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:331
+#: messageslog\messageslog.py:253 messageslog\messageslog.py:289
+#: messageslog\messageslog.py:399
 msgid "ID: {} • Sent at"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:187
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:224
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:281
+#: messageslog\messageslog.py:254 messageslog\messageslog.py:290
+#: messageslog\messageslog.py:350
 msgid "Channel"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:219
+#: messageslog\messageslog.py:285
 msgid "Old message deleted"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:271
+#: messageslog\messageslog.py:340
 msgid "Multiple messages deleted"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:272
+#: messageslog\messageslog.py:341
 msgid "{} messages removed"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:274
+#: messageslog\messageslog.py:343
 msgid "{} messages saved to file above"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:314
+#: messageslog\messageslog.py:382
 msgid "Message redacted"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:319
+#: messageslog\messageslog.py:387
 msgid "Now"
 msgstr ""
 
-#: D:\CodeProjects\Fixator10-Cogs\messageslog\messageslog.py:319
+#: messageslog\messageslog.py:387
 msgid "[View message]({})"
 msgstr ""
