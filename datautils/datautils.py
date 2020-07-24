@@ -85,7 +85,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.4.0"
+    __version__ = "2.4.1"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -529,7 +529,7 @@ class DataUtils(commands.Cog):
         em.add_field(name=_("ID"), value=role.id)
         em.add_field(
             name=_("Permissions"),
-            value="[{0}](https://fixator10.ru/permissions-calculator/?v=#{0})".format(
+            value="[{0}](https://fixator10.ru/permissions-calculator/?v={0})".format(
                 role.permissions.value
             ),
         )
