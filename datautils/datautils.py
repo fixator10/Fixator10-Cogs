@@ -43,7 +43,7 @@ GUILD_FEATURES = {
     "WELCOME_SCREEN_ENABLED": _("Welcome screen"),
     "PUBLIC_DISABLED": _("Cannot be public"),
     "ENABLED_DISCOVERABLE_BEFORE": _("Was in Server Discovery"),
-    "COMMUNITY": _("Community (Public) server")
+    "COMMUNITY": _("Community (Public) server"),
 }
 
 ACTIVITY_TYPES = {
