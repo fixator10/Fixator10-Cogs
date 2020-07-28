@@ -10,7 +10,6 @@ import time
 from asyncio import TimeoutError as AsyncTimeoutError
 from collections import OrderedDict
 from datetime import timedelta
-from tabulate import tabulate
 from io import BytesIO
 from typing import Union
 
@@ -18,16 +17,14 @@ import aiohttp
 import discord
 from discord.utils import find
 from fontTools.ttLib import TTFont
-from redbot.core import bank
-from redbot.core import checks
-from redbot.core import commands
-from redbot.core import Config
+from redbot.core import Config, bank, checks, commands
 from redbot.core.bot import Red
 from redbot.core.data_manager import bundled_data_path
 from redbot.core.utils import AsyncIter
-from redbot.core.utils.chat_formatting import pagify, box
-from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
+from redbot.core.utils.chat_formatting import box, pagify
+from redbot.core.utils.menus import DEFAULT_CONTROLS, menu
 from redbot.core.utils.predicates import MessagePredicate
+from tabulate import tabulate
 
 try:
     from motor.motor_asyncio import AsyncIOMotorClient
@@ -42,7 +39,7 @@ except Exception as e:
         f"{__file__}: numpy/scipy is unable to import: {e}\nAutocolor feature will be unavailable"
     )
 try:
-    from PIL import Image, ImageDraw, ImageFont, ImageColor, ImageOps, ImageFilter
+    from PIL import Image, ImageColor, ImageDraw, ImageFilter, ImageFont, ImageOps
     from PIL import features as pil_features
 except Exception as e:
     raise RuntimeError(f"Can't load pillow: {e}\nDo '[p]pipinstall pillow'.")

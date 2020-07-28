@@ -1,18 +1,17 @@
-import unicodedata
 import string
+import unicodedata
 from asyncio import TimeoutError as AsyncTimeoutError
 from textwrap import shorten
 from types import SimpleNamespace
-from typing import Union, Optional
+from typing import Optional, Union
 
 import discord
 import tabulate
-from redbot.core import checks
-from redbot.core import commands
+from redbot.core import checks, commands
 from redbot.core.i18n import Translator, cog_i18n
-from redbot.core.utils import chat_formatting as chat
 from redbot.core.utils import AsyncIter
-from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
+from redbot.core.utils import chat_formatting as chat
+from redbot.core.utils.menus import DEFAULT_CONTROLS, menu
 from redbot.core.utils.predicates import ReactionPredicate
 
 

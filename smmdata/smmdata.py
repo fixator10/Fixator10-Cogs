@@ -3,7 +3,7 @@ from discord import Embed
 from redbot.core import commands
 from redbot.core.i18n import Translator, cog_i18n
 
-from .smmbookmark import Level, Maker, SMMB_BASE_URL
+from .smmbookmark import SMMB_BASE_URL, Level, Maker
 
 _ = Translator("SMMData", __file__)
 

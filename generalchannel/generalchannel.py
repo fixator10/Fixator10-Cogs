@@ -1,6 +1,5 @@
 import discord
-from redbot.core import checks
-from redbot.core import commands
+from redbot.core import checks, commands
 from redbot.core.config import Config
 from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils import chat_formatting as chat

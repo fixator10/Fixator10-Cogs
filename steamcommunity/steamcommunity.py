@@ -1,15 +1,14 @@
 from collections import namedtuple
+from contextlib import suppress
 from datetime import datetime
 from functools import partial
 from socket import gethostbyname_ex
 from warnings import filterwarnings
-from contextlib import suppress
 
 import aiohttp
 import discord
 import valve.source.a2s
-from redbot.core import checks
-from redbot.core import commands
+from redbot.core import checks, commands
 from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils import chat_formatting as chat
 from valve.steam.api import interface
@@ -22,7 +21,6 @@ with suppress(Exception):
     from io import BytesIO
 
 from .steamuser import SteamUser
-
 
 LOAD_INDICATORS = ["\N{GREEN HEART}", "\N{YELLOW HEART}", "\N{BROKEN HEART}"]
 

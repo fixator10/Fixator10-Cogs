@@ -9,11 +9,10 @@ import aiohttp
 import discord
 import tabulate
 from mcstatus import MinecraftServer
-from redbot.core import checks
-from redbot.core import commands
+from redbot.core import checks, commands
 from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils import chat_formatting as chat
-from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
+from redbot.core.utils.menus import DEFAULT_CONTROLS, menu
 
 from .minecraftplayer import MCPlayer
 

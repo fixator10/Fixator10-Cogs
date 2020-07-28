@@ -2,15 +2,14 @@ import base64
 import itertools
 import random
 import re
-from typing import Optional
-from io import BytesIO
-from urllib import parse
 from binascii import Error as binasciiError
+from io import BytesIO
+from typing import Optional
+from urllib import parse
 
 import aiohttp
 import discord
-from redbot.core import checks
-from redbot.core import commands
+from redbot.core import checks, commands
 from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils import chat_formatting as chat
 

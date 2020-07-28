@@ -5,18 +5,14 @@ import aiohttp
 import discord
 import forecastio
 from forecastio.utils import PropertyUnavailable
-from redbot.core import checks
-from redbot.core import commands
 from redbot.core import __version__ as redbot_ver
+from redbot.core import checks, commands
 from redbot.core.config import Config
 from redbot.core.i18n import Translator, cog_i18n, get_locale
 from redbot.core.utils import chat_formatting as chat
-from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
-from requests.exceptions import (
-    HTTPError,
-    ConnectionError as RequestsConnectionError,
-    Timeout,
-)
+from redbot.core.utils.menus import DEFAULT_CONTROLS, menu
+from requests.exceptions import ConnectionError as RequestsConnectionError
+from requests.exceptions import HTTPError, Timeout
 
 FORECASTIO_SUPPORTED_LANGS = [
     "ar",
