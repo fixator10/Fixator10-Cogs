@@ -1,5 +1,4 @@
 from asyncio import TimeoutError as AsyncTimeoutError
-from asyncio import sleep
 from random import choice
 
 import aiohttp
@@ -17,7 +16,7 @@ _ = Translator("AdminUtils", __file__)
 class AdminUtils(commands.Cog):
     """Useful commands for server administrators."""
 
-    __version__ = "2.3.0"
+    __version__ = "2.4.0"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -128,52 +127,6 @@ class AdminUtils(commands.Cog):
                     fails += 1
                     continue
         await ctx.send(_("Finished moving users. {} members could not be moved.").format(fails))
-
-    @commands.command(hidden=True)
-    @commands.guild_only()
-    @commands.cooldown(1, 300, commands.BucketType.guild)
-    @checks.admin_or_permissions(manage_nicknames=True)
-    @commands.bot_has_permissions(manage_nicknames=True)
-    async def massnick(self, ctx, *, nickname: str):
-        """Mass nicknames everyone on the server"""
-        server = ctx.guild
-        counter = 0
-        async with ctx.typing():
-            for user in server.members:
-                try:
-                    await user.edit(
-                        nick=nickname, reason=get_audit_reason(ctx.author, _("Massnick")),
-                    )
-                    await sleep(1)
-                except discord.HTTPException:
-                    counter += 1
-                    continue
-        await ctx.send(
-            _("Finished nicknaming server. {} nicknames could not be completed.").format(counter)
-        )
-
-    @commands.command(hidden=True)
-    @commands.guild_only()
-    @commands.cooldown(1, 300, commands.BucketType.guild)
-    @checks.admin_or_permissions(manage_nicknames=True)
-    @commands.bot_has_permissions(manage_nicknames=True)
-    async def resetnicks(self, ctx):
-        """Resets nicknames on the server"""
-        server = ctx.guild
-        counter = 0
-        async with ctx.typing():
-            for user in server.members:
-                try:
-                    await user.edit(
-                        nick=None, reason=get_audit_reason(ctx.author, _("Reset nicks"))
-                    )
-                    await sleep(1)
-                except discord.HTTPException:
-                    counter += 1
-                    continue
-        await ctx.send(
-            _("Finished resetting server nicknames. Unable to reset {} nicknames.").format(counter)
-        )
 
     @commands.group()
     @commands.guild_only()
