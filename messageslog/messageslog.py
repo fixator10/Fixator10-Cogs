@@ -40,7 +40,7 @@ _ = Translator("MessagesLog", __file__)
 class MessagesLog(commands.Cog):
     """Log deleted and redacted messages to the defined channel"""
 
-    __version__ = "2.3.4"
+    __version__ = "2.3.5"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -89,7 +89,7 @@ class MessagesLog(commands.Cog):
         pass
 
     @channel.command(name="delete")
-    async def delete_channel(self, ctx, channel: discord.TextChannel = None):
+    async def delete_channel(self, ctx, *, channel: discord.TextChannel = None):
         """Set the channel for deleted messages logs
 
         If channel is not specified, then logging will be disabled"""
@@ -97,7 +97,7 @@ class MessagesLog(commands.Cog):
         await ctx.tick()
 
     @channel.command(name="edit")
-    async def edit_channel(self, ctx, channel: discord.TextChannel = None):
+    async def edit_channel(self, ctx, *, channel: discord.TextChannel = None):
         """Set the channel for edited messages logs
 
         If channel is not specified, then logging will be disabled"""
@@ -105,10 +105,20 @@ class MessagesLog(commands.Cog):
         await ctx.tick()
 
     @channel.command(name="bulk")
-    async def bulk_channel(self, ctx, channel: discord.TextChannel = None):
+    async def bulk_channel(self, ctx, *, channel: discord.TextChannel = None):
         """Set the channel for bulk deletion logs
 
         If channel is not specified, then logging will be disabled"""
+        await self.config.guild(ctx.guild).bulk_delete_channel.set(channel.id if channel else None)
+        await ctx.tick()
+
+    @channel.command(name="all")
+    async def all_channel(self, ctx, *, channel: discord.TextChannel = None):
+        """Set the channel for all logs
+        
+        If channel is not specified, then logging will be disabled"""
+        await self.config.guild(ctx.guild).delete_channel.set(channel.id if channel else None)
+        await self.config.guild(ctx.guild).edit_channel.set(channel.id if channel else None)
         await self.config.guild(ctx.guild).bulk_delete_channel.set(channel.id if channel else None)
         await ctx.tick()
 
