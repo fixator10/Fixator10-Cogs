@@ -1,5 +1,5 @@
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from pprint import pformat
 from typing import Union
 
@@ -40,7 +40,7 @@ _ = Translator("MessagesLog", __file__)
 class MessagesLog(commands.Cog):
     """Log deleted and redacted messages to the defined channel"""
 
-    __version__ = "2.3.5"
+    __version__ = "2.3.6"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -353,7 +353,7 @@ class MessagesLog(commands.Cog):
                 if payload.cached_messages and save_bulk
                 else ""
             ),
-            timestamp=datetime.utcnow(),
+            timestamp=datetime.now(timezone.utc),
             color=await self.bot.get_embed_colour(channel),
         )
         embed.add_field(name=_("Channel"), value=channel.mention)
