@@ -2,7 +2,7 @@ import base64
 import io
 import re
 from base64 import b64decode
-from datetime import datetime
+from datetime import datetime, timezone
 from io import BytesIO
 
 import aiohttp
@@ -29,7 +29,7 @@ SERVICE_STATUS = {
 class MinecraftData(commands.Cog):
     """Minecraft-Related data"""
 
-    __version__ = "2.0.0"
+    __version__ = "2.0.1"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -341,8 +341,8 @@ class MinecraftData(commands.Cog):
                 data_history = await data.json()
             for nick in data_history:
                 try:
-                    nick["changedToAt"] = datetime.utcfromtimestamp(
-                        nick["changedToAt"] / 1000
+                    nick["changedToAt"] = datetime.fromtimestamp(
+                        nick["changedToAt"] / 1000, timezone.utc
                     ).strftime(_("%d.%m.%Y %H:%M:%S"))
                 except KeyError:
                     nick["changedToAt"] = _("Initial")
