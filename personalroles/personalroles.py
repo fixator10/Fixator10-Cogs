@@ -5,6 +5,7 @@ import discord
 from redbot.core import checks, commands
 from redbot.core.config import Config
 from redbot.core.i18n import Translator, cog_i18n
+from redbot.core.utils import AsyncIter
 from redbot.core.utils import chat_formatting as chat
 from redbot.core.utils.menus import DEFAULT_CONTROLS, menu
 from redbot.core.utils.mod import get_audit_reason
@@ -31,6 +32,13 @@ class PersonalRoles(commands.Cog):
         default_guild = {"blacklist": []}
         self.config.register_member(**default_member)
         self.config.register_guild(**default_guild)
+
+    async def red_delete_data_for_user(self, *, requester, user_id: int):
+        # Thanks Sinbad
+        data = await self.config.all_members()
+        async for guild_id, members in AsyncIter(data.items()):
+            if user_id in members:
+                await self.config.member_from_ids(guild_id, user_id).clear()
 
     @commands.group()
     @commands.guild_only()

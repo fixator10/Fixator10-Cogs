@@ -36,6 +36,9 @@ class ReverseImageSearch(commands.Cog):
     def cog_unload(self):
         self.bot.loop.create_task(self.session.close())
 
+    async def red_delete_data_for_user(self, **kwargs):
+        return
+
     @commands.group(invoke_without_command=True)
     @commands.cooldown(1, 30, commands.BucketType.user)
     async def saucenao(self, ctx, image: ImageFinder = None):

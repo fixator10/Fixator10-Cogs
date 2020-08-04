@@ -25,6 +25,9 @@ class SMMData(commands.Cog):
     def cog_unload(self):
         self.bot.loop.create_task(self.session.close())
 
+    async def red_delete_data_for_user(self, **kwargs):
+        return
+
     @commands.group(autohelp=True)
     @commands.bot_has_permissions(embed_links=True)
     async def smm(self, ctx):

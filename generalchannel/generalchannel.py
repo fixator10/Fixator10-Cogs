@@ -29,6 +29,9 @@ class GeneralChannel(commands.Cog):
         default_guild = {"channel": None}
         self.config.register_guild(**default_guild)
 
+    async def red_delete_data_for_user(self, **kwargs):
+        return
+
     @commands.group(autohelp=True, name="generalchannel")
     @commands.guild_only()
     async def gc(self, ctx):

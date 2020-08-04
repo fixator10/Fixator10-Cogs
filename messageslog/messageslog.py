@@ -77,6 +77,9 @@ class MessagesLog(commands.Cog):
             log.info("Config updated to version 1")
             await self.config.config_version.set(1)
 
+    async def red_delete_data_for_user(self, **kwargs):
+        return
+
     @commands.group(autohelp=True, aliases=["messagelog", "messageslogs", "messagelogs"])
     @checks.admin_or_permissions(manage_guild=True)
     async def messageslog(self, ctx):

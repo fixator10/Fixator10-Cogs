@@ -123,6 +123,9 @@ class SteamCommunity(commands.Cog):
     def cog_unload(self):
         self.session.detach()
 
+    async def red_delete_data_for_user(self, **kwargs):
+        return
+
     async def initialize(self):
         """Should be called straight after cog instantiation."""
         apikeys = await self.bot.get_shared_api_tokens("steam")

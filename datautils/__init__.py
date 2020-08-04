@@ -2,6 +2,10 @@ from asyncio import create_task
 
 from .datautils import DataUtils
 
+__red_end_user_data_statement__ = (
+    "This cog does not persistently store data or metadata about users."
+)
+
 
 async def setup_after_ready(bot):
     await bot.wait_until_red_ready()

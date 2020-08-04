@@ -91,6 +91,9 @@ class DataUtils(commands.Cog):
         self.bot = bot
         self.TIME_FORMAT = _("%d.%m.%Y %H:%M:%S %Z")
 
+    async def red_delete_data_for_user(self, **kwargs):
+        return
+
     @commands.command(aliases=["fetchuser"], hidden=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
     @checks.bot_has_permissions(embed_links=True)

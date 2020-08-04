@@ -47,6 +47,9 @@ class MassThings(commands.Cog, command_attrs={"hidden": True}):
             self.aware_of_shit.append(ctx.author.id)
         return p.result
 
+    async def red_delete_data_for_user(self, **kwargs):
+        return
+
     @commands.command()
     @commands.guild_only()
     @commands.cooldown(1, 300, commands.BucketType.guild)

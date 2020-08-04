@@ -26,6 +26,9 @@ class AdminUtils(commands.Cog):
     def cog_unload(self):
         self.bot.loop.create_task(self.session.close())
 
+    async def red_delete_data_for_user(self, **kwargs):
+        return
+
     @commands.command(name="prune")
     @commands.guild_only()
     @checks.admin_or_permissions(kick_members=True)

@@ -142,6 +142,9 @@ class Weather(commands.Cog):
     def cog_unload(self):
         self.session.detach()
 
+    async def red_delete_data_for_user(self, *, requester, user_id: int):
+        await self.config.user_from_id(user_id).clear()
+
     @commands.command()
     @checks.is_owner()
     async def forecastapi(self, ctx):
