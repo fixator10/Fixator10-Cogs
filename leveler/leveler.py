@@ -3,23 +3,19 @@ import operator
 import random
 import time
 from abc import ABC
-from logging import getLogger
 from asyncio import TimeoutError as AsyncTimeoutError
 from collections import OrderedDict
 from datetime import timedelta
-from tabulate import tabulate
+from logging import getLogger
 from typing import Union
 
 import aiohttp
 import discord
-from redbot.core import bank
-from redbot.core import checks
-from redbot.core import commands
-from redbot.core import Config
+from redbot.core import Config, bank, checks, commands
 from redbot.core.bot import Red
 from redbot.core.utils import AsyncIter
 from redbot.core.utils import chat_formatting as chat
-from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
+from redbot.core.utils.menus import DEFAULT_CONTROLS, menu
 from redbot.core.utils.predicates import MessagePredicate
 from tabulate import tabulate
 
@@ -31,10 +27,10 @@ except Exception as e:
         f"{__file__}: numpy/scipy is unable to import: {e}\nAutocolor feature will be unavailable"
     )
 
-from .mongodb import MongoDB
-from .exp import XP
 from .db_converters import DBConverters
+from .exp import XP
 from .image_generators import ImageGenerators
+from .mongodb import MongoDB
 from .utils import Utils
 
 

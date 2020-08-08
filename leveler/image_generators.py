@@ -1,19 +1,18 @@
-from .abc import MixinMeta
-
-import textwrap
 import operator
 import random
-from logging import getLogger
+import textwrap
 from io import BytesIO
+from logging import getLogger
 
 import discord
 from fontTools.ttLib import TTFont
 from redbot.core import bank
 from redbot.core.data_manager import bundled_data_path
 
+from .abc import MixinMeta
 
 try:
-    from PIL import Image, ImageDraw, ImageFont, ImageColor, ImageOps, ImageFilter
+    from PIL import Image, ImageColor, ImageDraw, ImageFilter, ImageFont, ImageOps
     from PIL import features as pil_features
 except Exception as e:
     raise RuntimeError(f"Can't load pillow: {e}\nDo '[p]pipinstall pillow'.")

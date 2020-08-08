@@ -1,8 +1,8 @@
-from .abc import MixinMeta
-
 from redbot.core import commands
 from redbot.core.utils import AsyncIter
 from redbot.core.utils.predicates import MessagePredicate
+
+from .abc import MixinMeta
 
 
 class DBConverters(MixinMeta):

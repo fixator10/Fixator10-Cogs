@@ -1,13 +1,13 @@
 from abc import ABC, abstractmethod
-from typing import Optional
-from logging import Logger
 from io import BytesIO
+from logging import Logger
 from re import Match
+from typing import Optional
 
 from aiohttp import ClientSession
-from motor.motor_asyncio import AsyncIOMotorDatabase, AsyncIOMotorClient
-from redbot.core.bot import Red
+from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
 from redbot.core import Config
+from redbot.core.bot import Red
 
 
 class MixinMeta(ABC):

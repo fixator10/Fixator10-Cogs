@@ -1,14 +1,13 @@
-from .abc import MixinMeta
-
-import time
-import random
 import math
 import operator
+import random
+import time
 
 import discord
-from redbot.core import commands
-from redbot.core import bank
+from redbot.core import bank, commands
 from redbot.core.utils import AsyncIter
+
+from .abc import MixinMeta
 
 
 class XP(MixinMeta):

@@ -1,12 +1,10 @@
-from .abc import MixinMeta
-
-
 import re
-
+from asyncio import TimeoutError as AsyncTimeoutError
 
 from redbot.core import bank
 from redbot.core.utils.predicates import MessagePredicate
-from asyncio import TimeoutError as AsyncTimeoutError
+
+from .abc import MixinMeta
 
 
 class Utils(MixinMeta):
