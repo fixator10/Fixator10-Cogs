@@ -1,5 +1,5 @@
 from collections import namedtuple
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from aiohttp import ClientResponseError
 from bs4 import BeautifulSoup
@@ -105,11 +105,11 @@ class Level:
         if "ago" in created_at:
             created_at_ago = int(created_at.split()[0])
             if "hour" in created_at:
-                created_at = datetime.utcnow() - timedelta(hours=created_at_ago)
+                created_at = datetime.now(timezone.utc) - timedelta(hours=created_at_ago)
             elif "day" in created_at:
-                created_at = datetime.utcnow() - timedelta(days=created_at_ago)
+                created_at = datetime.now(timezone.utc) - timedelta(days=created_at_ago)
             elif "min" in created_at:
-                created_at = datetime.utcnow() - timedelta(minutes=created_at_ago)
+                created_at = datetime.now(timezone.utc) - timedelta(minutes=created_at_ago)
         else:
             created_at = created_at.split("/")
             created_at = datetime(

@@ -60,6 +60,9 @@ class GodvilleData(commands.Cog):
     def cog_unload(self):
         self.bot.loop.create_task(self.session.close())
 
+    async def red_delete_data_for_user(self, *, requester, user_id: int):
+        await self.config.user_from_id(user_id).clear()
+
     @commands.group(invoke_without_command=True)
     @commands.cooldown(30, 10 * 60, commands.BucketType.user)
     async def godville(self, ctx, *, god: GodConverter):

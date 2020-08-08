@@ -21,6 +21,7 @@ from redbot.core.utils import AsyncIter
 from redbot.core.utils import chat_formatting as chat
 from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
 from redbot.core.utils.predicates import MessagePredicate
+from tabulate import tabulate
 
 try:
     import numpy
@@ -1890,12 +1891,6 @@ class Leveler(
 
         server_badges = await self.db.badgelinks.find_one({"server_id": str(server.id)})
 
-        em = discord.Embed(colour=await ctx.embed_color())
-        em.set_author(
-            name="Current Badge - Level Links for {}".format(server.name),
-            icon_url=server.icon_url,
-        )
-
         if server_badges is None or not server_badges.get("badges"):
             msg = "None"
         else:
@@ -1909,8 +1904,18 @@ class Leveler(
             for badge in badges.keys():
                 msg += "**• {} →** {}\n".format(badge, badges[badge])
 
-        em.description = msg
-        await ctx.send(embed=em)
+        pages = list(pagify(msg, page_length=2048))
+        embeds = []
+        for i, page in enumerate(pages, start=1):
+            em = discord.Embed(colour=await ctx.embed_color())
+            em.set_author(
+                name="Current Badge - Level Links for {}".format(server.name),
+                icon_url=server.icon_url,
+            )
+            em.set_footer(text=f"Page {i}/{len(pages)}")
+            em.description = msg
+            embeds.append(em)
+        await menu(ctx, embeds, DEFAULT_CONTROLS)
 
     @lvladmin.group()
     async def role(self, ctx):
@@ -1996,11 +2001,6 @@ class Leveler(
 
         server_roles = await self.db.roles.find_one({"server_id": str(server.id)})
 
-        em = discord.Embed(colour=await ctx.embed_color())
-        em.set_author(
-            name="Current Role - Level Links for {}".format(server.name), icon_url=server.icon_url,
-        )
-
         if server_roles is None or not server_roles.get("roles"):
             msg = "None"
         else:
@@ -2019,8 +2019,18 @@ class Leveler(
                 else:
                     msg += "**• {} →** {}\n".format(role, roles[role]["level"])
 
-        em.description = msg
-        await ctx.send(embed=em)
+        pages = list(pagify(msg, page_length=2048))
+        embeds = []
+        for i, page in enumerate(pages, start=1):
+            em = discord.Embed(colour=await ctx.embed_color())
+            em.set_author(
+                name="Current Role - Level Links for {}".format(server.name),
+                icon_url=server.icon_url,
+            )
+            em.set_footer(text=f"Page {i}/{len(pages)}")
+            em.description = msg
+            embeds.append(em)
+        await menu(ctx, embeds, DEFAULT_CONTROLS)
 
     @lvladmin.group(name="bg")
     async def lvladminbg(self, ctx):

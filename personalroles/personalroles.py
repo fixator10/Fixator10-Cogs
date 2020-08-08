@@ -2,12 +2,12 @@ from textwrap import shorten
 from typing import Union
 
 import discord
-from redbot.core import checks
-from redbot.core import commands
+from redbot.core import checks, commands
 from redbot.core.config import Config
 from redbot.core.i18n import Translator, cog_i18n
+from redbot.core.utils import AsyncIter
 from redbot.core.utils import chat_formatting as chat
-from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
+from redbot.core.utils.menus import DEFAULT_CONTROLS, menu
 from redbot.core.utils.mod import get_audit_reason
 from tabulate import tabulate
 
@@ -22,7 +22,7 @@ async def has_assigned_role(ctx):
 class PersonalRoles(commands.Cog):
     """Assign and edit personal roles"""
 
-    __version__ = "2.0.4"
+    __version__ = "2.0.5"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -32,6 +32,13 @@ class PersonalRoles(commands.Cog):
         default_guild = {"blacklist": []}
         self.config.register_member(**default_member)
         self.config.register_guild(**default_guild)
+
+    async def red_delete_data_for_user(self, *, requester, user_id: int):
+        # Thanks Sinbad
+        data = await self.config.all_members()
+        async for guild_id, members in AsyncIter(data.items()):
+            if user_id in members:
+                await self.config.member_from_ids(guild_id, user_id).clear()
 
     @commands.group()
     @commands.guild_only()
@@ -58,20 +65,11 @@ class PersonalRoles(commands.Cog):
             await self.config.member(user).role.clear()
         elif isinstance(user, int):
             await self.config.member_from_ids(ctx.guild.id, user).role.clear()
-            try:
-                user = await self.bot.fetch_user(user)
-            except discord.NotFound:
-                await ctx.send(chat.error(_("Discord user with ID `{}` not found").format(user)))
-                return
-            except discord.HTTPException:
-                await ctx.send(
-                    chat.warning(
-                        _(
-                            "I was unable to get data about user with ID `{}`. Try again later"
-                        ).format(user)
-                    )
-                )
-                return
+            if _user := self.bot.get_user(user):
+                user = _user
+            else:
+                user = discord.Object(user)
+                user.name = _("[Unknown or Deleted User]")
         await ctx.send(
             _("Ok. I just unassigned {user.name} ({user.id}) from his personal role.").format(
                 user=user
@@ -83,9 +81,6 @@ class PersonalRoles(commands.Cog):
     async def mr_list(self, ctx):
         """Assigned roles list"""
         members_data = await self.config.all_members(ctx.guild)
-        if not members_data:
-            await ctx.send(chat.info(_("There is no assigned personal roles on this server")))
-            return
         assigned_roles = []
         for member, data in members_data.items():
             if not data["role"]:
@@ -101,7 +96,10 @@ class PersonalRoles(commands.Cog):
             assigned_roles.append(dic)
         pages = list(chat.pagify(tabulate(assigned_roles, headers="keys", tablefmt="orgtbl")))
         pages = [chat.box(page) for page in pages]
-        await menu(ctx, pages, DEFAULT_CONTROLS)
+        if pages:
+            await menu(ctx, pages, DEFAULT_CONTROLS)
+        else:
+            await ctx.send(chat.info(_("There is no assigned personal roles on this server")))
 
     @myrole.group()
     @commands.guild_only()

@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from aiohttp import ContentTypeError, ClientResponseError
+from aiohttp import ClientResponseError, ContentTypeError
 from redbot.core.commands import BadArgument
 from redbot.core.i18n import Translator
 

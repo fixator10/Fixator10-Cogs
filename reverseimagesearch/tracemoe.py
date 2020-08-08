@@ -3,8 +3,8 @@ from collections import namedtuple
 from io import BytesIO
 from urllib.parse import quote
 
-from PIL import Image
 from aiohttp import ClientResponseError
+from PIL import Image
 from redbot.core.i18n import Translator
 
 _ = Translator("ReverseImageSearch", __file__)

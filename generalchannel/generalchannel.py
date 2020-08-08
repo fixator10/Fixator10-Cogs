@@ -1,6 +1,5 @@
 import discord
-from redbot.core import checks
-from redbot.core import commands
+from redbot.core import checks, commands
 from redbot.core.config import Config
 from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils import chat_formatting as chat
@@ -21,7 +20,7 @@ _ = Translator("GeneralChannel", __file__)
 class GeneralChannel(commands.Cog):
     """Allow users to manage #general channel's name and topic"""
 
-    __version__ = "2.0.1"
+    __version__ = "2.0.2"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -29,6 +28,9 @@ class GeneralChannel(commands.Cog):
         self.config = Config.get_conf(self, identifier=0x8A87069DB515498281C88D41675BF85B)
         default_guild = {"channel": None}
         self.config.register_guild(**default_guild)
+
+    async def red_delete_data_for_user(self, **kwargs):
+        return
 
     @commands.group(autohelp=True, name="generalchannel")
     @commands.guild_only()
@@ -54,7 +56,8 @@ class GeneralChannel(commands.Cog):
         await ctx.tick()
 
     @gc.command(name="name")
-    @commands.cooldown(1, 60, commands.BucketType.user)
+    @commands.cooldown(2, 600, commands.BucketType.guild)
+    @commands.max_concurrency(1, commands.BucketType.guild)
     @commands.check(server_set)
     async def gcname(self, ctx, *, name: str):
         """Change name of #general"""
@@ -75,7 +78,8 @@ class GeneralChannel(commands.Cog):
             await ctx.tick()
 
     @gc.command(name="topic")
-    @commands.cooldown(1, 60, commands.BucketType.user)
+    @commands.cooldown(2, 600, commands.BucketType.guild)
+    @commands.max_concurrency(1, commands.BucketType.guild)
     @commands.check(server_set)
     async def gctopic(self, ctx, *, topic: str = None):
         """Change topic of #general
