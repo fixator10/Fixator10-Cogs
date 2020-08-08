@@ -8,8 +8,6 @@ from redbot.core.utils.predicates import MessagePredicate
 class DBConverters(MixinMeta):
     """Converters for 3rd party leveling databases"""
 
-    # not sure that is right way to do it
-    # any ideas?
     @commands.group()
     @commands.is_owner()
     async def lvlconvert(self, ctx):
