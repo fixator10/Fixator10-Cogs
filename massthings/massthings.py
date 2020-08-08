@@ -3,9 +3,10 @@ from collections import Counter
 from typing import Union
 
 import discord
-from redbot.core import checks, commands
+from redbot.core import checks, commands, modlog
 from redbot.core.config import Config
 from redbot.core.i18n import Translator, cog_i18n
+from redbot.core.utils import AsyncIter
 from redbot.core.utils import chat_formatting as chat
 from redbot.core.utils.mod import get_audit_reason
 from redbot.core.utils.predicates import MessagePredicate
@@ -21,7 +22,7 @@ class MassThings(commands.Cog, command_attrs={"hidden": True}):
     May be against Discord API terms. Use with caution.
     I'm not responsible for any aftermath of using this cog."""
 
-    __version__ = "1.0.0"
+    __version__ = "1.1.0"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -154,6 +155,66 @@ class MassThings(commands.Cog, command_attrs={"hidden": True}):
             chat.info(
                 _("Stealed emojis:\n{}").format(
                     chat.box(tabulate(status.most_common(), tablefmt="psql"), "ml")
+                )
+            )
+        )
+
+    @commands.group()
+    @commands.guild_only()
+    @commands.cooldown(1, 300, commands.BucketType.guild)
+    @checks.admin_or_permissions(ban_members=True)
+    @commands.bot_has_permissions(ban_members=True)
+    @commands.max_concurrency(1, commands.BucketType.guild)
+    async def massunban(self, ctx: commands.Context, banned_by: discord.Member):
+        """Unban all users that banned by specified user
+
+        Uses modlog data, since discord not saves author of ban."""
+        cases = await modlog.get_all_cases(ctx.guild, self.bot)
+        bans = [b.user.id for b in await ctx.guild.bans()]
+        c = Counter()
+        async with ctx.typing():
+            async for case in AsyncIter(cases).filter(
+                lambda x: x.moderator.id == banned_by.id and x.action_type == "ban"
+            ):
+                if case.user.id in bans:
+                    try:
+                        await ctx.guild.unban(
+                            case.user, reason=get_audit_reason(ctx.author, "Mass unban")
+                        )
+                    except Exception as e:
+                        c[str(e)] += 1
+                    else:
+                        c["Success"] += 1
+        await ctx.send(
+            chat.info(
+                _("Unbanned users:\n{}").format(
+                    chat.box(tabulate(c.most_common(), tablefmt="psql"), "ml")
+                )
+            )
+        )
+
+    @massunban.command(name="all", aliases=["everyone"])
+    @commands.cooldown(1, 300, commands.BucketType.guild)
+    @commands.max_concurrency(1, commands.BucketType.guild)
+    async def massunban_all(self, ctx):
+        """Unban everyone from current guild"""
+        bans = await ctx.guild.bans()
+        c = Counter()
+
+        async with ctx.typing():
+            for ban in bans:
+                try:
+                    await ctx.guild.unban(
+                        ban.user, reason=get_audit_reason(ctx.author, "Mass unban (everyone)")
+                    )
+                except Exception as e:
+                    c[str(e)] += 1
+                else:
+                    c["Success"] += 1
+        await ctx.send(
+            chat.info(
+                _("Unbanned users:\n{}").format(
+                    chat.box(tabulate(c.most_common(), tablefmt="psql"), "ml")
                 )
             )
         )
