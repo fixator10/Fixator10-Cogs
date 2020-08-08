@@ -2,18 +2,17 @@ import base64
 import io
 import re
 from base64 import b64decode
-from datetime import datetime
+from datetime import datetime, timezone
 from io import BytesIO
 
 import aiohttp
 import discord
 import tabulate
 from mcstatus import MinecraftServer
-from redbot.core import checks
-from redbot.core import commands
+from redbot.core import checks, commands
 from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils import chat_formatting as chat
-from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
+from redbot.core.utils.menus import DEFAULT_CONTROLS, menu
 
 from .minecraftplayer import MCPlayer
 
@@ -30,7 +29,7 @@ SERVICE_STATUS = {
 class MinecraftData(commands.Cog):
     """Minecraft-Related data"""
 
-    __version__ = "2.0.0"
+    __version__ = "2.0.1"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -39,6 +38,9 @@ class MinecraftData(commands.Cog):
 
     def cog_unload(self):
         self.bot.loop.create_task(self.session.close())
+
+    async def red_delete_data_for_user(self, **kwargs):
+        return
 
     @commands.group(aliases=["mc"])
     async def minecraft(self, ctx):
@@ -342,8 +344,8 @@ class MinecraftData(commands.Cog):
                 data_history = await data.json()
             for nick in data_history:
                 try:
-                    nick["changedToAt"] = datetime.utcfromtimestamp(
-                        nick["changedToAt"] / 1000
+                    nick["changedToAt"] = datetime.fromtimestamp(
+                        nick["changedToAt"] / 1000, timezone.utc
                     ).strftime(_("%d.%m.%Y %H:%M:%S"))
                 except KeyError:
                     nick["changedToAt"] = _("Initial")

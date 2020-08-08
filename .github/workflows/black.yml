@@ -17,4 +17,4 @@ jobs:
       - run: "python -m black -l 99 --check ."
         name: Style checking with black
 
-# thanks sinbad & jack: https://github.com/mikeshardmind/SinbadCogs/blob/v3/.github/workflows/black.yml
+# thanks sinbad & jack

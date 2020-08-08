@@ -1,11 +1,9 @@
 from asyncio import TimeoutError as AsyncTimeoutError
-from asyncio import sleep
 from random import choice
 
 import aiohttp
 import discord
-from redbot.core import checks
-from redbot.core import commands
+from redbot.core import checks, commands
 from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils import chat_formatting as chat
 from redbot.core.utils.mod import get_audit_reason
@@ -18,7 +16,7 @@ _ = Translator("AdminUtils", __file__)
 class AdminUtils(commands.Cog):
     """Useful commands for server administrators."""
 
-    __version__ = "2.2.3"
+    __version__ = "2.4.0"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -27,6 +25,9 @@ class AdminUtils(commands.Cog):
 
     def cog_unload(self):
         self.bot.loop.create_task(self.session.close())
+
+    async def red_delete_data_for_user(self, **kwargs):
+        return
 
     @commands.command(name="prune")
     @commands.guild_only()
@@ -47,20 +48,21 @@ class AdminUtils(commands.Cog):
             await ctx.send(chat.info(_('"days" arg cannot be less than 1...')))
             days = 1
         to_kick = await ctx.guild.estimate_pruned_members(days=days)
-        await ctx.send(
-            chat.warning(
-                _(
-                    "You about to kick **{to_kick}** inactive for **{days}** days members from this server. "
-                    'Are you sure?\nTo agree, type "yes"'
-                ).format(to_kick=to_kick, days=days)
-            )
-        )
         pred = MessagePredicate.yes_or_no(ctx)
-        try:
-            await self.bot.wait_for("message", check=pred, timeout=30)
-        except AsyncTimeoutError:
-            pass
-        if pred.result:
+        if not ctx.assume_yes:
+            await ctx.send(
+                chat.warning(
+                    _(
+                        "You about to kick **{to_kick}** inactive for **{days}** days members from this server. "
+                        'Are you sure?\nTo agree, type "yes"'
+                    ).format(to_kick=to_kick, days=days)
+                )
+            )
+            try:
+                await self.bot.wait_for("message", check=pred, timeout=30)
+            except AsyncTimeoutError:
+                pass
+        if ctx.assume_yes or pred.result:
             cleanup = await ctx.guild.prune_members(days=days, reason=get_audit_reason(ctx.author))
             await ctx.send(
                 chat.info(
@@ -128,52 +130,6 @@ class AdminUtils(commands.Cog):
                     fails += 1
                     continue
         await ctx.send(_("Finished moving users. {} members could not be moved.").format(fails))
-
-    @commands.command(hidden=True)
-    @commands.guild_only()
-    @commands.cooldown(1, 300, commands.BucketType.guild)
-    @checks.admin_or_permissions(manage_nicknames=True)
-    @commands.bot_has_permissions(manage_nicknames=True)
-    async def massnick(self, ctx, *, nickname: str):
-        """Mass nicknames everyone on the server"""
-        server = ctx.guild
-        counter = 0
-        async with ctx.typing():
-            for user in server.members:
-                try:
-                    await user.edit(
-                        nick=nickname, reason=get_audit_reason(ctx.author, _("Massnick")),
-                    )
-                    await sleep(1)
-                except discord.HTTPException:
-                    counter += 1
-                    continue
-        await ctx.send(
-            _("Finished nicknaming server. {} nicknames could not be completed.").format(counter)
-        )
-
-    @commands.command(hidden=True)
-    @commands.guild_only()
-    @commands.cooldown(1, 300, commands.BucketType.guild)
-    @checks.admin_or_permissions(manage_nicknames=True)
-    @commands.bot_has_permissions(manage_nicknames=True)
-    async def resetnicks(self, ctx):
-        """Resets nicknames on the server"""
-        server = ctx.guild
-        counter = 0
-        async with ctx.typing():
-            for user in server.members:
-                try:
-                    await user.edit(
-                        nick=None, reason=get_audit_reason(ctx.author, _("Reset nicks"))
-                    )
-                    await sleep(1)
-                except discord.HTTPException:
-                    counter += 1
-                    continue
-        await ctx.send(
-            _("Finished resetting server nicknames. Unable to reset {} nicknames.").format(counter)
-        )
 
     @commands.group()
     @commands.guild_only()

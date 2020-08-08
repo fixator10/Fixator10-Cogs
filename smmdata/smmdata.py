@@ -3,7 +3,7 @@ from discord import Embed
 from redbot.core import commands
 from redbot.core.i18n import Translator, cog_i18n
 
-from .smmbookmark import Level, Maker, SMMB_BASE_URL
+from .smmbookmark import SMMB_BASE_URL, Level, Maker
 
 _ = Translator("SMMData", __file__)
 
@@ -15,7 +15,7 @@ EMBED_EMPTY_VALUE = "\N{Invisible Separator}"
 class SMMData(commands.Cog):
     """Super Mario Maker-related data"""
 
-    __version__ = "2.0.0"
+    __version__ = "2.0.1"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -24,6 +24,9 @@ class SMMData(commands.Cog):
 
     def cog_unload(self):
         self.bot.loop.create_task(self.session.close())
+
+    async def red_delete_data_for_user(self, **kwargs):
+        return
 
     @commands.group(autohelp=True)
     @commands.bot_has_permissions(embed_links=True)

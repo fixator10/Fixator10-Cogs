@@ -1,9 +1,9 @@
 from json import JSONDecodeError
+
 from redbot.core.commands import BadArgument
 from redbot.core.i18n import Translator
 from valve.steam.api.interface import API
-from valve.steam.id import SteamID
-from valve.steam.id import SteamIDError
+from valve.steam.id import SteamID, SteamIDError
 
 _ = Translator("SteamCommunity", __file__)
 

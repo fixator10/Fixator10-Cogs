@@ -5,8 +5,7 @@ import random
 import aiohttp
 import discord
 from dateutil.parser import parse
-from redbot.core import checks
-from redbot.core import commands
+from redbot.core import checks, commands
 from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils import chat_formatting as chat
 
@@ -44,7 +43,7 @@ def bool_emojify(bool_var: bool) -> str:
 class MoreUtils(commands.Cog):
     """Some (maybe) useful utils."""
 
-    __version__ = "2.0.2"
+    __version__ = "2.0.4"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -54,14 +53,17 @@ class MoreUtils(commands.Cog):
     def cog_unload(self):
         self.bot.loop.create_task(self.session.close())
 
+    async def red_delete_data_for_user(self, **kwargs):
+        return
+
     @commands.command(name="thetime")
     async def _thetime(self, ctx):
         """Send bot's current time"""
         await ctx.send(datetime.datetime.now().strftime(_("%d.%m.%Y %H:%M:%S %Z")))
 
-    @commands.command(aliases=["HEX", "hex"])
+    @commands.command(aliases=["HEX", "hex", "colour"])
     @checks.bot_has_permissions(embed_links=True)
-    async def color(self, ctx, color: discord.Color):
+    async def color(self, ctx, *, color: discord.Color):
         """Shows some info about provided color"""
         colorrgb = color.to_rgb()
         colorhsv = colorsys.rgb_to_hsv(colorrgb[0], colorrgb[1], colorrgb[2])

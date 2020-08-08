@@ -4,7 +4,7 @@ from redbot.core import commands
 from redbot.core.config import Config
 from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils import chat_formatting as chat
-from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
+from redbot.core.utils.menus import DEFAULT_CONTROLS, menu
 
 from .converters import ImageFinder
 from .saucenao import SauceNAO
@@ -35,6 +35,9 @@ class ReverseImageSearch(commands.Cog):
 
     def cog_unload(self):
         self.bot.loop.create_task(self.session.close())
+
+    async def red_delete_data_for_user(self, **kwargs):
+        return
 
     @commands.group(invoke_without_command=True)
     @commands.cooldown(1, 30, commands.BucketType.user)

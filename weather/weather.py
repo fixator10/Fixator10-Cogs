@@ -5,18 +5,14 @@ import aiohttp
 import discord
 import forecastio
 from forecastio.utils import PropertyUnavailable
-from redbot.core import checks
-from redbot.core import commands
 from redbot.core import __version__ as redbot_ver
+from redbot.core import checks, commands
 from redbot.core.config import Config
 from redbot.core.i18n import Translator, cog_i18n, get_locale
 from redbot.core.utils import chat_formatting as chat
-from redbot.core.utils.menus import menu, DEFAULT_CONTROLS
-from requests.exceptions import (
-    HTTPError,
-    ConnectionError as RequestsConnectionError,
-    Timeout,
-)
+from redbot.core.utils.menus import DEFAULT_CONTROLS, menu
+from requests.exceptions import ConnectionError as RequestsConnectionError
+from requests.exceptions import HTTPError, Timeout
 
 FORECASTIO_SUPPORTED_LANGS = [
     "ar",
@@ -146,15 +142,20 @@ class Weather(commands.Cog):
     def cog_unload(self):
         self.session.detach()
 
+    async def red_delete_data_for_user(self, *, requester, user_id: int):
+        await self.config.user_from_id(user_id).clear()
+
     @commands.command()
     @checks.is_owner()
     async def forecastapi(self, ctx):
         """Set API key for forecast.io"""
         message = _(
             "To get forecast.io API key:\n"
-            "1. Register/login at [DarkSky](https://darksky.net/dev/register)\n"
-            '2. Copy ["Your Secret Key"](https://darksky.net/dev/account)\n'
-            "3. Use `{}set api forecastio secret <your_apikey>`"
+            '1. Find your ["Your Secret Key"](https://darksky.net/dev/account)\n'
+            "2. Use `{}set api forecastio secret <your_apikey>`\n"
+            "Note: DarkSky API is going to close at end of 2021. "
+            "Im already aware of this issue and will change API later. "
+            "For now you can use cog with already existing API keys."
         ).format(ctx.clean_prefix)
         await ctx.maybe_send_embed(message)
 
