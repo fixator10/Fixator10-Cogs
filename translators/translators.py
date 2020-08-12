@@ -4,6 +4,7 @@ import random
 import re
 from binascii import Error as binasciiError
 from io import BytesIO
+from string import ascii_letters
 from typing import Optional
 from urllib import parse
 
@@ -31,7 +32,7 @@ USERAGENT = (
 class Translators(commands.Cog):
     """Useful (and not) translators"""
 
-    __version__ = "2.1.3"
+    __version__ = "2.1.4"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -330,20 +331,18 @@ class Translators(commands.Cog):
         result = decoded.decode(encoding=encoding, errors="replace")
         await ctx.send(chat.box(result))
 
-    # noinspection PyPep8
     @commands.command()
     async def emojify(self, ctx, *, message: str):
         """Emojify text"""
-        char = "abcdefghijklmnopqrstuvwxyz↓↑←→—.!"
-        tran = "🇦🇧🇨🇩🇪🇫🇬🇭🇮🇯🇰🇱🇲🇳🇴🇵🇶🇷🇸🇹🇺🇻🇼🇽🇾🇿⬇⬆⬅➡➖⏺ℹ"
+        char = "↓↑←→—.!"
+        tran = "⬇⬆⬅➡➖⏺ℹ"
         table = str.maketrans(char, tran)
-        name = message.translate(table)
-        char = char.upper()
-        table = str.maketrans(char, tran)
-        name = name.translate(table)
-        await ctx.send(
-            name.replace(" ", "　　")
-            .replace("", "​")
+        message = message.translate(table)
+        message = "".join(
+            map(lambda c: f"regional_indicator_{c}" if c in ascii_letters else c, message)
+        )
+        message = (
+            message.replace(" ", "　　")
             .replace("0", ":zero:")
             .replace("1", ":one:")
             .replace("2", ":two:")
@@ -356,6 +355,12 @@ class Translators(commands.Cog):
             .replace("9", ":nine:")
             .replace("#", "#⃣")
             .replace("*", "*⃣")
+        )
+        await self.bot.http.request(  # TODO: Switch this to allowed_mentions in next release of Red with dpy 1.4
+            discord.http.Route(
+                "POST", "/channels/{channel_id}/messages", channel_id=ctx.channel.id
+            ),
+            json={"content": message[:2000], "allowed_mentions": {"parse": [], "roles": [], "users": []}},
         )
 
     @commands.group()
