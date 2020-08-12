@@ -2,9 +2,9 @@ import base64
 import itertools
 import random
 import re
+import string
 from binascii import Error as binasciiError
 from io import BytesIO
-from string import ascii_letters
 from typing import Optional
 from urllib import parse
 
@@ -27,12 +27,24 @@ USERAGENT = (
     "Safari/537.36"
 )
 
+# noinspection PyDictDuplicateKeys
+EMOJIFY_CHARS = {
+    "\N{DOWNWARDS ARROW}": "\N{DOWNWARDS BLACK ARROW}",
+    "\N{UPWARDS ARROW}": "\N{UPWARDS BLACK ARROW}",
+    "\N{LEFTWARDS ARROW}": "\N{LEFTWARDS BLACK ARROW}",
+    "\N{RIGHTWARDS ARROW}": "\N{BLACK RIGHTWARDS ARROW}",
+    "\N{EM DASH}": "\N{HEAVY MINUS SIGN}",
+    "\N{HYPHEN-MINUS}": "\N{HEAVY MINUS SIGN}",
+    "\N{FULL STOP}": "\N{BLACK CIRCLE FOR RECORD}",
+    "\N{EXCLAMATION MARK}": "\N{INFORMATION SOURCE}",
+}
+
 
 @cog_i18n(_)
 class Translators(commands.Cog):
     """Useful (and not) translators"""
 
-    __version__ = "2.1.5"
+    __version__ = "2.1.6"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -334,33 +346,30 @@ class Translators(commands.Cog):
     @commands.command()
     async def emojify(self, ctx, *, message: str):
         """Emojify text"""
-        char = "↓↑←→—.!"
-        tran = "⬇⬆⬅➡➖⏺ℹ"
-        table = str.maketrans(char, tran)
+        table = str.maketrans("".join(EMOJIFY_CHARS.keys()), "".join(EMOJIFY_CHARS.values()))
         message = message.translate(table)
         message = "".join(
-            map(lambda c: f":regional_indicator_{c}:" if c in ascii_letters else c, message)
+            map(lambda c: f":regional_indicator_{c}:" if c in string.ascii_letters else c, message)
+        )
+        message = "".join(
+            map(
+                lambda c: f"{c}\N{COMBINING ENCLOSING KEYCAP}" if c in string.digits else c,
+                message,
+            )
         )
         message = (
             message.replace(" ", "　　")
-            .replace("0", ":zero:")
-            .replace("1", ":one:")
-            .replace("2", ":two:")
-            .replace("3", ":three:")
-            .replace("4", ":four:")
-            .replace("5", ":five:")
-            .replace("6", ":six:")
-            .replace("7", ":seven:")
-            .replace("8", ":eight:")
-            .replace("9", ":nine:")
-            .replace("#", "#⃣")
-            .replace("*", "*⃣")
+            .replace("#", "#\N{COMBINING ENCLOSING KEYCAP}")
+            .replace("*", "*\N{COMBINING ENCLOSING KEYCAP}")
         )
         await self.bot.http.request(  # TODO: Switch this to allowed_mentions in next release of Red with dpy 1.4
             discord.http.Route(
                 "POST", "/channels/{channel_id}/messages", channel_id=ctx.channel.id
             ),
-            json={"content": message[:2000], "allowed_mentions": {"parse": [], "roles": [], "users": []}},
+            json={
+                "content": message[:2000],
+                "allowed_mentions": {"parse": [], "roles": [], "users": []},
+            },
         )
 
     @commands.group()
