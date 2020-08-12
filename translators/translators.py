@@ -44,7 +44,7 @@ EMOJIFY_CHARS = {
 class Translators(commands.Cog):
     """Useful (and not) translators"""
 
-    __version__ = "2.1.6"
+    __version__ = "2.1.7"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -349,7 +349,10 @@ class Translators(commands.Cog):
         table = str.maketrans("".join(EMOJIFY_CHARS.keys()), "".join(EMOJIFY_CHARS.values()))
         message = message.translate(table)
         message = "".join(
-            map(lambda c: f":regional_indicator_{c}:" if c in string.ascii_letters else c, message)
+            map(
+                lambda c: f":regional_indicator_{c.lower()}:" if c in string.ascii_letters else c,
+                message,
+            )
         )
         message = "".join(
             map(
