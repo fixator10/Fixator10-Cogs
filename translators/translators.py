@@ -32,7 +32,7 @@ USERAGENT = (
 class Translators(commands.Cog):
     """Useful (and not) translators"""
 
-    __version__ = "2.1.4"
+    __version__ = "2.1.5"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -339,7 +339,7 @@ class Translators(commands.Cog):
         table = str.maketrans(char, tran)
         message = message.translate(table)
         message = "".join(
-            map(lambda c: f"regional_indicator_{c}" if c in ascii_letters else c, message)
+            map(lambda c: f":regional_indicator_{c}:" if c in ascii_letters else c, message)
         )
         message = (
             message.replace(" ", "　　")
