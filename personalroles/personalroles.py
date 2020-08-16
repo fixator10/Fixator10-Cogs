@@ -22,7 +22,7 @@ async def has_assigned_role(ctx):
 class PersonalRoles(commands.Cog):
     """Assign and edit personal roles"""
 
-    __version__ = "2.0.5"
+    __version__ = "2.0.6"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -59,7 +59,7 @@ class PersonalRoles(commands.Cog):
 
     @myrole.command()
     @checks.admin_or_permissions(manage_roles=True)
-    async def unassign(self, ctx, *, user: Union[discord.Member, int]):
+    async def unassign(self, ctx, *, user: Union[discord.Member, discord.User, int]):
         """Unassign personal role from someone"""
         if isinstance(user, discord.Member):
             await self.config.member(user).role.clear()
