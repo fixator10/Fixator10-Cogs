@@ -40,7 +40,7 @@ _ = Translator("MessagesLog", __file__)
 class MessagesLog(commands.Cog):
     """Log deleted and redacted messages to the defined channel"""
 
-    __version__ = "2.3.6"
+    __version__ = "2.3.7"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -86,12 +86,12 @@ class MessagesLog(commands.Cog):
         """Manage message logging"""
         pass
 
-    @messageslog.group()
-    async def channel(self, ctx):
+    @messageslog.group(name="channel")
+    async def set_channel(self, ctx):
         """Set the channels for logs"""
         pass
 
-    @channel.command(name="delete")
+    @set_channel.command(name="delete")
     async def delete_channel(self, ctx, *, channel: discord.TextChannel = None):
         """Set the channel for deleted messages logs
 
@@ -99,7 +99,7 @@ class MessagesLog(commands.Cog):
         await self.config.guild(ctx.guild).delete_channel.set(channel.id if channel else None)
         await ctx.tick()
 
-    @channel.command(name="edit")
+    @set_channel.command(name="edit")
     async def edit_channel(self, ctx, *, channel: discord.TextChannel = None):
         """Set the channel for edited messages logs
 
@@ -107,7 +107,7 @@ class MessagesLog(commands.Cog):
         await self.config.guild(ctx.guild).edit_channel.set(channel.id if channel else None)
         await ctx.tick()
 
-    @channel.command(name="bulk")
+    @set_channel.command(name="bulk")
     async def bulk_channel(self, ctx, *, channel: discord.TextChannel = None):
         """Set the channel for bulk deletion logs
 
@@ -115,7 +115,7 @@ class MessagesLog(commands.Cog):
         await self.config.guild(ctx.guild).bulk_delete_channel.set(channel.id if channel else None)
         await ctx.tick()
 
-    @channel.command(name="all")
+    @set_channel.command(name="all")
     async def all_channel(self, ctx, *, channel: discord.TextChannel = None):
         """Set the channel for all logs
         
@@ -125,7 +125,7 @@ class MessagesLog(commands.Cog):
         await self.config.guild(ctx.guild).bulk_delete_channel.set(channel.id if channel else None)
         await ctx.tick()
 
-    @channel.command(name="settings")
+    @set_channel.command(name="settings")
     async def channel_settings(self, ctx):
         """View current channels settings"""
         settings = []
@@ -223,6 +223,8 @@ class MessagesLog(commands.Cog):
     async def message_deleted(self, message: discord.Message):
         if not message.guild:
             return
+        if await self.bot.cog_disabled_in_guild(self, message.guild):
+            return
         logchannel = message.guild.get_channel(
             await self.config.guild(message.guild).delete_channel()
         )
@@ -275,6 +277,8 @@ class MessagesLog(commands.Cog):
             return
         if not payload.guild_id:
             return
+        if await self.bot.cog_disabled_in_guild_raw(self.qualified_name, payload.guild_id):
+            return
         guild = self.bot.get_guild(payload.guild_id)
         channel = self.bot.get_channel(payload.channel_id)
         logchannel = guild.get_channel(await self.config.guild(guild).delete_channel())
@@ -308,6 +312,8 @@ class MessagesLog(commands.Cog):
     @commands.Cog.listener("on_raw_bulk_message_delete")
     async def raw_bulk_message_deleted(self, payload: discord.RawBulkMessageDeleteEvent):
         if not payload.guild_id:
+            return
+        if await self.bot.cog_disabled_in_guild_raw(self.qualified_name, payload.guild_id):
             return
         guild = self.bot.get_guild(payload.guild_id)
         channel = self.bot.get_channel(payload.channel_id)
@@ -368,6 +374,8 @@ class MessagesLog(commands.Cog):
     @commands.Cog.listener("on_message_edit")
     async def message_redacted(self, before: discord.Message, after: discord.Message):
         if not before.guild:
+            return
+        if await self.bot.cog_disabled_in_guild(self, before.guild):
             return
         logchannel = before.guild.get_channel(await self.config.guild(before.guild).edit_channel())
         if not logchannel:
