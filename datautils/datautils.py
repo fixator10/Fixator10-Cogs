@@ -42,7 +42,7 @@ GUILD_FEATURES = {
     "WELCOME_SCREEN_ENABLED": _("Welcome screen"),
     "PUBLIC_DISABLED": _("Cannot be public"),
     "ENABLED_DISCOVERABLE_BEFORE": _("Was in Server Discovery"),
-    "COMMUNITY": _("Community (Public) server"),
+    "COMMUNITY": _("Community server"),
 }
 
 ACTIVITY_TYPES = {
@@ -84,7 +84,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.4.2"
+    __version__ = "2.4.3"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -151,19 +151,41 @@ class DataUtils(commands.Cog):
             invite = await widget.fetch_invite()
         except discord.HTTPException:
             invite = None
-        em = discord.Embed(title=_("Server info"), color=await ctx.embed_color(),)
+        em = discord.Embed(
+            title=_("Server info"), color=await ctx.embed_color(), url=widget.json_url
+        )
         em.add_field(name=_("Name"), value=chat.escape(widget.name, formatting=True))
         stats_text = _(
             "**Online member count:** {members}\n" "**Voice channel count:** {channels}"
         ).format(members=len(widget.members), channels=len(widget.channels))
         if invite:
+            guild = invite.guild
+            em.description = guild.description and guild.description or None
             stats_text += "\n" + _(
+                "**Server ID**: {guild_id}\n"
                 "**Approximate member count:** {approx_members}\n"
-                "**Approx. active members count:** {approx_active}"
+                "**Approx. active members count:** {approx_active}\n"
+                "**Invite Channel:** {channel}"
             ).format(
+                guild_id=guild.id,
                 approx_members=invite.approximate_member_count,
                 approx_active=invite.approximate_presence_count,
+                channel=chat.escape(invite.channel.name, formatting=True),
             )
+            if guild.features:
+                em.add_field(
+                    name=_("Features"),
+                    value="\n".join(GUILD_FEATURES.get(f, f) for f in guild.features).format(
+                        banner=guild.banner and f" [🔗]({guild.banner_url_as(format='png')})" or "",
+                        splash=guild.splash and f" [🔗]({guild.splash_url_as(format='png')})" or "",
+                        discovery=guild.discovery_splash
+                        and f" [🔗]({guild.discovery_splash_url_as(format='png')})"
+                        or "",
+                    ),
+                    inline=False,
+                )
+            if invite.guild.icon:
+                em.set_image(url=invite.guild.icon_url_as(static_format="png", size=4096))
         em.add_field(name=_("Stats"), value=stats_text, inline=False)
         if widget.invite_url:
             em.add_field(name=_("Widget's invite"), value=widget.invite_url)
@@ -220,11 +242,20 @@ class DataUtils(commands.Cog):
             value=f"{member.mention}\n{chat.inline(member.mention)}",
             inline=False,
         )
-        em.add_field(
-            name=_("Roles"),
-            value="\n".join([role.name for role in member.roles if not role.is_default()]) or "❌",
-            inline=False,
-        )
+        if roles := [role.name for role in member.roles if not role.is_default()]:
+            em.add_field(
+                name=_("Roles"),
+                value="\n".join(roles),
+                inline=False,
+            )
+        if member.public_flags.value:
+            em.add_field(
+                name=_("Public flags"),
+                value="\n".join(
+                    [str(flag)[10:].replace("_", " ").capitalize() for flag in member.public_flags.all()]
+                ),
+                inline=False,
+            )
         em.set_image(url=member.avatar_url_as(static_format="png", size=4096))
         # em.set_thumbnail(url=member.default_avatar_url)
         await ctx.send(embed=em)
@@ -308,6 +339,16 @@ class DataUtils(commands.Cog):
             else _("Unknown"),
         )
         em.add_field(name=_("2FA admins"), value=bool_emojify(server.mfa_level))
+        if server.rules_channel:
+            em.add_field(
+                name=_("Rules channel"),
+                value=chat.escape(server.rules_channel.name, formatting=True),
+            )
+        if server.public_updates_channel:
+            em.add_field(
+                name=_("Public updates channel"),
+                value=chat.escape(server.public_updates_channel.name, formatting=True),
+            )
         if server.system_channel:
             em.add_field(
                 name=_("System messages channel"),
@@ -316,7 +357,7 @@ class DataUtils(commands.Cog):
                     "**Welcome message:** {welcome}\n"
                     "**Boosts:** {boost}"
                 ).format(
-                    channel=chat.escape(str(server.system_channel), formatting=True),
+                    channel=chat.escape(server.system_channel.name, formatting=True),
                     welcome=bool_emojify(server.system_channel_flags.join_notifications),
                     boost=bool_emojify(server.system_channel_flags.premium_subscriptions),
                 ),
@@ -333,7 +374,8 @@ class DataUtils(commands.Cog):
                 "**Animated emoji count:** {animated_emojis}/{emoji_limit}\n"
                 "**Boosters:** {boosters} ({boosts} **boosts**) (**Tier:** {tier}/3)\n"
                 "**Max bitrate:** {bitrate} kbps\n"
-                "**Max filesize:** {files} MB"
+                "**Max filesize:** {files} MB\n"
+                "**Max users in voice with video:** {max_video}"
             ).format(
                 shard=server.shard_id,
                 members=server.member_count,
@@ -348,6 +390,7 @@ class DataUtils(commands.Cog):
                 boosts=server.premium_subscription_count,
                 bitrate=server.bitrate_limit / 1000,
                 files=server.filesize_limit / 1048576,
+                max_video=server.max_video_channel_users,
             ),
             inline=False,
         )
@@ -715,6 +758,7 @@ class DataUtils(commands.Cog):
                 timestamp=activity.start or discord.Embed.Empty,
                 color=await ctx.embed_color(),
             )
+            # noinspection PyUnresolvedReferences
             apps = await self.bot.http.request(
                 discord.http.Route("GET", "/applications/detectable")
             )
@@ -740,6 +784,7 @@ class DataUtils(commands.Cog):
                 f"{activity.state and activity.state or ''}{party_size}",
                 color=await ctx.embed_color(),
             )
+            # noinspection PyUnresolvedReferences
             apps = await self.bot.http.request(
                 discord.http.Route("GET", "/applications/detectable")
             )
