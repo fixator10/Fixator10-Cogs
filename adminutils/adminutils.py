@@ -1,5 +1,6 @@
 from asyncio import TimeoutError as AsyncTimeoutError
 from random import choice
+from typing import Optional
 
 import aiohttp
 import discord
@@ -16,7 +17,7 @@ _ = Translator("AdminUtils", __file__)
 class AdminUtils(commands.Cog):
     """Useful commands for server administrators."""
 
-    __version__ = "2.4.0"
+    __version__ = "2.4.1"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -33,7 +34,7 @@ class AdminUtils(commands.Cog):
     @commands.guild_only()
     @checks.admin_or_permissions(kick_members=True)
     @checks.bot_has_permissions(kick_members=True)
-    async def cleanup_users(self, ctx, days: int = 1):
+    async def cleanup_users(self, ctx, days: Optional[int] = 1, *roles: discord.Role):
         """Cleanup inactive server members"""
         if days > 30:
             await ctx.send(
@@ -50,12 +51,13 @@ class AdminUtils(commands.Cog):
         to_kick = await ctx.guild.estimate_pruned_members(days=days)
         pred = MessagePredicate.yes_or_no(ctx)
         if not ctx.assume_yes:
+            roles_text = _("\nIncluding members in roles: {}\n").format(", ".join([r.mention for r in roles]))
             await ctx.send(
                 chat.warning(
                     _(
                         "You about to kick **{to_kick}** inactive for **{days}** days members from this server. "
-                        'Are you sure?\nTo agree, type "yes"'
-                    ).format(to_kick=to_kick, days=days)
+                        '{roles}Are you sure?\nTo agree, type "yes"'
+                    ).format(to_kick=to_kick, days=days, roles=roles_text if roles else "")
                 )
             )
             try:
@@ -63,7 +65,9 @@ class AdminUtils(commands.Cog):
             except AsyncTimeoutError:
                 pass
         if ctx.assume_yes or pred.result:
-            cleanup = await ctx.guild.prune_members(days=days, reason=get_audit_reason(ctx.author))
+            cleanup = await ctx.guild.prune_members(
+                days=days, reason=get_audit_reason(ctx.author), roles=roles if roles else None
+            )
             await ctx.send(
                 chat.info(
                     _(
