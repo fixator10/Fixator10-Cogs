@@ -84,7 +84,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.4.3"
+    __version__ = "2.4.4"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -408,7 +408,7 @@ class DataUtils(commands.Cog):
             )
         if widget.invite_url:
             em.add_field(name=_("Widget's invite"), value=widget.invite_url)
-        em.set_image(url=server.icon_url_as(format="png", size=4096))
+        em.set_image(url=server.icon_url_as(static_format="png", size=4096))
         await ctx.send(embed=em)
 
     @commands.command()
