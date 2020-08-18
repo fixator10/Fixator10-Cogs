@@ -51,7 +51,9 @@ class AdminUtils(commands.Cog):
         to_kick = await ctx.guild.estimate_pruned_members(days=days)
         pred = MessagePredicate.yes_or_no(ctx)
         if not ctx.assume_yes:
-            roles_text = _("\nIncluding members in roles: {}\n").format(", ".join([r.mention for r in roles]))
+            roles_text = _("\nIncluding members in roles: {}\n").format(
+                ", ".join([r.mention for r in roles])
+            )
             await ctx.send(
                 chat.warning(
                     _(

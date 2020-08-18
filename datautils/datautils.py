@@ -244,15 +244,16 @@ class DataUtils(commands.Cog):
         )
         if roles := [role.name for role in member.roles if not role.is_default()]:
             em.add_field(
-                name=_("Roles"),
-                value="\n".join(roles),
-                inline=False,
+                name=_("Roles"), value="\n".join(roles), inline=False,
             )
         if member.public_flags.value:
             em.add_field(
                 name=_("Public flags"),
                 value="\n".join(
-                    [str(flag)[10:].replace("_", " ").capitalize() for flag in member.public_flags.all()]
+                    [
+                        str(flag)[10:].replace("_", " ").capitalize()
+                        for flag in member.public_flags.all()
+                    ]
                 ),
                 inline=False,
             )
