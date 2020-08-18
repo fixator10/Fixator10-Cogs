@@ -44,7 +44,7 @@ EMOJIFY_CHARS = {
 class Translators(commands.Cog):
     """Useful (and not) translators"""
 
-    __version__ = "2.1.7"
+    __version__ = "2.1.8"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -365,14 +365,9 @@ class Translators(commands.Cog):
             .replace("#", "#\N{COMBINING ENCLOSING KEYCAP}")
             .replace("*", "*\N{COMBINING ENCLOSING KEYCAP}")
         )
-        await self.bot.http.request(  # TODO: Switch this to allowed_mentions in next release of Red with dpy 1.4
-            discord.http.Route(
-                "POST", "/channels/{channel_id}/messages", channel_id=ctx.channel.id
-            ),
-            json={
-                "content": message[:2000],
-                "allowed_mentions": {"parse": [], "roles": [], "users": []},
-            },
+        await ctx.send(
+            message,
+            allowed_mentions=discord.AllowedMentions(everyone=False, users=False, roles=False),
         )
 
     @commands.group()
