@@ -84,7 +84,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.4.4"
+    __version__ = "2.4.5"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -244,7 +244,9 @@ class DataUtils(commands.Cog):
         )
         if roles := [role.name for role in member.roles if not role.is_default()]:
             em.add_field(
-                name=_("Roles"), value="\n".join(roles), inline=False,
+                name=_("Roles"),
+                value=chat.escape("\n".join(roles), formatting=True),
+                inline=False,
             )
         if member.public_flags.value:
             em.add_field(
@@ -492,7 +494,9 @@ class DataUtils(commands.Cog):
             em.add_field(name=_("Users"), value=str(len(channel.members)))
         em.add_field(
             name=_("Changed roles permissions"),
-            value="\n".join([str(x) for x in changed_roles]) or _("Not set"),
+            value=chat.escape(
+                "\n".join([str(x) for x in changed_roles]) or _("Not set"), formatting=True
+            ),
         )
         em.add_field(
             name=_("Mention"), value=f"{channel.mention}\n{chat.inline(channel.mention)}",
@@ -726,7 +730,10 @@ class DataUtils(commands.Cog):
             em.add_field(name=_("Managed"), value=bool_emojify(emoji.managed))
             em.add_field(name=_("Server"), value=emoji.guild)
             if emoji.roles:
-                em.add_field(name=_("Roles"), value="\n".join([x.name for x in emoji.roles]))
+                em.add_field(
+                    name=_("Roles"),
+                    value=chat.escape("\n".join([x.name for x in emoji.roles]), formatting=True),
+                )
         elif isinstance(emoji, discord.PartialEmoji):
             em.add_field(
                 name=_("Has existed since"),
