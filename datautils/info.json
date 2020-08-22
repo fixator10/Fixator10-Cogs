@@ -20,5 +20,5 @@
     "tabulate",
     "wcwidth"
   ],
-  "red_end_user_data_statement": "This cog does not persistently store data or metadata about users."
+  "end_user_data_statement": "This cog does not persistently store data or metadata about users."
 }

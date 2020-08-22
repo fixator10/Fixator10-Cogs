@@ -12,5 +12,5 @@
   "requirements": [
     "python-dateutil"
   ],
-  "red_end_user_data_statement": "This cog stores https://godville.net API-tokens if provided by user.\nUsers may delete their tokens by either via `[p]godville apikey remove` or via data removal request."
+  "end_user_data_statement": "This cog stores https://godville.net API-tokens if provided by user.\nUsers may delete their tokens by either via `[p]godville apikey remove` or via data removal request."
 }

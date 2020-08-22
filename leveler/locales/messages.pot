@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-07-23 15:59+0400\n"
+"POT-Creation-Date: 2020-08-09 13:37+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,17 +11,17 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: redgettext 3.3\n"
 
-#: leveler\leveler.py:178
+#: leveler\leveler.py:175
 #, docstring
 msgid "Displays a user profile."
 msgstr ""
 
-#: leveler\leveler.py:243
+#: leveler\leveler.py:240
 #, docstring
 msgid "Displays the rank of a user."
 msgstr ""
 
-#: leveler\leveler.py:302
+#: leveler\leveler.py:299
 #, docstring
 msgid ""
 "Displays leaderboard.\n"
@@ -29,17 +29,17 @@ msgid ""
 "        Add -global parameter for global and -rep for reputation."
 msgstr ""
 
-#: leveler\leveler.py:437
+#: leveler\leveler.py:434
 #, docstring
 msgid "Gives a reputation point to a designated player."
 msgstr ""
 
-#: leveler\leveler.py:491
+#: leveler\leveler.py:488
 #, docstring
 msgid "Gives more specific details about user profile image."
 msgstr ""
 
-#: leveler\leveler.py:559
+#: leveler\leveler.py:556
 #, docstring
 msgid ""
 "\n"
@@ -49,47 +49,47 @@ msgid ""
 "        "
 msgstr ""
 
-#: leveler\leveler.py:574
+#: leveler\leveler.py:571
 #, docstring
 msgid "Set the MongoDB server host."
 msgstr ""
 
-#: leveler\leveler.py:591
+#: leveler\leveler.py:588
 #, docstring
 msgid "Set the MongoDB server port."
 msgstr ""
 
-#: leveler\leveler.py:608
+#: leveler\leveler.py:605
 #, docstring
 msgid "Set the MongoDB server credentials."
 msgstr ""
 
-#: leveler\leveler.py:622
+#: leveler\leveler.py:619
 #, docstring
 msgid "Set the MongoDB db name."
 msgstr ""
 
-#: leveler\leveler.py:635
+#: leveler\leveler.py:632
 #, docstring
 msgid "Profile configuration Options."
 msgstr ""
 
-#: leveler\leveler.py:640
+#: leveler\leveler.py:637
 #, docstring
 msgid "Profile options."
 msgstr ""
 
-#: leveler\leveler.py:645
+#: leveler\leveler.py:642
 #, docstring
 msgid "Rank options."
 msgstr ""
 
-#: leveler\leveler.py:650
+#: leveler\leveler.py:647
 #, docstring
 msgid "Level-Up options."
 msgstr ""
 
-#: leveler\leveler.py:655
+#: leveler\leveler.py:652
 #, docstring
 msgid ""
 "Set profile color.\n"
@@ -99,7 +99,7 @@ msgid ""
 "        e.g: `[p]lvlset profile color all #eb4034`"
 msgstr ""
 
-#: leveler\leveler.py:799
+#: leveler\leveler.py:796
 #, docstring
 msgid ""
 "Set rank color.\n"
@@ -109,7 +109,7 @@ msgid ""
 "        e.g: `[p]lvlset rank color info white`"
 msgstr ""
 
-#: leveler\leveler.py:907
+#: leveler\leveler.py:904
 #, docstring
 msgid ""
 "Set levelup color.\n"
@@ -119,42 +119,42 @@ msgid ""
 "        e.g: `[p]lvlset color info default`"
 msgstr ""
 
-#: leveler\leveler.py:1034
+#: leveler\leveler.py:1031
 #, docstring
 msgid "Set your user info."
 msgstr ""
 
-#: leveler\leveler.py:1058
+#: leveler\leveler.py:1055
 #, docstring
 msgid "Set your level-up background."
 msgstr ""
 
-#: leveler\leveler.py:1088
+#: leveler\leveler.py:1085
 #, docstring
 msgid "Set your profile background."
 msgstr ""
 
-#: leveler\leveler.py:1118
+#: leveler\leveler.py:1115
 #, docstring
 msgid "Set your rank background."
 msgstr ""
 
-#: leveler\leveler.py:1148
+#: leveler\leveler.py:1145
 #, docstring
 msgid "Set your title."
 msgstr ""
 
-#: leveler\leveler.py:1173
+#: leveler\leveler.py:1170
 #, docstring
 msgid "Admin options features."
 msgstr ""
 
-#: leveler\leveler.py:1179
+#: leveler\leveler.py:1176
 #, docstring
 msgid "A list of settings."
 msgstr ""
 
-#: leveler\leveler.py:1221
+#: leveler\leveler.py:1218
 #, docstring
 msgid ""
 "Credits per message logged.\n"
@@ -162,7 +162,7 @@ msgid ""
 "        Default to `0`."
 msgstr ""
 
-#: leveler\leveler.py:1236
+#: leveler\leveler.py:1233
 #, docstring
 msgid ""
 "Blocks exp gain in certain channel.\n"
@@ -170,7 +170,7 @@ msgid ""
 "        Use command without channel to see list of ignored channels."
 msgstr ""
 
-#: leveler\leveler.py:1262
+#: leveler\leveler.py:1259
 #, docstring
 msgid ""
 "Locks levelup messages to one channel.\n"
@@ -178,47 +178,47 @@ msgid ""
 "        Disable command via locked channel."
 msgstr ""
 
-#: leveler\leveler.py:1313
+#: leveler\leveler.py:1310
 #, docstring
 msgid "Set a price for background changes."
 msgstr ""
 
-#: leveler\leveler.py:1324
+#: leveler\leveler.py:1321
 #, docstring
 msgid "Set a user's level. (What a cheater C:)."
 msgstr ""
 
-#: leveler\leveler.py:1374
+#: leveler\leveler.py:1371
 #, docstring
 msgid "Ban user from getting experience."
 msgstr ""
 
-#: leveler\leveler.py:1405
+#: leveler\leveler.py:1402
 #, docstring
 msgid "Toggle mentions on messages."
 msgstr ""
 
-#: leveler\leveler.py:1428
+#: leveler\leveler.py:1425
 #, docstring
 msgid "Toggle most leveler commands on the current server."
 msgstr ""
 
-#: leveler\leveler.py:1441
+#: leveler\leveler.py:1438
 #, docstring
 msgid "Toggle text-based messages on the server."
 msgstr ""
 
-#: leveler\leveler.py:1454
+#: leveler\leveler.py:1451
 #, docstring
 msgid "Toggle level-up messages on the server."
 msgstr ""
 
-#: leveler\leveler.py:1468
+#: leveler\leveler.py:1465
 #, docstring
 msgid "Toggles level-up alert in private message to the user."
 msgstr ""
 
-#: leveler\leveler.py:1480
+#: leveler\leveler.py:1477
 #, docstring
 msgid ""
 "Set the range for the XP given on each successful XP gain.\n"
@@ -226,7 +226,7 @@ msgid ""
 "        Leaving the entries blank will reset the XP to the default (Min: 15 - Max: 20)."
 msgstr ""
 
-#: leveler\leveler.py:1502
+#: leveler\leveler.py:1499
 #, docstring
 msgid ""
 "Set minimum message length for XP gain.\n"
@@ -234,12 +234,12 @@ msgid ""
 "        Messages with attachments will give XP regardless of length"
 msgstr ""
 
-#: leveler\leveler.py:1512
+#: leveler\leveler.py:1509
 #, docstring
 msgid "Badge Configuration Options."
 msgstr ""
 
-#: leveler\leveler.py:1518
+#: leveler\leveler.py:1515
 #, docstring
 msgid ""
 "Get a list of available badges.\n"
@@ -248,12 +248,12 @@ msgid ""
 "        Defaults for server."
 msgstr ""
 
-#: leveler\leveler.py:1569
+#: leveler\leveler.py:1566
 #, docstring
 msgid "Get all badges of a user."
 msgstr ""
 
-#: leveler\leveler.py:1620
+#: leveler\leveler.py:1617
 #, docstring
 msgid ""
 "Buy a badge.\n"
@@ -261,7 +261,7 @@ msgid ""
 "        Option: `-global`."
 msgstr ""
 
-#: leveler\leveler.py:1703
+#: leveler\leveler.py:1700
 #, docstring
 msgid ""
 "Set a badge to profile.\n"
@@ -272,7 +272,7 @@ msgid ""
 "        Maximum to `5000`."
 msgstr ""
 
-#: leveler\leveler.py:1748
+#: leveler\leveler.py:1745
 #, docstring
 msgid ""
 "Add a badge.\n"
@@ -288,12 +288,12 @@ msgid ""
 "        If you are the bot owner, you can `-global` to the description to make the badge available everywhere."
 msgstr ""
 
-#: leveler\leveler.py:1859
+#: leveler\leveler.py:1856
 #, docstring
 msgid "Define if badge must be circle or bars."
 msgstr ""
 
-#: leveler\leveler.py:1879
+#: leveler\leveler.py:1876
 #, docstring
 msgid ""
 "Delete a badge and remove from all users.\n"
@@ -301,7 +301,7 @@ msgid ""
 "        Option : `-global`."
 msgstr ""
 
-#: leveler\leveler.py:1932
+#: leveler\leveler.py:1929
 #, docstring
 msgid ""
 "Give a user a badge with a certain name\n"
@@ -309,7 +309,7 @@ msgid ""
 "        Indicate the user and the badge's name."
 msgstr ""
 
-#: leveler\leveler.py:1973
+#: leveler\leveler.py:1970
 #, docstring
 msgid ""
 "Take a user's badge.\n"
@@ -317,7 +317,7 @@ msgid ""
 "        Indicate the user and the badge's name."
 msgstr ""
 
-#: leveler\leveler.py:2016
+#: leveler\leveler.py:2013
 #, docstring
 msgid ""
 "Associate a badge with a level.\n"
@@ -325,22 +325,22 @@ msgid ""
 "        Indicate the badge's name and the level."
 msgstr ""
 
-#: leveler\leveler.py:2050
+#: leveler\leveler.py:2047
 #, docstring
 msgid "Delete a badge/level association."
 msgstr ""
 
-#: leveler\leveler.py:2073
+#: leveler\leveler.py:2070
 #, docstring
 msgid "List level/badge associations."
 msgstr ""
 
-#: leveler\leveler.py:2106
+#: leveler\leveler.py:2103
 #, docstring
 msgid "Admin role configuration."
 msgstr ""
 
-#: leveler\leveler.py:2115
+#: leveler\leveler.py:2112
 #, docstring
 msgid ""
 "Associate a role with a level.\n"
@@ -348,22 +348,22 @@ msgid ""
 "        Removes previous role if given."
 msgstr ""
 
-#: leveler\leveler.py:2158
+#: leveler\leveler.py:2155
 #, docstring
 msgid "Delete a role/level association."
 msgstr ""
 
-#: leveler\leveler.py:2183
+#: leveler\leveler.py:2180
 #, docstring
 msgid "List level/role associations."
 msgstr ""
 
-#: leveler\leveler.py:2221
+#: leveler\leveler.py:2218
 #, docstring
 msgid "Admin background configuration"
 msgstr ""
 
-#: leveler\leveler.py:2228
+#: leveler\leveler.py:2225
 #, docstring
 msgid ""
 "Add a profile background. \n"
@@ -371,7 +371,7 @@ msgid ""
 "        The proportions must be 290px x 290px."
 msgstr ""
 
-#: leveler\leveler.py:2245
+#: leveler\leveler.py:2242
 #, docstring
 msgid ""
 "Add a rank background.\n"
@@ -379,7 +379,7 @@ msgid ""
 "        The proportions must be 360px x 100px."
 msgstr ""
 
-#: leveler\leveler.py:2262
+#: leveler\leveler.py:2259
 #, docstring
 msgid ""
 "Add a level-up background.\n"
@@ -387,7 +387,7 @@ msgid ""
 "        The proportions must be 175px x 65px."
 msgstr ""
 
-#: leveler\leveler.py:2279
+#: leveler\leveler.py:2276
 #, docstring
 msgid ""
 "Set one-time custom background\n"
@@ -395,22 +395,22 @@ msgid ""
 "        bg_type can be: `profile`, `rank` or `levelup`."
 msgstr ""
 
-#: leveler\leveler.py:2308
+#: leveler\leveler.py:2305
 #, docstring
 msgid "Delete a profile background."
 msgstr ""
 
-#: leveler\leveler.py:2320
+#: leveler\leveler.py:2317
 #, docstring
 msgid "Delete a rank background."
 msgstr ""
 
-#: leveler\leveler.py:2332
+#: leveler\leveler.py:2329
 #, docstring
 msgid "Delete a level background."
 msgstr ""
 
-#: leveler\leveler.py:2343
+#: leveler\leveler.py:2340
 #, docstring
 msgid ""
 "Gives a list of backgrounds.\n"
@@ -418,12 +418,12 @@ msgid ""
 "        type can be: `profile`, `rank` or `levelup`."
 msgstr ""
 
-#: leveler\leveler.py:2397
+#: leveler\leveler.py:2394
 #, docstring
 msgid "Manage mee6 conversions."
 msgstr ""
 
-#: leveler\leveler.py:2403
+#: leveler\leveler.py:2400
 #, docstring
 msgid ""
 "Convert Mee6 levels.\n"
@@ -431,7 +431,7 @@ msgid ""
 "        This command must be run in a channel in the guild to be converted."
 msgstr ""
 
-#: leveler\leveler.py:2478
+#: leveler\leveler.py:2475
 #, docstring
 msgid ""
 "Convert Mee6 role rewards.\n"

@@ -14,5 +14,5 @@
   "requirements": [
     "tabulate"
   ],
-  "red_end_user_data_statement":     "This cog stores users data in form of «member : role» Discord IDs pairings.\nThis cog supports data removal requests."
+  "end_user_data_statement": "This cog stores users data in form of «member : role» Discord IDs pairings.\nThis cog supports data removal requests."
 }

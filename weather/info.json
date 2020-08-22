@@ -14,5 +14,5 @@
   "requirements": [
     "python-forecastio"
   ],
-  "red_end_user_data_statement": "This cog may store data about user's preferred measuring units.\nThis data can be remove by either via `[p]forecastunits reset` or via data removal request."
+  "end_user_data_statement": "This cog may store data about user's preferred measuring units.\nThis data can be remove by either via `[p]forecastunits reset` or via data removal request."
 }
