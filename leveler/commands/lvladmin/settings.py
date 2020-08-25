@@ -177,6 +177,7 @@ class Settings(MixinMeta):
     @commands.is_owner()
     async def allow_global_top(self, ctx):
         """Allow usage of --global argument in `[p]top` command"""
+        # Reason: https://support-dev.discord.com/hc/en-us/articles/360043053492
         server = ctx.guild
         if await self.config.allow_global_top():
             await self.config.allow_global_top.set(False)
@@ -184,7 +185,6 @@ class Settings(MixinMeta):
         else:
             await self.config.allow_global_top.set(True)
             await ctx.send("**Private level-up alerts enabled for `{}`.**".format(server.name))
-
 
     @lvladmin.command(name="lock")
     @commands.guild_only()
