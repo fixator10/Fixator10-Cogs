@@ -3,11 +3,12 @@ import time
 import discord
 from redbot.core import commands
 from redbot.core.utils import chat_formatting as chat
+from redbot.core.utils.menus import DEFAULT_CONTROLS, menu
 
 from ..abc import CompositeMetaClass, MixinMeta
 
 
-class Other(MixinMeta, CompositeMetaClass):
+class Other(MixinMeta, metaclass=CompositeMetaClass):
     """Other commands"""
 
     @commands.command()
@@ -59,3 +60,56 @@ class Other(MixinMeta, CompositeMetaClass):
                     chat.humanize_timedelta(seconds=seconds)
                 )
             )
+
+    @commands.command(name="backgrounds", usage="<type>")
+    @commands.guild_only()
+    async def disp_backgrounds(self, ctx, bg_type: str):
+        """Gives a list of backgrounds.
+
+        type can be: `profile`, `rank` or `levelup`."""
+        server = ctx.guild
+        backgrounds = await self.config.backgrounds()
+
+        if await self.config.guild(server).disabled():
+            await ctx.send("**Leveler commands for this server are disabled!**")
+            return
+
+        em = discord.Embed(colour=await ctx.embed_color())
+        if bg_type.lower() == "profile":
+            em.set_author(
+                name="Profile Backgrounds for {}".format(self.bot.user.name),
+                icon_url=self.bot.user.avatar_url,
+            )
+            bg_key = "profile"
+        elif bg_type.lower() == "rank":
+            em.set_author(
+                name="Rank Backgrounds for {}".format(self.bot.user.name),
+                icon_url=self.bot.user.avatar_url,
+            )
+            bg_key = "rank"
+        elif bg_type.lower() == "levelup":
+            em.set_author(
+                name="Level Up Backgrounds for {}".format(self.bot.user.name),
+                icon_url=self.bot.user.avatar_url,
+            )
+            bg_key = "levelup"
+        else:
+            bg_key = None
+
+        if bg_key:
+            embeds = []
+            total = len(backgrounds[bg_key])
+            cnt = 1
+            for bg in sorted(backgrounds[bg_key].keys()):
+                em = discord.Embed(
+                    title=bg,
+                    color=await ctx.embed_color(),
+                    url=backgrounds[bg_key][bg],
+                    description=f"Background {cnt}/{total}",
+                )
+                em.set_image(url=backgrounds[bg_key][bg])
+                embeds.append(em)
+                cnt += 1
+            await menu(ctx, embeds, DEFAULT_CONTROLS)
+        else:
+            await ctx.send("**Invalid background type. Must be `profile`, `rank` or `levelup`.**")

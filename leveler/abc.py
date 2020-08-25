@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from io import BytesIO
 from logging import Logger
 from re import Match
-from typing import Optional
+from typing import List, Optional
 
 from aiohttp import ClientSession
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
@@ -124,6 +124,10 @@ class MixinMeta(ABC):
 
     @abstractmethod
     async def _valid_image_url(self, url):
+        raise NotImplementedError
+
+    @abstractmethod
+    async def _auto_color(self, ctx, url: str, ranks) -> List[str]:
         raise NotImplementedError
 
 
