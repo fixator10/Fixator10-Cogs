@@ -175,21 +175,22 @@ class Badge(MixinMeta):
                 {"$set": {"badges": serverbadges["badges"]}},
             )
             # remove the badge if there
-            async for user_info_temp in self.db.users.find({}):
-                try:
-                    user_info_temp = await self._badge_convert_dict(user_info_temp)
+            async with ctx.typing():
+                async for user_info_temp in self.db.users.find({}):
+                    try:
+                        user_info_temp = await self._badge_convert_dict(user_info_temp)
 
-                    badge_name = "{}_{}".format(name, serverid)
-                    if badge_name in user_info_temp["badges"].keys():
-                        del user_info_temp["badges"][badge_name]
-                        await self.db.users.update_one(
-                            {"user_id": user_info_temp["user_id"]},
-                            {"$set": {"badges": user_info_temp["badges"]}},
+                        badge_name = "{}_{}".format(name, serverid)
+                        if badge_name in user_info_temp["badges"].keys():
+                            del user_info_temp["badges"][badge_name]
+                            await self.db.users.update_one(
+                                {"user_id": user_info_temp["user_id"]},
+                                {"$set": {"badges": user_info_temp["badges"]}},
+                            )
+                    except Exception as exc:
+                        self.log.error(
+                            f"Unable to delete badge {name} from {user_info_temp['user_id']}: {exc}"
                         )
-                except Exception as exc:
-                    self.log.error(
-                        f"Unable to delete badge {name} from {user_info_temp['user_id']}: {exc}"
-                    )
 
             await ctx.send("**The `{}` badge has been removed.**".format(name))
         else:
