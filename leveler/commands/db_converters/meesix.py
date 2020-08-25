@@ -79,17 +79,18 @@ class MeeSix(MixinMeta):
                 userinfo["servers"][str(server.id)]["level"] = level
                 userinfo["total_exp"] += total_exp
 
-                await self.db.users.update_one(
-                    {"user_id": str(user.id)},
-                    {
-                        "$set": {
-                            "servers.{}.level".format(server.id): level,
-                            "servers.{}.current_exp".format(server.id): 0,
-                            "total_exp": userinfo["total_exp"],
-                        }
-                    },
-                )
-                await self._handle_levelup(user, userinfo, server, channel)
+                if userinfo["total_exp"] > 0:
+                    await self.db.users.update_one(
+                        {"user_id": str(user.id)},
+                        {
+                            "$set": {
+                                "servers.{}.level".format(server.id): level,
+                                "servers.{}.current_exp".format(server.id): 0,
+                                "total_exp": userinfo["total_exp"],
+                            }
+                        },
+                    )
+                    await self._handle_levelup(user, userinfo, server, channel)
         await ctx.send(f"{failed} users could not be found and were skipped.")
 
     @mee6.command(name="roles", aliases=["ranks"])
