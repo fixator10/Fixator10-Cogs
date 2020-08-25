@@ -26,6 +26,7 @@ class Settings(MixinMeta):
         settings = {
             "Enabled": self.bool_emojify(not await self.config.guild(ctx.guild).disabled()),
             "Unique registered users": str(await self.db.users.count_documents({})),
+            "Global top": self.bool_emojify(await self.config.allow_global_top()),
             "Level messages enabled": self.bool_emojify(
                 await self.config.guild(ctx.guild).lvl_msg()
             ),
@@ -176,15 +177,15 @@ class Settings(MixinMeta):
     @lvladmin.command(name="globaltop")
     @commands.is_owner()
     async def allow_global_top(self, ctx):
-        """Allow usage of --global argument in `[p]top` command"""
+        """Allow usage of `--global` argument in `[p]top` command"""
         # Reason: https://support-dev.discord.com/hc/en-us/articles/360043053492
         server = ctx.guild
         if await self.config.allow_global_top():
             await self.config.allow_global_top.set(False)
-            await ctx.send("**Private level-up alerts disabled for `{}`.**".format(server.name))
+            await ctx.send("**`--global` argument is now available only to owner.**".format(server.name))
         else:
             await self.config.allow_global_top.set(True)
-            await ctx.send("**Private level-up alerts enabled for `{}`.**".format(server.name))
+            await ctx.send("**`--global` argument is now available to everyone.**".format(server.name))
 
     @lvladmin.command(name="lock")
     @commands.guild_only()
