@@ -1,5 +1,4 @@
 import time
-from datetime import timedelta
 from typing import Union
 
 import discord
@@ -18,7 +17,13 @@ class Users(MixinMeta):
     @commands.is_owner()
     @lvladmin.command()
     @commands.guild_only()
-    async def xpban(self, ctx, days: int, *, user: Union[discord.Member, int]):
+    async def xpban(
+        self,
+        ctx,
+        bantime: commands.converter.TimedeltaConverter,
+        *,
+        user: Union[discord.User, int]
+    ):
         """Ban user from getting experience."""
         if isinstance(user, int):
             try:
@@ -36,7 +41,7 @@ class Users(MixinMeta):
         if user is None:
             await ctx.send_help()
             return
-        chat_block = time.time() + timedelta(days=days).total_seconds()
+        chat_block = time.time() + bantime.total_seconds()
         try:
             await self.db.users.update_one(
                 {"user_id": str(user.id)}, {"$set": {"chat_block": chat_block}}
