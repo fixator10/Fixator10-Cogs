@@ -54,11 +54,10 @@ class Users(MixinMeta):
     @commands.is_owner()
     @lvladmin.command()
     @commands.guild_only()
-    async def setlevel(self, ctx, user: discord.Member, level: int):
-        """Set a user's level. (What a cheater C:)."""
-        server = user.guild
+    async def setlevel(self, ctx, user: discord.User, level: int):
+        """Set a user's level manually."""
+        server = ctx.guild
         channel = ctx.channel
-        # creates user if doesn't exist
         if user.bot:
             await ctx.send_help()
             return
