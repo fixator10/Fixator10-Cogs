@@ -1,7 +1,9 @@
-from ..abc import MixinMeta, CompositeMetaClass
-import discord
 import time
+
+import discord
 from redbot.core import bank, commands
+
+from ..abc import CompositeMetaClass, MixinMeta
 
 
 class Profiles(MixinMeta, metaclass=CompositeMetaClass):

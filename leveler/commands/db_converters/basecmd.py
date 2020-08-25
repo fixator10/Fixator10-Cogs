@@ -1,5 +1,6 @@
-from leveler.abc import CompositeMetaClass
 from redbot.core import commands
+
+from leveler.abc import CompositeMetaClass
 
 
 class DBConvertersBaseCMD(metaclass=CompositeMetaClass):

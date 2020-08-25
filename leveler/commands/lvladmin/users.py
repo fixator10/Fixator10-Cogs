@@ -1,0 +1,96 @@
+import time
+from datetime import timedelta
+from typing import Union
+
+import discord
+from redbot.core import commands
+
+from leveler.abc import MixinMeta
+
+from .basecmd import LevelAdminBaseCMD
+
+
+class Users(MixinMeta):
+    """User-related administration commands"""
+
+    lvladmin = getattr(LevelAdminBaseCMD, "lvladmin")
+
+    @commands.is_owner()
+    @lvladmin.command()
+    @commands.guild_only()
+    async def xpban(self, ctx, days: int, *, user: Union[discord.Member, int]):
+        """Ban user from getting experience."""
+        if isinstance(user, int):
+            try:
+                user = await self.bot.fetch_user(user)
+            except discord.NotFound:
+                await ctx.send("Discord user with ID `{}` not found.".format(user))
+                return
+            except discord.HTTPException:
+                await ctx.send(
+                    "I was unable to get data about user with ID `{}`. Try again later.".format(
+                        user
+                    )
+                )
+                return
+        if user is None:
+            await ctx.send_help()
+            return
+        chat_block = time.time() + timedelta(days=days).total_seconds()
+        try:
+            await self.db.users.update_one(
+                {"user_id": str(user.id)}, {"$set": {"chat_block": chat_block}}
+            )
+        except Exception as exc:
+            await ctx.send("Unable to add chat block: {}".format(exc))
+        else:
+            await ctx.tick()
+
+    @commands.is_owner()
+    @lvladmin.command()
+    @commands.guild_only()
+    async def setlevel(self, ctx, user: discord.Member, level: int):
+        """Set a user's level. (What a cheater C:)."""
+        server = user.guild
+        channel = ctx.channel
+        # creates user if doesn't exist
+        if user.bot:
+            await ctx.send_help()
+            return
+        userinfo = await self.db.users.find_one({"user_id": str(user.id)})
+
+        if await self.config.guild(ctx.guild).disabled():
+            await ctx.send("Leveler commands for this server are disabled.")
+            return
+
+        if level < 0:
+            await ctx.send("**Please enter a positive number.**")
+            return
+
+        # get rid of old level exp
+        old_server_exp = 0
+        for i in range(userinfo["servers"][str(server.id)]["level"]):
+            old_server_exp += await self._required_exp(i)
+        userinfo["total_exp"] -= old_server_exp
+        userinfo["total_exp"] -= userinfo["servers"][str(server.id)]["current_exp"]
+
+        # add in new exp
+        total_exp = await self._level_exp(level)
+        userinfo["servers"][str(server.id)]["current_exp"] = 0
+        userinfo["servers"][str(server.id)]["level"] = level
+        userinfo["total_exp"] += total_exp
+
+        await self.db.users.update_one(
+            {"user_id": str(user.id)},
+            {
+                "$set": {
+                    "servers.{}.level".format(server.id): level,
+                    "servers.{}.current_exp".format(server.id): 0,
+                    "total_exp": userinfo["total_exp"],
+                }
+            },
+        )
+        await ctx.send(
+            "**{}'s Level has been set to `{}`.**".format(await self._is_mention(user), level)
+        )
+        await self._handle_levelup(user, userinfo, server, channel)

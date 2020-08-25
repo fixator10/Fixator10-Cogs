@@ -43,11 +43,11 @@ class MongoDB(MixinMeta):
     async def _create_user(self, user, server):
         if not self._db_ready:
             return
-        backgrounds = await self.config.backgrounds()
         if user.bot:
             return
         try:
             userinfo = await self.db.users.find_one({"user_id": str(user.id)})
+            backgrounds = await self.config.backgrounds()
             if not userinfo:
                 new_account = {
                     "user_id": str(user.id),

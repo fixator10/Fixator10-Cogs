@@ -122,6 +122,10 @@ class MixinMeta(ABC):
     async def _give_chat_credit(self, user, server):
         raise NotImplementedError
 
+    @abstractmethod
+    async def _valid_image_url(self, url):
+        raise NotImplementedError
+
 
 class CompositeMetaClass(type(commands.Cog), type(ABC)):
     """

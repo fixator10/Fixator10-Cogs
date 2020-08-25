@@ -1,8 +1,9 @@
-from ..abc import MixinMeta, CompositeMetaClass
 import discord
-from tabulate import tabulate
 from redbot.core import commands
 from redbot.core.utils import chat_formatting as chat
+from tabulate import tabulate
+
+from ..abc import CompositeMetaClass, MixinMeta
 
 
 class DataBase(MixinMeta, metaclass=CompositeMetaClass):
@@ -33,7 +34,7 @@ class DataBase(MixinMeta, metaclass=CompositeMetaClass):
         if not client:
             return await message.edit(
                 content=message.content.replace("Now trying to connect to the new host...", "")
-                        + "Failed to connect. Please try again with a valid host."
+                + "Failed to connect. Please try again with a valid host."
             )
         await message.edit(
             content=message.content.replace("Now trying to connect to the new host...", "")
@@ -50,7 +51,7 @@ class DataBase(MixinMeta, metaclass=CompositeMetaClass):
         if not client:
             return await message.edit(
                 content=message.content.replace("Now trying to connect to the new port...", "")
-                        + "Failed to connect. Please try again with a valid port."
+                + "Failed to connect. Please try again with a valid port."
             )
         await message.edit(
             content=message.content.replace("Now trying to connect to the new port...", "")
@@ -66,7 +67,7 @@ class DataBase(MixinMeta, metaclass=CompositeMetaClass):
         if not client:
             return await message.edit(
                 content=message.content.replace("Now trying to connect...", "")
-                        + "Failed to connect. Please try again with valid credentials."
+                + "Failed to connect. Please try again with valid credentials."
             )
         await message.edit(content=message.content.replace("Now trying to connect...", ""))
 
@@ -79,6 +80,6 @@ class DataBase(MixinMeta, metaclass=CompositeMetaClass):
         if not client:
             return await message.edit(
                 content=message.content.replace("Now trying to connect...", "")
-                        + "Failed to connect. Please try again with a valid db name."
+                + "Failed to connect. Please try again with a valid db name."
             )
         await message.edit(content=message.content.replace("Now trying to connect...", ""))

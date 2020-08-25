@@ -1,11 +1,13 @@
-from ..abc import MixinMeta, CompositeMetaClass
-import discord
-import operator
 import argparse
 import math
+import operator
+
+import discord
 from redbot.core import commands
-from redbot.core.utils import chat_formatting as chat
 from redbot.core.utils import AsyncIter
+from redbot.core.utils import chat_formatting as chat
+
+from ..abc import CompositeMetaClass, MixinMeta
 
 
 class NoExitParser(argparse.ArgumentParser):
@@ -32,7 +34,12 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
         Add --global parameter for global. Available only to owner by default."""
         server = ctx.guild
         user = ctx.author
-        owner = await self.bot.is_owner(ctx.author) if not await self.config.allow_global_top() else True
+        owner = (
+            await self.bot.is_owner(ctx.author)
+            if not await self.config.allow_global_top()
+            else True
+        )
+        await self._create_user(user, server)
         # TODO: Add a settings command for this
         if options is None:
             options = argparse.Namespace(page=1, rep=False, global_top=False)

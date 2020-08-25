@@ -2,12 +2,14 @@ from redbot.core import commands
 from redbot.core.utils import AsyncIter
 from redbot.core.utils.predicates import MessagePredicate
 
-from .basecmd import DBConvertersBaseCMD
 from leveler.abc import MixinMeta
+
+from .basecmd import DBConvertersBaseCMD
 
 
 class MeeSix(MixinMeta):
     """Mee6 leveling converter"""
+
     lvlconvert = getattr(DBConvertersBaseCMD, "lvlconvert")
 
     @lvlconvert.group()
