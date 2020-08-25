@@ -1,4 +1,5 @@
 from collections import OrderedDict
+from typing import Optional
 
 import discord
 from redbot.core import commands
@@ -23,19 +24,18 @@ class Badge(MixinMeta):
     @badge.command(name="add")
     @commands.guild_only()
     async def addbadge(
-        self, ctx, name: str, bg_img: str, border_color: str, price: int, *, description: str,
+        self, ctx, name: str, is_global: Optional[bool], bg_img: str, border_color: str, price: int, *, description: str,
     ):
         """Add a badge.
 
         Options :
         `name`: Indicate badge's name. If the badge has space, use quote.
+        `is_global`: Owner-only. Make badge global.
         `bg_img`: Indicate the image of the badge. (Only URL supported)
         `border_color`: Indicate color of the badge's border. (HEX color)
         `price`: Indicate the badge's price. (Indicate `-1` and it won't be purchasable, `0` for free.)
         `description`: Indicate a description for your badge.
-        eg: `[p]lvlset badge add Leveler [my_url] #b60047 0 My super badge!`
-
-        If you are the bot owner, you can `-global` to the description to make the badge available everywhere."""
+        eg: `[p]lvlset badge add Leveler [my_url] #b60047 0 My super badge!`"""
 
         user = ctx.author
         server = ctx.guild
@@ -54,8 +54,7 @@ class Badge(MixinMeta):
             )
             return
 
-        if "-global" in description and await self.bot.is_owner(user):
-            description = description.replace("-global", "")
+        if is_global and await self.bot.is_owner(user):
             serverid = "global"
             servername = "global"
         else:
@@ -148,17 +147,12 @@ class Badge(MixinMeta):
     @commands.mod_or_permissions(manage_roles=True)
     @badge.command(name="delete")
     @commands.guild_only()
-    async def delbadge(self, ctx, *, name: str):
-        """Delete a badge and remove from all users.
-
-        Option : `-global`."""
+    async def delbadge(self, ctx, is_global: Optional[bool] = False, *, name: str):
+        """Delete a badge and remove from all users."""
         user = ctx.author
         server = ctx.guild
 
-        # return
-
-        if "-global" in name and await self.bot.is_owner(user):
-            name = name.replace(" -global", "")
+        if is_global and await self.bot.is_owner(user):
             serverid = "global"
         else:
             serverid = server.id

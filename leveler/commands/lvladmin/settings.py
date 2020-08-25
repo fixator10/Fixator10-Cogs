@@ -15,7 +15,7 @@ class Settings(MixinMeta):
     @lvladmin.command()
     async def overview(self, ctx):
         """A list of settings."""
-        num_users = len(await self.db.users.find({}).to_list(None))
+        num_users = await self.db.users.count_documents({})
         is_owner = await self.bot.is_owner(ctx.author)
 
         em = discord.Embed(colour=await ctx.embed_color())
@@ -40,6 +40,7 @@ class Settings(MixinMeta):
             msg += "**Level Messages Channel:** {}\n".format(
                 ctx.guild.get_channel(lvl_lock).mention
             )
+        em.description = msg
         em.set_author(name="Settings Overview for {}".format(ctx.guild.name))
         await ctx.send(embed=em)
 
