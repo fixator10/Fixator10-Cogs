@@ -39,8 +39,6 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
             if not await self.config.allow_global_top()
             else True
         )
-        await self._create_user(user, server)
-        # TODO: Add a settings command for this
         if options is None:
             options = argparse.Namespace(page=1, rep=False, global_top=False)
 

@@ -17,7 +17,6 @@ class Settings(MixinMeta):
 
     lvladmin = getattr(LevelAdminBaseCMD, "lvladmin")
 
-    @commands.admin_or_permissions(manage_guild=True)
     @lvladmin.command()
     async def overview(self, ctx):
         """A list of settings."""
@@ -92,7 +91,6 @@ class Settings(MixinMeta):
             await self.config.mention.set(True)
             await ctx.send("**Mentions enabled.**")
 
-    @commands.admin_or_permissions(manage_guild=True)
     @lvladmin.command()
     @commands.guild_only()
     async def toggle(self, ctx):
@@ -105,7 +103,6 @@ class Settings(MixinMeta):
             await self.config.guild(server).disabled.set(True)
             await ctx.send("**Leveler disabled on `{}`.**".format(server.name))
 
-    @commands.admin_or_permissions(manage_guild=True)
     @lvladmin.command()
     @commands.guild_only()
     async def textonly(self, ctx):
@@ -118,7 +115,6 @@ class Settings(MixinMeta):
             await self.config.guild(server).text_only.set(True)
             await ctx.send("**Text-only messages enabled for `{}`.**".format(server.name))
 
-    @commands.admin_or_permissions(manage_guild=True)
     @lvladmin.command(name="alerts")
     @commands.guild_only()
     async def lvlalert(self, ctx):
@@ -132,7 +128,6 @@ class Settings(MixinMeta):
             await self.config.guild(server).lvl_msg.set(True)
             await ctx.send("**Level-up alerts enabled for `{}`.**".format(server.name))
 
-    @commands.admin_or_permissions(manage_guild=True)
     @lvladmin.command(name="private")
     @commands.guild_only()
     async def lvlprivate(self, ctx):
@@ -177,6 +172,19 @@ class Settings(MixinMeta):
             raise commands.BadArgument
         await self.config.message_length.set(message_length)
         await ctx.tick()
+
+    @lvladmin.command(name="globaltop")
+    @commands.is_owner()
+    async def allow_global_top(self, ctx):
+        """Allow usage of --global argument in `[p]top` command"""
+        server = ctx.guild
+        if await self.config.allow_global_top():
+            await self.config.allow_global_top.set(False)
+            await ctx.send("**Private level-up alerts disabled for `{}`.**".format(server.name))
+        else:
+            await self.config.allow_global_top.set(True)
+            await ctx.send("**Private level-up alerts enabled for `{}`.**".format(server.name))
+
 
     @lvladmin.command(name="lock")
     @commands.guild_only()
