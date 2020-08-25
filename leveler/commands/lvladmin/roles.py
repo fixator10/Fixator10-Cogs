@@ -1,4 +1,5 @@
 from collections import OrderedDict
+from typing import Union
 
 import discord
 from redbot.core import commands
@@ -68,27 +69,28 @@ class Roles(MixinMeta):
     @commands.mod_or_permissions(manage_roles=True)
     @role.command(name="unlink", usage="<role>")
     @commands.guild_only()
-    async def unlinkrole(self, ctx, *, role_to_unlink: discord.Role):
+    async def unlinkrole(self, ctx, *, role_to_unlink: Union[discord.Role, str]):
         """Delete a role/level association."""
         server = ctx.guild
+        role_to_unlink = (
+            role_to_unlink.name if isinstance(role_to_unlink, discord.Role) else role_to_unlink
+        )
 
         server_roles = await self.db.roles.find_one({"server_id": str(server.id)})
         roles = server_roles["roles"]
 
-        if role_to_unlink.name in roles:
+        if role_to_unlink in roles:
             await ctx.send(
                 "**Role/Level association `{}`/`{}` removed.**".format(
-                    role_to_unlink.name, roles[role_to_unlink.name]["level"]
+                    role_to_unlink, roles[role_to_unlink]["level"]
                 )
             )
-            del roles[role_to_unlink.name]
+            del roles[role_to_unlink]
             await self.db.roles.update_one(
                 {"server_id": str(server.id)}, {"$set": {"roles": roles}}
             )
         else:
-            await ctx.send(
-                "**The `{}` role is not linked to any levels!**".format(role_to_unlink.name)
-            )
+            await ctx.send("**The `{}` role is not linked to any levels!**".format(role_to_unlink))
 
     @commands.mod_or_permissions(manage_roles=True)
     @role.command(name="listlinks")

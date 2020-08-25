@@ -1,4 +1,3 @@
-import discord
 from redbot.core import commands
 
 from leveler.abc import CompositeMetaClass

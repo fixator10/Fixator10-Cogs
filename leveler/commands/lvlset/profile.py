@@ -1,5 +1,7 @@
 import random
+from typing import Union
 
+import discord
 from redbot.core import commands
 
 from leveler.abc import MixinMeta
@@ -18,7 +20,7 @@ class Profile(MixinMeta):
 
     @profileset.command(name="color", alias=["colour"])
     @commands.guild_only()
-    async def profilecolors(self, ctx, section: str, color: str):
+    async def profilecolors(self, ctx, section: str, color: Union[discord.Color, str]):
         """Set profile color.
 
         For section, you can choose: `exp`, `rep`, `badge`, `info` or `all`.
@@ -29,7 +31,6 @@ class Profile(MixinMeta):
 
         section = section.lower()
         default_info_color = (30, 30, 30, 200)
-        white_info_color = (150, 150, 150, 180)
         default_rep = (92, 130, 203, 230)
         default_badge = (128, 151, 165, 230)
         default_exp = (255, 255, 255, 230)
@@ -86,9 +87,6 @@ class Profile(MixinMeta):
             for hex_color in hex_colors:
                 color_temp = await self._hex_to_rgb(hex_color, default_a)
                 set_color.append(color_temp)
-
-        elif color == "white":
-            set_color = [white_info_color]
         elif color == "default":
             if section == "exp":
                 set_color = [default_exp]
@@ -105,12 +103,10 @@ class Profile(MixinMeta):
                     default_badge,
                     default_info_color,
                 ]
-        elif await self._is_hex(color):
-            set_color = [await self._hex_to_rgb(color, default_a)]
+        elif isinstance(color, discord.Color):
+            set_color = [color.r, color.g, color.b, default_a]
         else:
-            await ctx.send(
-                "**Not a valid color. Must be `default`, `HEX color`, `white` or `auto`.**"
-            )
+            await ctx.send("**Not a valid color. Must be `default`, `HEX color` or `auto`.**")
             return
 
         if section == "all":

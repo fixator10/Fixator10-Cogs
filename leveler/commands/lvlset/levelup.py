@@ -1,5 +1,7 @@
 import random
+from typing import Union
 
+import discord
 from redbot.core import commands
 
 from leveler.abc import MixinMeta
@@ -19,19 +21,17 @@ class Levelup(MixinMeta):
 
     @levelupset.command(name="color", alias=["colour"])
     @commands.guild_only()
-    async def levelupcolors(self, ctx, section: str, color: str = None):
+    async def levelupcolors(self, ctx, section: str, color: Union[discord.Color, str]):
         """Set levelup color.
 
         Section can only be `info`.
-        Color can be : `default`, `white`, `HEX code` (#000000) or `auto`.
+        Color can be : `default`, `HEX code` (#000000) or `auto`.
         e.g: `[p]lvlset color info default`"""
         user = ctx.author
-        server = ctx.guild
         userinfo = await self.db.users.find_one({"user_id": str(user.id)})
 
         section = section.lower()
         default_info_color = (30, 30, 30, 200)
-        white_info_color = (150, 150, 150, 180)
         default_a = 200
 
         if await self.config.guild(ctx.guild).disabled():
@@ -61,17 +61,13 @@ class Levelup(MixinMeta):
             for hex_color in hex_colors:
                 color_temp = await self._hex_to_rgb(hex_color, default_a)
                 set_color.append(color_temp)
-        elif color == "white":
-            set_color = [white_info_color]
         elif color == "default":
             if section == "info":
                 set_color = [default_info_color]
-        elif await self._is_hex(color):
-            set_color = [await self._hex_to_rgb(color, default_a)]
+        elif isinstance(color, discord.Color):
+            set_color = [color.r, color.g, color.b, default_a]
         else:
-            await ctx.send(
-                "**Not a valid color. Must be `default` `HEX color`, `white` or `auto`.**"
-            )
+            await ctx.send("**Not a valid color. Must be `default` `HEX color` or `auto`.**")
             return
 
         await self.db.users.update_one(

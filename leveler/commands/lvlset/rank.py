@@ -1,5 +1,7 @@
 import random
+from typing import Union
 
+import discord
 from redbot.core import commands
 
 from leveler.abc import MixinMeta
@@ -18,7 +20,7 @@ class Rank(MixinMeta):
 
     @rankset.command(name="color", alias=["colour"])
     @commands.guild_only()
-    async def rankcolors(self, ctx, section: str, color: str = None):
+    async def rankcolors(self, ctx, section: str, color: Union[discord.Color, str]):
         """Set rank color.
 
         For section, you can choose: `exp`, `info` or `all`.
@@ -85,8 +87,8 @@ class Rank(MixinMeta):
                     default_badge,
                     default_info_color,
                 ]
-        elif await self._is_hex(color):
-            set_color = [await self._hex_to_rgb(color, default_a)]
+        elif isinstance(color, discord.Color):
+            set_color = [color.r, color.g, color.b, default_a]
         else:
             await ctx.send(
                 "**Not a valid color. Must be `default`, `HEX color`, `white or `auto`.**"
