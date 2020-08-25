@@ -10,11 +10,10 @@ from urllib import parse
 
 import aiohttp
 import discord
-from redbot.core import checks, commands
+from redbot.core import commands
 from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils import chat_formatting as chat
 
-from . import yandextranslate
 from .converters import PySupportedEncoding
 
 _ = Translator("Translators", __file__)
@@ -44,7 +43,7 @@ EMOJIFY_CHARS = {
 class Translators(commands.Cog):
     """Useful (and not) translators"""
 
-    __version__ = "2.1.8"
+    __version__ = "2.2.0"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -56,88 +55,6 @@ class Translators(commands.Cog):
 
     async def red_delete_data_for_user(self, **kwargs):
         return
-
-    @commands.command()
-    @checks.is_owner()
-    async def ytapikey(self, ctx):
-        """Set API key for Yandex.Translate"""
-        message = _(
-            "To get Yandex.Translate API key:\n"
-            "1. Login to your Yandex account\n"
-            "1.1. Visit [API keys](https://translate.yandex.com/developers/keys) page\n"
-            "2. Press `Create a new key`\n"
-            "3. Enter description for key\n"
-            "4. Copy `trnsl.*` key\n"
-            "5. Use `{}set api yandex translate <your_apikey>`"
-        ).format(ctx.clean_prefix)
-        await ctx.maybe_send_embed(message)
-
-    @commands.command()
-    @commands.bot_has_permissions(embed_links=True)
-    async def ytranslate(self, ctx, language: str, *, text: str):
-        """Translate text via Yandex
-
-        Language may be just "ru" (target language to translate)
-        or "en-ru" (original text's language - target language)"""
-        text = chat.escape(text, formatting=True)
-        language = language.casefold()
-        apikeys = await self.bot.get_shared_api_tokens("yandex")
-        try:
-            translator = yandextranslate.YTranslateAPI(self.session, apikeys.get("translate", ""))
-            translation = await translator.get_translation(language, text)
-        except yandextranslate.Exceptions.InvalidKey:
-            await ctx.send(
-                chat.error(
-                    _(
-                        "This command requires valid API key, check {}ytapikey to get more information"
-                    ).format(ctx.clean_prefix)
-                )
-            )
-        except yandextranslate.Exceptions.IncorrectLang:
-            await ctx.send(
-                chat.error(
-                    _(
-                        "An error has been occurred: "
-                        "Language {} is not supported or incorrect, "
-                        "check your formatting and try again"
-                    ).format(chat.inline(language))
-                )
-            )
-        except yandextranslate.Exceptions.MaxTextLengthExceeded:
-            await ctx.send(
-                chat.error(
-                    _("An error has been occurred: Text that you provided is too big to translate")
-                )
-            )
-        except yandextranslate.Exceptions.KeyBlocked:
-            await ctx.send(
-                chat.error(
-                    _("API key is blocked. Bot owner needs to get new api key or unlock current.")
-                )
-            )
-        except yandextranslate.Exceptions.DailyLimitExceeded:
-            await ctx.send(chat.error(_("Daily requests limit reached. Try again later.")))
-        except yandextranslate.Exceptions.UnableToTranslate:
-            await ctx.send(
-                chat.error(
-                    _(
-                        "An error has been occurred: Yandex.Translate is unable to translate your text"
-                    )
-                )
-            )
-        except yandextranslate.Exceptions.UnknownException as e:
-            await ctx.send(chat.error(_("An error has been occurred: {}").format(e)))
-        else:
-            embed = discord.Embed(
-                description=f"**[{translation.lang.upper()}]**{chat.box(translation.text)}",
-                color=await ctx.embed_color(),
-            )
-            embed.set_author(
-                name=_("Translated via Yandex.Translate"),
-                url="https://translate.yandex.com",
-                icon_url="https://translate.yandex.ru/icons/favicon.png",
-            )
-            await ctx.send(embed=embed)
 
     @commands.command()
     async def googlesay(self, ctx, lang: str, *, text: str):
