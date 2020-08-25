@@ -2,10 +2,14 @@ import discord
 from redbot.core import commands
 from tabulate import tabulate
 from redbot.core.utils import chat_formatting as chat
+from functools import partial
 
 from leveler.abc import MixinMeta
 
 from .basecmd import LevelAdminBaseCMD
+
+
+tabulate_settings = partial(tabulate, headers=["Setting", "Value"], tablefmt="presto")
 
 
 class Settings(MixinMeta):
@@ -38,12 +42,12 @@ class Settings(MixinMeta):
                     "Badges type": await self.config.badge_type(),
                 }
             )
-        if lvl_lock := await self.config.guild(ctx.guild).lvl_msg_lock():
-            settings["Level messages channel lock"] = ctx.guild.get_channel(lvl_lock)
+        if lvl_lock_channel := ctx.guild.get_channel(await self.config.guild(ctx.guild).lvl_msg_lock()):
+            settings["Level messages channel lock"] = f"#{lvl_lock_channel.name}"
         if bg_price := await self.config.bg_price():
             settings["Background price"] = bg_price
-        em.description = chat.box(tabulate(settings.items())) + (
-            chat.box(tabulate(owner_settings.items())) if owner_settings else ""
+        em.description = chat.box(tabulate_settings(settings.items())) + (
+            chat.box(tabulate_settings(owner_settings.items())) if owner_settings else ""
         )
         em.set_author(
             name="Settings Overview for {}".format(ctx.guild.name), icon_url=ctx.guild.icon_url
