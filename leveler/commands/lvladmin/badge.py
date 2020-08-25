@@ -24,7 +24,15 @@ class Badge(MixinMeta):
     @badge.command(name="add")
     @commands.guild_only()
     async def addbadge(
-        self, ctx, name: str, is_global: Optional[bool], bg_img: str, border_color: str, price: int, *, description: str,
+        self,
+        ctx,
+        name: str,
+        is_global: Optional[bool],
+        bg_img: str,
+        border_color: str,
+        price: int,
+        *,
+        description: str,
     ):
         """Add a badge.
 

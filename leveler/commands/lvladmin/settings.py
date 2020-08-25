@@ -1,13 +1,13 @@
+from functools import partial
+
 import discord
 from redbot.core import commands
-from tabulate import tabulate
 from redbot.core.utils import chat_formatting as chat
-from functools import partial
+from tabulate import tabulate
 
 from leveler.abc import MixinMeta
 
 from .basecmd import LevelAdminBaseCMD
-
 
 tabulate_settings = partial(tabulate, headers=["Setting", "Value"], tablefmt="presto")
 
@@ -42,7 +42,9 @@ class Settings(MixinMeta):
                     "Badges type": await self.config.badge_type(),
                 }
             )
-        if lvl_lock_channel := ctx.guild.get_channel(await self.config.guild(ctx.guild).lvl_msg_lock()):
+        if lvl_lock_channel := ctx.guild.get_channel(
+            await self.config.guild(ctx.guild).lvl_msg_lock()
+        ):
             settings["Level messages channel lock"] = f"#{lvl_lock_channel.name}"
         if bg_price := await self.config.bg_price():
             settings["Background price"] = bg_price
@@ -182,10 +184,14 @@ class Settings(MixinMeta):
         server = ctx.guild
         if await self.config.allow_global_top():
             await self.config.allow_global_top.set(False)
-            await ctx.send("**`--global` argument is now available only to owner.**".format(server.name))
+            await ctx.send(
+                "**`--global` argument is now available only to owner.**".format(server.name)
+            )
         else:
             await self.config.allow_global_top.set(True)
-            await ctx.send("**`--global` argument is now available to everyone.**".format(server.name))
+            await ctx.send(
+                "**`--global` argument is now available to everyone.**".format(server.name)
+            )
 
     @lvladmin.command(name="lock")
     @commands.guild_only()
