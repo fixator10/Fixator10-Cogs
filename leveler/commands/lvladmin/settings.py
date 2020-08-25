@@ -1,5 +1,7 @@
 import discord
 from redbot.core import commands
+from tabulate import tabulate
+from redbot.core.utils import chat_formatting as chat
 
 from leveler.abc import MixinMeta
 
@@ -15,33 +17,37 @@ class Settings(MixinMeta):
     @lvladmin.command()
     async def overview(self, ctx):
         """A list of settings."""
-        num_users = await self.db.users.count_documents({})
         is_owner = await self.bot.is_owner(ctx.author)
 
         em = discord.Embed(colour=await ctx.embed_color())
-        msg = ""
-        msg += "**Enabled:** {}\n".format(
-            self.bool_emojify(not await self.config.guild(ctx.guild).disabled())
-        )
-        msg += "**Unique Users:** {}\n".format(num_users)
+        settings = {
+            "Enabled": self.bool_emojify(not await self.config.guild(ctx.guild).disabled()),
+            "Unique registered users": str(await self.db.users.count_documents({})),
+            "Level messages enabled": self.bool_emojify(
+                await self.config.guild(ctx.guild).lvl_msg()
+            ),
+            "Level messages are private": self.bool_emojify(
+                await self.config.guild(ctx.guild).private_lvl_message()
+            ),
+        }
+        owner_settings = {}
         if is_owner:
-            msg += "**Mentions:** {}\n".format(self.bool_emojify(await self.config.mention()))
-        if bg_price := await self.config.bg_price():
-            msg += "**Background Price:** {}\n".format(bg_price)
-        if is_owner:
-            msg += "**Badge type:** {}\n".format(await self.config.badge_type())
-        msg += "**Enabled Level Messages:** {}\n".format(
-            self.bool_emojify(await self.config.guild(ctx.guild).lvl_msg())
-        )
-        msg += "**Private Level Messages:** {}\n".format(
-            self.bool_emojify(await self.config.guild(ctx.guild).private_lvl_message())
-        )
-        if lvl_lock := await self.config.guild(ctx.guild).lvl_msg_lock():
-            msg += "**Level Messages Channel:** {}\n".format(
-                ctx.guild.get_channel(lvl_lock).mention
+            owner_settings.update(
+                {
+                    "Mentions": self.bool_emojify(await self.config.mention()),
+                    "Badges type": await self.config.badge_type(),
+                }
             )
-        em.description = msg
-        em.set_author(name="Settings Overview for {}".format(ctx.guild.name))
+        if lvl_lock := await self.config.guild(ctx.guild).lvl_msg_lock():
+            settings["Level messages channel lock"] = ctx.guild.get_channel(lvl_lock)
+        if bg_price := await self.config.bg_price():
+            settings["Background price"] = bg_price
+        em.description = chat.box(tabulate(settings.items())) + (
+            chat.box(tabulate(owner_settings.items())) if owner_settings else ""
+        )
+        em.set_author(
+            name="Settings Overview for {}".format(ctx.guild.name), icon_url=ctx.guild.icon_url
+        )
         await ctx.send(embed=em)
 
     @lvladmin.command()

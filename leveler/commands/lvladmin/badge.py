@@ -108,7 +108,7 @@ class Badge(MixinMeta):
             # update badge in the server
             badges["badges"][name] = new_badge
             await self.db.badges.update_one(
-                {"server_id": serverid}, {"$set": {"badges": badges["badges"]}}
+                {"server_id": str(serverid)}, {"$set": {"badges": badges["badges"]}}
             )
 
             # go though all users and update the badge.

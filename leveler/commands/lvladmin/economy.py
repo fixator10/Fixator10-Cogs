@@ -10,6 +10,11 @@ async def non_global_bank(ctx):
     return not await bank.is_global()
 
 
+# noinspection PyUnusedLocal
+async def global_bank(ctx):
+    return await bank.is_global()
+
+
 class Economy(MixinMeta):
     """Economy administration commands"""
 
@@ -33,6 +38,7 @@ class Economy(MixinMeta):
 
     @commands.is_owner()
     @lvladmin.command()
+    @commands.check(global_bank)
     @commands.guild_only()
     async def setprice(self, ctx, price: int):
         """Set a price for background changes."""
