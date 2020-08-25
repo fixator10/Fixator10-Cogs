@@ -2,16 +2,13 @@ from redbot.core import commands
 from redbot.core.utils import AsyncIter
 from redbot.core.utils.predicates import MessagePredicate
 
-from .abc import MixinMeta
+from .basecmd import DBConvertersBaseCMD
+from leveler.abc import MixinMeta
 
 
-class DBConverters(MixinMeta):
-    """Converters for 3rd party leveling databases"""
-
-    @commands.group()
-    @commands.is_owner()
-    async def lvlconvert(self, ctx):
-        """Convert levels from other leveling systems."""
+class MeeSix(MixinMeta):
+    """Mee6 leveling converter"""
+    lvlconvert = getattr(DBConvertersBaseCMD, "lvlconvert")
 
     @lvlconvert.group()
     @commands.guild_only()

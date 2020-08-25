@@ -1,4 +1,3 @@
-import math
 import operator
 import random
 import time
@@ -13,11 +12,9 @@ import aiohttp
 import discord
 from redbot.core import Config, bank, checks, commands
 from redbot.core.bot import Red
-from redbot.core.utils import AsyncIter
 from redbot.core.utils import chat_formatting as chat
 from redbot.core.utils.menus import DEFAULT_CONTROLS, menu
 from redbot.core.utils.predicates import MessagePredicate
-from tabulate import tabulate
 
 try:
     import numpy
@@ -27,11 +24,12 @@ except Exception as e:
         f"{__file__}: numpy/scipy is unable to import: {e}\nAutocolor feature will be unavailable"
     )
 
-from .db_converters import DBConverters
 from .exp import XP
 from .image_generators import ImageGenerators
 from .mongodb import MongoDB
 from .utils import Utils
+from .commands import LevelerCommands
+from .abc import CompositeMetaClass
 
 
 # noinspection PyUnusedLocal
@@ -39,17 +37,14 @@ async def non_global_bank(ctx):
     return not await bank.is_global()
 
 
-class CompositeMetaClass(type(commands.Cog), type(ABC)):
-    """
-    This allows the metaclass used for proper type detection to
-    coexist with discord.py's metaclass
-    """
-
-    pass
-
-
 class Leveler(
-    MongoDB, XP, DBConverters, ImageGenerators, Utils, commands.Cog, metaclass=CompositeMetaClass
+    MongoDB,
+    XP,
+    ImageGenerators,
+    Utils,
+    LevelerCommands,
+    commands.Cog,
+    metaclass=CompositeMetaClass,
 ):
     """A level up thing with image generation!"""
 
@@ -73,6 +68,7 @@ class Leveler(
             "xp": [15, 20],
             "message_length": 10,
             "mention": True,
+            "allow_global_top": False,
             "backgrounds": {
                 "profile": {
                     "alice": "http://i.imgur.com/MUSuMao.png",
@@ -129,257 +125,6 @@ class Leveler(
         self.session.detach()
         self._disconnect_mongo()
 
-    @commands.cooldown(1, 10, commands.BucketType.user)
-    @commands.command(name="profile")
-    @commands.guild_only()
-    async def profile(self, ctx, *, user: discord.Member = None):
-        """Displays a user profile."""
-        if user is None:
-            user = ctx.message.author
-        if user.bot:
-            ctx.command.reset_cooldown(ctx)
-            await ctx.send_help()
-            return
-        channel = ctx.message.channel
-        server = user.guild
-        curr_time = time.time()
-
-        # creates user if doesn't exist
-        await self._create_user(user, server)
-        userinfo = await self.db.users.find_one({"user_id": str(user.id)})
-
-        # check if disabled
-        if await self.config.guild(ctx.guild).disabled():
-            await ctx.send("**Leveler commands for this server are disabled!**")
-            return
-
-        if await self.config.guild(ctx.guild).text_only():
-            em = await self.profile_text(user, server, userinfo)
-            await channel.send(embed=em)
-        else:
-            async with ctx.channel.typing():
-                profile = await self.draw_profile(user, server)
-                file = discord.File(profile, filename="profile.png")
-                await channel.send(
-                    "**User profile for {}**".format(await self._is_mention(user)), file=file,
-                )
-            await self.db.users.update_one(
-                {"user_id": str(user.id)}, {"$set": {"profile_block": curr_time}}, upsert=True,
-            )
-
-    async def profile_text(self, user, server, userinfo):
-        em = discord.Embed(colour=user.colour)
-        em.add_field(name="Title:", value=userinfo["title"] or None)
-        em.add_field(name="Reps:", value=userinfo["rep"])
-        em.add_field(name="Global Rank:", value="#{}".format(await self._find_global_rank(user)))
-        em.add_field(
-            name="Server Rank:", value="#{}".format(await self._find_server_rank(user, server)),
-        )
-        em.add_field(
-            name="Server Level:", value=format(userinfo["servers"][str(server.id)]["level"]),
-        )
-        em.add_field(name="Total Exp:", value=userinfo["total_exp"])
-        em.add_field(name="Server Exp:", value=await self._find_server_exp(user, server))
-        u_credits = await bank.get_balance(user)
-        em.add_field(
-            name="Credits:", value=f"{u_credits}{(await bank.get_currency_name(server))[0]}",
-        )
-        em.add_field(name="Info:", value=userinfo["info"] or None)
-        em.add_field(
-            name="Badges:", value=(", ".join(userinfo["badges"]).replace("_", " ") or None),
-        )
-        em.set_author(name="Profile for {}".format(user.name), url=user.avatar_url)
-        em.set_thumbnail(url=user.avatar_url)
-        return em
-
-    @commands.cooldown(1, 10, commands.BucketType.user)
-    @commands.command()
-    @commands.guild_only()
-    async def rank(self, ctx, *, user: discord.Member = None):
-        """Displays the rank of a user."""
-        if user is None:
-            user = ctx.message.author
-        if user.bot:
-            ctx.command.reset_cooldown(ctx)
-            await ctx.send_help()
-            return
-        channel = ctx.message.channel
-        server = user.guild
-        curr_time = time.time()
-
-        # creates user if doesn't exist
-        await self._create_user(user, server)
-        userinfo = await self.db.users.find_one({"user_id": str(user.id)})
-
-        # check if disabled
-        if await self.config.guild(ctx.guild).disabled():
-            await ctx.send("**Leveler commands for this server are disabled!**")
-            return
-
-        # no cooldown for text only
-        if await self.config.guild(server).text_only():
-            em = await self.rank_text(user, server, userinfo)
-            await channel.send(embed=em)
-        else:
-            async with channel.typing():
-                rank = await self.draw_rank(user, server)
-                file = discord.File(rank, filename="rank.png")
-                await channel.send(
-                    "**Ranking & Statistics for {}**".format(await self._is_mention(user)),
-                    file=file,
-                )
-            await self.db.users.update_one(
-                {"user_id": str(user.id)},
-                {"$set": {"rank_block".format(server.id): curr_time}},
-                upsert=True,
-            )
-
-    async def rank_text(self, user, server, userinfo):
-        em = discord.Embed(colour=user.colour)
-        em.add_field(
-            name="Server Rank", value="#{}".format(await self._find_server_rank(user, server)),
-        )
-        em.add_field(name="Reps", value=userinfo["rep"])
-        em.add_field(name="Server Level", value=userinfo["servers"][str(server.id)]["level"])
-        em.add_field(name="Server Exp", value=await self._find_server_exp(user, server))
-        em.set_author(name="Rank & Statistics for {}".format(user.name), url=user.avatar_url)
-        em.set_thumbnail(url=user.avatar_url)
-        return em
-
-    @commands.command(usage="[page] [-rep] [-global]")
-    @commands.guild_only()
-    async def top(self, ctx, *options):
-        """Displays leaderboard.
-
-        Add -global parameter for global and -rep for reputation."""
-        server = ctx.guild
-        user = ctx.author
-
-        if await self.config.guild(ctx.guild).disabled():
-            await ctx.send("**Leveler commands for this server are disabled!**")
-            return
-
-        async with ctx.typing():
-            users = []
-            user_stat = None
-            if "-rep" in options and "-global" in options:
-                title = "Global Rep Leaderboard for {}\n".format(self.bot.user.name)
-                async for userinfo in self.db.users.find({}):
-                    try:
-                        users.append((userinfo["username"], userinfo["rep"]))
-                    except KeyError:
-                        users.append((userinfo["user_id"], userinfo["rep"]))
-
-                    if str(user.id) == userinfo["user_id"]:
-                        user_stat = userinfo["rep"]
-
-                board_type = "Rep"
-                footer_text = "Your Rank: {}                  {}: {}".format(
-                    await self._find_global_rep_rank(user), board_type, user_stat
-                )
-                icon_url = self.bot.user.avatar_url
-            elif "-global" in options:
-                title = "Global Exp Leaderboard for {}\n".format(self.bot.user.name)
-                async for userinfo in self.db.users.find({}):
-                    try:
-                        users.append((userinfo["username"], userinfo["total_exp"]))
-                    except KeyError:
-                        users.append((userinfo["user_id"], userinfo["total_exp"]))
-
-                    if str(user.id) == userinfo["user_id"]:
-                        user_stat = userinfo["total_exp"]
-
-                board_type = "Points"
-                footer_text = "Your Rank: {}                  {}: {}".format(
-                    await self._find_global_rank(user), board_type, user_stat
-                )
-                icon_url = self.bot.user.avatar_url
-            elif "-rep" in options:
-                title = "Rep Leaderboard for {}\n".format(server.name)
-                async for userinfo in self.db.users.find({}):
-                    if "servers" in userinfo and str(server.id) in userinfo["servers"]:
-                        try:
-                            users.append((userinfo["username"], userinfo["rep"]))
-                        except KeyError:
-                            users.append((userinfo["user_id"], userinfo["rep"]))
-
-                    if str(user.id) == userinfo["user_id"]:
-                        user_stat = userinfo["rep"]
-
-                board_type = "Rep"
-                footer_text = "Your Rank: {}                  {}: {}".format(
-                    await self._find_server_rep_rank(user, server), board_type, user_stat,
-                )
-                icon_url = server.icon_url
-            else:
-                title = "Exp Leaderboard for {}\n".format(server.name)
-                async for userinfo in self.db.users.find({}):
-                    try:
-                        if "servers" in userinfo and str(server.id) in userinfo["servers"]:
-                            server_exp = 0
-                            for i in range(userinfo["servers"][str(server.id)]["level"]):
-                                server_exp += await self._required_exp(i)
-                            server_exp += userinfo["servers"][str(server.id)]["current_exp"]
-                            try:
-                                users.append((userinfo["username"], server_exp))
-                            except KeyError:
-                                users.append((userinfo["user_id"], server_exp))
-                    except KeyError:
-                        pass
-                board_type = "Points"
-                footer_text = "Your Rank: {}                  {}: {}".format(
-                    await self._find_server_rank(user, server),
-                    board_type,
-                    await self._find_server_exp(user, server),
-                )
-                icon_url = server.icon_url
-            sorted_list = sorted(users, key=operator.itemgetter(1), reverse=True)
-
-            # multiple page support
-            page = 1
-            per_page = 15
-            pages = math.ceil(len(sorted_list) / per_page)
-            for option in options:
-                if str(option).isdigit():
-                    if page >= 1 and int(option) <= pages:
-                        page = int(str(option))
-                    else:
-                        await ctx.send(
-                            "**Please enter a valid page number! (1 - {})**".format(str(pages))
-                        )
-                        return
-                    break
-
-            msg = ""
-            msg += "Rank     Name                   (Page {}/{})     \n\n".format(page, pages)
-            rank = 1 + per_page * (page - 1)
-            start_index = per_page * page - per_page
-            end_index = per_page * page
-
-            default_label = "   "
-            special_labels = ["♔", "♕", "♖", "♗", "♘", "♙"]
-
-            async for single_user in AsyncIter(sorted_list[start_index:end_index]):
-                if rank - 1 < len(special_labels):
-                    label = special_labels[rank - 1]
-                else:
-                    label = default_label
-
-                msg += "{:<2}{:<2}{:<2} # {:<11}".format(
-                    rank, label, "➤", await self._truncate_text(single_user[0], 11)
-                )
-                msg += "{:>5}{:<2}{:<2}{:<5}\n".format(
-                    " ", " ", " ", " {}: ".format(board_type) + str(single_user[1])
-                )
-                rank += 1
-            msg += "--------------------------------------------            \n"
-            msg += "{}".format(footer_text)
-
-            em = discord.Embed(description="", colour=user.colour)
-            em.set_author(name=title, icon_url=icon_url)
-            em.description = chat.box(msg)
-
-        await ctx.send(embed=em)
 
     @commands.command()
     @commands.guild_only()
@@ -431,147 +176,6 @@ class Leveler(
                     chat.humanize_timedelta(seconds=seconds)
                 )
             )
-
-    @commands.command()
-    @commands.guild_only()
-    async def lvlinfo(self, ctx, *, user: discord.Member = None):
-        """Gives more specific details about user profile image."""
-        if not user:
-            user = ctx.author
-        if user.bot:
-            await ctx.send_help()
-            return
-        server = ctx.guild
-        userinfo = await self.db.users.find_one({"user_id": str(user.id)})
-
-        if await self.config.guild(ctx.guild).disabled():
-            await ctx.send("**Leveler commands for this server are disabled!**")
-            return
-
-        # creates user if doesn't exist
-        await self._create_user(user, server)
-        msg = ""
-        msg += "Name: {}\n".format(user.name)
-        msg += "Title: {}\n".format(userinfo["title"])
-        msg += "Reps: {}\n".format(userinfo["rep"])
-        msg += "Server Level: {}\n".format(userinfo["servers"][str(server.id)]["level"])
-        total_server_exp = 0
-        for i in range(userinfo["servers"][str(server.id)]["level"]):
-            total_server_exp += await self._required_exp(i)
-        total_server_exp += userinfo["servers"][str(server.id)]["current_exp"]
-        msg += "Server Exp: {}\n".format(total_server_exp)
-        msg += "Total Exp: {}\n".format(userinfo["total_exp"])
-        msg += "Info: {}\n".format(userinfo["info"])
-        msg += "Profile background: {}\n".format(userinfo["profile_background"])
-        msg += "Rank background: {}\n".format(userinfo["rank_background"])
-        msg += "Levelup background: {}\n".format(userinfo["levelup_background"])
-        if "profile_info_color" in userinfo.keys() and userinfo["profile_info_color"]:
-            msg += "Profile info color: {}\n".format(
-                self._rgb_to_hex(userinfo["profile_info_color"])
-            )
-        if "profile_exp_color" in userinfo.keys() and userinfo["profile_exp_color"]:
-            msg += "Profile exp color: {}\n".format(
-                self._rgb_to_hex(userinfo["profile_exp_color"])
-            )
-        if "rep_color" in userinfo.keys() and userinfo["rep_color"]:
-            msg += "Rep section color: {}\n".format(self._rgb_to_hex(userinfo["rep_color"]))
-        if "badge_col_color" in userinfo.keys() and userinfo["badge_col_color"]:
-            msg += "Badge section color: {}\n".format(
-                self._rgb_to_hex(userinfo["badge_col_color"])
-            )
-        if "rank_info_color" in userinfo.keys() and userinfo["rank_info_color"]:
-            msg += "Rank info color: {}\n".format(self._rgb_to_hex(userinfo["rank_info_color"]))
-        if "rank_exp_color" in userinfo.keys() and userinfo["rank_exp_color"]:
-            msg += "Rank exp color: {}\n".format(self._rgb_to_hex(userinfo["rank_exp_color"]))
-        if "levelup_info_color" in userinfo.keys() and userinfo["levelup_info_color"]:
-            msg += "Level info color: {}\n".format(
-                self._rgb_to_hex(userinfo["levelup_info_color"])
-            )
-        msg += "Badges: "
-        msg += ", ".join(userinfo["badges"])
-
-        em = discord.Embed(description=msg, colour=user.colour)
-        em.set_author(
-            name="Profile Information for {}".format(user.name), icon_url=user.avatar_url,
-        )
-        await ctx.send(embed=em)
-
-    @checks.is_owner()
-    @commands.group()
-    async def levelerset(self, ctx):
-        """
-        MongoDB server configuration options.
-        
-        Use that command in DM to see current settings.
-        """
-        if not ctx.invoked_subcommand and ctx.channel.type == discord.ChannelType.private:
-            settings = [
-                (setting.replace("_", " ").title(), value)
-                for setting, value in (await self.config.custom("MONGODB").get_raw()).items()
-                if value
-            ]
-            await ctx.send(chat.box(tabulate(settings, tablefmt="plain")))
-
-    @levelerset.command()
-    async def host(self, ctx, host: str = "localhost"):
-        """Set the MongoDB server host."""
-        await self.config.custom("MONGODB").host.set(host)
-        message = await ctx.send(
-            f"MongoDB host set to {host}.\nNow trying to connect to the new host..."
-        )
-        client = await self._connect_to_mongo()
-        if not client:
-            return await message.edit(
-                content=message.content.replace("Now trying to connect to the new host...", "")
-                + "Failed to connect. Please try again with a valid host."
-            )
-        await message.edit(
-            content=message.content.replace("Now trying to connect to the new host...", "")
-        )
-
-    @levelerset.command()
-    async def port(self, ctx, port: int = 27017):
-        """Set the MongoDB server port."""
-        await self.config.custom("MONGODB").port.set(port)
-        message = await ctx.send(
-            f"MongoDB port set to {port}.\nNow trying to connect to the new port..."
-        )
-        client = await self._connect_to_mongo()
-        if not client:
-            return await message.edit(
-                content=message.content.replace("Now trying to connect to the new port...", "")
-                + "Failed to connect. Please try again with a valid port."
-            )
-        await message.edit(
-            content=message.content.replace("Now trying to connect to the new port...", "")
-        )
-
-    @levelerset.command(aliases=["creds"])
-    async def credentials(self, ctx, username: str = None, password: str = None):
-        """Set the MongoDB server credentials."""
-        await self.config.custom("MONGODB").username.set(username)
-        await self.config.custom("MONGODB").password.set(password)
-        message = await ctx.send("MongoDB credentials set.\nNow trying to connect...")
-        client = await self._connect_to_mongo()
-        if not client:
-            return await message.edit(
-                content=message.content.replace("Now trying to connect...", "")
-                + "Failed to connect. Please try again with valid credentials."
-            )
-        await message.edit(content=message.content.replace("Now trying to connect...", ""))
-
-    @levelerset.command()
-    async def dbname(self, ctx, dbname: str = "leveler"):
-        """Set the MongoDB db name."""
-        await self.config.custom("MONGODB").db_name.set(dbname)
-        message = await ctx.send("MongoDB db name set.\nNow trying to connect...")
-        client = await self._connect_to_mongo()
-        if not client:
-            return await message.edit(
-                content=message.content.replace("Now trying to connect...", "")
-                + "Failed to connect. Please try again with a valid db name."
-            )
-        await message.edit(content=message.content.replace("Now trying to connect...", ""))
 
     @commands.group(name="lvlset", pass_context=True)
     async def lvlset(self, ctx):
@@ -1675,7 +1279,7 @@ class Leveler(
     @badge.command()
     @commands.guild_only()
     async def type(self, ctx, name: str):
-        """Define if badge must be circle or bars."""
+        """Define if badge must be circles or bars."""
         valid_types = ["circles", "bars"]
         if name.lower() not in valid_types:
             await ctx.send("**That is not a valid badge type!**")
@@ -1900,7 +1504,7 @@ class Leveler(
             for badge in badges.keys():
                 msg += "**• {} →** {}\n".format(badge, badges[badge])
 
-        pages = list(pagify(msg, page_length=2048))
+        pages = list(chat.pagify(msg, page_length=2048))
         embeds = []
         for i, page in enumerate(pages, start=1):
             em = discord.Embed(colour=await ctx.embed_color())
@@ -2015,7 +1619,7 @@ class Leveler(
                 else:
                     msg += "**• {} →** {}\n".format(role, roles[role]["level"])
 
-        pages = list(pagify(msg, page_length=2048))
+        pages = list(chat.pagify(msg, page_length=2048))
         embeds = []
         for i, page in enumerate(pages, start=1):
             em = discord.Embed(colour=await ctx.embed_color())

@@ -6,7 +6,7 @@ from typing import Optional
 
 from aiohttp import ClientSession
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
-from redbot.core import Config
+from redbot.core import Config, commands
 from redbot.core.bot import Red
 
 
@@ -25,6 +25,10 @@ class MixinMeta(ABC):
     client: AsyncIOMotorClient
     db: AsyncIOMotorDatabase
     session: ClientSession
+
+    @abstractmethod
+    async def _connect_to_mongo(self):
+        raise NotImplementedError
 
     @abstractmethod
     async def _create_user(self, user, server):
@@ -52,6 +56,10 @@ class MixinMeta(ABC):
 
     @abstractmethod
     async def _is_hex(self, color: str) -> Optional[Match]:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def _truncate_text(self, text, max_length) -> str:
         raise NotImplementedError
 
     @abstractmethod
@@ -83,6 +91,18 @@ class MixinMeta(ABC):
         raise NotImplementedError
 
     @abstractmethod
+    async def _find_server_exp(self, user, server) -> int:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def _find_server_rep_rank(self, user, server) -> int:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def _find_global_rep_rank(self, user) -> int:
+        raise NotImplementedError
+
+    @abstractmethod
     async def draw_profile(self, user, server) -> BytesIO:
         raise NotImplementedError
 
@@ -93,3 +113,20 @@ class MixinMeta(ABC):
     @abstractmethod
     async def draw_levelup(self, user, server) -> BytesIO:
         raise NotImplementedError
+
+    @abstractmethod
+    async def _process_exp(self, message, userinfo, exp: int):
+        raise NotImplementedError
+
+    @abstractmethod
+    async def _give_chat_credit(self, user, server):
+        raise NotImplementedError
+
+
+class CompositeMetaClass(type(commands.Cog), type(ABC)):
+    """
+    This allows the metaclass used for proper type detection to
+    coexist with discord.py's metaclass
+    """
+
+    pass

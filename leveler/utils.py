@@ -78,3 +78,8 @@ class Utils(MixinMeta):
 
         reg_ex = r"^#(?:[0-9a-fA-F]{3}){1,2}$"
         return re.search(reg_ex, str(color))
+
+    async def _truncate_text(self, text, max_length):
+        if len(text) > max_length:
+            return text[: max_length - 1] + "…"
+        return text

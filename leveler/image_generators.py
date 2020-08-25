@@ -83,11 +83,6 @@ class ImageGenerators(MixinMeta):
             colors.append("".join(format(c, "02x") for c in peak))
         return colors  # returns array
 
-    async def _truncate_text(self, text, max_length):
-        if len(text) > max_length:
-            return text[: max_length - 1] + "…"
-        return text
-
     # finds the the pixel to center the text
     async def _center(self, start, end, text, font):
         dist = end - start
