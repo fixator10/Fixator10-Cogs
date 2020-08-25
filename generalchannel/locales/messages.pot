@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-07-23 15:59+0400\n"
+"POT-Creation-Date: 2020-08-09 13:37+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,22 +11,22 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: redgettext 3.3\n"
 
-#: generalchannel\generalchannel.py:22
+#: generalchannel\generalchannel.py:21
 #, docstring
 msgid "Allow users to manage #general channel's name and topic"
 msgstr ""
 
-#: generalchannel\generalchannel.py:36
+#: generalchannel\generalchannel.py:38
 #, docstring
 msgid "Change general server's channel name/topic"
 msgstr ""
 
-#: generalchannel\generalchannel.py:42
+#: generalchannel\generalchannel.py:44
 #, docstring
 msgid "Set general channel"
 msgstr ""
 
-#: generalchannel\generalchannel.py:47
+#: generalchannel\generalchannel.py:49
 #, docstring
 msgid ""
 "Set #general channel\n"
@@ -34,24 +34,24 @@ msgid ""
 "        Clears setting if channel not specified"
 msgstr ""
 
-#: generalchannel\generalchannel.py:61
+#: generalchannel\generalchannel.py:63
 #, docstring
 msgid "Change name of #general"
 msgstr ""
 
-#: generalchannel\generalchannel.py:68
+#: generalchannel\generalchannel.py:70
 msgid "General channel name change"
 msgstr ""
 
-#: generalchannel\generalchannel.py:71
+#: generalchannel\generalchannel.py:73
 msgid "Unable to change channel's name: Missing permissions"
 msgstr ""
 
-#: generalchannel\generalchannel.py:74
+#: generalchannel\generalchannel.py:76
 msgid "Unable to change channel's name: Failed: {}"
 msgstr ""
 
-#: generalchannel\generalchannel.py:83
+#: generalchannel\generalchannel.py:85
 #, docstring
 msgid ""
 "Change topic of #general\n"
@@ -60,14 +60,14 @@ msgid ""
 "        to end of topic"
 msgstr ""
 
-#: generalchannel\generalchannel.py:100
+#: generalchannel\generalchannel.py:102
 msgid "General channel topic change"
 msgstr ""
 
-#: generalchannel\generalchannel.py:103
+#: generalchannel\generalchannel.py:105
 msgid "Unable to change channel's topic: Missing permissions"
 msgstr ""
 
-#: generalchannel\generalchannel.py:106
+#: generalchannel\generalchannel.py:108
 msgid "Unable to change channel's topic: Failed: {}"
 msgstr ""

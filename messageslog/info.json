@@ -5,9 +5,10 @@
   "install_msg": "Thanks for install.",
   "short": "Log deleted and redacted messages in defined channel",
   "description": "Log deleted and redacted messages in defined channel",
-  "min_bot_version": "3.2.1",
+  "min_bot_version": "3.4.0",
   "tags": [
     "messages",
     "logs"
-  ]
+  ],
+  "end_user_data_statement": "This cog does not persistently store data or metadata about users."
 }

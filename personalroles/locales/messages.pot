@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-07-23 15:59+0400\n"
+"POT-Creation-Date: 2020-08-09 13:37+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,132 +16,132 @@ msgstr ""
 msgid "Assign and edit personal roles"
 msgstr ""
 
-#: personalroles\personalroles.py:39
+#: personalroles\personalroles.py:46
 #, docstring
 msgid "Control of personal role"
 msgstr ""
 
-#: personalroles\personalroles.py:45
+#: personalroles\personalroles.py:52
 #, docstring
 msgid "Assign personal role to someone"
 msgstr ""
 
-#: personalroles\personalroles.py:48
+#: personalroles\personalroles.py:55
 msgid ""
 "Ok. I just assigned {user.name} ({user.id}) to role {role.name} ({role.id})."
 msgstr ""
 
-#: personalroles\personalroles.py:56
+#: personalroles\personalroles.py:63
 #, docstring
 msgid "Unassign personal role from someone"
 msgstr ""
 
-#: personalroles\personalroles.py:65
+#: personalroles\personalroles.py:72
 msgid "[Unknown or Deleted User]"
 msgstr ""
 
-#: personalroles\personalroles.py:67
+#: personalroles\personalroles.py:74
 msgid "Ok. I just unassigned {user.name} ({user.id}) from his personal role."
 msgstr ""
 
-#: personalroles\personalroles.py:75
+#: personalroles\personalroles.py:82
 #, docstring
 msgid "Assigned roles list"
 msgstr ""
 
-#: personalroles\personalroles.py:82
+#: personalroles\personalroles.py:89
 msgid "User"
 msgstr ""
 
-#: personalroles\personalroles.py:83
+#: personalroles\personalroles.py:90
 msgid "Role"
 msgstr ""
 
-#: personalroles\personalroles.py:95
+#: personalroles\personalroles.py:102
 msgid "There is no assigned personal roles on this server"
 msgstr ""
 
-#: personalroles\personalroles.py:101
+#: personalroles\personalroles.py:108
 #, docstring
 msgid "Manage blacklisted names"
 msgstr ""
 
-#: personalroles\personalroles.py:107
+#: personalroles\personalroles.py:114
 #, docstring
 msgid ""
 "Add rolename to blacklist\n"
 "        Members will be not able to change name of role to blacklisted names"
 msgstr ""
 
-#: personalroles\personalroles.py:112
+#: personalroles\personalroles.py:119
 msgid "`{}` is already in blacklist"
 msgstr ""
 
-#: personalroles\personalroles.py:116
+#: personalroles\personalroles.py:123
 msgid "Added `{}` to blacklisted roles list"
 msgstr ""
 
-#: personalroles\personalroles.py:122
+#: personalroles\personalroles.py:129
 #, docstring
 msgid "Remove rolename from blacklist"
 msgstr ""
 
-#: personalroles\personalroles.py:126
+#: personalroles\personalroles.py:133
 msgid "`{}` is not blacklisted"
 msgstr ""
 
-#: personalroles\personalroles.py:130
+#: personalroles\personalroles.py:137
 msgid "Removed `{}` from blacklisted roles list"
 msgstr ""
 
-#: personalroles\personalroles.py:136
+#: personalroles\personalroles.py:143
 #, docstring
 msgid "List of blacklisted role names"
 msgstr ""
 
-#: personalroles\personalroles.py:142
+#: personalroles\personalroles.py:149
 msgid "There is no blacklisted roles"
 msgstr ""
 
-#: personalroles\personalroles.py:149
+#: personalroles\personalroles.py:156
 #, docstring
 msgid "Change color of personal role"
 msgstr ""
 
-#: personalroles\personalroles.py:153 personalroles\personalroles.py:193
-#: personalroles\personalroles.py:222
+#: personalroles\personalroles.py:160 personalroles\personalroles.py:200
+#: personalroles\personalroles.py:229
 msgid "Personal Role"
 msgstr ""
 
-#: personalroles\personalroles.py:158 personalroles\personalroles.py:198
+#: personalroles\personalroles.py:165 personalroles\personalroles.py:205
 msgid ""
 "Unable to edit role.\n"
 "Role must be lower than my top role and i must have permission \"Manage Roles\""
 msgstr ""
 
-#: personalroles\personalroles.py:166 personalroles\personalroles.py:206
+#: personalroles\personalroles.py:173 personalroles\personalroles.py:213
 msgid "Unable to edit role: {}"
 msgstr ""
 
-#: personalroles\personalroles.py:170
+#: personalroles\personalroles.py:177
 msgid "Reset {user}'s personal role color"
 msgstr ""
 
-#: personalroles\personalroles.py:174
+#: personalroles\personalroles.py:181
 msgid "Changed color of {user}'s personal role to {color}"
 msgstr ""
 
-#: personalroles\personalroles.py:184
+#: personalroles\personalroles.py:191
 #, docstring
 msgid ""
 "Change name of personal role\n"
 "        You cant use blacklisted names"
 msgstr ""
 
-#: personalroles\personalroles.py:190
+#: personalroles\personalroles.py:197
 msgid "NONONO!!! This rolename is blacklisted."
 msgstr ""
 
-#: personalroles\personalroles.py:209
+#: personalroles\personalroles.py:216
 msgid "Changed name of {user}'s personal role to {name}"
 msgstr ""

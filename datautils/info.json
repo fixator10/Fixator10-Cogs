@@ -14,10 +14,11 @@
     "server",
     "permissions"
   ],
-  "min_bot_version": "3.3.6",
+  "min_bot_version": "3.4.0",
   "requirements": [
     "matplotlib",
     "tabulate",
     "wcwidth"
-  ]
+  ],
+  "end_user_data_statement": "This cog does not persistently store data or metadata about users."
 }

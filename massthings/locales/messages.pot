@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-07-31 16:46+0400\n"
+"POT-Creation-Date: 2020-08-09 13:37+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,7 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: redgettext 3.3\n"
 
-#: massthings.py:19
+#: massthings\massthings.py:20
 #, docstring
 msgid ""
 "Cog for doing things in bulk.\n"
@@ -20,61 +20,80 @@ msgid ""
 "    I'm not responsible for any aftermath of using this cog."
 msgstr ""
 
-#: massthings.py:38
+#: massthings\massthings.py:39
 msgid ""
 "This command may abuse Discord API and therefore, ban you or bot's owner, "
 "are you sure that you want to proceed?"
 msgstr ""
 
-#: massthings.py:56
+#: massthings\massthings.py:60
 #, docstring
 msgid "Mass nicknames everyone on the server"
 msgstr ""
 
-#: massthings.py:63
+#: massthings\massthings.py:67
 msgid "Massnick"
 msgstr ""
 
-#: massthings.py:70
+#: massthings\massthings.py:74
 msgid "Finished nicknaming server. {} nicknames could not be completed."
 msgstr ""
 
-#: massthings.py:79
+#: massthings\massthings.py:83
 #, docstring
 msgid "Resets nicknames on the server"
 msgstr ""
 
-#: massthings.py:86
+#: massthings\massthings.py:90
 msgid "Reset nicks"
 msgstr ""
 
-#: massthings.py:93
+#: massthings\massthings.py:97
 msgid "Finished resetting server nicknames. Unable to reset {} nicknames."
 msgstr ""
 
-#: massthings.py:105
+#: massthings\massthings.py:109
 #, docstring
 msgid "Steal all emoji provided in arguments"
 msgstr ""
 
-#: massthings.py:117
+#: massthings\massthings.py:121
 msgid ""
 "You tried to add too many emojis, you can add only {} emojis more to this server\n"
 "You tried to add {}."
 msgstr ""
 
-#: massthings.py:127
+#: massthings\massthings.py:131
 msgid ""
 "You tried to add too many animated emojis, you can add only {} emojis more to this server.\n"
 "You tried to add {}."
 msgstr ""
 
-#: massthings.py:141
+#: massthings\massthings.py:145
 msgid "Emoji steal"
 msgstr ""
 
-#: massthings.py:152
+#: massthings\massthings.py:156
 msgid ""
 "Stealed emojis:\n"
 "{}"
+msgstr ""
+
+#: massthings\massthings.py:169
+#, docstring
+msgid ""
+"Unban all users that banned by specified user\n"
+"\n"
+"        Uses modlog data, since discord not saves author of ban."
+msgstr ""
+
+#: massthings\massthings.py:190 massthings\massthings.py:216
+msgid ""
+"Unbanned users:\n"
+"{}"
+msgstr ""
+
+#: massthings\massthings.py:200
+#, docstring
+msgid "Unban everyone from current guild"
 msgstr ""
