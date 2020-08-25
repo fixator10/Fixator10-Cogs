@@ -24,23 +24,17 @@ class Badge(MixinMeta, ABC):
 
     @lvlset_badge.command()
     @commands.guild_only()
-    async def available(self, ctx, badge_type: str = "server"):
-        """Get a list of available badges.
-
-        Options: `server` or `global`.
-        Defaults for server."""
+    async def available(self, ctx, global_badges: bool = False):
+        """Get a list of available badges."""
         server = ctx.guild
-        if any([badge_type.casefold() == btype for btype in ["server", "guild"]]):
-            servername = server.name
-            icon_url = server.icon_url
-            serverid = server.id
-        elif badge_type.casefold() == "global":
+        if global_badges:
             servername = "Global"
             icon_url = self.bot.user.avatar_url
             serverid = "global"
         else:
-            await ctx.send("**Invalid Badge Type. Must be `server` or `global`.**")
-            return
+            servername = server.name
+            icon_url = server.icon_url
+            serverid = server.id
         em = discord.Embed(title="Badges available", colour=await ctx.embed_color())
         em.set_author(name="{}".format(servername), icon_url=icon_url)
         msg = ""
