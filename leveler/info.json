@@ -10,9 +10,10 @@
   "description": "Level/Experience tracker\nIncrease activity (or not) on your server with chat exp!",
   "tags": [
     "leveler",
-    "v2 cog"
+    "v2 cog",
+    "mongodb"
   ],
-  "min_bot_version": "3.3.6",
+  "min_bot_version": "3.4.0",
   "requirements": [
     "pymongo>=3.10",
     "motor",

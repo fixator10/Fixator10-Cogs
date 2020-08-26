@@ -25,8 +25,7 @@ class Settings(MixinMeta):
         em = discord.Embed(colour=await ctx.embed_color())
         settings = {
             "Enabled": self.bool_emojify(not await self.config.guild(ctx.guild).disabled()),
-            "Unique registered users": str(await self.db.users.count_documents({})),
-            "Global top": self.bool_emojify(await self.config.allow_global_top()),
+            "Text only mode": self.bool_emojify(await self.config.guild(ctx.guild).text_only()),
             "Level messages enabled": self.bool_emojify(
                 await self.config.guild(ctx.guild).lvl_msg()
             ),
@@ -38,6 +37,10 @@ class Settings(MixinMeta):
         if is_owner:
             owner_settings.update(
                 {
+                    "Unique registered users": str(await self.db.users.count_documents({})),
+                    "XP per message": "{}-{}".format(*await self.config.xp()),
+                    "Min message length": str(await self.config.message_length()),
+                    "Global top": self.bool_emojify(await self.config.allow_global_top()),
                     "Mentions": self.bool_emojify(await self.config.mention()),
                     "Badges type": await self.config.badge_type(),
                 }
@@ -46,8 +49,10 @@ class Settings(MixinMeta):
             await self.config.guild(ctx.guild).lvl_msg_lock()
         ):
             settings["Level messages channel lock"] = f"#{lvl_lock_channel.name}"
-        if bg_price := await self.config.bg_price():
-            settings["Background price"] = bg_price
+        if msg_credits := await self.config.guild(ctx.guild).msg_credits():
+            settings["Currency per message"] = msg_credits
+        if is_owner and (bg_price := await self.config.bg_price()):
+            owner_settings["Background price"] = bg_price
         em.description = chat.box(tabulate_settings(settings.items())) + (
             chat.box(tabulate_settings(owner_settings.items())) if owner_settings else ""
         )
