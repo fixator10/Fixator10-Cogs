@@ -45,7 +45,7 @@ class XP(MixinMeta):
 
         if not server or await self.config.guild(server).disabled():
             return
-        if self.bot.cog_disabled_in_guild(self, server):
+        if await self.bot.cog_disabled_in_guild(self, server):
             return
         if user.bot:
             return
