@@ -690,7 +690,7 @@ class ImageGenerators(MixinMeta):
         # draw level bar
         exp_font_color = self._contrast(exp_fill, light_color, dark_color)
         exp_frac = int(userinfo["total_exp"] - await self._level_exp(int(global_level)))
-        exp_total = await self._required_exp(int(global_level) + 1)
+        exp_total = await self._required_exp(int(global_level))
         bar_length = int(exp_frac / exp_total * 340)
         draw.rectangle(
             [(0, 305), (340, 323)], fill=(level_fill[0], level_fill[1], level_fill[2], 245),
