@@ -118,7 +118,7 @@ class MessagesLog(commands.Cog):
     @set_channel.command(name="all")
     async def all_channel(self, ctx, *, channel: discord.TextChannel = None):
         """Set the channel for all logs
-        
+
         If channel is not specified, then logging will be disabled"""
         await self.config.guild(ctx.guild).delete_channel.set(channel.id if channel else None)
         await self.config.guild(ctx.guild).edit_channel.set(channel.id if channel else None)
@@ -171,7 +171,9 @@ class MessagesLog(commands.Cog):
 
     @messageslog.command()
     async def ignore(
-        self, ctx, *ignore: Union[discord.Member, discord.TextChannel, discord.CategoryChannel],
+        self,
+        ctx,
+        *ignore: Union[discord.Member, discord.TextChannel, discord.CategoryChannel],
     ):
         """Manage message logging blacklist
 

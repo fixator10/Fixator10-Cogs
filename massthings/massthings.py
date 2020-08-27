@@ -64,7 +64,8 @@ class MassThings(commands.Cog, command_attrs={"hidden": True}):
             for user in server.members:
                 try:
                     await user.edit(
-                        nick=nickname, reason=get_audit_reason(ctx.author, _("Massnick")),
+                        nick=nickname,
+                        reason=get_audit_reason(ctx.author, _("Massnick")),
                     )
                     await sleep(1)
                 except discord.HTTPException:

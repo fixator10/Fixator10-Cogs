@@ -67,7 +67,8 @@ class GeneralChannel(commands.Cog):
             name = name[:100]
         try:
             await channel.edit(
-                name=name, reason=get_audit_reason(ctx.author, _("General channel name change")),
+                name=name,
+                reason=get_audit_reason(ctx.author, _("General channel name change")),
             )
         except discord.Forbidden:
             await ctx.send(chat.error(_("Unable to change channel's name: Missing permissions")))

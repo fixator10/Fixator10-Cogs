@@ -123,7 +123,8 @@ class DataUtils(commands.Cog):
         em.add_field(name=_("System?"), value=bool_emojify(user.system))
         em.add_field(name=_("Mention"), value=user.mention)
         em.add_field(
-            name=_("Default avatar"), value=f"[{user.default_avatar}]({user.default_avatar_url})",
+            name=_("Default avatar"),
+            value=f"[{user.default_avatar}]({user.default_avatar_url})",
         )
         if user.avatar:
             em.add_field(
@@ -219,13 +220,15 @@ class DataUtils(commands.Cog):
         em.add_field(name=_("Joined server"), value=member.joined_at.strftime(self.TIME_FORMAT))
         em.add_field(name="ID", value=member.id)
         em.add_field(
-            name=_("Has existed since"), value=member.created_at.strftime(self.TIME_FORMAT),
+            name=_("Has existed since"),
+            value=member.created_at.strftime(self.TIME_FORMAT),
         )
         if member.color.value:
             em.add_field(name=_("Color"), value=member.colour)
         if member.premium_since:
             em.add_field(
-                name=_("Boosted server"), value=member.premium_since.strftime(self.TIME_FORMAT),
+                name=_("Boosted server"),
+                value=member.premium_since.strftime(self.TIME_FORMAT),
             )
         em.add_field(name=_("Bot?"), value=bool_emojify(member.bot))
         em.add_field(name=_("System?"), value=bool_emojify(member.system))
@@ -479,10 +482,12 @@ class DataUtils(commands.Cog):
         )
         em.add_field(name=_("ID"), value=channel.id)
         em.add_field(
-            name=_("Type"), value=CHANNEL_TYPE_EMOJIS.get(channel.type, str(channel.type)),
+            name=_("Type"),
+            value=CHANNEL_TYPE_EMOJIS.get(channel.type, str(channel.type)),
         )
         em.add_field(
-            name=_("Has existed since"), value=channel.created_at.strftime(self.TIME_FORMAT),
+            name=_("Has existed since"),
+            value=channel.created_at.strftime(self.TIME_FORMAT),
         )
         em.add_field(
             name=_("Category"),
@@ -499,12 +504,14 @@ class DataUtils(commands.Cog):
             ),
         )
         em.add_field(
-            name=_("Mention"), value=f"{channel.mention}\n{chat.inline(channel.mention)}",
+            name=_("Mention"),
+            value=f"{channel.mention}\n{chat.inline(channel.mention)}",
         )
         if isinstance(channel, discord.TextChannel):
             if channel.slowmode_delay:
                 em.add_field(
-                    name=_("Slowmode delay"), value=_("{} seconds").format(channel.slowmode_delay),
+                    name=_("Slowmode delay"),
+                    value=_("{} seconds").format(channel.slowmode_delay),
                 )
             em.add_field(name=_("NSFW"), value=bool_emojify(channel.is_nsfw()))
             if (
@@ -553,7 +560,10 @@ class DataUtils(commands.Cog):
             em = discord.Embed(title="Text channels:", description=chat.box(page))
             em.set_footer(
                 text=_("Page {}/{} • Text channels: {} • Total channels: {}").format(
-                    n, len(text_channels), len(server.text_channels), len(server.channels),
+                    n,
+                    len(text_channels),
+                    len(server.text_channels),
+                    len(server.channels),
                 )
             )
             embeds.append(em)
@@ -561,7 +571,10 @@ class DataUtils(commands.Cog):
             em = discord.Embed(title="Voice channels:", description=chat.box(page))
             em.set_footer(
                 text=_("Page {}/{} • Voice channels: {} • Total channels: {}").format(
-                    n, len(voice_channels), len(server.voice_channels), len(server.channels),
+                    n,
+                    len(voice_channels),
+                    len(server.voice_channels),
+                    len(server.channels),
                 )
             )
             embeds.append(em)
@@ -584,7 +597,8 @@ class DataUtils(commands.Cog):
             ),
         )
         em.add_field(
-            name=_("Has existed since"), value=role.created_at.strftime(self.TIME_FORMAT),
+            name=_("Has existed since"),
+            value=role.created_at.strftime(self.TIME_FORMAT),
         )
         em.add_field(name=_("Hoist"), value=bool_emojify(role.hoist))
         em.add_field(name=_("Members"), value=str(len(role.members)))
@@ -724,7 +738,8 @@ class DataUtils(commands.Cog):
             em.set_image(url=emoji.url)
         if isinstance(emoji, discord.Emoji):
             em.add_field(
-                name=_("Has existed since"), value=emoji.created_at.strftime(self.TIME_FORMAT),
+                name=_("Has existed since"),
+                value=emoji.created_at.strftime(self.TIME_FORMAT),
             )
             em.add_field(name=_('":" required'), value=bool_emojify(emoji.require_colons))
             em.add_field(name=_("Managed"), value=bool_emojify(emoji.managed))
@@ -774,12 +789,14 @@ class DataUtils(commands.Cog):
             if app:
                 em.set_thumbnail(
                     url=APP_ICON_URL.format(
-                        app_id=app.get("id", ""), icon_hash=app.get("icon", ""),
+                        app_id=app.get("id", ""),
+                        icon_hash=app.get("icon", ""),
                     )
                 )
             if activity.end:
                 em.add_field(
-                    name=_("This game will end at"), value=activity.end.strftime(self.TIME_FORMAT),
+                    name=_("This game will end at"),
+                    value=activity.end.strftime(self.TIME_FORMAT),
                 )
             if activity.start:
                 em.set_footer(text=_("Playing since"))
@@ -806,21 +823,27 @@ class DataUtils(commands.Cog):
                 )
             if activity.small_image_text:
                 em.add_field(
-                    name=_("Small image text"), value=activity.small_image_text, inline=False,
+                    name=_("Small image text"),
+                    value=activity.small_image_text,
+                    inline=False,
                 )
             if activity.application_id:
                 em.add_field(name=_("Application ID"), value=activity.application_id)
             if activity.start:
                 em.add_field(
-                    name=_("Started at"), value=activity.start.strftime(self.TIME_FORMAT),
+                    name=_("Started at"),
+                    value=activity.start.strftime(self.TIME_FORMAT),
                 )
             if activity.end:
                 em.add_field(
-                    name=_("Will end at"), value=activity.end.strftime(self.TIME_FORMAT),
+                    name=_("Will end at"),
+                    value=activity.end.strftime(self.TIME_FORMAT),
                 )
             if activity.large_image_text:
                 em.add_field(
-                    name=_("Large image text"), value=activity.large_image_text, inline=False,
+                    name=_("Large image text"),
+                    value=activity.large_image_text,
+                    inline=False,
                 )
             if activity.small_image_url:
                 em.set_thumbnail(url=activity.small_image_url)

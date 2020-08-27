@@ -51,7 +51,8 @@ class SMMData(commands.Cog):
         embed.add_field(name=_("Clears"), value=f"{lvl.clears}/{lvl.attempts} ({lvl.clear_rate}%)")
         if lvl.first_clear_name:
             embed.add_field(
-                name=_("First clear"), value=f"[{lvl.first_clear_name}]({lvl.first_clear_url})",
+                name=_("First clear"),
+                value=f"[{lvl.first_clear_name}]({lvl.first_clear_url})",
             )
         if lvl.best_player_name:
             embed.add_field(

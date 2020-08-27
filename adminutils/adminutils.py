@@ -99,7 +99,8 @@ class AdminUtils(commands.Cog):
         )
         await ctx.guild.edit(region=random_region)
         await ctx.guild.edit(
-            region=current_region, reason=get_audit_reason(ctx.author, _("Voice restart")),
+            region=current_region,
+            reason=get_audit_reason(ctx.author, _("Voice restart")),
         )
         await ctx.tick()
 

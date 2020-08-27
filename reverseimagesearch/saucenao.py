@@ -92,7 +92,8 @@ class SauceNAO:
                                     "Unable to search for provided image, SauceNAO returned {status} ({message})\n"
                                     "This is server issue, try again later."
                                 ).format(
-                                    status=data.get("status"), message=data.get("message"),
+                                    status=data.get("status"),
+                                    message=data.get("message"),
                                 )
                             )
                         raise ValueError(

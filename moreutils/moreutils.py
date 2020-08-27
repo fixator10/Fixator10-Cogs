@@ -162,6 +162,7 @@ class MoreUtils(commands.Cog):
         embed.description = status_indicators.get(status["indicator"], status["indicator"])
         for component in components:
             embed.add_field(
-                name=component["name"], value=component["status"].capitalize().replace("_", " "),
+                name=component["name"],
+                value=component["status"].capitalize().replace("_", " "),
             )
         await ctx.send(embed=embed)
