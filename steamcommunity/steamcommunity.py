@@ -112,7 +112,7 @@ filterwarnings("ignore", category=FutureWarning, module=r"valve.")
 class SteamCommunity(commands.Cog):
     """SteamCommunity commands"""
 
-    __version__ = "2.1.3"
+    __version__ = "2.1.4"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -121,7 +121,7 @@ class SteamCommunity(commands.Cog):
         self.session = aiohttp.ClientSession(loop=self.bot.loop)
 
     def cog_unload(self):
-        self.session.detach()
+        self.bot.loop.create_task(self.session.close())
 
     async def red_delete_data_for_user(self, **kwargs):
         return
