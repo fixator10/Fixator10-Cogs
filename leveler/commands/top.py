@@ -96,7 +96,9 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
 
                 board_type = "Rep"
                 footer_text = "Your Rank: {}                  {}: {}".format(
-                    await self._find_server_rep_rank(user, server), board_type, user_stat,
+                    await self._find_server_rep_rank(user, server),
+                    board_type,
+                    user_stat,
                 )
                 icon_url = server.icon_url
             else:

@@ -91,7 +91,8 @@ class Backgrounds(MixinMeta):
             return
 
         await self.db.users.update_one(
-            {"user_id": str(user_id)}, {"$set": {"{}_background".format(type_input): img_url}},
+            {"user_id": str(user_id)},
+            {"$set": {"{}_background".format(type_input): img_url}},
         )
         await ctx.send("**User {} custom {} background set.**".format(user_id, bg_type))
 

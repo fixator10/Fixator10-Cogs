@@ -53,7 +53,8 @@ class Roles(MixinMeta):
                 remove_role.name if remove_role else None
             )
             await self.db.roles.update_one(
-                {"server_id": str(server.id)}, {"$set": {"roles": server_roles["roles"]}},
+                {"server_id": str(server.id)},
+                {"$set": {"roles": server_roles["roles"]}},
             )
 
         if remove_role:
@@ -105,7 +106,8 @@ class Roles(MixinMeta):
             msg = "None"
         else:
             sortorder = sorted(
-                server_roles["roles"], key=lambda r: int(server_roles["roles"][r]["level"]),
+                server_roles["roles"],
+                key=lambda r: int(server_roles["roles"][r]["level"]),
             )
             roles = OrderedDict(server_roles["roles"])
             for k in sortorder:

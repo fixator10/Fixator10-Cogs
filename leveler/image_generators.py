@@ -129,7 +129,13 @@ class ImageGenerators(MixinMeta):
         )
 
     async def _add_dropshadow(
-        self, image, offset=(4, 4), background=0x000, shadow=0x0F0, border=3, iterations=5,
+        self,
+        image,
+        offset=(4, 4),
+        background=0x000,
+        shadow=0x0F0,
+        border=3,
+        iterations=5,
     ):
         total_width = image.size[0] + abs(offset[0]) + 2 * border
         total_height = image.size[1] + abs(offset[1]) + 2 * border
@@ -140,7 +146,12 @@ class ImageGenerators(MixinMeta):
         shadow_top = border + max(offset[1], 0)
         back.paste(
             shadow,
-            [shadow_left, shadow_top, shadow_left + image.size[0], shadow_top + image.size[1],],
+            [
+                shadow_left,
+                shadow_top,
+                shadow_left + image.size[0],
+                shadow_top + image.size[1],
+            ],
         )
 
         n = 0
@@ -252,7 +263,8 @@ class ImageGenerators(MixinMeta):
         # draw_overlay.rectangle([(0,35), (bg_width,100)], fill=(230,230,230,0)) # title overlay
         for i in range(0, 70):
             draw_overlay.rectangle(
-                [(0, height - i), (bg_width, height - i)], fill=(20, 20, 20, 255 - i * 3),
+                [(0, height - i), (bg_width, height - i)],
+                fill=(20, 20, 20, 255 - i * 3),
             )  # title overlay
 
         # draw corners and finalize
@@ -330,10 +342,20 @@ class ImageGenerators(MixinMeta):
         )  # Rank
         local_symbol = "\U0001F3E0 "
         await _write_unicode(
-            local_symbol, 117, v_label_align + 4, label_fnt, symbol_u_fnt, info_text_color,
+            local_symbol,
+            117,
+            v_label_align + 4,
+            label_fnt,
+            symbol_u_fnt,
+            info_text_color,
         )  # Symbol
         await _write_unicode(
-            local_symbol, 195, v_label_align + 4, label_fnt, symbol_u_fnt, info_text_color,
+            local_symbol,
+            195,
+            v_label_align + 4,
+            label_fnt,
+            symbol_u_fnt,
+            info_text_color,
         )  # Symbol
 
         # userinfo
@@ -623,7 +645,12 @@ class ImageGenerators(MixinMeta):
             info_text_color,
         )  # NAME
         await _write_unicode(
-            userinfo["title"].upper(), head_align, 170, title_fnt, title_u_fnt, info_text_color,
+            userinfo["title"].upper(),
+            head_align,
+            170,
+            title_fnt,
+            title_u_fnt,
+            info_text_color,
         )
 
         # draw divider
@@ -669,7 +696,12 @@ class ImageGenerators(MixinMeta):
             global_symbol, 36, label_align + 5, label_fnt, symbol_u_fnt, info_text_color
         )  # Symbol
         await _write_unicode(
-            global_symbol, 134, label_align + 5, label_fnt, symbol_u_fnt, info_text_color,
+            global_symbol,
+            134,
+            label_align + 5,
+            label_fnt,
+            symbol_u_fnt,
+            info_text_color,
         )  # Symbol
 
         # userinfo
@@ -693,10 +725,12 @@ class ImageGenerators(MixinMeta):
         exp_total = await self._required_exp(int(global_level))
         bar_length = int(exp_frac / exp_total * 340)
         draw.rectangle(
-            [(0, 305), (340, 323)], fill=(level_fill[0], level_fill[1], level_fill[2], 245),
+            [(0, 305), (340, 323)],
+            fill=(level_fill[0], level_fill[1], level_fill[2], 245),
         )  # level box
         draw.rectangle(
-            [(0, 305), (bar_length, 323)], fill=(exp_fill[0], exp_fill[1], exp_fill[2], 255),
+            [(0, 305), (bar_length, 323)],
+            fill=(exp_fill[0], exp_fill[1], exp_fill[2], 255),
         )  # box
         exp_text = "{}/{}".format(exp_frac, exp_total)  # Exp
         draw.text(
@@ -797,7 +831,9 @@ class ImageGenerators(MixinMeta):
 
                             # put on ellipse/circle
                             output = ImageOps.fit(
-                                badge_image, (raw_length, raw_length), centering=(0.5, 0.5),
+                                badge_image,
+                                (raw_length, raw_length),
+                                centering=(0.5, 0.5),
                             )
                             output = output.resize(
                                 (size - total_gap, size - total_gap), Image.ANTIALIAS
@@ -813,7 +849,9 @@ class ImageGenerators(MixinMeta):
                         else:
                             # put on ellipse/circle
                             output = ImageOps.fit(
-                                badge_image, (raw_length, raw_length), centering=(0.5, 0.5),
+                                badge_image,
+                                (raw_length, raw_length),
+                                centering=(0.5, 0.5),
                             )
                             output = output.resize((size, size), Image.ANTIALIAS)
                             outer_mask = mask.resize((size, size), Image.ANTIALIAS)

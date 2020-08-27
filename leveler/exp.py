@@ -75,7 +75,8 @@ class XP(MixinMeta):
         required = await self._required_exp(userinfo["servers"][str(server.id)]["level"])
         try:
             await self.db.users.update_one(
-                {"user_id": str(user.id)}, {"$set": {"total_exp": userinfo["total_exp"] + exp}},
+                {"user_id": str(user.id)},
+                {"$set": {"total_exp": userinfo["total_exp"] + exp}},
             )
             self.bot.dispatch("leveler_process_exp", message, exp)
         except Exception as exc:
@@ -194,7 +195,8 @@ class XP(MixinMeta):
                     levelup = await self.draw_levelup(user, server)
                     file = discord.File(levelup, filename="levelup.png")
                     await channel.send(
-                        "**{} just gained a level{}!**".format(name, server_identifier), file=file,
+                        "**{} just gained a level{}!**".format(name, server_identifier),
+                        file=file,
                     )
 
     async def _find_server_rank(self, user, server):

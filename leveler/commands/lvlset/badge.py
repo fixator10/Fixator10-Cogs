@@ -56,7 +56,9 @@ class Badge(MixinMeta, ABC):
 
         pages = [
             discord.Embed(
-                title="Badges available", description=page, colour=await ctx.embed_color(),
+                title="Badges available",
+                description=page,
+                colour=await ctx.embed_color(),
             )
             for page in chat.pagify(msg, page_length=2048)
         ]
@@ -220,7 +222,8 @@ class Badge(MixinMeta, ABC):
             if userinfo["badges"][badge]["badge_name"] == name:
                 userinfo["badges"][badge]["priority_num"] = priority_num
                 await self.db.users.update_one(
-                    {"user_id": userinfo["user_id"]}, {"$set": {"badges": userinfo["badges"]}},
+                    {"user_id": userinfo["user_id"]},
+                    {"$set": {"badges": userinfo["badges"]}},
                 )
                 await ctx.send(
                     "**The `{}` badge priority has been set to `{}`!**".format(

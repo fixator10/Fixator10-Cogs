@@ -133,7 +133,8 @@ class Badge(MixinMeta):
                         ] = user_priority_num  # maintain old priority number set by user
                         userbadges[badge_name] = new_badge
                         await self.db.users.update_one(
-                            {"user_id": user["user_id"]}, {"$set": {"badges": userbadges}},
+                            {"user_id": user["user_id"]},
+                            {"$set": {"badges": userbadges}},
                         )
                 except Exception as exc:
                     self.log.error(f"Unable to update badge {name} for {user['user_id']}: {exc}")
@@ -273,7 +274,9 @@ class Badge(MixinMeta):
                 )
                 await ctx.send(
                     "**{} has taken the `{}` badge from {}! :upside_down:**".format(
-                        await self._is_mention(org_user), name, await self._is_mention(user),
+                        await self._is_mention(org_user),
+                        name,
+                        await self._is_mention(user),
                     )
                 )
             else:

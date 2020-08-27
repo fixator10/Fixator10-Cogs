@@ -74,7 +74,9 @@ class MongoDB(MixinMeta):
 
             if "username" not in userinfo or userinfo["username"] != user.name:
                 await self.db.users.update_one(
-                    {"user_id": str(user.id)}, {"$set": {"username": user.name}}, upsert=True,
+                    {"user_id": str(user.id)},
+                    {"$set": {"username": user.name}},
+                    upsert=True,
                 )
 
             if "servers" not in userinfo or str(server.id) not in userinfo["servers"]:

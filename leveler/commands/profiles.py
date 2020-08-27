@@ -39,7 +39,8 @@ class Profiles(MixinMeta, metaclass=CompositeMetaClass):
                 profile = await self.draw_profile(user, server)
                 file = discord.File(profile, filename="profile.png")
                 await channel.send(
-                    "**User profile for {}**".format(await self._is_mention(user)), file=file,
+                    "**User profile for {}**".format(await self._is_mention(user)),
+                    file=file,
                 )
 
     async def profile_text(self, user, server, userinfo):
@@ -48,20 +49,24 @@ class Profiles(MixinMeta, metaclass=CompositeMetaClass):
         em.add_field(name="Reps:", value=userinfo["rep"])
         em.add_field(name="Global Rank:", value="#{}".format(await self._find_global_rank(user)))
         em.add_field(
-            name="Server Rank:", value="#{}".format(await self._find_server_rank(user, server)),
+            name="Server Rank:",
+            value="#{}".format(await self._find_server_rank(user, server)),
         )
         em.add_field(
-            name="Server Level:", value=format(userinfo["servers"][str(server.id)]["level"]),
+            name="Server Level:",
+            value=format(userinfo["servers"][str(server.id)]["level"]),
         )
         em.add_field(name="Total Exp:", value=userinfo["total_exp"])
         em.add_field(name="Server Exp:", value=await self._find_server_exp(user, server))
         u_credits = await bank.get_balance(user)
         em.add_field(
-            name="Credits:", value=f"{u_credits}{(await bank.get_currency_name(server))[0]}",
+            name="Credits:",
+            value=f"{u_credits}{(await bank.get_currency_name(server))[0]}",
         )
         em.add_field(name="Info:", value=userinfo["info"] or None)
         em.add_field(
-            name="Badges:", value=(", ".join(userinfo["badges"]).replace("_", " ") or None),
+            name="Badges:",
+            value=(", ".join(userinfo["badges"]).replace("_", " ") or None),
         )
         em.set_author(name="Profile for {}".format(user.name), url=user.avatar_url)
         em.set_thumbnail(url=user.avatar_url)
@@ -107,7 +112,8 @@ class Profiles(MixinMeta, metaclass=CompositeMetaClass):
     async def rank_text(self, user, server, userinfo):
         em = discord.Embed(colour=user.colour)
         em.add_field(
-            name="Server Rank", value="#{}".format(await self._find_server_rank(user, server)),
+            name="Server Rank",
+            value="#{}".format(await self._find_server_rank(user, server)),
         )
         em.add_field(name="Reps", value=userinfo["rep"])
         em.add_field(name="Server Level", value=userinfo["servers"][str(server.id)]["level"])
@@ -176,6 +182,7 @@ class Profiles(MixinMeta, metaclass=CompositeMetaClass):
 
         em = discord.Embed(description=msg, colour=user.colour)
         em.set_author(
-            name="Profile Information for {}".format(user.name), icon_url=user.avatar_url,
+            name="Profile Information for {}".format(user.name),
+            icon_url=user.avatar_url,
         )
         await ctx.send(embed=em)

@@ -99,7 +99,12 @@ class Rank(MixinMeta):
             if len(set_color) == 1:
                 await self.db.users.update_one(
                     {"user_id": str(user.id)},
-                    {"$set": {"rank_exp_color": set_color[0], "rank_info_color": set_color[0],}},
+                    {
+                        "$set": {
+                            "rank_exp_color": set_color[0],
+                            "rank_info_color": set_color[0],
+                        }
+                    },
                 )
             elif color == "default":
                 await self.db.users.update_one(
@@ -114,7 +119,12 @@ class Rank(MixinMeta):
             elif color == "auto":
                 await self.db.users.update_one(
                     {"user_id": str(user.id)},
-                    {"$set": {"rank_exp_color": set_color[0], "rank_info_color": set_color[1],}},
+                    {
+                        "$set": {
+                            "rank_exp_color": set_color[0],
+                            "rank_info_color": set_color[1],
+                        }
+                    },
                 )
             await ctx.send("**Colors for rank set.**")
         else:
