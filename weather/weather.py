@@ -137,7 +137,10 @@ class Weather(commands.Cog):
         self.config = Config.get_conf(self, identifier=0xDC5A74E677F24720AA82AD1C237721E7)
         default_guild = {"units": "si"}
         self.config.register_guild(**default_guild)
-        self.session = aiohttp.ClientSession(loop=self.bot.loop, raise_for_status=True,)
+        self.session = aiohttp.ClientSession(
+            loop=self.bot.loop,
+            raise_for_status=True,
+        )
 
     def cog_unload(self):
         self.bot.loop.create_task(self.session.close())
@@ -308,7 +311,8 @@ class Weather(commands.Cog):
         em.add_field(
             name=_("Summary"),
             value="{} {}".format(
-                WEATHER_STATES.get(by_hour.icon, UNKNOWN_EMOJI), by_hour.summary,
+                WEATHER_STATES.get(by_hour.icon, UNKNOWN_EMOJI),
+                by_hour.summary,
             ),
         )
         em.add_field(
@@ -422,11 +426,16 @@ class Weather(commands.Cog):
             data = by_day.data[i]
             em = discord.Embed(
                 title=_("Weather in {}").format(
-                    shorten(location.get("display_name", UNKNOWN_EMOJI), 244, placeholder="…",)
+                    shorten(
+                        location.get("display_name", UNKNOWN_EMOJI),
+                        244,
+                        placeholder="…",
+                    )
                 ),
                 description=f"{by_day.summary}\n"
                 + _("[View on Google Maps](https://www.google.com/maps/place/{},{})").format(
-                    location.get("lat", 0), location.get("lon", 0),
+                    location.get("lat", 0),
+                    location.get("lon", 0),
                 ),
                 color=await ctx.embed_color(),
                 timestamp=data.time,
@@ -440,7 +449,10 @@ class Weather(commands.Cog):
                 summary = _("No summary for this day")
             em.add_field(
                 name=_("Summary"),
-                value="{} {}".format(WEATHER_STATES.get(data.icon, UNKNOWN_EMOJI), summary,),
+                value="{} {}".format(
+                    WEATHER_STATES.get(data.icon, UNKNOWN_EMOJI),
+                    summary,
+                ),
             )
             em.add_field(
                 name=_("Temperature"),
@@ -497,7 +509,8 @@ class Weather(commands.Cog):
                 + (
                     precipaccumulation
                     and _("\nSnowfall accumulation: {} {}").format(
-                        precipaccumulation, await self.get_localized_units(ctx, "accumulation"),
+                        precipaccumulation,
+                        await self.get_localized_units(ctx, "accumulation"),
                     )
                     or ""
                 ),

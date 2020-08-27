@@ -366,7 +366,8 @@ class SteamCommunity(commands.Cog):
 
         em = discord.Embed(colour=await ctx.embed_color())
         em.add_field(
-            name=_("Game"), value=f"[{game}](http://store.steampowered.com/app/{gameid})",
+            name=_("Game"),
+            value=f"[{game}](http://store.steampowered.com/app/{gameid})",
         )
         em.add_field(name=_("Gamemode"), value=gamemode)
         em.add_field(name=_("Server name"), value=servername, inline=False)
@@ -377,7 +378,8 @@ class SteamCommunity(commands.Cog):
         em.add_field(name=_("Version"), value=version)
         em.add_field(name="VAC", value=bool_emojify(bool(info.values["vac_enabled"])))
         em.add_field(
-            name=_("Password"), value=bool_emojify(bool(info.values["password_protected"])),
+            name=_("Password"),
+            value=bool_emojify(bool(info.values["password_protected"])),
         )
         if botnumber:
             em.add_field(

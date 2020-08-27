@@ -164,7 +164,8 @@ class MinecraftData(commands.Cog):
         """Get MinecraftCapes.co.uk cape by nickname"""
         try:
             await self.session.get(
-                f"https://minecraftcapes.co.uk/getCape/{player.uuid}", raise_for_status=True,
+                f"https://minecraftcapes.co.uk/getCape/{player.uuid}",
+                raise_for_status=True,
             )
         except aiohttp.ClientResponseError as e:
             if e.status == 404:
@@ -351,7 +352,10 @@ class MinecraftData(commands.Cog):
                     nick["changedToAt"] = _("Initial")
             table = tabulate.tabulate(
                 data_history,
-                headers={"name": _("Nickname"), "changedToAt": _("Changed to at... (UTC)"),},
+                headers={
+                    "name": _("Nickname"),
+                    "changedToAt": _("Changed to at... (UTC)"),
+                },
                 tablefmt="orgtbl",
             )
             pages = [chat.box(page) for page in list(chat.pagify(table))]

@@ -129,7 +129,9 @@ class GodvilleData(commands.Cog):
             text += "Вместимость инвентаря: {}\n".format(profile.inventory_max)
         if profile.health:
             text += "Здоровье: {}/{} ({}%)\n".format(
-                profile.health, profile.health_max, int(profile.health / profile.health_max * 100),
+                profile.health,
+                profile.health_max,
+                int(profile.health / profile.health_max * 100),
             )
         else:
             text += "Максимум здоровья: {}\n".format(profile.health_max)
@@ -246,7 +248,9 @@ class GodvilleData(commands.Cog):
             text += "Inventory max: {}\n".format(profile.inventory_max)
         if profile.health:
             text += "Health: {}/{} ({}%)\n".format(
-                profile.health, profile.health_max, int(profile.health / profile.health_max * 100),
+                profile.health,
+                profile.health_max,
+                int(profile.health / profile.health_max * 100),
             )
         else:
             text += "Health maximum: {}\n".format(profile.health_max)
