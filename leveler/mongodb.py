@@ -67,8 +67,6 @@ class MongoDB(MixinMeta):
                     "rep_block": 0,
                     "chat_block": 0,
                     "last_message": "",
-                    "profile_block": 0,
-                    "rank_block": 0,
                 }
                 await self.db.users.insert_one(new_account)
 

@@ -41,9 +41,6 @@ class Profiles(MixinMeta, metaclass=CompositeMetaClass):
                 await channel.send(
                     "**User profile for {}**".format(await self._is_mention(user)), file=file,
                 )
-            await self.db.users.update_one(
-                {"user_id": str(user.id)}, {"$set": {"profile_block": curr_time}}, upsert=True,
-            )
 
     async def profile_text(self, user, server, userinfo):
         em = discord.Embed(colour=user.colour)
@@ -106,11 +103,6 @@ class Profiles(MixinMeta, metaclass=CompositeMetaClass):
                     "**Ranking & Statistics for {}**".format(await self._is_mention(user)),
                     file=file,
                 )
-            await self.db.users.update_one(
-                {"user_id": str(user.id)},
-                {"$set": {"rank_block".format(server.id): curr_time}},
-                upsert=True,
-            )
 
     async def rank_text(self, user, server, userinfo):
         em = discord.Embed(colour=user.colour)
