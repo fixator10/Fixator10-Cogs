@@ -129,7 +129,7 @@ PRECIP_TYPE_I18N = {"rain": _("Rain"), "snow": _("Snow"), "sleet": _("Sleet")}
 class Weather(commands.Cog):
     """Weather forecast"""
 
-    __version__ = "2.0.2"
+    __version__ = "2.0.3"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -140,7 +140,7 @@ class Weather(commands.Cog):
         self.session = aiohttp.ClientSession(loop=self.bot.loop, raise_for_status=True,)
 
     def cog_unload(self):
-        self.session.detach()
+        self.bot.loop.create_task(self.session.close())
 
     async def red_delete_data_for_user(self, *, requester, user_id: int):
         await self.config.user_from_id(user_id).clear()
