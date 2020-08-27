@@ -101,7 +101,7 @@ class Leveler(
         await self._create_user(ctx.author, ctx.guild)
 
     def cog_unload(self):
-        self.session.detach()
+        self.bot.loop.create_task(self.session.close())
         self._disconnect_mongo()
 
     async def red_delete_data_for_user(self, *, requester, user_id: int):
