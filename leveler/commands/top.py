@@ -16,6 +16,10 @@ class NoExitParser(argparse.ArgumentParser):
 
 
 class TopParser(commands.Converter):
+    page: int
+    global_top: bool
+    rep: bool
+
     async def convert(self, ctx, argument):
         parser = NoExitParser(description="top command arguments parser", add_help=False)
         parser.add_argument("page", nargs="?", type=int, default="1")
@@ -28,7 +32,9 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
     @commands.command(usage="[page] [--global] [--rep]")
     @commands.guild_only()
     @commands.max_concurrency(1, commands.BucketType.guild)
-    async def top(self, ctx, *, options: TopParser = None):
+    async def top(
+        self, ctx, *, options: TopParser = argparse.Namespace(page=1, rep=False, global_top=False)
+    ):
         """Displays leaderboard.
 
         Add --rep for reputation.
@@ -40,8 +46,6 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
             if not await self.config.allow_global_top()
             else True
         )
-        if options is None:
-            options = argparse.Namespace(page=1, rep=False, global_top=False)
 
         if await self.config.guild(ctx.guild).disabled():
             await ctx.send("**Leveler commands for this server are disabled!**")
