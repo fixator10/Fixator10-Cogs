@@ -175,11 +175,11 @@ class MessagesLog(commands.Cog):
         ctx,
         *ignore: Union[discord.Member, discord.TextChannel, discord.CategoryChannel],
     ):
-        """Manage message logging blacklist
+        """Manage message logging blocklist
 
-        Shows blacklist if no arguments provided
+        Shows blocklist if no arguments provided
         You can ignore text channels, categories and members
-        If item is in blacklist, removes it"""
+        If item is in blocklist, removes it"""
         if not ignore:
             users = await self.config.guild(ctx.guild).ignored_users()
             channels = await self.config.guild(ctx.guild).ignored_channels()
