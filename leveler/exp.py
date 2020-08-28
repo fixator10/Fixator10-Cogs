@@ -33,6 +33,8 @@ class XP(MixinMeta):
 
     @commands.Cog.listener("on_message_without_command")
     async def _handle_on_message(self, message):
+        if message.is_system():
+            return
         if not self._db_ready:
             return
         server = message.guild

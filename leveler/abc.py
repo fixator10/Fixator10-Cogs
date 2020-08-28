@@ -130,6 +130,44 @@ class MixinMeta(ABC):
     async def _auto_color(self, ctx, url: str, ranks) -> List[str]:
         raise NotImplementedError
 
+    @abstractmethod
+    async def _center(self, start, end, text, font) -> int:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def char_in_font(self, unicode_char, font) -> bool:
+        raise NotImplementedError
+
+    @abstractmethod
+    def _contrast(self, bg_color, color1, color2):
+        raise NotImplementedError
+
+    @abstractmethod
+    def _luminance(self, color):
+        raise NotImplementedError
+
+    @abstractmethod
+    def _contrast_ratio(self, bgcolor, foreground):
+        raise NotImplementedError
+
+    @abstractmethod
+    async def _name(self, user, max_length) -> str:
+        raise NotImplementedError
+
+    async def _add_dropshadow(
+        self,
+        image,
+        offset=(4, 4),
+        background=0x000,
+        shadow=0x0F0,
+        border=3,
+        iterations=5,
+    ):
+        raise NotImplementedError
+
+    async def _add_corners(self, im, rad, multiplier=6):
+        raise NotImplementedError
+
 
 class CompositeMetaClass(type(commands.Cog), type(ABC)):
     """
