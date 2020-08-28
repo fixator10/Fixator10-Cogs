@@ -6,8 +6,8 @@ from redbot.core.bot import Red
 
 from .abc import CompositeMetaClass
 from .commands import LevelerCommands
-from .exp import XP
 from .def_imgen_utils import DefaultImageGeneratorsUtils
+from .exp import XP
 from .image_generators import ImageGenerators
 from .mongodb import MongoDB
 from .utils import Utils

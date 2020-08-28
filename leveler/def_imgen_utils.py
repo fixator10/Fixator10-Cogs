@@ -2,8 +2,9 @@ import operator
 import random
 from io import BytesIO
 
-from .abc import MixinMeta
 from redbot.core.errors import CogLoadError
+
+from .abc import MixinMeta
 
 try:
     from PIL import Image, ImageDraw, ImageFilter
@@ -22,6 +23,7 @@ except Exception as e:
 
 class DefaultImageGeneratorsUtils(MixinMeta):
     """Utils for default image generators"""
+
     async def _valid_image_url(self, url):
         try:
             async with self.session.get(url) as r:
