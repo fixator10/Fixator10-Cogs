@@ -6,6 +6,7 @@ import discord
 from redbot.core import commands
 from redbot.core.utils import AsyncIter
 from redbot.core.utils import chat_formatting as chat
+from tabulate import tabulate
 
 from ..abc import CompositeMetaClass, MixinMeta
 
@@ -53,79 +54,69 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
 
         async with ctx.typing():
             users = []
-            user_stat = None
+            user_stat = []
+            is_level = False
             if options.rep and options.global_top and owner:
                 title = "Global Rep Leaderboard for {}\n".format(self.bot.user.name)
                 async for userinfo in self.db.users.find({}):
-                    try:
-                        users.append((userinfo["username"], userinfo["rep"]))
-                    except KeyError:
-                        users.append((userinfo["user_id"], userinfo["rep"]))
+                    users.append((userinfo.get("username", userinfo["user_id"]), userinfo["rep"]))
 
                     if str(user.id) == userinfo["user_id"]:
-                        user_stat = userinfo["rep"]
+                        user_stat = [await self._find_global_rep_rank(user), userinfo["rep"]]
 
                 board_type = "Rep"
-                footer_text = "Your Rank: {}                  {}: {}".format(
-                    await self._find_global_rep_rank(user), board_type, user_stat
-                )
                 icon_url = self.bot.user.avatar_url
             elif options.global_top and owner:
                 title = "Global Exp Leaderboard for {}\n".format(self.bot.user.name)
                 async for userinfo in self.db.users.find({}):
-                    try:
-                        users.append((userinfo["username"], userinfo["total_exp"]))
-                    except KeyError:
-                        users.append((userinfo["user_id"], userinfo["total_exp"]))
+                    users.append(
+                        (userinfo.get("username", userinfo["user_id"]), userinfo["total_exp"])
+                    )
 
                     if str(user.id) == userinfo["user_id"]:
-                        user_stat = userinfo["total_exp"]
+                        user_stat = [await self._find_global_rank(user), userinfo["total_exp"]]
 
                 board_type = "Points"
-                footer_text = "Your Rank: {}                  {}: {}".format(
-                    await self._find_global_rank(user), board_type, user_stat
-                )
                 icon_url = self.bot.user.avatar_url
             elif options.rep:
                 title = "Rep Leaderboard for {}\n".format(server.name)
                 async for userinfo in self.db.users.find({}):
-                    if "servers" in userinfo and str(server.id) in userinfo["servers"]:
-                        try:
-                            users.append((userinfo["username"], userinfo["rep"]))
-                        except KeyError:
-                            users.append((userinfo["user_id"], userinfo["rep"]))
+                    if userinfo.get("servers", {}).get(str(server.id)):
+                        users.append(
+                            (userinfo.get("username", userinfo["user_id"]), userinfo["rep"])
+                        )
 
                     if str(user.id) == userinfo["user_id"]:
-                        user_stat = userinfo["rep"]
+                        user_stat = [await self._find_global_rep_rank(user), userinfo["rep"]]
 
                 board_type = "Rep"
-                footer_text = "Your Rank: {}                  {}: {}".format(
-                    await self._find_server_rep_rank(user, server),
-                    board_type,
-                    user_stat,
-                )
                 icon_url = server.icon_url
             else:
+                is_level = True
                 title = "Exp Leaderboard for {}\n".format(server.name)
                 async for userinfo in self.db.users.find({}):
+                    if str(user.id) == userinfo["user_id"]:
+                        user_stat = [
+                            await self._find_server_rank(user, server),
+                            await self._find_server_exp(user, server),
+                            userinfo["servers"][str(server.id)]["level"],
+                        ]
                     try:
-                        if "servers" in userinfo and str(server.id) in userinfo["servers"]:
+                        if userinfo.get("servers", {}).get(str(server.id)):
                             server_exp = 0
                             for i in range(userinfo["servers"][str(server.id)]["level"]):
                                 server_exp += await self._required_exp(i)
                             server_exp += userinfo["servers"][str(server.id)]["current_exp"]
-                            try:
-                                users.append((userinfo["username"], server_exp))
-                            except KeyError:
-                                users.append((userinfo["user_id"], server_exp))
+                            users.append(
+                                (
+                                    userinfo.get("username", userinfo["user_id"]),
+                                    server_exp,
+                                    userinfo["servers"][str(server.id)]["level"],
+                                )
+                            )
                     except KeyError:
                         pass
                 board_type = "Points"
-                footer_text = "Your Rank: {}                  {}: {}".format(
-                    await self._find_server_rank(user, server),
-                    board_type,
-                    await self._find_server_exp(user, server),
-                )
                 icon_url = server.icon_url
             sorted_list = sorted(users, key=operator.itemgetter(1), reverse=True)
 
@@ -137,32 +128,37 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
                 page = pages
 
             msg = ""
-            msg += "Rank     Name                   (Page {}/{})     \n\n".format(page, pages)
             rank = 1 + per_page * (page - 1)
             start_index = per_page * page - per_page
             end_index = per_page * page
+            members = []
 
-            default_label = "   "
-            special_labels = ["♔", "♕", "♖", "♗", "♘", "♙"]
-
-            async for single_user in AsyncIter(sorted_list[start_index:end_index]):
-                if rank - 1 < len(special_labels):
-                    label = special_labels[rank - 1]
-                else:
-                    label = default_label
-
-                msg += "{:<2}{:<2}{:<2} # {:<11}".format(
-                    rank, label, "➤", await self._truncate_text(single_user[0], 11)
+            async for rank, single_user in AsyncIter(sorted_list[start_index:end_index]).enumerate(
+                rank
+            ):
+                members.append(
+                    (rank, single_user[1], single_user[2], single_user[0])
+                    if is_level
+                    else (rank, single_user[1], single_user[0])
                 )
-                msg += "{:>5}{:<2}{:<2}{:<5}\n".format(
-                    " ", " ", " ", " {}: ".format(board_type) + str(single_user[1])
-                )
-                rank += 1
-            msg += "--------------------------------------------            \n"
-            msg += "{}".format(footer_text)
+            table = tabulate(
+                members,
+                headers=["#", board_type, "Level", "Username"]
+                if is_level
+                else ["#", board_type, "Username"],
+                tablefmt="rst",
+            )
+            table_width = len(table.splitlines()[0])
+            msg += "[Page {}/{}]".format(page, pages).rjust(table_width)
+            msg += "\n"
+            msg += table
+            msg += "\n"
+            msg += "Your rank: {}\n".format(user_stat[0]).rjust(table_width)
+            msg += "{}: {}\n".format(board_type, user_stat[1]).rjust(table_width)
+            if is_level:
+                msg += "Level: {}\n".format(user_stat[2]).rjust(table_width)
 
-            em = discord.Embed(description="", colour=user.colour)
+            em = discord.Embed(description=chat.box(msg), colour=user.colour)
             em.set_author(name=title, icon_url=icon_url)
-            em.description = chat.box(msg)
 
         await ctx.send(embed=em)

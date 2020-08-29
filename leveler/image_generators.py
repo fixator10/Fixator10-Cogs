@@ -16,14 +16,6 @@ try:
 except Exception as e:
     raise RuntimeError(f"Can't load pillow: {e}\nDo '[p]pipinstall pillow'.")
 
-try:
-    import numpy
-    from scipy import cluster
-except Exception as e:
-    print(
-        f"{__file__}: numpy/scipy is unable to import: {e}\nAutocolor feature will be unavailable"
-    )
-
 
 log = getLogger("red.fixator10-cogs.leveler")
 

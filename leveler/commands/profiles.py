@@ -20,7 +20,6 @@ class Profiles(MixinMeta, metaclass=CompositeMetaClass):
             return
         channel = ctx.message.channel
         server = user.guild
-        curr_time = time.time()
 
         # creates user if doesn't exist
         await self._create_user(user, server)
@@ -155,27 +154,27 @@ class Profiles(MixinMeta, metaclass=CompositeMetaClass):
         msg += "Profile background: {}\n".format(userinfo["profile_background"])
         msg += "Rank background: {}\n".format(userinfo["rank_background"])
         msg += "Levelup background: {}\n".format(userinfo["levelup_background"])
-        if "profile_info_color" in userinfo.keys() and userinfo["profile_info_color"]:
+        if userinfo.get("profile_info_color"):
             msg += "Profile info color: {}\n".format(
-                self._rgb_to_hex(userinfo["profile_info_color"])
+                await self._rgb_to_hex(userinfo["profile_info_color"])
             )
-        if "profile_exp_color" in userinfo.keys() and userinfo["profile_exp_color"]:
+        if userinfo.get("profile_exp_color"):
             msg += "Profile exp color: {}\n".format(
-                self._rgb_to_hex(userinfo["profile_exp_color"])
+                await self._rgb_to_hex(userinfo["profile_exp_color"])
             )
-        if "rep_color" in userinfo.keys() and userinfo["rep_color"]:
-            msg += "Rep section color: {}\n".format(self._rgb_to_hex(userinfo["rep_color"]))
-        if "badge_col_color" in userinfo.keys() and userinfo["badge_col_color"]:
+        if userinfo.get("rep_color"):
+            msg += "Rep section color: {}\n".format(await self._rgb_to_hex(userinfo["rep_color"]))
+        if userinfo.get("badge_col_color"):
             msg += "Badge section color: {}\n".format(
-                self._rgb_to_hex(userinfo["badge_col_color"])
+                await self._rgb_to_hex(userinfo["badge_col_color"])
             )
-        if "rank_info_color" in userinfo.keys() and userinfo["rank_info_color"]:
-            msg += "Rank info color: {}\n".format(self._rgb_to_hex(userinfo["rank_info_color"]))
-        if "rank_exp_color" in userinfo.keys() and userinfo["rank_exp_color"]:
-            msg += "Rank exp color: {}\n".format(self._rgb_to_hex(userinfo["rank_exp_color"]))
-        if "levelup_info_color" in userinfo.keys() and userinfo["levelup_info_color"]:
+        if userinfo.get("rank_info_color"):
+            msg += "Rank info color: {}\n".format(await self._rgb_to_hex(userinfo["rank_info_color"]))
+        if userinfo.get("rank_exp_color"):
+            msg += "Rank exp color: {}\n".format(await self._rgb_to_hex(userinfo["rank_exp_color"]))
+        if userinfo.get("levelup_info_color"):
             msg += "Level info color: {}\n".format(
-                self._rgb_to_hex(userinfo["levelup_info_color"])
+                await self._rgb_to_hex(userinfo["levelup_info_color"])
             )
         msg += "Badges: "
         msg += ", ".join(userinfo["badges"])
