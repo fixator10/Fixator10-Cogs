@@ -85,13 +85,13 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
 
                     if str(user.id) == userinfo["user_id"]:
                         if is_level:
-                            user_stat = [await self._find_global_rank(user), userinfo["total_exp"]]
-                        else:
                             user_stat = [
                                 await self._find_global_rank(user),
                                 userinfo["total_exp"],
                                 await self._find_level(userinfo["total_exp"]),
                             ]
+                        else:
+                            user_stat = [await self._find_global_rank(user), userinfo["total_exp"]]
 
                 board_type = "Points"
                 icon_url = self.bot.user.avatar_url
