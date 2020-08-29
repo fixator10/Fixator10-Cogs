@@ -46,6 +46,7 @@ class Leveler(
             "message_length": 10,
             "mention": True,
             "allow_global_top": False,
+            "global_levels": False,
             "backgrounds": {
                 "profile": {
                     "alice": "http://i.imgur.com/MUSuMao.png",

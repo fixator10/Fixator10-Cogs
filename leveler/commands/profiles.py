@@ -169,9 +169,13 @@ class Profiles(MixinMeta, metaclass=CompositeMetaClass):
                 await self._rgb_to_hex(userinfo["badge_col_color"])
             )
         if userinfo.get("rank_info_color"):
-            msg += "Rank info color: {}\n".format(await self._rgb_to_hex(userinfo["rank_info_color"]))
+            msg += "Rank info color: {}\n".format(
+                await self._rgb_to_hex(userinfo["rank_info_color"])
+            )
         if userinfo.get("rank_exp_color"):
-            msg += "Rank exp color: {}\n".format(await self._rgb_to_hex(userinfo["rank_exp_color"]))
+            msg += "Rank exp color: {}\n".format(
+                await self._rgb_to_hex(userinfo["rank_exp_color"])
+            )
         if userinfo.get("levelup_info_color"):
             msg += "Level info color: {}\n".format(
                 await self._rgb_to_hex(userinfo["levelup_info_color"])

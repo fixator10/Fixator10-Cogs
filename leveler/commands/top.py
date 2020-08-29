@@ -67,11 +67,21 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
                 board_type = "Rep"
                 icon_url = self.bot.user.avatar_url
             elif options.global_top and owner:
+                is_level = True if await self.config.global_levels() else False
                 title = "Global Exp Leaderboard for {}\n".format(self.bot.user.name)
                 async for userinfo in self.db.users.find({}):
-                    users.append(
-                        (userinfo.get("username", userinfo["user_id"]), userinfo["total_exp"])
-                    )
+                    if is_level:
+                        users.append(
+                            (
+                                userinfo.get("username", userinfo["user_id"]),
+                                userinfo["total_exp"],
+                                await self._find_level(userinfo["total_exp"]),
+                            )
+                        )
+                    else:
+                        users.append(
+                            (userinfo.get("username", userinfo["user_id"]), userinfo["total_exp"])
+                        )
 
                     if str(user.id) == userinfo["user_id"]:
                         user_stat = [await self._find_global_rank(user), userinfo["total_exp"]]

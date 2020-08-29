@@ -198,6 +198,23 @@ class Settings(MixinMeta):
                 "**`--global` argument is now available to everyone.**".format(server.name)
             )
 
+    @lvladmin.command()
+    async def globallevels(self, ctx):
+        """Show levels in global leaderboard.
+
+        This may significantly increase leaderboard loading times and the bot's CPU and RAM usage."""
+        server = ctx.guild
+        if await self.config.global_levels():
+            await self.config.global_levels.set(False)
+            await ctx.send(
+                "**Levels will be not included in global leaderboard now.**".format(server.name)
+            )
+        else:
+            await self.config.global_levels.set(True)
+            await ctx.send(
+                "**Levels will be included in global leaderboard now.**".format(server.name)
+            )
+
     @lvladmin.command(name="lock")
     @commands.guild_only()
     async def lvlmsglock(self, ctx):
