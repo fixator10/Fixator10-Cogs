@@ -4,7 +4,7 @@ from io import BytesIO
 from urllib.parse import quote
 
 from aiohttp import ClientResponseError
-from PIL import Image
+from PIL import Image, UnidentifiedImageError
 from redbot.core.i18n import Translator
 
 _ = Translator("ReverseImageSearch", __file__)
@@ -70,6 +70,8 @@ class TraceMoe:
                     image.thumbnail((2048, 2048))
                     image_file = BytesIO()
                     image.save(image_file, "JPEG")
+            except UnidentifiedImageError:
+                raise ValueError(_("Unable to convert image."))
             except ClientResponseError as e:
                 raise ValueError(_("Unable to get image: {}").format(e.message))
             try:

@@ -101,52 +101,50 @@ class PersonalRoles(commands.Cog):
         else:
             await ctx.send(chat.info(_("There is no assigned personal roles on this server")))
 
-    @myrole.group()
+    @myrole.group(name="blocklist", aliases=["blacklist"])
     @commands.guild_only()
     @checks.admin_or_permissions(manage_roles=True)
     async def blacklist(self, ctx):
-        """Manage blacklisted names"""
+        """Manage blocklisted names"""
         pass
 
     @blacklist.command()
-    @checks.admin_or_permissions(manage_roles=True)
     async def add(self, ctx, *, rolename: str):
-        """Add rolename to blacklist
-        Members will be not able to change name of role to blacklisted names"""
+        """Add rolename to blocklist
+        Members will be not able to change name of role to blocklisted names"""
         rolename = rolename.casefold()
         async with self.config.guild(ctx.guild).blacklist() as blacklist:
             if rolename in blacklist:
-                await ctx.send(chat.error(_("`{}` is already in blacklist").format(rolename)))
+                await ctx.send(chat.error(_("`{}` is already in blocklist").format(rolename)))
             else:
                 blacklist.append(rolename)
                 await ctx.send(
-                    chat.info(_("Added `{}` to blacklisted roles list").format(rolename))
+                    chat.info(_("Added `{}` to blocklisted roles list").format(rolename))
                 )
 
     @blacklist.command()
-    @checks.admin_or_permissions(manage_roles=True)
     async def remove(self, ctx, *, rolename: str):
-        """Remove rolename from blacklist"""
+        """Remove rolename from blocklist"""
         rolename = rolename.casefold()
         async with self.config.guild(ctx.guild).blacklist() as blacklist:
             if rolename not in blacklist:
-                await ctx.send(chat.error(_("`{}` is not blacklisted").format(rolename)))
+                await ctx.send(chat.error(_("`{}` is not blocklisted").format(rolename)))
             else:
                 blacklist.remove(rolename)
                 await ctx.send(
-                    chat.info(_("Removed `{}` from blacklisted roles list").format(rolename))
+                    chat.info(_("Removed `{}` from blocklisted roles list").format(rolename))
                 )
 
     @blacklist.command(name="list")
     @checks.admin_or_permissions(manage_roles=True)
     async def bl_list(self, ctx):
-        """List of blacklisted role names"""
+        """List of blocklisted role names"""
         blacklist = await self.config.guild(ctx.guild).blacklist()
         pages = [chat.box(page) for page in chat.pagify("\n".join(blacklist))]
         if pages:
             await menu(ctx, pages, DEFAULT_CONTROLS)
         else:
-            await ctx.send(chat.info(_("There is no blacklisted roles")))
+            await ctx.send(chat.info(_("There is no blocklisted roles")))
 
     @commands.cooldown(1, 30, commands.BucketType.user)
     @myrole.command(aliases=["color"])
@@ -189,12 +187,12 @@ class PersonalRoles(commands.Cog):
     @commands.check(has_assigned_role)
     async def name(self, ctx, *, name: str):
         """Change name of personal role
-        You cant use blacklisted names"""
+        You cant use blocklisted names"""
         role = await self.config.member(ctx.author).role()
         role = ctx.guild.get_role(role)
         name = name[:100]
         if name.casefold() in await self.config.guild(ctx.guild).blacklist():
-            await ctx.send(chat.error(_("NONONO!!! This rolename is blacklisted.")))
+            await ctx.send(chat.error(_("NONONO!!! This rolename is blocklisted.")))
             return
         try:
             await role.edit(name=name, reason=get_audit_reason(ctx.author, _("Personal Role")))

@@ -8,7 +8,9 @@ from redbot.core.i18n import Translator
 
 _ = Translator("ReverseImageSearch", __file__)
 
-IMAGE_LINKS = re.compile(r"(https?://[^\"\'\s]*\.(?:png|jpg|jpeg|gif|svg))")
+IMAGE_LINKS = re.compile(
+    r"(https?://[^\"\'\s]*\.(?:png|jpg|jpeg|gif|svg)(\?size=[0-9]*)?)", flags=re.I
+)
 EMOJI_REGEX = re.compile(r"(<(a)?:[a-zA-Z0-9_]+:([0-9]+)>)")
 MENTION_REGEX = re.compile(r"<@!?([0-9]+)>")
 ID_REGEX = re.compile(r"[0-9]{17,}")
