@@ -1,7 +1,8 @@
+from contextlib import suppress
+from io import BytesIO
+
 import aiohttp
 import discord
-from io import BytesIO
-from contextlib import suppress
 from redbot.core import commands
 from redbot.core.config import Config
 from redbot.core.i18n import Translator, cog_i18n
@@ -29,9 +30,13 @@ async def send_preview(
     doc = ctx.search_docs[page]
     async with ctx.typing():
         try:
-            async with ctx.cog.session.get(doc.preview_scene, raise_for_status=True) as video_preview:
+            async with ctx.cog.session.get(
+                doc.preview_scene, raise_for_status=True
+            ) as video_preview:
                 video_preview = BytesIO(await video_preview.read())
-                await ctx.send(embed=pages[page], file=discord.File(video_preview, filename=doc.filename))
+                await ctx.send(
+                    embed=pages[page], file=discord.File(video_preview, filename=doc.filename)
+                )
         except aiohttp.ClientResponseError as e:
             await ctx.send(_("Unable to get video preview: {}").format(e.message))
         except discord.HTTPException as e:
