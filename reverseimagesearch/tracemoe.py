@@ -36,6 +36,14 @@ class TraceMoeDoc:
             f"{BASE_URL}/thumbnail.php?anilist_id={self.anilist_id}"
             f"&file={quote(self.filename)}&t={self.time}&token={tokenthumb}"
         )
+        self.preview = (
+            f"https://trace.moe/preview.php?anilist_id={self.anilist_id}&file="
+            f"{quote(self.filename)}&t={self.time}&token={tokenthumb}"
+        )
+        self.preview_scene = (
+            f"https://media.trace.moe/video/{self.anilist_id}/{quote(self.filename)}"
+            f"?t={self.time}&token={tokenthumb}"
+        )
 
     @property
     def time_str(self):
