@@ -183,6 +183,7 @@ class AdminUtils(commands.Cog):
         else:
             await ctx.tick()
 
+    
     @emoji.command(name="message", aliases=["steal"])
     async def emote_steal(self, ctx, name: str, message_id: discord.Message, *roles: discord.Role):
         """
@@ -193,16 +194,16 @@ class AdminUtils(commands.Cog):
             `[p]emoji message Example 162379234070467641`
             `[p]emoji message RoleBased 162379234070467641 EmojiRole`
         """
-        dig_up_emoji_check = message.content.split(":")[-3]
-        check_animated = dig_up_emoji_check.endswith("<a")
-        dig_up_emoji = message.content.split(":")[-1]
-        emoji = "".join(x for x in dig_up_emoji if x.isdigit())
-        check_animated = dig_up_emoji_check.endswith("<a")
-        if check_animated is True:
-            format_image = "gif"
-        else:
-            format_image = "png"
-        url = f"https://cdn.discordapp.com/emojis/{emoji}.{format_image}"
+        emoji_regex = re.compile(r"(<(a)?:[a-zA-Z0-9\_]+:([0-9]+)>)") 
+        #TrusyJaid NotSoBot converter https://github.com/TrustyJAID/Trusty-cogs/blob/a3e931bc6227645007b37c3f4f524c9fc9859686/notsobot/converter.py#L30-L36
+        message = message_id.content
+        emojis = emoji_regex.finditer(message)
+        for emoji in emojis:
+            ext = "gif" if emoji.group(2) else "png"
+            url = "https://cdn.discordapp.com/emojis/{id}.{ext}?v=1".format(
+                id=emoji.group(3), ext=ext
+            )
+
         async with self.session.get(url) as r:
             data = await r.read()
         try:
@@ -221,7 +222,6 @@ class AdminUtils(commands.Cog):
             )
             await ctx.tick()
 
-            await ctx.send(embed=e)
         except discord.InvalidArgument:
             await ctx.send(
                 _("This image type is not supported anymore or Discord returned incorrect data. Try again later.")
