@@ -190,14 +190,15 @@ class AdminUtils(commands.Cog):
     @emoji.command(name="message", aliases=["steal"])
     async def emote_steal(self, ctx, name: str, message_id: discord.Message, *roles: discord.Role):
         """
-        Add an emoji from a specified message and add it to your server.
+        Add an emoji from a specified message
         Use double quotes if role name has spaces
 
         Examples:
             `[p]emoji message Example 162379234070467641`
             `[p]emoji message RoleBased 162379234070467641 EmojiRole`
         """
-        # TrusyJaid NotSoBot converter https://github.com/TrustyJAID/Trusty-cogs/blob/a3e931bc6227645007b37c3f4f524c9fc9859686/notsobot/converter.py#L30-L36
+        # TrusyJaid NotSoBot converter
+        # https://github.com/TrustyJAID/Trusty-cogs/blob/a3e931bc6227645007b37c3f4f524c9fc9859686/notsobot/converter.py#L30-L36
         message = message_id.content
         emojis = EMOJI_RE.finditer(message)
         for emoji in emojis:
@@ -205,7 +206,6 @@ class AdminUtils(commands.Cog):
             url = "https://cdn.discordapp.com/emojis/{id}.{ext}?v=1".format(
                 id=emoji.group(3), ext=ext
             )
-
         async with self.session.get(url) as r:
             data = await r.read()
         try:
@@ -223,7 +223,6 @@ class AdminUtils(commands.Cog):
                 ),
             )
             await ctx.tick()
-
         except discord.InvalidArgument:
             await ctx.send(
                 _(
