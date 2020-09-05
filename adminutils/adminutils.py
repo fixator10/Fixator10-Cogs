@@ -14,11 +14,14 @@ from redbot.core.utils.predicates import MessagePredicate
 _ = Translator("AdminUtils", __file__)
 
 
+EMOJI_RE = re.compile(r"(<(a)?:[a-zA-Z0-9\_]+:([0-9]+)>)")
+
+
 @cog_i18n(_)
 class AdminUtils(commands.Cog):
     """Useful commands for server administrators."""
 
-    __version__ = "2.4.1"
+    __version__ = "2.5.0"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -193,11 +196,9 @@ class AdminUtils(commands.Cog):
             `[p]emoji message Example 162379234070467641`
             `[p]emoji message RoleBased 162379234070467641 EmojiRole`
         """
-        emoji_regex = re.compile(
-            r"(<(a)?:[a-zA-Z0-9\_]+:([0-9]+)>)"
-        )  # TrusyJaid NotSoBot converter https://github.com/TrustyJAID/Trusty-cogs/blob/a3e931bc6227645007b37c3f4f524c9fc9859686/notsobot/converter.py#L30-L36
+        # TrusyJaid NotSoBot converter https://github.com/TrustyJAID/Trusty-cogs/blob/a3e931bc6227645007b37c3f4f524c9fc9859686/notsobot/converter.py#L30-L36
         message = message_id.content
-        emojis = emoji_regex.finditer(message)
+        emojis = EMOJI_RE.finditer(message)
         for emoji in emojis:
             ext = "gif" if emoji.group(2) else "png"
             url = "https://cdn.discordapp.com/emojis/{id}.{ext}?v=1".format(
