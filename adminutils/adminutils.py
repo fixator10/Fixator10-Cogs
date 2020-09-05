@@ -183,18 +183,16 @@ class AdminUtils(commands.Cog):
         else:
             await ctx.tick()
 
-    @emoji.command(name="steal")
-    async def emote_steal(self, ctx, name: str, message_id: int, *roles: discord.Role):
+    @emoji.command(name="message", aliases=["steal"])
+    async def emote_steal(self, ctx, name: str, message_id: discord.Message, *roles: discord.Role):
         """
-        Steal an emoji from a message ID and add it to your server.
-        Role lock the emoji if you wish (use double quotes if role name has spaces)
+        Add an emoji from a specified message and add it to your server.
+        Use double quotes if role name has spaces
 
         Examples:
-            `[p]emoji steal thisReallyCoolName 743291269471797248`
-            `[p]emoji steal thisReallyCoolName 743291269471797248 RoleName`
+            `[p]emoji message Example 162379234070467641`
+            `[p]emoji message RoleBased 162379234070467641 EmojiRole`
         """
-        channel = ctx.channel
-        message = await channel.fetch_message(message_id)
         dig_up_emoji_check = message.content.split(":")[-3]
         check_animated = dig_up_emoji_check.endswith("<a")
         dig_up_emoji = message.content.split(":")[-1]
@@ -205,9 +203,8 @@ class AdminUtils(commands.Cog):
         else:
             format_image = "png"
         url = f"https://cdn.discordapp.com/emojis/{emoji}.{format_image}"
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url) as r:
-                data = await r.read()
+        async with self.session.get(url) as r:
+            data = await r.read()
         try:
             await ctx.guild.create_custom_emoji(
                 name=name,
@@ -215,7 +212,7 @@ class AdminUtils(commands.Cog):
                 roles=roles,
                 reason=get_audit_reason(
                     ctx.author,
-                    ("Restricted to roles: {}").format(
+                    _("Restricted to roles: {}").format(
                         ", ".join([f"{role.name}" for role in roles])
                     )
                     if roles
@@ -223,21 +220,15 @@ class AdminUtils(commands.Cog):
                 ),
             )
             await ctx.tick()
-            msg = "Emote added, fam!"
-            e = discord.Embed(title=msg, colour=discord.Colour.dark_green())
-            e.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
-            e.set_image(url=url)
-            e.set_thumbnail(url=ctx.guild.icon_url)
 
             await ctx.send(embed=e)
         except discord.InvalidArgument:
             await ctx.send(
-                "Make sure there's an emoji in that messageID and you're running this command correctly (`[p]emoji steal nameTheEmote <msgID>`) Extra numbers in the message will throw this error too."
+                _("This image type is not supported anymore or Discord returned incorrect data. Try again later.")
             )
             return
-        except discord.HTTPException:
-            await ctx.send("You are at your emoji limit it would seem.")
-            return
+        except discord.HTTPException as e:
+            await ctx.send(chat.error(_("An error occurred on adding an emoji: {}").format(e)))
 
     @emoji.command(name="rename")
     async def emoji_rename(self, ctx, emoji: discord.Emoji, name: str, *roles: discord.Role):
