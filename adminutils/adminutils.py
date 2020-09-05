@@ -21,7 +21,7 @@ EMOJI_RE = re.compile(r"(<(a)?:[a-zA-Z0-9\_]+:([0-9]+)>)")
 class AdminUtils(commands.Cog):
     """Useful commands for server administrators."""
 
-    __version__ = "2.5.0"
+    __version__ = "2.5.1"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -199,13 +199,14 @@ class AdminUtils(commands.Cog):
         """
         # TrusyJaid NotSoBot converter
         # https://github.com/TrustyJAID/Trusty-cogs/blob/a3e931bc6227645007b37c3f4f524c9fc9859686/notsobot/converter.py#L30-L36
-        message = message_id.content
-        emojis = EMOJI_RE.finditer(message)
-        for emoji in emojis:
-            ext = "gif" if emoji.group(2) else "png"
-            url = "https://cdn.discordapp.com/emojis/{id}.{ext}?v=1".format(
-                id=emoji.group(3), ext=ext
-            )
+        emoji = EMOJI_RE.search(message_id.content)
+        if not emoji:
+            await ctx.send(chat.error(_("No emojis found specified message.")))
+            return
+        url = (
+            "https://cdn.discordapp.com/emojis/"
+            f"{emoji.group(3)}.{'gif' if emoji.group(2) else 'png'}?v=1"
+        )
         async with self.session.get(url) as r:
             data = await r.read()
         try:
