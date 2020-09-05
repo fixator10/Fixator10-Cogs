@@ -183,7 +183,6 @@ class AdminUtils(commands.Cog):
         else:
             await ctx.tick()
 
-    
     @emoji.command(name="message", aliases=["steal"])
     async def emote_steal(self, ctx, name: str, message_id: discord.Message, *roles: discord.Role):
         """
