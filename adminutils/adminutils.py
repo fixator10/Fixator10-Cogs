@@ -1,7 +1,7 @@
+import re
 from asyncio import TimeoutError as AsyncTimeoutError
 from random import choice
 from typing import Optional
-import re
 
 import aiohttp
 import discord
