@@ -84,7 +84,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.4.5"
+    __version__ = "2.4.6"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -385,7 +385,7 @@ class DataUtils(commands.Cog):
             ).format(
                 shard=server.shard_id,
                 members=server.member_count,
-                members_limit=server.max_members or "250000",
+                members_limit=server.max_members or "100000",
                 roles=len(server.roles),
                 channels=len(server.channels),
                 emojis=len([e for e in server.emojis if not e.animated]),
