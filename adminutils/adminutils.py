@@ -1,6 +1,7 @@
 from asyncio import TimeoutError as AsyncTimeoutError
 from random import choice
 from typing import Optional
+import re
 
 import aiohttp
 import discord
@@ -99,8 +100,7 @@ class AdminUtils(commands.Cog):
         )
         await ctx.guild.edit(region=random_region)
         await ctx.guild.edit(
-            region=current_region,
-            reason=get_audit_reason(ctx.author, _("Voice restart")),
+            region=current_region, reason=get_audit_reason(ctx.author, _("Voice restart")),
         )
         await ctx.tick()
 
@@ -193,8 +193,9 @@ class AdminUtils(commands.Cog):
             `[p]emoji message Example 162379234070467641`
             `[p]emoji message RoleBased 162379234070467641 EmojiRole`
         """
-        emoji_regex = re.compile(r"(<(a)?:[a-zA-Z0-9\_]+:([0-9]+)>)") 
-        #TrusyJaid NotSoBot converter https://github.com/TrustyJAID/Trusty-cogs/blob/a3e931bc6227645007b37c3f4f524c9fc9859686/notsobot/converter.py#L30-L36
+        emoji_regex = re.compile(
+            r"(<(a)?:[a-zA-Z0-9\_]+:([0-9]+)>)"
+        )  # TrusyJaid NotSoBot converter https://github.com/TrustyJAID/Trusty-cogs/blob/a3e931bc6227645007b37c3f4f524c9fc9859686/notsobot/converter.py#L30-L36
         message = message_id.content
         emojis = emoji_regex.finditer(message)
         for emoji in emojis:
@@ -223,7 +224,9 @@ class AdminUtils(commands.Cog):
 
         except discord.InvalidArgument:
             await ctx.send(
-                _("This image type is not supported anymore or Discord returned incorrect data. Try again later.")
+                _(
+                    "This image type is not supported anymore or Discord returned incorrect data. Try again later."
+                )
             )
             return
         except discord.HTTPException as e:
