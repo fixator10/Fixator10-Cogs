@@ -1,3 +1,4 @@
+import re
 from asyncio import TimeoutError as AsyncTimeoutError
 from random import choice
 from typing import Optional
@@ -13,11 +14,14 @@ from redbot.core.utils.predicates import MessagePredicate
 _ = Translator("AdminUtils", __file__)
 
 
+EMOJI_RE = re.compile(r"(<(a)?:[a-zA-Z0-9\_]+:([0-9]+)>)")
+
+
 @cog_i18n(_)
 class AdminUtils(commands.Cog):
     """Useful commands for server administrators."""
 
-    __version__ = "2.4.1"
+    __version__ = "2.5.0"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -99,8 +103,7 @@ class AdminUtils(commands.Cog):
         )
         await ctx.guild.edit(region=random_region)
         await ctx.guild.edit(
-            region=current_region,
-            reason=get_audit_reason(ctx.author, _("Voice restart")),
+            region=current_region, reason=get_audit_reason(ctx.author, _("Voice restart")),
         )
         await ctx.tick()
 
@@ -182,6 +185,53 @@ class AdminUtils(commands.Cog):
             await ctx.send(chat.error(_("An error occured on adding an emoji: {}").format(e)))
         else:
             await ctx.tick()
+
+    @emoji.command(name="message", aliases=["steal"])
+    async def emote_steal(self, ctx, name: str, message_id: discord.Message, *roles: discord.Role):
+        """
+        Add an emoji from a specified message and add it to your server.
+        Use double quotes if role name has spaces
+
+        Examples:
+            `[p]emoji message Example 162379234070467641`
+            `[p]emoji message RoleBased 162379234070467641 EmojiRole`
+        """
+        # TrusyJaid NotSoBot converter https://github.com/TrustyJAID/Trusty-cogs/blob/a3e931bc6227645007b37c3f4f524c9fc9859686/notsobot/converter.py#L30-L36
+        message = message_id.content
+        emojis = EMOJI_RE.finditer(message)
+        for emoji in emojis:
+            ext = "gif" if emoji.group(2) else "png"
+            url = "https://cdn.discordapp.com/emojis/{id}.{ext}?v=1".format(
+                id=emoji.group(3), ext=ext
+            )
+
+        async with self.session.get(url) as r:
+            data = await r.read()
+        try:
+            await ctx.guild.create_custom_emoji(
+                name=name,
+                image=data,
+                roles=roles,
+                reason=get_audit_reason(
+                    ctx.author,
+                    _("Restricted to roles: {}").format(
+                        ", ".join([f"{role.name}" for role in roles])
+                    )
+                    if roles
+                    else None,
+                ),
+            )
+            await ctx.tick()
+
+        except discord.InvalidArgument:
+            await ctx.send(
+                _(
+                    "This image type is not supported anymore or Discord returned incorrect data. Try again later."
+                )
+            )
+            return
+        except discord.HTTPException as e:
+            await ctx.send(chat.error(_("An error occurred on adding an emoji: {}").format(e)))
 
     @emoji.command(name="rename")
     async def emoji_rename(self, ctx, emoji: discord.Emoji, name: str, *roles: discord.Role):
