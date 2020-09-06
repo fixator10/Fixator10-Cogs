@@ -36,7 +36,10 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
     @commands.guild_only()
     @commands.max_concurrency(1, commands.BucketType.guild)
     async def top(
-        self, ctx, *, options: TopParser = argparse.Namespace(page=1, rep=False, global_top=False)
+        self,
+        ctx,
+        *,
+        options: TopParser = argparse.Namespace(page=1, server=None, rep=False, global_top=False)
     ):
         """Displays leaderboard.
 
@@ -49,11 +52,7 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
         else:
             server = ctx.guild
         user = ctx.author
-        owner = (
-            is_owner
-            if not await self.config.allow_global_top()
-            else True
-        )
+        owner = is_owner if not await self.config.allow_global_top() else True
 
         if await self.config.guild(ctx.guild).disabled():
             await ctx.send("**Leveler commands for this server are disabled!**")
