@@ -20,17 +20,19 @@ class TopParser(commands.Converter):
     page: int
     global_top: bool
     rep: bool
+    server: str
 
     async def convert(self, ctx, argument):
         parser = NoExitParser(description="top command arguments parser", add_help=False)
         parser.add_argument("page", nargs="?", type=int, default="1")
         parser.add_argument("-g", "--global", dest="global_top", action="store_true")
         parser.add_argument("-r", "--rep", action="store_true")
+        parser.add_argument("-s", "--server", "--guild", nargs="*")
         return parser.parse_args(argument.split())
 
 
 class Top(MixinMeta, metaclass=CompositeMetaClass):
-    @commands.command(usage="[page] [--global] [--rep]")
+    @commands.command(usage="[page] [--global] [--rep] [--server]")
     @commands.guild_only()
     @commands.max_concurrency(1, commands.BucketType.guild)
     async def top(
@@ -39,11 +41,16 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
         """Displays leaderboard.
 
         Add --rep for reputation.
-        Add --global parameter for global. Available only to owner by default."""
-        server = ctx.guild
+        Add --global parameter for global. Available only to owner by default.
+        Add --server <server> parameter to view other's server data. Available only to owner."""
+        is_owner = await self.bot.is_owner(ctx.author)
+        if options.server and is_owner:
+            server = await commands.GuildConverter.convert(ctx, " ".join(options.server))
+        else:
+            server = ctx.guild
         user = ctx.author
         owner = (
-            await self.bot.is_owner(ctx.author)
+            is_owner
             if not await self.config.allow_global_top()
             else True
         )
@@ -116,7 +123,7 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
                         user_stat = [
                             await self._find_server_rank(user, server),
                             await self._find_server_exp(user, server),
-                            userinfo["servers"][str(server.id)]["level"],
+                            userinfo["servers"].get(str(server.id), {}).get("level"),
                         ]
                     try:
                         if userinfo.get("servers", {}).get(str(server.id)):
