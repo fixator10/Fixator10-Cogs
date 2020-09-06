@@ -32,7 +32,7 @@ class TopParser(commands.Converter):
 
 
 class Top(MixinMeta, metaclass=CompositeMetaClass):
-    @commands.command(usage="[page] [--global] [--rep] [--server]")
+    @commands.command(usage="[page] [--global] [--rep] [--server SERVER]")
     @commands.guild_only()
     @commands.max_concurrency(1, commands.BucketType.guild)
     async def top(
