@@ -43,7 +43,7 @@ def bool_emojify(bool_var: bool) -> str:
 class MoreUtils(commands.Cog):
     """Some (maybe) useful utils."""
 
-    __version__ = "2.0.5"
+    __version__ = "2.0.6"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -157,7 +157,7 @@ class MoreUtils(commands.Cog):
             title=_("Discord Status"),
             timestamp=parse(response["page"]["updated_at"]),
             color=await ctx.embed_color(),
-            url="https://status.discordapp.com",
+            url="https://discordstatus.com",
         )
         embed.description = status_indicators.get(status["indicator"], status["indicator"])
         for component in components:
