@@ -188,7 +188,7 @@ class AdminUtils(commands.Cog):
             await ctx.tick()
 
     @emoji.command(name="message", aliases=["steal"])
-    async def emote_steal(self, ctx, name: str, message_id: discord.Message, *roles: discord.Role):
+    async def message_steal(self, ctx, name: str, message_id: discord.Message, *roles: discord.Role):
         """
         Add an emoji from a specified message
         Use double quotes if role name has spaces
@@ -208,6 +208,51 @@ class AdminUtils(commands.Cog):
             f"{emoji.group(3)}.{'gif' if emoji.group(2) else 'png'}?v=1"
         )
         async with self.session.get(url) as r:
+            data = await r.read()
+        try:
+            await ctx.guild.create_custom_emoji(
+                name=name,
+                image=data,
+                roles=roles,
+                reason=get_audit_reason(
+                    ctx.author,
+                    _("Restricted to roles: {}").format(
+                        ", ".join([f"{role.name}" for role in roles])
+                    )
+                    if roles
+                    else None,
+                ),
+            )
+            await ctx.tick()
+        except discord.InvalidArgument:
+            await ctx.send(
+                _(
+                    "This image type is not supported anymore or Discord returned incorrect data. Try again later."
+                )
+            )
+            return
+        except discord.HTTPException as e:
+            await ctx.send(chat.error(_("An error occurred on adding an emoji: {}").format(e)))
+
+    @emoji.command(name="member", aliases=["user"])
+    async def member_steal(self, ctx, name: str, member: discord.Member, *roles: discord.Role):
+        """
+        Add an emoji from a specified member's status
+        Use double quotes if role name has spaces
+
+        Examples:
+            `[p]emoji member Example @PhenoM4n4n`
+            `[p]emoji message RoleBased 462364255128256513 EmojiRole`
+        """
+        emoji = None
+        if member.activity:
+            if member.activity.emoji:
+                if member.activity.emoji.is_custom_emoji():
+                    emoji = member.activity.emoji
+        if not emoji:
+            await ctx.send(chat.error(_("This user does not have a custom emoji in their status.")))
+            return
+        async with self.session.get(str(emoji.url)) as r:
             data = await r.read()
         try:
             await ctx.guild.create_custom_emoji(
