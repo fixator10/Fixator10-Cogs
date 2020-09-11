@@ -235,7 +235,7 @@ class AdminUtils(commands.Cog):
             await ctx.send(chat.error(_("An error occurred on adding an emoji: {}").format(e)))
 
     @emoji.command(name="member", aliases=["user"])
-    async def member_steal(self, ctx, name: str, member: discord.Member, *roles: discord.Role):
+    async def emoji_steal_activity(self, ctx, name: str, member: discord.Member, *roles: discord.Role):
         """
         Add an emoji from a specified member's status
         Use double quotes if role name has spaces
