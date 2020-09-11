@@ -245,9 +245,7 @@ class AdminUtils(commands.Cog):
             `[p]emoji member RoleBased 162379234070467641 EmojiRole`
         """
         emoji = None
-        if member.activity:
-            if member.activity.emoji:
-                if member.activity.emoji.is_custom_emoji():
+        if member.activity and member.activity.emoji and  member.activity.emoji.is_custom_emoji():
                     emoji = member.activity.emoji
         if not emoji:
             await ctx.send(chat.error(_("This user does not have a custom emoji in their status.")))
