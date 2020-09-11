@@ -241,8 +241,8 @@ class AdminUtils(commands.Cog):
         Use double quotes if role name has spaces
 
         Examples:
-            `[p]emoji member Example @PhenoM4n4n`
-            `[p]emoji message RoleBased 462364255128256513 EmojiRole`
+            `[p]emoji member Example DiscordUser#0000`
+            `[p]emoji member RoleBased 162379234070467641 EmojiRole`
         """
         emoji = None
         if member.activity:
