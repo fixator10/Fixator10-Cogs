@@ -1,7 +1,7 @@
 import re
 from asyncio import TimeoutError as AsyncTimeoutError
 from random import choice
-from typing import Optional
+from typing import Optional, Union
 
 import aiohttp
 import discord
@@ -186,6 +186,29 @@ class AdminUtils(commands.Cog):
             await ctx.send(chat.error(_("An error occured on adding an emoji: {}").format(e)))
         else:
             await ctx.tick()
+
+    @emoji.command(name="steal", aliases=["member", "message"])
+    async def emoji_steal(self, ctx, name: str, id: Union[discord.Message, discord.Member, discord.Emoji, discord.PartialEmoji], *roles: discord.Role):
+        """
+        Add an emoji from either a member's status, a message, or an emoji from another server.
+        Use double quotes if role name has spaces
+        """
+        if isinstance(id, Union[discord.Emoji, discord.PartialEmoji]):
+            async with self.session.get(id.url) as r:
+                data = await r.read()
+        elif isinstance(id, discord.Message):
+            emoji = EMOJI_RE.search(message_id.content)
+            if not emoji:
+                await ctx.send(chat.error(_("No emojis found specified message.")))
+                return
+            url = (
+                "https://cdn.discordapp.com/emojis/"
+                f"{emoji.group(3)}.{'gif' if emoji.group(2) else 'png'}?v=1"
+            )
+            async with self.session.get(url) as r:
+                data = await r.read()
+        elif isinstance(id, discord.member):
+            
 
     @emoji.command(name="message", aliases=["steal"])
     async def message_steal(self, ctx, name: str, message_id: discord.Message, *roles: discord.Role):
