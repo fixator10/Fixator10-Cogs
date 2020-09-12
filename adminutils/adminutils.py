@@ -211,7 +211,7 @@ class AdminUtils(commands.Cog):
             
 
     @emoji.command(name="message", aliases=["steal"])
-    async def message_steal(self, ctx, name: str, message_id: discord.Message, *roles: discord.Role):
+    async def emoji_steal_message(self, ctx, name: str, message_id: discord.Message, *roles: discord.Role):
         """
         Add an emoji from a specified message
         Use double quotes if role name has spaces
@@ -258,19 +258,17 @@ class AdminUtils(commands.Cog):
             await ctx.send(chat.error(_("An error occurred on adding an emoji: {}").format(e)))
 
     @emoji.command(name="member", aliases=["user"])
-    async def member_steal(self, ctx, name: str, member: discord.Member, *roles: discord.Role):
+    async def emoji_steal_activity(self, ctx, name: str, member: discord.Member, *roles: discord.Role):
         """
         Add an emoji from a specified member's status
         Use double quotes if role name has spaces
 
         Examples:
-            `[p]emoji member Example @PhenoM4n4n`
-            `[p]emoji message RoleBased 462364255128256513 EmojiRole`
+            `[p]emoji member Example DiscordUser#0000`
+            `[p]emoji member RoleBased 162379234070467641 EmojiRole`
         """
         emoji = None
-        if member.activity:
-            if member.activity.emoji:
-                if member.activity.emoji.is_custom_emoji():
+        if member.activity and member.activity.emoji and  member.activity.emoji.is_custom_emoji():
                     emoji = member.activity.emoji
         if not emoji:
             await ctx.send(chat.error(_("This user does not have a custom emoji in their status.")))
