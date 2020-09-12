@@ -191,6 +191,7 @@ class AdminUtils(commands.Cog):
     async def emoji_steal(self, ctx, id: Union[discord.Message, discord.Member, discord.Emoji, discord.PartialEmoji], name: Optional[str], *roles: discord.Role):
         """
         Add an emoji from either a member's status, a message, or an emoji from another server.
+        a
         A name must be passed if you would like to lock the emoji to roles.
         Use double quotes if role name has spaces
         Examples:
