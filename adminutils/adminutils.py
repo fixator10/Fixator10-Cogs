@@ -197,7 +197,7 @@ class AdminUtils(commands.Cog):
         
         Examples:
             `[p]emoji steal 236598364265634245`
-            `[p]emoji steal @user peepoDance`
+            `[p]emoji import Username#0000 peepoDance`
             `[p]emoji steal :thonk: thonk emojiRole`
         """
         if isinstance(id, (discord.Emoji, discord.PartialEmoji)):
