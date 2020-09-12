@@ -84,7 +84,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.4.6"
+    __version__ = "2.4.7"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -744,10 +744,13 @@ class DataUtils(commands.Cog):
             em.add_field(name=_('":" required'), value=bool_emojify(emoji.require_colons))
             em.add_field(name=_("Managed"), value=bool_emojify(emoji.managed))
             em.add_field(name=_("Server"), value=emoji.guild)
+            em.add_field(name=_("Available"), value=bool_emojify(emoji.available))
+            em.add_field(name=_("Usable by bot"), value=bool_emojify(emoji.is_usable()))
             if emoji.roles:
                 em.add_field(
                     name=_("Roles"),
                     value=chat.escape("\n".join([x.name for x in emoji.roles]), formatting=True),
+                    inline=False
                 )
         elif isinstance(emoji, discord.PartialEmoji):
             em.add_field(
@@ -761,7 +764,7 @@ class DataUtils(commands.Cog):
         return em
 
     async def activity_embed(self, ctx, activity: discord.Activity):
-        """Make embed with info about emoji"""
+        """Make embed with info about activity"""
         # design is not my best side
         if isinstance(activity, discord.CustomActivity):
             em = discord.Embed(title=activity.name, color=await ctx.embed_color())
