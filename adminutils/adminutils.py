@@ -187,8 +187,8 @@ class AdminUtils(commands.Cog):
         else:
             await ctx.tick()
 
-    @emoji.command(name="steal", aliases=["member", "message"])
-    async def emoji_steal(self, ctx, id: Union[discord.Message, discord.Member, discord.Emoji, discord.PartialEmoji], name: Optional[str], *roles: discord.Role):
+    @emoji.command(name="import")
+    async def emoji_import(self, ctx, id: Union[discord.Message, discord.Member, discord.Emoji, discord.PartialEmoji], name: Optional[str], *roles: discord.Role):
         """
         Add an emoji from either a member's status, a message, or an emoji from another server.
         
