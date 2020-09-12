@@ -176,10 +176,12 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
             msg += "\n"
             msg += table
             msg += "\n"
-            msg += "Your rank: {}\n".format(user_stat[0]).rjust(table_width)
-            msg += "{}: {}\n".format(board_type, user_stat[1]).rjust(table_width)
+            msg += "Your rank: {}".format(user_stat[0]).rjust(table_width)
+            msg += "\n"
+            msg += "{}: {}".format(board_type, user_stat[1]).rjust(table_width)
+            msg += "\n"
             if is_level:
-                msg += "Level: {}\n".format(user_stat[2]).rjust(table_width)
+                msg += "Level: {}".format(user_stat[2]).rjust(table_width)
 
             em = discord.Embed(description=chat.box(msg), colour=user.colour)
             em.set_author(name=title, icon_url=icon_url)
