@@ -750,7 +750,7 @@ class DataUtils(commands.Cog):
                 em.add_field(
                     name=_("Roles"),
                     value=chat.escape("\n".join([x.name for x in emoji.roles]), formatting=True),
-                    inline=False
+                    inline=False,
                 )
         elif isinstance(emoji, discord.PartialEmoji):
             em.add_field(

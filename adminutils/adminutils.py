@@ -189,12 +189,18 @@ class AdminUtils(commands.Cog):
             await ctx.tick()
 
     @emoji.command(name="import")
-    async def emoji_import(self, ctx, name: str, location: Union[discord.Message, discord.Member, discord.Emoji, discord.PartialEmoji], *roles: discord.Role):
+    async def emoji_import(
+        self,
+        ctx,
+        name: str,
+        location: Union[discord.Message, discord.Member, discord.Emoji, discord.PartialEmoji],
+        *roles: discord.Role,
+    ):
         """
         Add an emoji from either a member's status, a message, or an emoji from another server.
-        
+
         Use double quotes if role name has spaces
-        
+
         Examples:
             `[p]emoji import 236598364265634245`
             `[p]emoji import Username#0000 peepoDance`
@@ -218,10 +224,16 @@ class AdminUtils(commands.Cog):
                 data = await r.read()
         elif isinstance(location, discord.Member):
             emoji = None
-            if location.activity and location.activity.emoji and location.activity.emoji.is_custom_emoji():
-                        emoji = location.activity.emoji
+            if (
+                location.activity
+                and location.activity.emoji
+                and location.activity.emoji.is_custom_emoji()
+            ):
+                emoji = location.activity.emoji
             if not emoji:
-                await ctx.send(chat.error(_("This user does not have a custom emoji in their status.")))
+                await ctx.send(
+                    chat.error(_("This user does not have a custom emoji in their status."))
+                )
                 return
             async with self.session.get(str(emoji.url)) as r:
                 data = await r.read()
