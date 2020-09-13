@@ -206,7 +206,8 @@ class MassThings(commands.Cog, command_attrs={"hidden": True}):
             for ban in bans:
                 try:
                     await ctx.guild.unban(
-                        ban.user, reason=get_audit_reason(ctx.author, "Mass unban (everyone)")
+                        ban.user,
+                        reason=get_audit_reason(ctx.author, "Mass unban (everyone)"),
                     )
                 except Exception as e:
                     c[str(e)] += 1
