@@ -196,9 +196,9 @@ class AdminUtils(commands.Cog):
         Use double quotes if role name has spaces
         
         Examples:
-            `[p]emoji steal 236598364265634245`
+            `[p]emoji import 236598364265634245`
             `[p]emoji import Username#0000 peepoDance`
-            `[p]emoji steal :thonk: thonk emojiRole`
+            `[p]emoji import :thonk: thonk emojiRole`
         """
         if isinstance(location, (discord.Emoji, discord.PartialEmoji)):
             async with self.session.get(str(location.url)) as r:
@@ -228,7 +228,7 @@ class AdminUtils(commands.Cog):
             name = emoji.name
         try:
             em = await ctx.guild.create_custom_emoji(
-                name=name if name else "stolen_emoji",
+                name=name,
                 image=data,
                 roles=roles,
                 reason=get_audit_reason(
