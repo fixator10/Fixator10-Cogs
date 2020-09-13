@@ -35,7 +35,8 @@ async def send_preview(
             ) as video_preview:
                 video_preview = BytesIO(await video_preview.read())
                 await ctx.send(
-                    embed=pages[page], file=discord.File(video_preview, filename=doc.filename)
+                    embed=pages[page],
+                    file=discord.File(video_preview, filename=doc.filename),
                 )
         except aiohttp.ClientResponseError as e:
             await ctx.send(_("Unable to get video preview: {}").format(e.message))
