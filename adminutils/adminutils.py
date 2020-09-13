@@ -240,8 +240,6 @@ class AdminUtils(commands.Cog):
                     else None,
                 ),
             )
-            await ctx.send(_(f"{em} created with the name `{em.name}`."))
-            await ctx.tick()
         except discord.InvalidArgument:
             await ctx.send(
                 _(
@@ -251,6 +249,9 @@ class AdminUtils(commands.Cog):
             return
         except discord.HTTPException as e:
             await ctx.send(chat.error(_("An error occurred on adding an emoji: {}").format(e)))
+        else:
+            await ctx.send(_(f"{em} created with the name `{em.name}`."))
+            await ctx.tick()
 
     @emoji.command(name="rename")
     async def emoji_rename(self, ctx, emoji: discord.Emoji, name: str, *roles: discord.Role):
@@ -281,7 +282,8 @@ class AdminUtils(commands.Cog):
             )
         except discord.Forbidden:
             await ctx.send(chat.error(_("I can't edit this emoji")))
-        await ctx.send(_(f"{em} edited to `{em.name}`."))
+        else:
+            await ctx.send(_(f"{em} edited to `{em.name}`."))
         await ctx.tick()
 
     @emoji.command(name="remove")
