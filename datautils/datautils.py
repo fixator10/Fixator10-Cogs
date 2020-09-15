@@ -84,7 +84,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.4.5"
+    __version__ = "2.4.8"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -385,7 +385,7 @@ class DataUtils(commands.Cog):
             ).format(
                 shard=server.shard_id,
                 members=server.member_count,
-                members_limit=server.max_members or "250000",
+                members_limit=server.max_members or "100000",
                 roles=len(server.roles),
                 channels=len(server.channels),
                 emojis=len([e for e in server.emojis if not e.animated]),
@@ -688,7 +688,7 @@ class DataUtils(commands.Cog):
                 except AsyncTimeoutError:
                     return
                 finally:
-                    await m.delete()
+                    await m.delete(delay=0)
             else:
                 await ctx.send_help()
                 return
@@ -744,10 +744,13 @@ class DataUtils(commands.Cog):
             em.add_field(name=_('":" required'), value=bool_emojify(emoji.require_colons))
             em.add_field(name=_("Managed"), value=bool_emojify(emoji.managed))
             em.add_field(name=_("Server"), value=emoji.guild)
+            em.add_field(name=_("Available"), value=bool_emojify(emoji.available))
+            em.add_field(name=_("Usable by bot"), value=bool_emojify(emoji.is_usable()))
             if emoji.roles:
                 em.add_field(
                     name=_("Roles"),
                     value=chat.escape("\n".join([x.name for x in emoji.roles]), formatting=True),
+                    inline=False,
                 )
         elif isinstance(emoji, discord.PartialEmoji):
             em.add_field(
@@ -761,7 +764,7 @@ class DataUtils(commands.Cog):
         return em
 
     async def activity_embed(self, ctx, activity: discord.Activity):
-        """Make embed with info about emoji"""
+        """Make embed with info about activity"""
         # design is not my best side
         if isinstance(activity, discord.CustomActivity):
             em = discord.Embed(title=activity.name, color=await ctx.embed_color())

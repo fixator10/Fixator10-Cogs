@@ -1,5 +1,8 @@
+from contextlib import suppress
+from io import BytesIO
+
 import aiohttp
-from discord import Embed
+import discord
 from redbot.core import commands
 from redbot.core.config import Config
 from redbot.core.i18n import Translator, cog_i18n
@@ -13,11 +16,42 @@ from .tracemoe import TraceMoe
 _ = Translator("ReverseImageSearch", __file__)
 
 
+async def send_preview(
+    ctx: commands.Context,
+    pages: list,
+    controls: dict,
+    message: discord.Message,
+    page: int,
+    timeout: float,
+    emoji: str,
+):
+    with suppress(discord.NotFound):
+        await message.delete()
+    doc = ctx.search_docs[page]
+    async with ctx.typing():
+        try:
+            async with ctx.cog.session.get(
+                doc.preview_scene, raise_for_status=True
+            ) as video_preview:
+                video_preview = BytesIO(await video_preview.read())
+                await ctx.send(
+                    embed=pages[page],
+                    file=discord.File(video_preview, filename=doc.filename),
+                )
+        except aiohttp.ClientResponseError as e:
+            await ctx.send(_("Unable to get video preview: {}").format(e.message))
+        except discord.HTTPException as e:
+            await ctx.send(_("Unable to send video preview: {}").format(e))
+
+
+TRACEMOE_MENU_CONTROLS = {**DEFAULT_CONTROLS, "\N{FILM FRAMES}": send_preview}
+
+
 @cog_i18n(_)
 class ReverseImageSearch(commands.Cog):
     """(Anime) Reverse Image Search"""
 
-    __version__ = "2.0.3"
+    __version__ = "2.1.0"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -71,7 +105,7 @@ class ReverseImageSearch(commands.Cog):
             except IndexError:
                 url = None
             # design is shit, ideas?
-            e = Embed(
+            e = discord.Embed(
                 title=entry.source or entry.title or entry.service,
                 description="\n".join(
                     [
@@ -84,7 +118,7 @@ class ReverseImageSearch(commands.Cog):
                 ),
                 url=url,
                 color=await ctx.embed_colour(),
-                timestamp=entry.created_at or Embed.Empty,
+                timestamp=entry.created_at or discord.Embed.Empty,
             )
             e.set_footer(
                 text=_("Via SauceNAO • Page {}/{}").format(page, search.results_returned),
@@ -163,7 +197,7 @@ class ReverseImageSearch(commands.Cog):
             if ctx.channel.nsfw and doc.is_adult:
                 continue
             # this design is kinda shit too, ideas, plssss
-            e = Embed(
+            e = discord.Embed(
                 title=doc.title,
                 description="\n".join(
                     [
@@ -198,7 +232,8 @@ class ReverseImageSearch(commands.Cog):
             )
             embeds.append(e)
         if embeds:
-            await menu(ctx, embeds, DEFAULT_CONTROLS)
+            ctx.search_docs = search.docs
+            await menu(ctx, embeds, TRACEMOE_MENU_CONTROLS)
         else:
             await ctx.send(chat.info(_("Nothing found")))
 

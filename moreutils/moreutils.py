@@ -43,7 +43,7 @@ def bool_emojify(bool_var: bool) -> str:
 class MoreUtils(commands.Cog):
     """Some (maybe) useful utils."""
 
-    __version__ = "2.0.4"
+    __version__ = "2.0.7"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -87,10 +87,10 @@ class MoreUtils(commands.Cog):
                 color_name,
                 str(color),
                 colorrgb,
-                colorcmyk,
-                colorhsv,
-                colorhls,
-                coloryiq,
+                tuple(map(lambda x: isinstance(x, float) and round(x, 2) or x, colorcmyk)),
+                tuple(map(lambda x: isinstance(x, float) and round(x, 2) or x, colorhsv)),
+                tuple(map(lambda x: isinstance(x, float) and round(x, 2) or x, colorhls)),
+                tuple(map(lambda x: isinstance(x, float) and round(x, 2) or x, coloryiq)),
                 color.value,
             ),
             url=f"http://www.color-hex.com/color/{str(color)[1:]}",
@@ -157,7 +157,7 @@ class MoreUtils(commands.Cog):
             title=_("Discord Status"),
             timestamp=parse(response["page"]["updated_at"]),
             color=await ctx.embed_color(),
-            url="https://status.discordapp.com",
+            url="https://discordstatus.com",
         )
         embed.description = status_indicators.get(status["indicator"], status["indicator"])
         for component in components:
