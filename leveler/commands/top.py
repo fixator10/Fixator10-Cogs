@@ -110,7 +110,10 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
                         )
 
                     if str(user.id) == userinfo["user_id"]:
-                        user_stat = [await self._find_server_rep_rank(user, server), userinfo["rep"]]
+                        user_stat = [
+                            await self._find_server_rep_rank(user, server),
+                            userinfo["rep"],
+                        ]
 
                 board_type = "Rep"
                 icon_url = server.icon_url
