@@ -83,6 +83,10 @@ class XP(MixinMeta):
             self.bot.dispatch("leveler_process_exp", message, exp)
         except Exception as exc:
             self.log.error(f"Unable to process xp for {user.id}: {exc}")
+        # FIXME: Sometimes this creates discrepancy in global total_exp and xp for all servers
+        # If this happens again, some sort of debug is needed here
+        # eval to check "db integrity":
+        # https://discord.com/channels/133049272517001216/133251234164375552/755416780968558653
         if userinfo["servers"][str(server.id)]["current_exp"] + exp >= required:
             userinfo["servers"][str(server.id)]["level"] += 1
             await self.db.users.update_one(
@@ -120,9 +124,7 @@ class XP(MixinMeta):
 
     async def _handle_levelup(self, user, userinfo, server, channel):
         # channel lock implementation
-        channel_id = await self.config.guild(server).lvl_msg_lock()
-        if channel_id:
-            channel = discord.utils.find(lambda m: m.id == channel_id, server.channels)
+        channel = server.get_channel(await self.config.guild(server).lvl_msg_lock())
 
         server_identifier = ""  # super hacky
         name = await self._is_mention(user)  # also super hacky
