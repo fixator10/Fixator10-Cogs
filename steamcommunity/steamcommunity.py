@@ -4,6 +4,7 @@ from datetime import datetime
 from functools import partial
 from socket import gethostbyname_ex
 from warnings import filterwarnings
+from io import BytesIO
 
 import aiohttp
 import discord
@@ -18,7 +19,6 @@ with suppress(Exception):
     import matplotlib.units as munits
     import matplotlib.dates as mdates
     import numpy as np
-    from io import BytesIO
 
 from .steamuser import SteamUser
 
@@ -112,7 +112,7 @@ filterwarnings("ignore", category=FutureWarning, module=r"valve.")
 class SteamCommunity(commands.Cog):
     """SteamCommunity commands"""
 
-    __version__ = "2.1.4"
+    __version__ = "2.1.5"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -297,6 +297,8 @@ class SteamCommunity(commands.Cog):
             em.set_image(url="attachment://CMgraph.png")
         # TODO: Regions?
         await ctx.send(embed=em, file=graph_file)
+        if graph_file:
+            graph_file.close()
 
     @commands.command(aliases=["gameserver"])
     async def getserver(self, ctx, serverip: str):
