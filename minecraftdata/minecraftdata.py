@@ -29,7 +29,7 @@ SERVICE_STATUS = {
 class MinecraftData(commands.Cog):
     """Minecraft-Related data"""
 
-    __version__ = "2.0.1"
+    __version__ = "2.0.2"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -61,18 +61,18 @@ class MinecraftData(commands.Cog):
                     params="overlay" if overlay else None,
                 ) as s:
                     files.append(
-                        discord.File(BytesIO(await s.read()), filename=f"{stripname}_head.png")
+                        discord.File(head_file := BytesIO(await s.read()), filename=f"{stripname}_head.png")
                     )
                 async with self.session.get(f"https://crafatar.com/skins/{uuid}") as s:
                     files.append(
-                        discord.File(BytesIO(await s.read()), filename=f"{stripname}.png")
+                        discord.File(skin_file := BytesIO(await s.read()), filename=f"{stripname}.png")
                     )
                 async with self.session.get(
                     f"https://crafatar.com/renders/body/{uuid}.png",
                     params="overlay" if overlay else None,
                 ) as s:
                     files.append(
-                        discord.File(BytesIO(await s.read()), filename=f"{stripname}_body.png")
+                        discord.File(body_file := BytesIO(await s.read()), filename=f"{stripname}_body.png")
                     )
             except aiohttp.ClientResponseError as e:
                 await ctx.send(
@@ -89,6 +89,9 @@ class MinecraftData(commands.Cog):
         em.set_image(url=f"attachment://{stripname}_body.png")
         em.set_footer(text=_("Provided by Crafatar"), icon_url="https://crafatar.com/logo.png")
         await ctx.send(embed=em, files=files)
+        head_file.close()
+        skin_file.close()
+        body_file.close()
 
     @minecraft.group(invoke_without_command=True)
     @checks.bot_has_permissions(embed_links=True)
