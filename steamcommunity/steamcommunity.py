@@ -2,9 +2,9 @@ from collections import namedtuple
 from contextlib import suppress
 from datetime import datetime
 from functools import partial
+from io import BytesIO
 from socket import gethostbyname_ex
 from warnings import filterwarnings
-from io import BytesIO
 
 import aiohttp
 import discord

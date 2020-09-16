@@ -61,18 +61,24 @@ class MinecraftData(commands.Cog):
                     params="overlay" if overlay else None,
                 ) as s:
                     files.append(
-                        discord.File(head_file := BytesIO(await s.read()), filename=f"{stripname}_head.png")
+                        discord.File(
+                            head_file := BytesIO(await s.read()), filename=f"{stripname}_head.png"
+                        )
                     )
                 async with self.session.get(f"https://crafatar.com/skins/{uuid}") as s:
                     files.append(
-                        discord.File(skin_file := BytesIO(await s.read()), filename=f"{stripname}.png")
+                        discord.File(
+                            skin_file := BytesIO(await s.read()), filename=f"{stripname}.png"
+                        )
                     )
                 async with self.session.get(
                     f"https://crafatar.com/renders/body/{uuid}.png",
                     params="overlay" if overlay else None,
                 ) as s:
                     files.append(
-                        discord.File(body_file := BytesIO(await s.read()), filename=f"{stripname}_body.png")
+                        discord.File(
+                            body_file := BytesIO(await s.read()), filename=f"{stripname}_body.png"
+                        )
                     )
             except aiohttp.ClientResponseError as e:
                 await ctx.send(
