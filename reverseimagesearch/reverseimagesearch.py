@@ -38,6 +38,7 @@ async def send_preview(
                     embed=pages[page],
                     file=discord.File(video_preview, filename=doc.filename),
                 )
+                video_preview.close()
         except aiohttp.ClientResponseError as e:
             await ctx.send(_("Unable to get video preview: {}").format(e.message))
         except discord.HTTPException as e:
@@ -51,7 +52,7 @@ TRACEMOE_MENU_CONTROLS = {**DEFAULT_CONTROLS, "\N{FILM FRAMES}": send_preview}
 class ReverseImageSearch(commands.Cog):
     """(Anime) Reverse Image Search"""
 
-    __version__ = "2.1.0"
+    __version__ = "2.1.1"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
