@@ -9,6 +9,7 @@
     "minecraft",
     "game"
   ],
+  "min_python_version": [3, 8, 0],
   "requirements": [
     "tabulate",
     "wcwidth",
