@@ -1,5 +1,6 @@
 import operator
 from abc import ABC
+from typing import Optional
 from asyncio import TimeoutError as AsyncTimeoutError
 
 import discord
@@ -120,7 +121,7 @@ class Badge(MixinMeta, ABC):
 
     @lvlset_badge.command(name="buy")
     @commands.guild_only()
-    async def buy(self, ctx, is_global: bool = False, *, name: str):
+    async def buy(self, ctx, is_global: Optional[bool] = False, *, name: str):
         """Buy a badge."""
         user = ctx.author
         server = ctx.guild
@@ -132,7 +133,6 @@ class Badge(MixinMeta, ABC):
         if server_badge_info:
             server_badges = server_badge_info["badges"]
             if name in server_badges:
-
                 if "{}_{}".format(name, str(serverid)) not in userinfo["badges"].keys():
                     badge_info = server_badges[name]
                     if badge_info["price"] == -1:
