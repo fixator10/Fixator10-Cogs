@@ -190,7 +190,8 @@ class Badge(MixinMeta, ABC):
                 )
         else:
             await ctx.send(
-                "**There are no badges to get! You can try to buy global badge via `{}lvlset badge buy True {}`**".format(
+                "**There are no badges to get! "
+                "You can try to buy global badge via `{}lvlset badge buy True {}`**".format(
                     ctx.clean_prefix, name
                 )
             )
