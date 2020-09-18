@@ -1,7 +1,7 @@
 import operator
 from abc import ABC
-from typing import Optional
 from asyncio import TimeoutError as AsyncTimeoutError
+from typing import Optional
 
 import discord
 from redbot.core import bank, commands
