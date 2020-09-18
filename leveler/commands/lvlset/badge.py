@@ -120,16 +120,13 @@ class Badge(MixinMeta, ABC):
 
     @lvlset_badge.command(name="buy")
     @commands.guild_only()
-    async def buy(self, ctx, name: str, global_badge: str = None):
+    async def buy(self, ctx, is_global: bool = False, *, name: str):
         """Buy a badge.
 
         Option: `-global`."""
         user = ctx.author
         server = ctx.guild
-        if global_badge == "-global":
-            serverid = "global"
-        else:
-            serverid = server.id
+        serverid = "global" if is_global else server.id
         userinfo = await self.db.users.find_one({"user_id": str(user.id)})
         userinfo = await self._badge_convert_dict(userinfo)
         server_badge_info = await self.db.badges.find_one({"server_id": str(serverid)})
