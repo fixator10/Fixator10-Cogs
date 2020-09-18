@@ -119,9 +119,9 @@ class Badge(MixinMeta, ABC):
             counter += 1
         await menu(ctx, embeds, DEFAULT_CONTROLS)
 
-    @lvlset_badge.command(name="buy")
+    @lvlset_badge.command()
     @commands.guild_only()
-    async def buy(self, ctx, is_global: Optional[bool] = False, *, name: str):
+    async def buy(self, ctx, is_global: Optional[bool], *, name: str):
         """Buy a badge."""
         user = ctx.author
         server = ctx.guild
@@ -184,14 +184,14 @@ class Badge(MixinMeta, ABC):
                     await ctx.send("**{}, you already have this badge!**".format(user.name))
             else:
                 await ctx.send(
-                    "**The badge `{}` does not exist. Try `{}badge available`**".format(
+                    "**The badge `{}` does not exist. Check `{}lvlset badge available`**".format(
                         name, ctx.clean_prefix
                     )
                 )
         else:
             await ctx.send(
-                "**There are no badges to get! Try `{}badge get [badge name] -global`.**".format(
-                    ctx.clean_prefix
+                "**There are no badges to get! You can try to buy global badge via `{}lvlset badge buy True {}`**".format(
+                    ctx.clean_prefix, name
                 )
             )
 
