@@ -149,8 +149,11 @@ class Badge(MixinMeta, ABC):
                     else:
                         await ctx.send(
                             "**{}, you are about to buy the `{}` badge for `{}`. Confirm by typing `yes`.**".format(
-                                await self._is_mention(user), name, badge_info["price"]
-                            )
+                                user.mention, name, badge_info["price"]
+                            ),
+                            allowed_mentions=discord.AllowedMentions(
+                                users=await self.config.mention()
+                            ),
                         )
                         pred = MessagePredicate.yes_or_no(ctx)
                         try:

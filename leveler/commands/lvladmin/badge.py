@@ -227,7 +227,10 @@ class Badge(MixinMeta):
             await ctx.send("**That badge doesn't exist in this server!**")
             return
         if badge_name in badges.keys():
-            await ctx.send("**{} already has that badge!**".format(await self._is_mention(user)))
+            await ctx.send(
+                "**{} already has that badge!**".format(user.mention),
+                allowed_mentions=discord.AllowedMentions(users=await self.config.mention()),
+            )
             return
         userinfo["badges"][badge_name] = badges[name]
         await self.db.users.update_one(
@@ -235,8 +238,9 @@ class Badge(MixinMeta):
         )
         await ctx.send(
             "**{} has just given `{}` the `{}` badge!**".format(
-                await self._is_mention(org_user), await self._is_mention(user), name
-            )
+                org_user.mention, user.mention, name
+            ),
+            allowed_mentions=discord.AllowedMentions(users=await self.config.mention()),
         )
 
     @commands.mod_or_permissions(manage_roles=True)
@@ -265,7 +269,10 @@ class Badge(MixinMeta):
         if name not in badges:
             await ctx.send("**That badge doesn't exist in this server!**")
         elif badge_name not in userinfo["badges"]:
-            await ctx.send("**{} does not have that badge!**".format(await self._is_mention(user)))
+            await ctx.send(
+                "**{} does not have that badge!**".format(user.mention),
+                allowed_mentions=discord.AllowedMentions(users=await self.config.mention()),
+            )
         else:
             if userinfo["badges"][badge_name]["price"] == -1:
                 del userinfo["badges"][badge_name]
@@ -274,10 +281,11 @@ class Badge(MixinMeta):
                 )
                 await ctx.send(
                     "**{} has taken the `{}` badge from {}! :upside_down:**".format(
-                        await self._is_mention(org_user),
+                        org_user.mention,
                         name,
-                        await self._is_mention(user),
-                    )
+                        user.mention,
+                    ),
+                    allowed_mentions=discord.AllowedMentions(users=await self.config.mention()),
                 )
             else:
                 await ctx.send("**You can't take away purchasable badges!**")

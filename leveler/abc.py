@@ -35,10 +35,6 @@ class MixinMeta(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def _is_mention(self, user) -> str:
-        raise NotImplementedError
-
-    @abstractmethod
     async def _hex_to_rgb(self, hex_num: str, a: int) -> tuple:
         raise NotImplementedError
 

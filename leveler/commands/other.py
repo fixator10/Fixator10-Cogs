@@ -45,9 +45,8 @@ class Other(MixinMeta, metaclass=CompositeMetaClass):
                 {"user_id": str(user.id)}, {"$set": {"rep": userinfo["rep"] + 1}}
             )
             await ctx.send(
-                "**You have just given {} a reputation point!**".format(
-                    await self._is_mention(user)
-                )
+                "**You have just given {} a reputation point!**".format(user.mention),
+                allowed_mentions=discord.AllowedMentions(users=await self.config.mention()),
             )
         else:
             # calulate time left

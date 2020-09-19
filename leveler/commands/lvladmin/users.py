@@ -95,6 +95,7 @@ class Users(MixinMeta):
             },
         )
         await ctx.send(
-            "**{}'s Level has been set to `{}`.**".format(await self._is_mention(user), level)
+            "**{}'s Level has been set to `{}`.**".format(user.mention, level),
+            allowed_mentions=discord.AllowedMentions(users=await self.config.mention()),
         )
         await self._handle_levelup(user, userinfo, server, channel)

@@ -1,6 +1,7 @@
 import re
 from asyncio import TimeoutError as AsyncTimeoutError
 
+import discord
 from redbot.core import bank
 from redbot.core.utils.predicates import MessagePredicate
 
@@ -19,12 +20,6 @@ class Utils(MixinMeta):
                 {"user_id": userinfo["user_id"]}, {"$set": {"badges": {}}}
             )
         return await self.db.users.find_one({"user_id": userinfo["user_id"]})
-
-    # should the user be mentioned based on settings?
-    async def _is_mention(self, user):
-        if await self.config.mention():
-            return user.mention
-        return user.name
 
     async def _rgb_to_hex(self, rgb):
         rgb = tuple(rgb[:3])
@@ -57,8 +52,9 @@ class Utils(MixinMeta):
                 return False
             await ctx.send(
                 "**{}, you are about to buy a background for `{}`. Confirm by typing `yes`.**".format(
-                    await self._is_mention(user), bg_price
-                )
+                    user.mention, bg_price
+                ),
+                allowed_mentions=discord.AllowedMentions(users=await self.config.mention()),
             )
             pred = MessagePredicate.yes_or_no(ctx)
             try:

@@ -38,8 +38,9 @@ class Profiles(MixinMeta, metaclass=CompositeMetaClass):
                 profile = await self.draw_profile(user, server)
                 file = discord.File(profile, filename="profile.png")
                 await channel.send(
-                    "**User profile for {}**".format(await self._is_mention(user)),
-                    file=file,
+                    "**User profile for {}**".format(user.mention),
+                    files=[file],  # FIXME: file enables mention for some reason
+                    allowed_mentions=discord.AllowedMentions(users=await self.config.mention()),
                 )
 
     async def profile_text(self, user, server, userinfo):
@@ -84,7 +85,6 @@ class Profiles(MixinMeta, metaclass=CompositeMetaClass):
             return
         channel = ctx.message.channel
         server = user.guild
-        curr_time = time.time()
 
         # creates user if doesn't exist
         await self._create_user(user, server)
@@ -104,8 +104,9 @@ class Profiles(MixinMeta, metaclass=CompositeMetaClass):
                 rank = await self.draw_rank(user, server)
                 file = discord.File(rank, filename="rank.png")
                 await channel.send(
-                    "**Ranking & Statistics for {}**".format(await self._is_mention(user)),
-                    file=file,
+                    "**Ranking & Statistics for {}**".format(user.mention),
+                    files=[file],  # FIXME: file enables mention for some reason
+                    allowed_mentions=discord.AllowedMentions(users=await self.config.mention()),
                 )
 
     async def rank_text(self, user, server, userinfo):

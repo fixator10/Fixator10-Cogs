@@ -127,7 +127,7 @@ class XP(MixinMeta):
         channel = server.get_channel(await self.config.guild(server).lvl_msg_lock())
 
         server_identifier = ""  # super hacky
-        name = await self._is_mention(user)  # also super hacky
+        name = user.mention  # also super hacky
         # private message takes precedent, of course
         if await self.config.guild(server).private_lvl_message():
             server_identifier = f" on {server.name}"
@@ -193,14 +193,22 @@ class XP(MixinMeta):
                         ),
                         colour=user.colour,
                     )
-                    await channel.send(embed=em)
+                    await channel.send(
+                        embed=em,
+                        allowed_mentions=discord.AllowedMentions(
+                            users=await self.config.mention()
+                        ),
+                    )
             else:
                 async with channel.typing():
                     levelup = await self.draw_levelup(user, server)
                     file = discord.File(levelup, filename="levelup.png")
                     await channel.send(
                         "**{} just gained a level{}!**".format(name, server_identifier),
-                        file=file,
+                        files=[file],  # FIXME: file enables mention for some reason
+                        allowed_mentions=discord.AllowedMentions(
+                            users=await self.config.mention()
+                        ),
                     )
 
     async def _find_server_rank(self, user, server):
