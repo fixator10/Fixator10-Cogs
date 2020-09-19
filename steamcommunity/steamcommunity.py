@@ -112,7 +112,7 @@ filterwarnings("ignore", category=FutureWarning, module=r"valve.")
 class SteamCommunity(commands.Cog):
     """SteamCommunity commands"""
 
-    __version__ = "2.1.5"
+    __version__ = "2.1.6"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -215,8 +215,11 @@ class SteamCommunity(commands.Cog):
             value=_("{} game bans").format(profile.gamebans) if profile.gamebans else "❌",
         )
         em.set_thumbnail(url=profile.avatar184)
+        footer = [_("Powered by Steam")]
+        if profile.lastlogoff:
+            footer.append(_("Last seen on"))
         em.set_footer(
-            text=_("Powered by Steam • Last seen on"),
+            text=" • ".join(footer),
             icon_url="https://steamstore-a.akamaihd.net/public/shared/images/responsive/share_steam_logo.png",
         )
         await ctx.send(embed=em)
