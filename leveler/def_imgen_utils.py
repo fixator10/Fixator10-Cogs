@@ -1,5 +1,6 @@
 import operator
 import random
+import warnings
 from io import BytesIO
 
 from redbot.core.errors import CogLoadError
@@ -9,15 +10,21 @@ from .abc import MixinMeta
 try:
     from PIL import Image, ImageDraw, ImageFilter
 except Exception as e:
-    raise CogLoadError(f"Can't load pillow: {e}\nDo '[p]pipinstall pillow'.")
+    raise CogLoadError(
+        f"Can't load pillow: {e}\n"
+        "Please follow next steps on wiki: "
+        "https://github.com/fixator10/Fixator10-Cogs/wiki/"
+        "Installing-Leveler#my-bot-throws-error-on-load-something-related-to-pillow."
+    )
 
 
 try:
     import numpy
     from scipy import cluster
 except Exception as e:
-    print(
-        f"{__file__}: numpy/scipy is unable to import: {e}\nAutocolor feature will be unavailable"
+    warnings.warn(
+        f"numpy/scipy is unable to import: {e}\n" "Autocolor feature will be not available",
+        RuntimeWarning,
     )
 
 

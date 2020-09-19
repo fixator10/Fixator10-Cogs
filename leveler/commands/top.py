@@ -1,6 +1,6 @@
-import argparse
 import math
 import operator
+from argparse import Namespace
 
 import discord
 from redbot.core import commands
@@ -9,26 +9,7 @@ from redbot.core.utils import chat_formatting as chat
 from tabulate import tabulate
 
 from ..abc import CompositeMetaClass, MixinMeta
-
-
-class NoExitParser(argparse.ArgumentParser):
-    def error(self, message):
-        raise commands.BadArgument(message)
-
-
-class TopParser(commands.Converter):
-    page: int
-    global_top: bool
-    rep: bool
-    server: str
-
-    async def convert(self, ctx, argument):
-        parser = NoExitParser(description="top command arguments parser", add_help=False)
-        parser.add_argument("page", nargs="?", type=int, default="1")
-        parser.add_argument("-g", "--global", dest="global_top", action="store_true")
-        parser.add_argument("-r", "--rep", action="store_true")
-        parser.add_argument("-s", "--server", "--guild", nargs="*")
-        return parser.parse_args(argument.split())
+from ..argparsers import TopParser
 
 
 class Top(MixinMeta, metaclass=CompositeMetaClass):
@@ -39,7 +20,7 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
         self,
         ctx,
         *,
-        options: TopParser = argparse.Namespace(page=1, server=None, rep=False, global_top=False)
+        options: TopParser = Namespace(page=1, server=None, rep=False, global_top=False)
     ):
         """Displays leaderboard.
 

@@ -7,6 +7,7 @@ import discord
 from fontTools.ttLib import TTFont
 from redbot.core import bank
 from redbot.core.data_manager import bundled_data_path
+from redbot.core.errors import CogLoadError
 
 from .abc import MixinMeta
 
@@ -14,7 +15,12 @@ try:
     from PIL import Image, ImageColor, ImageDraw, ImageFilter, ImageFont, ImageOps
     from PIL import features as pil_features
 except Exception as e:
-    raise RuntimeError(f"Can't load pillow: {e}\nDo '[p]pipinstall pillow'.")
+    raise CogLoadError(
+        f"Can't load pillow: {e}\n"
+        "Please follow next steps on wiki: "
+        "https://github.com/fixator10/Fixator10-Cogs/wiki/"
+        "Installing-Leveler#my-bot-throws-error-on-load-something-related-to-pillow."
+    )
 
 
 log = getLogger("red.fixator10-cogs.leveler")
