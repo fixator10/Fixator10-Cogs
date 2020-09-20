@@ -209,8 +209,6 @@ class AdminUtils(commands.Cog):
         if isinstance(location, (discord.Emoji, discord.PartialEmoji)):
             async with self.session.get(str(location.url)) as r:
                 data = await r.read()
-            if not name:
-                name = location.name
         elif isinstance(location, discord.Message):
             emoji = EMOJI_RE.search(location.content)
             if not emoji:
@@ -237,7 +235,6 @@ class AdminUtils(commands.Cog):
                 return
             async with self.session.get(str(emoji.url)) as r:
                 data = await r.read()
-            name = emoji.name
         try:
             em = await ctx.guild.create_custom_emoji(
                 name=name,
