@@ -23,11 +23,11 @@ class Debugging(MixinMeta):
 
     @debug_commands.group(name="integrity")
     async def db_integrity(self, ctx):
-        """Database integrity commands"""
+        """Database integrity commands."""
 
     @db_integrity.command(name="check")
     async def db_integrity_check(self, ctx):
-        """Check Database integrity
+        """Check Database integrity.
 
         Everything should be True. Otherwise there is malfunction somewhere in XP handling."""
         c = Counter()
@@ -43,9 +43,7 @@ class Debugging(MixinMeta):
 
     @db_integrity.command(name="fix")
     async def db_integrity_fix(self, ctx):
-        """Artificially fix Database integrity
-
-        Everything should be True. Otherwise there is malfunction somewhere in XP handling."""
+        """Artificially fix Database integrity."""
         async with ctx.typing():
             async for user in self.db.users.find({}):
                 total_xp = 0
