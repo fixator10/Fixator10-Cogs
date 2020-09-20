@@ -31,13 +31,14 @@ class Debugging(MixinMeta):
 
         Everything should be True. Otherwise there is malfunction somewhere in XP handling."""
         c = Counter()
-        async for user in self.db.users.find({}):
-            total_xp = 0
-            for server in user["servers"]:
-                xp = await self._level_exp(user["servers"][server]["level"])
-                total_xp += xp
-                total_xp += user["servers"][server]["current_exp"]
-            c[total_xp == user["total_exp"]] += 1
+        async with ctx.typing():
+            async for user in self.db.users.find({}):
+                total_xp = 0
+                for server in user["servers"]:
+                    xp = await self._level_exp(user["servers"][server]["level"])
+                    total_xp += xp
+                    total_xp += user["servers"][server]["current_exp"]
+                c[total_xp == user["total_exp"]] += 1
         await ctx.send(chat.box(tabulate(c.most_common())))
 
     @db_integrity.command(name="fix")
@@ -45,14 +46,15 @@ class Debugging(MixinMeta):
         """Artificially fix Database integrity
 
         Everything should be True. Otherwise there is malfunction somewhere in XP handling."""
-        async for user in self.db.users.find({}):
-            total_xp = 0
-            for server in user["servers"]:
-                xp = await self._level_exp(user["servers"][server]["level"])
-                total_xp += xp
-                total_xp += user["servers"][server]["current_exp"]
-            if total_xp != user["total_exp"]:
-                await self.db.users.update_one(
-                    {"user_id": user["user_id"]}, {"$set": {"total_exp": total_xp}}
-                )
+        async with ctx.typing():
+            async for user in self.db.users.find({}):
+                total_xp = 0
+                for server in user["servers"]:
+                    xp = await self._level_exp(user["servers"][server]["level"])
+                    total_xp += xp
+                    total_xp += user["servers"][server]["current_exp"]
+                if total_xp != user["total_exp"]:
+                    await self.db.users.update_one(
+                        {"user_id": user["user_id"]}, {"$set": {"total_exp": total_xp}}
+                    )
         await ctx.tick()
