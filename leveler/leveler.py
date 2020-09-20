@@ -460,6 +460,9 @@ class Leveler(commands.Cog):
         if user and user.bot:
             await ctx.send("**You can't give a rep to a bot!**")
             return
+        if "lastrep" in org_userinfo == user.id:
+            await ctx.send("**You already gave a rep point to this user!**")
+            return
         if "rep_block" not in org_userinfo:
             org_userinfo["rep_block"] = 0
 
@@ -471,6 +474,9 @@ class Leveler(commands.Cog):
             )
             await self.db.users.update_one(
                 {"user_id": str(user.id)}, {"$set": {"rep": userinfo["rep"] + 1}}
+            )
+            await self.db.users.update_one(
+                {"user_id": str(org_user.id)}, {"$set": {"lastrep": user.id}}
             )
             await ctx.send(
                 "**You have just given {} a reputation point!**".format(
@@ -3646,6 +3652,7 @@ class Leveler(commands.Cog):
                     "title": "",
                     "info": "I am a mysterious person.",
                     "rep": 0,
+                    "lastrep": str(user.id),
                     "badges": {},
                     "active_badges": {},
                     "rep_color": [],
