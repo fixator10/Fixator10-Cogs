@@ -1226,6 +1226,7 @@ class Leveler(commands.Cog):
         msg += "**Servers:** {}\n".format(len(self.bot.guilds))
         msg += "**Unique Users:** {}\n".format(num_users)
         msg += "**Mentions:** {}\n".format(await self.config.mention())
+        msg += "**Anti-Rep Farm:** {}\n".format(await self.config.guild(ctx.guild).antirepfarm())
         msg += "**Background Price:** {}\n".format(await self.config.bg_price())
         msg += "**Badge type:** {}\n".format(await self.config.badge_type())
         msg += "**Disabled Servers:** {}\n".format(", ".join(disabled_servers))
