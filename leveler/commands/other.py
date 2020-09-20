@@ -32,12 +32,20 @@ class Other(MixinMeta, metaclass=CompositeMetaClass):
         if user and user.bot:
             await ctx.send("**You can't give a rep to a bot!**")
             return
+        antirepfarm = await self.config.guild(ctx.guild).antirepfarm()
+        if antirepfarm == True and user:
+            if "lastrep" in org_userinfo:
+                if user.id == org_userinfo["lastrep"]:
+                    return await ctx.send("**You already gave a rep point to this user!**")
         if "rep_block" not in org_userinfo:
             org_userinfo["rep_block"] = 0
 
         delta = float(curr_time) - float(org_userinfo["rep_block"])
         if user and delta >= 43200.0 and delta > 0:
             userinfo = await self.db.users.find_one({"user_id": str(user.id)})
+            await self.db.users.update_one(
+                {"user_id": str(org_user.id)}, {"$set": {"lastrep": user.id}}
+            )
             await self.db.users.update_one(
                 {"user_id": str(org_user.id)}, {"$set": {"rep_block": curr_time}}
             )
