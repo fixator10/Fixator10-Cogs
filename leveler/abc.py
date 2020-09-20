@@ -55,7 +55,19 @@ class MixinMeta(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def _truncate_text(self, text, max_length) -> str:
+    def _truncate_text(self, text, max_length) -> str:
+        raise NotImplementedError
+
+    @abstractmethod
+    async def asyncify(self, func, *args, **kwargs):
+        raise NotImplementedError
+
+    @abstractmethod
+    async def asyncify_thread(self, func, *args, **kwargs):
+        raise NotImplementedError
+
+    @abstractmethod
+    async def asyncify_process(self, func, *args, **kwargs):
         raise NotImplementedError
 
     @abstractmethod
@@ -127,11 +139,11 @@ class MixinMeta(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def _center(self, start, end, text, font) -> int:
+    def _center(self, start, end, text, font) -> int:
         raise NotImplementedError
 
     @abstractmethod
-    async def char_in_font(self, unicode_char, font) -> bool:
+    def char_in_font(self, unicode_char, font) -> bool:
         raise NotImplementedError
 
     @abstractmethod
@@ -147,10 +159,11 @@ class MixinMeta(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def _name(self, user, max_length) -> str:
+    def _name(self, user, max_length) -> str:
         raise NotImplementedError
 
-    async def _add_dropshadow(
+    @abstractmethod
+    def _add_dropshadow(
         self,
         image,
         offset=(4, 4),
@@ -161,7 +174,8 @@ class MixinMeta(ABC):
     ):
         raise NotImplementedError
 
-    async def _add_corners(self, im, rad, multiplier=6):
+    @abstractmethod
+    def _add_corners(self, im, rad, multiplier=6):
         raise NotImplementedError
 
 

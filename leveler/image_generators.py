@@ -8,6 +8,7 @@ from fontTools.ttLib import TTFont
 from redbot.core import bank
 from redbot.core.data_manager import bundled_data_path
 from redbot.core.errors import CogLoadError
+from redbot.core.utils import AsyncIter
 
 from .abc import MixinMeta
 
@@ -33,7 +34,18 @@ log.debug(f"using {AVATAR_FORMAT} avatar format")
 class ImageGenerators(MixinMeta):
     """Image generators"""
 
-    async def draw_rank(self, user, server):
+    def make_rank_image(
+        self,
+        rank_background,
+        rank_avatar,
+        user,
+        server,
+        userinfo,
+        exp_total,
+        server_rank,
+        bank_credits,
+        credits_name,
+    ):
         # fonts
         font_thin_file = f"{bundled_data_path(self)}/Uni_Sans_Thin.ttf"
         font_heavy_file = f"{bundled_data_path(self)}/Uni_Sans_Heavy.ttf"
@@ -47,34 +59,21 @@ class ImageGenerators(MixinMeta):
         large_fnt = ImageFont.truetype(font_thin_file, 24)
         symbol_u_fnt = ImageFont.truetype(font_unicode_file, 15)
 
-        async def _write_unicode(text, init_x, y, font, unicode_font, fill):
+        bg_image = Image.open(rank_background).convert("RGBA")
+        profile_image = Image.open(rank_avatar).convert("RGBA")
+
+        def _write_unicode(text, init_x, y, font, unicode_font, fill):
             write_pos = init_x
             check_font = TTFont(font.path)
 
             for char in text:
                 # if char.isalnum() or char in string.punctuation or char in string.whitespace:
-                if await self.char_in_font(char, check_font):
+                if self.char_in_font(char, check_font):
                     draw.text((write_pos, y), "{}".format(char), font=font, fill=fill)
                     write_pos += font.getsize(char)[0]
                 else:
                     draw.text((write_pos, y), "{}".format(char), font=unicode_font, fill=fill)
                     write_pos += unicode_font.getsize(char)[0]
-
-        userinfo = await self.db.users.find_one({"user_id": str(user.id)})
-        # get urls
-        bg_url = userinfo["rank_background"]
-
-        async with self.session.get(bg_url) as r:
-            image = await r.content.read()
-        rank_background = BytesIO(image)
-        rank_avatar = BytesIO()
-        try:
-            await user.avatar_url_as(format=AVATAR_FORMAT).save(rank_avatar, seek_begin=True)
-        except discord.HTTPException:
-            rank_avatar = f"{bundled_data_path(self)}/defaultavatar.png"
-
-        bg_image = Image.open(rank_background).convert("RGBA")
-        profile_image = Image.open(rank_avatar).convert("RGBA")
 
         # set canvas
         width = 390
@@ -98,7 +97,6 @@ class ImageGenerators(MixinMeta):
         draw_overlay.rectangle([(0, 0), (bg_width, 20)], fill=(230, 230, 230, 200))
         draw_overlay.rectangle([(0, 20), (bg_width, 30)], fill=(120, 120, 120, 180))  # Level bar
         exp_frac = int(userinfo["servers"][str(server.id)]["current_exp"])
-        exp_total = await self._required_exp(userinfo["servers"][str(server.id)]["level"])
         exp_width = int(bg_width * (exp_frac / exp_total))
         if "rank_info_color" in userinfo.keys():
             exp_color = tuple(userinfo["rank_info_color"])
@@ -121,7 +119,7 @@ class ImageGenerators(MixinMeta):
 
         # draw corners and finalize
         info_section = Image.alpha_composite(info_section, info_section_process)
-        info_section = await self._add_corners(info_section, 25)
+        info_section = self._add_corners(info_section, 25)
         process.paste(info_section, (35, 0))
 
         # draw level circle
@@ -162,8 +160,8 @@ class ImageGenerators(MixinMeta):
         white_color = (220, 220, 220, 255)
 
         # name
-        await _write_unicode(
-            await self._truncate_text(await self._name(user, 20), 20),
+        _write_unicode(
+            self._truncate_text(self._name(user, 20), 20),
             100,
             0,
             name_fnt,
@@ -175,25 +173,25 @@ class ImageGenerators(MixinMeta):
         v_label_align = 75
         info_text_color = white_color
         draw.text(
-            (await self._center(100, 200, "  RANK", label_fnt), v_label_align),
+            (self._center(100, 200, "  RANK", label_fnt), v_label_align),
             "  RANK",
             font=label_fnt,
             fill=info_text_color,
         )  # Rank
         draw.text(
-            (await self._center(100, 360, "  LEVEL", label_fnt), v_label_align),
+            (self._center(100, 360, "  LEVEL", label_fnt), v_label_align),
             "  LEVEL",
             font=label_fnt,
             fill=info_text_color,
         )  # Rank
         draw.text(
-            (await self._center(260, 360, "BALANCE", label_fnt), v_label_align),
+            (self._center(260, 360, "BALANCE", label_fnt), v_label_align),
             "BALANCE",
             font=label_fnt,
             fill=info_text_color,
         )  # Rank
-        local_symbol = "\U0001F3E0 "
-        await _write_unicode(
+        local_symbol = "\N{HOUSE BUILDING} "
+        _write_unicode(
             local_symbol,
             117,
             v_label_align + 4,
@@ -201,7 +199,7 @@ class ImageGenerators(MixinMeta):
             symbol_u_fnt,
             info_text_color,
         )  # Symbol
-        await _write_unicode(
+        _write_unicode(
             local_symbol,
             195,
             v_label_align + 4,
@@ -211,34 +209,33 @@ class ImageGenerators(MixinMeta):
         )  # Symbol
 
         # userinfo
-        server_rank = "#{}".format(await self._find_server_rank(user, server))
+        server_rank = "#{}".format(server_rank)
         draw.text(
-            (await self._center(100, 200, server_rank, large_fnt), v_label_align - 30),
+            (self._center(100, 200, server_rank, large_fnt), v_label_align - 30),
             server_rank,
             font=large_fnt,
             fill=info_text_color,
         )  # Rank
         level_text = "{}".format(userinfo["servers"][str(server.id)]["level"])
         draw.text(
-            (await self._center(95, 360, level_text, large_fnt), v_label_align - 30),
+            (self._center(95, 360, level_text, large_fnt), v_label_align - 30),
             level_text,
             font=large_fnt,
             fill=info_text_color,
         )  # Level
-        bank_credits = await bank.get_balance(user)
         credit_txt = (
             f"{bank_credits}"
-            f"{credits_name if (credits_name := (await bank.get_currency_name(server))[0]) != '<' else '$'}"
+            f"{credits_name if (credits_name := (credits_name)[0]) != '<' else '$'}"
         )
         draw.text(
-            (await self._center(260, 360, credit_txt, large_fnt), v_label_align - 30),
+            (self._center(260, 360, credit_txt, large_fnt), v_label_align - 30),
             credit_txt,
             font=large_fnt,
             fill=info_text_color,
         )  # Balance
         exp_text = "{}/{}".format(exp_frac, exp_total)
         draw.text(
-            (await self._center(80, 360, exp_text, exp_fnt), 19),
+            (self._center(80, 360, exp_text, exp_fnt), 19),
             exp_text,
             font=exp_fnt,
             fill=info_text_color,
@@ -250,24 +247,16 @@ class ImageGenerators(MixinMeta):
         file.seek(0)
         return file
 
-    async def draw_levelup(self, user, server):
+    def make_levelup_image(
+        self,
+        level_background,
+        level_avatar,
+        userinfo,
+        server,
+    ):
         # fonts
         font_thin_file = f"{bundled_data_path(self)}/Uni_Sans_Thin.ttf"
         level_fnt = ImageFont.truetype(font_thin_file, 23)
-
-        userinfo = await self.db.users.find_one({"user_id": str(user.id)})
-
-        # get urls
-        bg_url = userinfo["levelup_background"]
-
-        async with self.session.get(bg_url) as r:
-            image = await r.content.read()
-        level_background = BytesIO(image)
-        level_avatar = BytesIO()
-        try:
-            await user.avatar_url_as(format=AVATAR_FORMAT).save(level_avatar, seek_begin=True)
-        except discord.HTTPException:
-            level_avatar = f"{bundled_data_path(self)}/defaultavatar.png"
 
         bg_image = Image.open(level_background).convert("RGBA")
         profile_image = Image.open(level_avatar).convert("RGBA")
@@ -290,7 +279,7 @@ class ImageGenerators(MixinMeta):
         total_gap = 2
         border = int(total_gap / 2)
         info_section = Image.new("RGBA", (165, 55), (230, 230, 230, 20))
-        info_section = await self._add_corners(info_section, int(lvl_circle_dia / 2))
+        info_section = self._add_corners(info_section, int(lvl_circle_dia / 2))
         process.paste(info_section, (border, border))
 
         # draw transparent overlay
@@ -344,20 +333,33 @@ class ImageGenerators(MixinMeta):
         level_up_text = self._contrast(info_color, white_text, dark_text)
         lvl_text = "LEVEL {}".format(userinfo["servers"][str(server.id)]["level"])
         draw.text(
-            (await self._center(60, 170, lvl_text, level_fnt), 23),
+            (self._center(60, 170, lvl_text, level_fnt), 23),
             lvl_text,
             font=level_fnt,
             fill=level_up_text,
         )  # Level Number
 
         result = Image.alpha_composite(result, process)
-        result = await self._add_corners(result, int(height / 2))
+        result = self._add_corners(result, int(height / 2))
         file = BytesIO()
         result.save(file, "PNG", quality=100)
         file.seek(0)
         return file
 
-    async def draw_profile(self, user, server):
+    def make_profile_image(
+        self,
+        profile_background,
+        profile_avatar,
+        user,
+        userinfo,
+        global_rank,
+        level,
+        level_exp,
+        bank_credits,
+        credits_name,
+        sorted_badges,
+        badges_images,
+    ):
         font_thin_file = f"{bundled_data_path(self)}/Uni_Sans_Thin.ttf"
         font_heavy_file = f"{bundled_data_path(self)}/Uni_Sans_Heavy.ttf"
         font_file = f"{bundled_data_path(self)}/Ubuntu-R_0.ttf"
@@ -377,24 +379,18 @@ class ImageGenerators(MixinMeta):
         text_u_fnt = ImageFont.truetype(font_unicode_file, 14)
         symbol_u_fnt = ImageFont.truetype(font_unicode_file, 15)
 
-        async def _write_unicode(text, init_x, y, font, unicode_font, fill):
+        def _write_unicode(text, init_x, y, font, unicode_font, fill):
             write_pos = init_x
             check_font = TTFont(font.path)
 
             for char in text:
                 # if char.isalnum() or char in string.punctuation or char in string.whitespace:
-                if await self.char_in_font(char, check_font):
+                if self.char_in_font(char, check_font):
                     draw.text((write_pos, y), "{}".format(char), font=font, fill=fill)
                     write_pos += font.getsize(char)[0]
                 else:
                     draw.text((write_pos, y), "{}".format(char), font=unicode_font, fill=fill)
                     write_pos += unicode_font.getsize(char)[0]
-
-        # get urls
-        userinfo = await self.db.users.find_one({"user_id": str(user.id)})
-        await self._badge_convert_dict(userinfo)
-        userinfo = await self.db.users.find_one({"user_id": str(user.id)})
-        bg_url = userinfo["profile_background"]
 
         # COLORS
         white_color = (240, 240, 240, 255)
@@ -420,15 +416,6 @@ class ImageGenerators(MixinMeta):
             level_fill = white_color
         else:
             level_fill = self._contrast(exp_fill, rep_fill, badge_fill)
-
-        async with self.session.get(bg_url) as r:
-            image = await r.content.read()
-            profile_background = BytesIO(image)
-        profile_avatar = BytesIO()
-        try:
-            await user.avatar_url_as(format=AVATAR_FORMAT).save(profile_avatar, seek_begin=True)
-        except discord.HTTPException:
-            profile_avatar = f"{bundled_data_path(self)}/defaultavatar.png"
 
         bg_image = Image.open(profile_background).convert("RGBA")
         profile_image = Image.open(profile_avatar).convert("RGBA")
@@ -491,15 +478,15 @@ class ImageGenerators(MixinMeta):
         head_align = 140
         # determine info text color
         info_text_color = self._contrast(info_fill, white_color, dark_color)
-        await _write_unicode(
-            (await self._truncate_text(user.name, 22)).upper(),
+        _write_unicode(
+            (self._truncate_text(user.name, 22)).upper(),
             head_align,
             142,
             name_fnt,
             name_u_fnt,
             info_text_color,
         )  # NAME
-        await _write_unicode(
+        _write_unicode(
             userinfo["title"].upper(),
             head_align,
             170,
@@ -517,9 +504,9 @@ class ImageGenerators(MixinMeta):
 
         # rep_text = "{} REP".format(userinfo["rep"])
         rep_text = "{}".format(userinfo["rep"])
-        await _write_unicode("❤", 257, 9, rep_fnt, rep_u_fnt, rep_fill)
+        _write_unicode("\N{HEAVY BLACK HEART}", 257, 9, rep_fnt, rep_u_fnt, rep_fill)
         draw.text(
-            (await self._center(278, 340, rep_text, rep_fnt), 10),
+            (self._center(278, 340, rep_text, rep_fnt), 10),
             rep_text,
             font=rep_fnt,
             fill=rep_fill,
@@ -527,30 +514,30 @@ class ImageGenerators(MixinMeta):
 
         label_align = 362  # vertical
         draw.text(
-            (await self._center(0, 140, "    RANK", label_fnt), label_align),
+            (self._center(0, 140, "    RANK", label_fnt), label_align),
             "    RANK",
             font=label_fnt,
             fill=info_text_color,
         )  # Rank
         draw.text(
-            (await self._center(0, 340, "    LEVEL", label_fnt), label_align),
+            (self._center(0, 340, "    LEVEL", label_fnt), label_align),
             "    LEVEL",
             font=label_fnt,
             fill=info_text_color,
         )  # Exp
         draw.text(
-            (await self._center(200, 340, "BALANCE", label_fnt), label_align),
+            (self._center(200, 340, "BALANCE", label_fnt), label_align),
             "BALANCE",
             font=label_fnt,
             fill=info_text_color,
         )  # Credits
 
-        global_symbol = "\U0001F30E "
+        global_symbol = "\N{EARTH GLOBE AMERICAS} "
 
-        await _write_unicode(
+        _write_unicode(
             global_symbol, 36, label_align + 5, label_fnt, symbol_u_fnt, info_text_color
         )  # Symbol
-        await _write_unicode(
+        _write_unicode(
             global_symbol,
             134,
             label_align + 5,
@@ -560,24 +547,24 @@ class ImageGenerators(MixinMeta):
         )  # Symbol
 
         # userinfo
-        global_rank = "#{}".format(await self._find_global_rank(user))
-        global_level = "{}".format(await self._find_level(userinfo["total_exp"]))
+        global_rank = "#{}".format(global_rank)
+        global_level = "{}".format(level)
         draw.text(
-            (await self._center(0, 140, global_rank, large_fnt), label_align - 27),
+            (self._center(0, 140, global_rank, large_fnt), label_align - 27),
             global_rank,
             font=large_fnt,
             fill=info_text_color,
         )  # Rank
         draw.text(
-            (await self._center(0, 340, global_level, large_fnt), label_align - 27),
+            (self._center(0, 340, global_level, large_fnt), label_align - 27),
             global_level,
             font=large_fnt,
             fill=info_text_color,
         )  # Exp
         # draw level bar
         exp_font_color = self._contrast(exp_fill, light_color, dark_color)
-        exp_frac = int(userinfo["total_exp"] - await self._level_exp(int(global_level)))
-        exp_total = await self._required_exp(int(global_level))
+        exp_frac = int(userinfo["total_exp"] - level_exp)
+        exp_total = level_exp
         bar_length = int(exp_frac / exp_total * 340)
         draw.rectangle(
             [(0, 305), (340, 323)],
@@ -589,19 +576,19 @@ class ImageGenerators(MixinMeta):
         )  # box
         exp_text = "{}/{}".format(exp_frac, exp_total)  # Exp
         draw.text(
-            (await self._center(0, 340, exp_text, exp_fnt), 305),
+            (self._center(0, 340, exp_text, exp_fnt), 305),
             exp_text,
             font=exp_fnt,
             fill=exp_font_color,
         )  # Exp Text
 
-        bank_credits = await bank.get_balance(user)
+        bank_credits = bank_credits
         credit_txt = (
             f"{bank_credits}"
-            f"{credits_name if (credits_name := (await bank.get_currency_name(server))[0]) != '<' else '$'}"
+            f"{credits_name if (credits_name := credits_name[0]) != '<' else '$'}"
         )
         draw.text(
-            (await self._center(200, 340, credit_txt, large_fnt), label_align - 27),
+            (self._center(200, 340, credit_txt, large_fnt), label_align - 27),
             credit_txt,
             font=large_fnt,
             fill=info_text_color,
@@ -616,143 +603,227 @@ class ImageGenerators(MixinMeta):
         for line in textwrap.wrap(userinfo["info"], width=32):
             # for line in textwrap.wrap('userinfo["info"]', width=200):
             # draw.text((margin, offset), line, font=text_fnt, fill=white_color)
-            await _write_unicode(line, margin, offset, text_fnt, text_u_fnt, txt_color)
+            _write_unicode(line, margin, offset, text_fnt, text_u_fnt, txt_color)
             offset += text_fnt.getsize(line)[1] + 2
 
-        # sort badges
-        priority_badges = []
+        # if await self.config.badge_type() == "circles":
+        # circles require antialiasing
+        vert_pos = 172
+        right_shift = 0
+        left = 9 + right_shift
+        size = 38
+        total_gap = 4  # /2
+        hor_gap = 6
+        vert_gap = 6
+        border_width = int(total_gap / 2)
+        multiplier = 6  # for antialiasing
+        raw_length = size * multiplier
+        mult = [
+            (0, 0),
+            (1, 0),
+            (2, 0),
+            (0, 1),
+            (1, 1),
+            (2, 1),
+            (0, 2),
+            (1, 2),
+            (2, 2),
+        ]
+        for num in range(9):
+            coord = (
+                left + int(mult[num][0]) * int(hor_gap + size),
+                vert_pos + int(mult[num][1]) * int(vert_gap + size),
+            )
+            if num < len(sorted_badges[:9]):
+                pair = sorted_badges[num]
+                badge = pair[0]
+                border_color = badge["border_color"]
+                # draw mask circle
+                mask = Image.new("L", (raw_length, raw_length), 0)
+                draw_thumb = ImageDraw.Draw(mask)
+                draw_thumb.ellipse((0, 0) + (raw_length, raw_length), fill=255, outline=0)
 
-        for badgename in userinfo["badges"].keys():
-            badge = userinfo["badges"][badgename]
-            priority_num = badge["priority_num"]
-            if priority_num != 0 and priority_num != -1:
-                priority_badges.append((badge, priority_num))
-        sorted_badges = sorted(priority_badges, key=operator.itemgetter(1), reverse=True)
+                badge_image = Image.open(badges_images[num]).convert("RGBA")
+                badge_image = badge_image.resize((raw_length, raw_length), Image.ANTIALIAS)
 
-        if await self.config.badge_type() == "circles":
-            # circles require antialiasing
-            vert_pos = 172
-            right_shift = 0
-            left = 9 + right_shift
-            size = 38
-            total_gap = 4  # /2
-            hor_gap = 6
-            vert_gap = 6
-            border_width = int(total_gap / 2)
-            multiplier = 6  # for antialiasing
-            raw_length = size * multiplier
-            mult = [
-                (0, 0),
-                (1, 0),
-                (2, 0),
-                (0, 1),
-                (1, 1),
-                (2, 1),
-                (0, 2),
-                (1, 2),
-                (2, 2),
-            ]
-            for num in range(9):
-                coord = (
-                    left + int(mult[num][0]) * int(hor_gap + size),
-                    vert_pos + int(mult[num][1]) * int(vert_gap + size),
-                )
-                if num < len(sorted_badges[:9]):
-                    pair = sorted_badges[num]
-                    badge = pair[0]
-                    bg_color = badge["bg_img"]
-                    border_color = badge["border_color"]
-                    # draw mask circle
-                    mask = Image.new("L", (raw_length, raw_length), 0)
-                    draw_thumb = ImageDraw.Draw(mask)
-                    draw_thumb.ellipse((0, 0) + (raw_length, raw_length), fill=255, outline=0)
-
-                    # determine image or color for badge bg
-                    if await self._valid_image_url(bg_color):
-                        # get image
-                        async with self.session.get(bg_color) as r:
-                            image = await r.content.read()
-                        badge = BytesIO(image)
-                        badge_image = Image.open(badge).convert("RGBA")
-                        badge_image = badge_image.resize((raw_length, raw_length), Image.ANTIALIAS)
-
-                        # structured like this because if border = 0, still leaves outline.
-                        if border_color:
-                            square = Image.new("RGBA", (raw_length, raw_length), border_color)
-                            # put border on ellipse/circle
-                            output = ImageOps.fit(
-                                square, (raw_length, raw_length), centering=(0.5, 0.5)
-                            )
-                            output = output.resize((size, size), Image.ANTIALIAS)
-                            outer_mask = mask.resize((size, size), Image.ANTIALIAS)
-                            process.paste(output, coord, outer_mask)
-
-                            # put on ellipse/circle
-                            output = ImageOps.fit(
-                                badge_image,
-                                (raw_length, raw_length),
-                                centering=(0.5, 0.5),
-                            )
-                            output = output.resize(
-                                (size - total_gap, size - total_gap), Image.ANTIALIAS
-                            )
-                            inner_mask = mask.resize(
-                                (size - total_gap, size - total_gap), Image.ANTIALIAS
-                            )
-                            process.paste(
-                                output,
-                                (coord[0] + border_width, coord[1] + border_width),
-                                inner_mask,
-                            )
-                        else:
-                            # put on ellipse/circle
-                            output = ImageOps.fit(
-                                badge_image,
-                                (raw_length, raw_length),
-                                centering=(0.5, 0.5),
-                            )
-                            output = output.resize((size, size), Image.ANTIALIAS)
-                            outer_mask = mask.resize((size, size), Image.ANTIALIAS)
-                            process.paste(output, coord, outer_mask)
-                else:
-                    plus_fill = exp_fill
-                    # put on ellipse/circle
-                    plus_square = Image.new("RGBA", (raw_length, raw_length))
-                    plus_draw = ImageDraw.Draw(plus_square)
-                    plus_draw.rectangle(
-                        [(0, 0), (raw_length, raw_length)],
-                        fill=(info_fill[0], info_fill[1], info_fill[2], 245),
-                    )
-                    # draw plus signs
-                    margin = 60
-                    thickness = 40
-                    v_left = int(raw_length / 2 - thickness / 2)
-                    v_right = v_left + thickness
-                    v_top = margin
-                    v_bottom = raw_length - margin
-                    plus_draw.rectangle(
-                        [(v_left, v_top), (v_right, v_bottom)],
-                        fill=(plus_fill[0], plus_fill[1], plus_fill[2], 245),
-                    )
-                    h_left = margin
-                    h_right = raw_length - margin
-                    h_top = int(raw_length / 2 - thickness / 2)
-                    h_bottom = h_top + thickness
-                    plus_draw.rectangle(
-                        [(h_left, h_top), (h_right, h_bottom)],
-                        fill=(plus_fill[0], plus_fill[1], plus_fill[2], 245),
-                    )
+                # structured like this because if border = 0, still leaves outline.
+                if border_color:
+                    square = Image.new("RGBA", (raw_length, raw_length), border_color)
                     # put border on ellipse/circle
-                    output = ImageOps.fit(
-                        plus_square, (raw_length, raw_length), centering=(0.5, 0.5)
-                    )
+                    output = ImageOps.fit(square, (raw_length, raw_length), centering=(0.5, 0.5))
                     output = output.resize((size, size), Image.ANTIALIAS)
                     outer_mask = mask.resize((size, size), Image.ANTIALIAS)
                     process.paste(output, coord, outer_mask)
 
+                    # put on ellipse/circle
+                    output = ImageOps.fit(
+                        badge_image,
+                        (raw_length, raw_length),
+                        centering=(0.5, 0.5),
+                    )
+                    output = output.resize((size - total_gap, size - total_gap), Image.ANTIALIAS)
+                    inner_mask = mask.resize((size - total_gap, size - total_gap), Image.ANTIALIAS)
+                    process.paste(
+                        output,
+                        (coord[0] + border_width, coord[1] + border_width),
+                        inner_mask,
+                    )
+                else:
+                    # put on ellipse/circle
+                    output = ImageOps.fit(
+                        badge_image,
+                        (raw_length, raw_length),
+                        centering=(0.5, 0.5),
+                    )
+                    output = output.resize((size, size), Image.ANTIALIAS)
+                    outer_mask = mask.resize((size, size), Image.ANTIALIAS)
+                    process.paste(output, coord, outer_mask)
+            else:
+                plus_fill = exp_fill
+                # put on ellipse/circle
+                plus_square = Image.new("RGBA", (raw_length, raw_length))
+                plus_draw = ImageDraw.Draw(plus_square)
+                plus_draw.rectangle(
+                    [(0, 0), (raw_length, raw_length)],
+                    fill=(info_fill[0], info_fill[1], info_fill[2], 245),
+                )
+                # draw plus signs
+                margin = 60
+                thickness = 40
+                v_left = int(raw_length / 2 - thickness / 2)
+                v_right = v_left + thickness
+                v_top = margin
+                v_bottom = raw_length - margin
+                plus_draw.rectangle(
+                    [(v_left, v_top), (v_right, v_bottom)],
+                    fill=(plus_fill[0], plus_fill[1], plus_fill[2], 245),
+                )
+                h_left = margin
+                h_right = raw_length - margin
+                h_top = int(raw_length / 2 - thickness / 2)
+                h_bottom = h_top + thickness
+                plus_draw.rectangle(
+                    [(h_left, h_top), (h_right, h_bottom)],
+                    fill=(plus_fill[0], plus_fill[1], plus_fill[2], 245),
+                )
+                # put border on ellipse/circle
+                output = ImageOps.fit(plus_square, (raw_length, raw_length), centering=(0.5, 0.5))
+                output = output.resize((size, size), Image.ANTIALIAS)
+                outer_mask = mask.resize((size, size), Image.ANTIALIAS)
+                process.paste(output, coord, outer_mask)
+
         result = Image.alpha_composite(result, process)
-        result = await self._add_corners(result, 25)
+        result = self._add_corners(result, 25)
         file = BytesIO()
         result.save(file, "PNG", quality=100)
         file.seek(0)
+        return file
+
+    async def draw_rank(self, user, server):
+        userinfo = await self.db.users.find_one({"user_id": str(user.id)})
+        # get urls
+        bg_url = userinfo["rank_background"]
+
+        async with self.session.get(bg_url) as r:
+            image = await r.content.read()
+        rank_background = BytesIO(image)
+        rank_avatar = BytesIO()
+        try:
+            await user.avatar_url_as(format=AVATAR_FORMAT).save(rank_avatar, seek_begin=True)
+        except discord.HTTPException:
+            rank_avatar = f"{bundled_data_path(self)}/defaultavatar.png"
+
+        file = await self.asyncify_thread(
+            self.make_rank_image,
+            rank_background,
+            rank_avatar,
+            user,
+            server,
+            userinfo,
+            await self._required_exp(userinfo["servers"][str(server.id)]["level"]),
+            await self._find_server_rank(user, server),
+            await bank.get_balance(user),
+            await bank.get_currency_name(server),
+        )
+        rank_background.close()
+        rank_avatar.close()
+        return file
+
+    async def draw_levelup(self, user, server):
+        userinfo = await self.db.users.find_one({"user_id": str(user.id)})
+
+        # get urls
+        bg_url = userinfo["levelup_background"]
+
+        async with self.session.get(bg_url) as r:
+            image = await r.content.read()
+        level_background = BytesIO(image)
+        level_avatar = BytesIO()
+        try:
+            await user.avatar_url_as(format=AVATAR_FORMAT).save(level_avatar, seek_begin=True)
+        except discord.HTTPException:
+            level_avatar = f"{bundled_data_path(self)}/defaultavatar.png"
+
+        file = await self.asyncify_thread(
+            self.make_levelup_image, level_background, level_avatar, userinfo, server
+        )
+        level_background.close()
+        level_avatar.close()
+        return file
+
+    async def draw_profile(self, user, server):
+        # get urls
+        userinfo = await self.db.users.find_one({"user_id": str(user.id)})
+        await self._badge_convert_dict(userinfo)
+        userinfo = await self.db.users.find_one({"user_id": str(user.id)})
+        bg_url = userinfo["profile_background"]
+
+        async with self.session.get(bg_url) as r:
+            image = await r.content.read()
+            profile_background = BytesIO(image)
+        profile_avatar = BytesIO()
+        try:
+            await user.avatar_url_as(format=AVATAR_FORMAT).save(profile_avatar, seek_begin=True)
+        except discord.HTTPException:
+            profile_avatar = f"{bundled_data_path(self)}/defaultavatar.png"
+
+        level = await self._find_level(userinfo["total_exp"])
+        level_exp = await self._level_exp(level)
+
+        priority_badges = []
+        async for badgename in AsyncIter(userinfo["badges"].keys()):
+            badge = userinfo["badges"][badgename]
+            priority_num = badge["priority_num"]
+            if priority_num != 0 and priority_num != -1:
+                priority_badges.append((badge, priority_num))
+        sorted_badges = await self.asyncify(
+            sorted, priority_badges, key=operator.itemgetter(1), reverse=True
+        )
+
+        badges_images = []
+        async for badge in AsyncIter(sorted_badges[:9]):
+            bg_color = badge[0]["bg_img"]
+            if await self._valid_image_url(bg_color):
+                async with self.session.get(bg_color) as r:
+                    image = await r.content.read()
+                    badges_images.append(BytesIO(image))
+
+        file = await self.asyncify_thread(
+            self.make_profile_image,
+            profile_background,
+            profile_avatar,
+            user,
+            userinfo,
+            await self._find_global_rank(user),
+            level,
+            level_exp,
+            await bank.get_balance(user),
+            await bank.get_currency_name(server),
+            sorted_badges,
+            badges_images,
+        )
+        profile_background.close()
+        profile_avatar.close()
+        for img in badges_images:
+            img.close()
         return file

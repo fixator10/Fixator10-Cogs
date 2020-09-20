@@ -1,5 +1,7 @@
 import re
 from asyncio import TimeoutError as AsyncTimeoutError
+from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
+from functools import partial
 
 import discord
 from redbot.core import bank
@@ -10,6 +12,20 @@ from .abc import MixinMeta
 
 class Utils(MixinMeta):
     """Utility methods"""
+
+    async def asyncify(self, func, *args, **kwargs):
+        """Run func in executor"""
+        return await self.bot.loop.run_in_executor(None, partial(func, *args, **kwargs))
+
+    async def asyncify_thread(self, func, *args, **kwargs):
+        """Run func in thread executor"""
+        with ThreadPoolExecutor() as pool:
+            return await self.bot.loop.run_in_executor(pool, partial(func, *args, **kwargs))
+
+    async def asyncify_process(self, func, *args, **kwargs):
+        """Run func in process executor"""
+        with ProcessPoolExecutor() as pool:
+            return await self.bot.loop.run_in_executor(pool, partial(func, *args, **kwargs))
 
     def bool_emojify(self, bool_var: bool) -> str:
         return "✅" if bool_var else "❌"
@@ -75,7 +91,7 @@ class Utils(MixinMeta):
         reg_ex = r"^#(?:[0-9a-fA-F]{3}){1,2}$"
         return re.search(reg_ex, str(color))
 
-    async def _truncate_text(self, text, max_length):
+    def _truncate_text(self, text, max_length):
         if len(text) > max_length:
             return text[: max_length - 1] + "…"
         return text

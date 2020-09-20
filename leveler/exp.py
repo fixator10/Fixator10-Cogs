@@ -184,7 +184,7 @@ class XP(MixinMeta):
         except Exception as exc:
             await channel.send(f"Error. Badge was not given: {exc}")
 
-        if await self.config.guild(server).lvl_msg():  # if lvl msg is enabled
+        if channel and await self.config.guild(server).lvl_msg():  # if lvl msg is enabled
             if await self.config.guild(server).text_only():
                 async with channel.typing():
                     em = discord.Embed(
@@ -210,42 +210,23 @@ class XP(MixinMeta):
                             users=await self.config.mention()
                         ),
                     )
+                levelup.close()
 
     async def _find_server_rank(self, user, server):
-        targetid = str(user.id)
-        users = []
-
-        async for userinfo in self.db.users.find({}):
-            try:
-                server_exp = 0
-                userid = userinfo["user_id"]
-                for i in range(userinfo["servers"][str(server.id)]["level"]):
-                    server_exp += await self._required_exp(i)
-                server_exp += userinfo["servers"][str(server.id)]["current_exp"]
-                users.append((userid, server_exp))
-            except KeyError:
-                pass
-
-        sorted_list = sorted(users, key=operator.itemgetter(1), reverse=True)
-
         rank = 1
-        async for a_user in AsyncIter(sorted_list):
-            if a_user[0] == targetid:
+        async for userinfo in self.db.users.find({f"servers.{server.id}": {"$exists": True}}).sort(
+            [(f"servers.{server.id}.level", -1), (f"servers.{server.id}.current_exp", -1)]
+        ):
+            if userinfo["user_id"] == str(user.id):
                 return rank
             rank += 1
 
     async def _find_server_rep_rank(self, user, server):
-        targetid = str(user.id)
-        users = []
-        async for userinfo in self.db.users.find({}):
-            if "servers" in userinfo and str(server.id) in userinfo["servers"]:
-                users.append((userinfo["user_id"], userinfo["rep"]))
-
-        sorted_list = sorted(users, key=operator.itemgetter(1), reverse=True)
-
         rank = 1
-        async for a_user in AsyncIter(sorted_list):
-            if a_user[0] == targetid:
+        async for userinfo in self.db.users.find({f"servers.{server.id}": {"$exists": True}}).sort(
+            "rep", -1
+        ):
+            if userinfo.get("user_id") == str(user.id):
                 return rank
             rank += 1
 
@@ -254,7 +235,7 @@ class XP(MixinMeta):
         userinfo = await self.db.users.find_one({"user_id": str(user.id)})
 
         try:
-            for i in range(userinfo["servers"][str(server.id)]["level"]):
+            async for i in AsyncIter(range(userinfo["servers"][str(server.id)]["level"])):
                 server_exp += await self._required_exp(i)
             server_exp += userinfo["servers"][str(server.id)]["current_exp"]
             return server_exp
@@ -262,35 +243,15 @@ class XP(MixinMeta):
             return server_exp
 
     async def _find_global_rank(self, user):
-        users = []
-
-        async for userinfo in self.db.users.find({}):
-            try:
-                userid = userinfo["user_id"]
-                users.append((userid, userinfo["total_exp"]))
-            except KeyError:
-                pass
-        sorted_list = sorted(users, key=operator.itemgetter(1), reverse=True)
-
         rank = 1
-        async for stats in AsyncIter(sorted_list):
-            if stats[0] == str(user.id):
+        async for userinfo in self.db.users.find({}).sort("total_exp", -1):
+            if userinfo.get("user_id") == str(user.id):
                 return rank
             rank += 1
 
     async def _find_global_rep_rank(self, user):
-        users = []
-
-        async for userinfo in self.db.users.find({}):
-            try:
-                userid = userinfo["user_id"]
-                users.append((userid, userinfo["rep"]))
-            except KeyError:
-                pass
-        sorted_list = sorted(users, key=operator.itemgetter(1), reverse=True)
-
         rank = 1
-        async for stats in AsyncIter(sorted_list):
-            if stats[0] == str(user.id):
+        async for userinfo in self.db.users.find({}).sort("rep", -1):
+            if userinfo.get("user_id") == str(user.id):
                 return rank
             rank += 1

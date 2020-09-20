@@ -42,6 +42,7 @@ class Profiles(MixinMeta, metaclass=CompositeMetaClass):
                     files=[file],  # FIXME: file enables mention for some reason
                     allowed_mentions=discord.AllowedMentions(users=await self.config.mention()),
                 )
+            profile.close()
 
     async def profile_text(self, user, server, userinfo):
         em = discord.Embed(colour=user.colour)
@@ -108,6 +109,7 @@ class Profiles(MixinMeta, metaclass=CompositeMetaClass):
                     files=[file],  # FIXME: file enables mention for some reason
                     allowed_mentions=discord.AllowedMentions(users=await self.config.mention()),
                 )
+            rank.close()
 
     async def rank_text(self, user, server, userinfo):
         em = discord.Embed(colour=user.colour)

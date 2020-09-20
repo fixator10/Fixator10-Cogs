@@ -1,5 +1,6 @@
 import operator
 import random
+import traceback
 import warnings
 from io import BytesIO
 
@@ -23,7 +24,8 @@ try:
     from scipy import cluster
 except Exception as e:
     warnings.warn(
-        f"numpy/scipy is unable to import: {e}\n" "Autocolor feature will be not available",
+        "numpy/scipy is unable to import. Autocolor feature will be not available. Traceback:\n"
+        f"{''.join(traceback.format_exception_only(type(e), e))}",
         RuntimeWarning,
     )
 
@@ -36,7 +38,8 @@ class DefaultImageGeneratorsUtils(MixinMeta):
             async with self.session.get(url) as r:
                 image = await r.content.read()
             image = BytesIO(image)
-            Image.open(image).convert("RGBA")
+            await self.asyncify((await self.asyncify(Image.open, image)).convert, "RGBA")
+            image.close()
             return True
         except IOError:
             return False
@@ -76,16 +79,17 @@ class DefaultImageGeneratorsUtils(MixinMeta):
             peak = peak.astype(int)
 
             colors.append("".join(format(c, "02x") for c in peak))
+        image.close()
         return colors  # returns array
 
     # finds the the pixel to center the text
-    async def _center(self, start, end, text, font):
+    def _center(self, start, end, text, font):
         dist = end - start
         width = font.getsize(text)[0]
         start_pos = start + ((dist - width) / 2)
         return int(start_pos)
 
-    async def char_in_font(self, unicode_char, font):
+    def char_in_font(self, unicode_char, font):
         for cmap in font["cmap"].tables:
             if cmap.isUnicode():
                 if ord(unicode_char) in cmap.cmap:
@@ -113,17 +117,16 @@ class DefaultImageGeneratorsUtils(MixinMeta):
             return bg_lum / f_lum
         return f_lum / bg_lum
 
-    async def _name(self, user, max_length):
+    def _name(self, user, max_length):
         """returns a string with possibly a nickname"""
         if user.name == user.display_name:
             return user.name
         return "{} ({})".format(
             user.name,
-            await self._truncate_text(user.display_name, max_length - len(user.name) - 3),
-            max_length,
+            self._truncate_text(user.display_name, max_length - len(user.name) - 3),
         )
 
-    async def _add_dropshadow(
+    def _add_dropshadow(
         self,
         image,
         offset=(4, 4),
@@ -160,7 +163,7 @@ class DefaultImageGeneratorsUtils(MixinMeta):
         back.paste(image, (image_left, image_top))
         return back
 
-    async def _add_corners(self, im, rad, multiplier=6):
+    def _add_corners(self, im, rad, multiplier=6):
         raw_length = rad * 2 * multiplier
         circle = Image.new("L", (raw_length, raw_length), 0)
         draw = ImageDraw.Draw(circle)

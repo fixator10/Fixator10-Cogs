@@ -20,7 +20,7 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
         self,
         ctx,
         *,
-        options: TopParser = Namespace(page=1, server=None, rep=False, global_top=False)
+        options: TopParser = Namespace(page=1, server=None, rep=False, global_top=False),
     ):
         """Displays leaderboard.
 
@@ -45,7 +45,7 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
             is_level = False
             if options.rep and options.global_top and owner:
                 title = "Global Rep Leaderboard for {}\n".format(self.bot.user.name)
-                async for userinfo in self.db.users.find({}):
+                async for userinfo in self.db.users.find({}).sort("rep", -1):
                     users.append((userinfo.get("username", userinfo["user_id"]), userinfo["rep"]))
 
                     if str(user.id) == userinfo["user_id"]:
@@ -56,7 +56,7 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
             elif options.global_top and owner:
                 is_level = True if await self.config.global_levels() else False
                 title = "Global Exp Leaderboard for {}\n".format(self.bot.user.name)
-                async for userinfo in self.db.users.find({}):
+                async for userinfo in self.db.users.find({}).sort("total_exp", -1):
                     if is_level:
                         users.append(
                             (
@@ -84,11 +84,10 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
                 icon_url = self.bot.user.avatar_url
             elif options.rep:
                 title = "Rep Leaderboard for {}\n".format(server.name)
-                async for userinfo in self.db.users.find({}):
-                    if userinfo.get("servers", {}).get(str(server.id)):
-                        users.append(
-                            (userinfo.get("username", userinfo["user_id"]), userinfo["rep"])
-                        )
+                async for userinfo in self.db.users.find(
+                    {f"servers.{server.id}": {"$exists": True}}
+                ).sort("rep", -1):
+                    users.append((userinfo.get("username", userinfo["user_id"]), userinfo["rep"]))
 
                     if str(user.id) == userinfo["user_id"]:
                         user_stat = [
@@ -101,7 +100,11 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
             else:
                 is_level = True
                 title = "Exp Leaderboard for {}\n".format(server.name)
-                async for userinfo in self.db.users.find({}):
+                async for userinfo in self.db.users.find(
+                    {f"servers.{server.id}": {"$exists": True}}
+                ).sort(
+                    [(f"servers.{server.id}.level", -1), (f"servers.{server.id}.current_exp", -1)]
+                ):
                     if str(user.id) == userinfo["user_id"]:
                         user_stat = [
                             await self._find_server_rank(user, server),
@@ -125,12 +128,11 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
                         pass
                 board_type = "Points"
                 icon_url = server.icon_url
-            sorted_list = sorted(users, key=operator.itemgetter(1), reverse=True)
 
             # multiple page support
             page = options.page
             per_page = 15
-            pages = math.ceil(len(sorted_list) / per_page)
+            pages = math.ceil(len(users) / per_page)
             if page > pages:
                 page = pages
 
@@ -140,9 +142,7 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
             end_index = per_page * page
             members = []
 
-            async for rank, single_user in AsyncIter(sorted_list[start_index:end_index]).enumerate(
-                rank
-            ):
+            async for rank, single_user in AsyncIter(users[start_index:end_index]).enumerate(rank):
                 members.append(
                     (rank, single_user[1], single_user[2], single_user[0])
                     if is_level
