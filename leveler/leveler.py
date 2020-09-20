@@ -460,7 +460,7 @@ class Leveler(commands.Cog):
         if user and user.bot:
             await ctx.send("**You can't give a rep to a bot!**")
             return
-        if "lastrep" in org_userinfo == user.id:
+        if "lastrep" in org_userinfo == user:
             await ctx.send("**You already gave a rep point to this user!**")
             return
         if "rep_block" not in org_userinfo:
