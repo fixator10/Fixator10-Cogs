@@ -84,7 +84,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.4.8"
+    __version__ = "2.4.9"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -179,7 +179,7 @@ class DataUtils(commands.Cog):
                     value="\n".join(GUILD_FEATURES.get(f, f) for f in guild.features).format(
                         banner=guild.banner and f" [🔗]({guild.banner_url_as(format='png')})" or "",
                         splash=guild.splash and f" [🔗]({guild.splash_url_as(format='png')})" or "",
-                        discovery=guild.discovery_splash
+                        discovery=getattr(guild, "discovery_splash", None)
                         and f" [🔗]({guild.discovery_splash_url_as(format='png')})"
                         or "",
                     ),

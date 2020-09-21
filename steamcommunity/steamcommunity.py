@@ -59,7 +59,7 @@ async def find_service(services: dict, service: str):
     return Service("", "", "", "")
 
 
-async def gen_steam_cm_graph(graphdata: dict):
+def gen_steam_cm_graph(graphdata: dict):
     """Make an graph for connection managers"""
     formats = [
         "%y",  # ticks are mostly years
@@ -112,7 +112,7 @@ filterwarnings("ignore", category=FutureWarning, module=r"valve.")
 class SteamCommunity(commands.Cog):
     """SteamCommunity commands"""
 
-    __version__ = "2.1.5"
+    __version__ = "2.1.7"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -129,9 +129,11 @@ class SteamCommunity(commands.Cog):
     async def initialize(self):
         """Should be called straight after cog instantiation."""
         apikeys = await self.bot.get_shared_api_tokens("steam")
-        self.steam = await self.bot.loop.run_in_executor(
-            None, partial(interface.API, key=apikeys.get("web"))
-        )
+        self.steam = await self.asyncify(interface.API, key=apikeys.get("web"))
+
+    async def asyncify(self, func, *args, **kwargs):
+        """Run func in executor"""
+        return await self.bot.loop.run_in_executor(None, partial(func, *args, **kwargs))
 
     @commands.group(aliases=["sc"])
     async def steamcommunity(self, ctx):
@@ -215,8 +217,11 @@ class SteamCommunity(commands.Cog):
             value=_("{} game bans").format(profile.gamebans) if profile.gamebans else "❌",
         )
         em.set_thumbnail(url=profile.avatar184)
+        footer = [_("Powered by Steam")]
+        if profile.lastlogoff:
+            footer.append(_("Last seen on"))
         em.set_footer(
-            text=_("Powered by Steam • Last seen on"),
+            text=" • ".join(footer),
             icon_url="https://steamstore-a.akamaihd.net/public/shared/images/responsive/share_steam_logo.png",
         )
         await ctx.send(embed=em)
@@ -292,7 +297,7 @@ class SteamCommunity(commands.Cog):
         )
         graph_file = None
         if all(lib in globals().keys() for lib in ["plt", "np"]):
-            graph_file = await gen_steam_cm_graph(graph)
+            graph_file = await self.asyncify(gen_steam_cm_graph, graph)
             graph_file = discord.File(graph_file, filename="CMgraph.png")
             em.set_image(url="attachment://CMgraph.png")
         # TODO: Regions?
@@ -327,9 +332,7 @@ class SteamCommunity(commands.Cog):
 
         async with ctx.typing():
             try:
-                server = await self.bot.loop.run_in_executor(
-                    None, valve.source.a2s.ServerQuerier, serverc
-                )
+                server = await self.asyncify(valve.source.a2s.ServerQuerier, serverc)
                 info = server.info()
                 server.close()
 
@@ -396,6 +399,4 @@ class SteamCommunity(commands.Cog):
     @commands.Cog.listener()
     async def on_red_api_tokens_update(self, service_name, api_tokens):
         if service_name == "steam":
-            self.steam = await self.bot.loop.run_in_executor(
-                None, partial(interface.API, key=api_tokens.get("web"))
-            )
+            self.steam = await self.asyncify(interface.API, key=api_tokens.get("web"))
