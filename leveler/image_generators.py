@@ -655,14 +655,14 @@ class ImageGenerators(MixinMeta):
                 left + int(mult[num][0]) * int(hor_gap + size),
                 vert_pos + int(mult[num][1]) * int(vert_gap + size),
             )
+            # draw mask circle
+            mask = Image.new("L", (raw_length, raw_length), 0)
+            draw_thumb = ImageDraw.Draw(mask)
+            draw_thumb.ellipse((0, 0) + (raw_length, raw_length), fill=255, outline=0)
             if num < len(sorted_badges[:9]):
                 pair = sorted_badges[num]
                 badge = pair[0]
                 border_color = badge["border_color"]
-                # draw mask circle
-                mask = Image.new("L", (raw_length, raw_length), 0)
-                draw_thumb = ImageDraw.Draw(mask)
-                draw_thumb.ellipse((0, 0) + (raw_length, raw_length), fill=255, outline=0)
 
                 badge_image = Image.open(badges_images[num]).convert("RGBA")
                 badges_images[num].close()
@@ -701,7 +701,6 @@ class ImageGenerators(MixinMeta):
                     output = output.resize((size, size), Image.ANTIALIAS)
                     outer_mask = mask.resize((size, size), Image.ANTIALIAS)
                     process.paste(output, coord, outer_mask)
-                mask.close()
                 badge_image.close()
             else:
                 plus_fill = exp_fill
@@ -737,6 +736,7 @@ class ImageGenerators(MixinMeta):
                 outer_mask = mask.resize((size, size), Image.ANTIALIAS)
                 process.paste(output, coord, outer_mask)
                 plus_square.close()
+            mask.close()
 
         result = Image.alpha_composite(result, process)
         result = self._add_corners(result, 25)
