@@ -61,6 +61,8 @@ class ImageGenerators(MixinMeta):
 
         bg_image = Image.open(rank_background).convert("RGBA")
         profile_image = Image.open(rank_avatar).convert("RGBA")
+        rank_background.close()
+        rank_avatar.close()
 
         def _write_unicode(text, init_x, y, font, unicode_font, fill):
             write_pos = init_x
@@ -244,6 +246,14 @@ class ImageGenerators(MixinMeta):
         result = Image.alpha_composite(result, process)
         file = BytesIO()
         result.save(file, "PNG", quality=100)
+        profile_image.close()
+        bg_image.close()
+        process.close()
+        info_section.close()
+        info_section_process.close()
+        mask.close()
+        lvl_circle.close()
+        result.close()
         file.seek(0)
         return file
 
@@ -260,6 +270,8 @@ class ImageGenerators(MixinMeta):
 
         bg_image = Image.open(level_background).convert("RGBA")
         profile_image = Image.open(level_avatar).convert("RGBA")
+        level_background.close()
+        level_avatar.close()
 
         # set canvas
         width = 176
@@ -343,6 +355,13 @@ class ImageGenerators(MixinMeta):
         result = self._add_corners(result, int(height / 2))
         file = BytesIO()
         result.save(file, "PNG", quality=100)
+        profile_image.close()
+        bg_image.close()
+        lvl_circle.close()
+        mask.close()
+        info_section.close()
+        process.close()
+        result.close()
         file.seek(0)
         return file
 
@@ -419,6 +438,8 @@ class ImageGenerators(MixinMeta):
 
         bg_image = Image.open(profile_background).convert("RGBA")
         profile_image = Image.open(profile_avatar).convert("RGBA")
+        profile_background.close()
+        profile_avatar.close()
 
         # set canvas
         bg_color = (255, 255, 255, 0)
@@ -644,6 +665,7 @@ class ImageGenerators(MixinMeta):
                 draw_thumb.ellipse((0, 0) + (raw_length, raw_length), fill=255, outline=0)
 
                 badge_image = Image.open(badges_images[num]).convert("RGBA")
+                badges_images[num].close()
                 badge_image = badge_image.resize((raw_length, raw_length), Image.ANTIALIAS)
 
                 # structured like this because if border = 0, still leaves outline.
@@ -668,6 +690,7 @@ class ImageGenerators(MixinMeta):
                         (coord[0] + border_width, coord[1] + border_width),
                         inner_mask,
                     )
+                    square.close()
                 else:
                     # put on ellipse/circle
                     output = ImageOps.fit(
@@ -678,6 +701,8 @@ class ImageGenerators(MixinMeta):
                     output = output.resize((size, size), Image.ANTIALIAS)
                     outer_mask = mask.resize((size, size), Image.ANTIALIAS)
                     process.paste(output, coord, outer_mask)
+                mask.close()
+                badge_image.close()
             else:
                 plus_fill = exp_fill
                 # put on ellipse/circle
@@ -711,11 +736,18 @@ class ImageGenerators(MixinMeta):
                 output = output.resize((size, size), Image.ANTIALIAS)
                 outer_mask = mask.resize((size, size), Image.ANTIALIAS)
                 process.paste(output, coord, outer_mask)
+                plus_square.close()
 
         result = Image.alpha_composite(result, process)
         result = self._add_corners(result, 25)
         file = BytesIO()
         result.save(file, "PNG", quality=100)
+        profile_image.close()
+        bg_image.close()
+        lvl_circle.close()
+        mask.close()
+        process.close()
+        result.close()
         file.seek(0)
         return file
 
@@ -745,8 +777,6 @@ class ImageGenerators(MixinMeta):
             await bank.get_balance(user),
             await bank.get_currency_name(server),
         )
-        rank_background.close()
-        rank_avatar.close()
         return file
 
     async def draw_levelup(self, user, server):
@@ -767,8 +797,6 @@ class ImageGenerators(MixinMeta):
         file = await self.asyncify_thread(
             self.make_levelup_image, level_background, level_avatar, userinfo, server
         )
-        level_background.close()
-        level_avatar.close()
         return file
 
     async def draw_profile(self, user, server):
@@ -822,8 +850,4 @@ class ImageGenerators(MixinMeta):
             sorted_badges,
             badges_images,
         )
-        profile_background.close()
-        profile_avatar.close()
-        for img in badges_images:
-            img.close()
         return file
