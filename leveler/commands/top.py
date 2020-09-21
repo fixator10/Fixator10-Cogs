@@ -1,5 +1,4 @@
 import math
-import operator
 from argparse import Namespace
 
 import discord
@@ -133,6 +132,8 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
             page = options.page
             per_page = 15
             pages = math.ceil(len(users) / per_page)
+            if page < 0:
+                page = 1
             if page > pages:
                 page = pages
 
