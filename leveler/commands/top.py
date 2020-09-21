@@ -132,7 +132,7 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
             page = options.page
             per_page = 15
             pages = math.ceil(len(users) / per_page)
-            if page < 0:
+            if page < 1:
                 page = 1
             if page > pages:
                 page = pages
