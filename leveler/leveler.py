@@ -74,7 +74,7 @@ class Leveler(
         }
         default_guild = {
             "disabled": False,
-            "antifarmrep": False,
+            "rep_rotation": False,
             "lvl_msg": False,
             "text_only": False,
             "private_lvl_message": False,

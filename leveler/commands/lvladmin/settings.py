@@ -25,7 +25,7 @@ class Settings(MixinMeta):
         em = discord.Embed(colour=await ctx.embed_color())
         settings = {
             "Enabled": self.bool_emojify(not await self.config.guild(ctx.guild).disabled()),
-            "Anti-Rep Farm": self.bool_emojify(await self.config.guild(ctx.guild).antirepfarm()),
+            "Rep users rotation": self.bool_emojify(await self.config.guild(ctx.guild).rep_rotation()),
             "Text only mode": self.bool_emojify(await self.config.guild(ctx.guild).text_only()),
             "Level messages enabled": self.bool_emojify(
                 await self.config.guild(ctx.guild).lvl_msg()
@@ -65,9 +65,10 @@ class Settings(MixinMeta):
     @checks.is_owner()
     @lvladmin.command()
     async def resetrep(self, ctx):
-        """Resets all reputation points from MonogoDB (Bot Owner Only)"""
-        await self.db.users.update_many({}, {"$set": {"rep": 0}})
-        await ctx.send("**All reputation points have been removed.**")
+        """Resets all reputation points from MonogoDB"""
+        async with ctx.typing():
+            await self.db.users.update_many({}, {"$set": {"rep": 0}})
+            await ctx.send("**All reputation points have been removed.**")
 
     @lvladmin.command()
     @commands.guild_only()
@@ -163,11 +164,11 @@ class Settings(MixinMeta):
         """Toggles or not the anti-rep points farm.
         This prevents two member from farming their reputation points after the cooldown is over.
         """
-        if await self.config.guild(ctx.guild).antirepfarm():
-            await self.config.guild(ctx.guild).antirepfarm.set(False)
+        if await self.config.guild(ctx.guild).rep_rotation():
+            await self.config.guild(ctx.guild).rep_rotation.set(False)
             await ctx.send("**Anti-Rep Farming is disabled for `{}`.**".format(ctx.guild.name))
         else:
-            await self.config.guild(ctx.guild).antirepfarm.set(True)
+            await self.config.guild(ctx.guild).rep_rotation.set(True)
             await ctx.send("**Anti-Rep Farming is enabled for `{}`.**".format(ctx.guild.name))
 
     @lvladmin.command(aliases=["exp"])
