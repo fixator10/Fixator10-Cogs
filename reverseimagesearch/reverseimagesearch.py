@@ -52,7 +52,7 @@ TRACEMOE_MENU_CONTROLS = {**DEFAULT_CONTROLS, "\N{FILM FRAMES}": send_preview}
 class ReverseImageSearch(commands.Cog):
     """(Anime) Reverse Image Search"""
 
-    __version__ = "2.1.2"
+    __version__ = "2.1.3"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):

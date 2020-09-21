@@ -73,13 +73,12 @@ class TraceMoe:
             try:
                 async with ctx.cog.session.get(image_url, raise_for_status=True) as resp:
                     image = BytesIO(await resp.read())
-                    pil_image = Image.open(image)
-                    pil_image = pil_image.convert("RGB")
-                    pil_image.thumbnail((2048, 2048))
                     image_file = BytesIO()
-                    pil_image.save(image_file, "JPEG")
-                    image.close()
-                    pil_image.close()
+                    with Image.open(image) as pil_image:
+                        with pil_image.convert("RGB") as converted:
+                            converted.thumbnail((2048, 2048))
+                            converted.save(image_file, "JPEG")
+                            image.close()
             except UnidentifiedImageError:
                 raise ValueError(_("Unable to convert image."))
             except ClientResponseError as e:
