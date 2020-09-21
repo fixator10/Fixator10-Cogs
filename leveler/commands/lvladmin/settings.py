@@ -25,7 +25,6 @@ class Settings(MixinMeta):
         em = discord.Embed(colour=await ctx.embed_color())
         settings = {
             "Enabled": self.bool_emojify(not await self.config.guild(ctx.guild).disabled()),
-            "Rep users rotation": self.bool_emojify(await self.config.guild(ctx.guild).rep_rotation()),
             "Text only mode": self.bool_emojify(await self.config.guild(ctx.guild).text_only()),
             "Level messages enabled": self.bool_emojify(
                 await self.config.guild(ctx.guild).lvl_msg()
@@ -38,6 +37,7 @@ class Settings(MixinMeta):
         if is_owner:
             owner_settings.update(
                 {
+                    "Rep users rotation": self.bool_emojify(await self.config.rep_rotation()),
                     "Unique registered users": str(await self.db.users.count_documents({})),
                     "XP per message": "{}-{}".format(*await self.config.xp()),
                     "Min message length": str(await self.config.message_length()),
@@ -157,18 +157,18 @@ class Settings(MixinMeta):
             await self.config.guild(server).private_lvl_message.set(True)
             await ctx.send("**Private level-up alerts enabled for `{}`.**".format(server.name))
 
-    @checks.admin_or_permissions(manage_guild=True)
+    @checks.is_owner()
     @lvladmin.command(name="antirepfarm")
     @commands.guild_only()
     async def antirepfarm(self, ctx):
         """Toggles or not the anti-rep points farm.
         This prevents two member from farming their reputation points after the cooldown is over.
         """
-        if await self.config.guild(ctx.guild).rep_rotation():
-            await self.config.guild(ctx.guild).rep_rotation.set(False)
+        if await self.config.rep_rotation():
+            await self.config.rep_rotation.set(False)
             await ctx.send("**Anti-Rep Farming is disabled for `{}`.**".format(ctx.guild.name))
         else:
-            await self.config.guild(ctx.guild).rep_rotation.set(True)
+            await self.config.rep_rotation.set(True)
             await ctx.send("**Anti-Rep Farming is enabled for `{}`.**".format(ctx.guild.name))
 
     @lvladmin.command(aliases=["exp"])

@@ -47,6 +47,7 @@ class Leveler(
             "mention": True,
             "allow_global_top": False,
             "global_levels": False,
+            "rep_rotation": False,
             "backgrounds": {
                 "profile": {
                     "alice": "http://i.imgur.com/MUSuMao.png",
@@ -74,7 +75,6 @@ class Leveler(
         }
         default_guild = {
             "disabled": False,
-            "rep_rotation": False,
             "lvl_msg": False,
             "text_only": False,
             "private_lvl_message": False,

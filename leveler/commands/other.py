@@ -32,7 +32,7 @@ class Other(MixinMeta, metaclass=CompositeMetaClass):
         if user and user.bot:
             await ctx.send("**You can't give a rep to a bot!**")
             return
-        if user and await self.config.guild(ctx.guild).rep_rotation() and user.id == org_userinfo.get("lastrep"):
+        if user and await self.config.rep_rotation() and user.id == org_userinfo.get("lastrep"):
             await ctx.send("**You already gave a rep point to this user!**")
             return
         if "rep_block" not in org_userinfo:
