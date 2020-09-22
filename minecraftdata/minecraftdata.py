@@ -276,7 +276,10 @@ class MinecraftData(commands.Cog):
                 query = None
         icon_file = None
         icon = (
-            discord.File(icon_file := BytesIO(b64decode(status.favicon.split(",", 1)[1])), filename="icon.png")
+            discord.File(
+                icon_file := BytesIO(b64decode(status.favicon.split(",", 1)[1])),
+                filename="icon.png",
+            )
             if status.favicon
             else None
         )
