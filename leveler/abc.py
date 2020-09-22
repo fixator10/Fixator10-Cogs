@@ -163,18 +163,6 @@ class MixinMeta(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def _add_dropshadow(
-        self,
-        image,
-        offset=(4, 4),
-        background=0x000,
-        shadow=0x0F0,
-        border=3,
-        iterations=5,
-    ):
-        raise NotImplementedError
-
-    @abstractmethod
     def _add_corners(self, im, rad, multiplier=6):
         raise NotImplementedError
 

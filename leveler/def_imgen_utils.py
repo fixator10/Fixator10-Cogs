@@ -38,7 +38,8 @@ class DefaultImageGeneratorsUtils(MixinMeta):
             async with self.session.get(url) as r:
                 image = await r.content.read()
             image = BytesIO(image)
-            await self.asyncify((await self.asyncify(Image.open, image)).convert, "RGBA")
+            await self.asyncify((im := await self.asyncify(Image.open, image)).convert, "RGBA")
+            im.close()
             image.close()
             return True
         except IOError:
@@ -80,6 +81,7 @@ class DefaultImageGeneratorsUtils(MixinMeta):
 
             colors.append("".join(format(c, "02x") for c in peak))
         image.close()
+        im.close()
         return colors  # returns array
 
     # finds the the pixel to center the text
@@ -126,43 +128,6 @@ class DefaultImageGeneratorsUtils(MixinMeta):
             self._truncate_text(user.display_name, max_length - len(user.name) - 3),
         )
 
-    def _add_dropshadow(
-        self,
-        image,
-        offset=(4, 4),
-        background=0x000,
-        shadow=0x0F0,
-        border=3,
-        iterations=5,
-    ):
-        total_width = image.size[0] + abs(offset[0]) + 2 * border
-        total_height = image.size[1] + abs(offset[1]) + 2 * border
-        back = Image.new(image.mode, (total_width, total_height), background)
-
-        # Place the shadow, taking into account the offset from the image
-        shadow_left = border + max(offset[0], 0)
-        shadow_top = border + max(offset[1], 0)
-        back.paste(
-            shadow,
-            [
-                shadow_left,
-                shadow_top,
-                shadow_left + image.size[0],
-                shadow_top + image.size[1],
-            ],
-        )
-
-        n = 0
-        while n < iterations:
-            back = back.filter(ImageFilter.BLUR)
-            n += 1
-
-        # Paste the input image onto the shadow backdrop
-        image_left = border - min(offset[0], 0)
-        image_top = border - min(offset[1], 0)
-        back.paste(image, (image_left, image_top))
-        return back
-
     def _add_corners(self, im, rad, multiplier=6):
         raw_length = rad * 2 * multiplier
         circle = Image.new("L", (raw_length, raw_length), 0)
@@ -177,4 +142,6 @@ class DefaultImageGeneratorsUtils(MixinMeta):
         alpha.paste(circle.crop((rad, 0, rad * 2, rad)), (w - rad, 0))
         alpha.paste(circle.crop((rad, rad, rad * 2, rad * 2)), (w - rad, h - rad))
         im.putalpha(alpha)
+        circle.close()
+        alpha.close()
         return im
