@@ -13,6 +13,9 @@ from .mongodb import MongoDB
 from .utils import Utils
 
 
+DISABLE_COG_IN_GUILD_ANNOTATIONS = {"cog_name": "str", "guild_id": "int", "return": "bool"}
+
+
 class Leveler(
     MongoDB,
     XP,
@@ -73,7 +76,6 @@ class Leveler(
             },
         }
         default_guild = {
-            "disabled": False,
             "lvl_msg": False,
             "text_only": False,
             "private_lvl_message": False,
@@ -91,7 +93,44 @@ class Leveler(
         self.db = None
         self.session = aiohttp.ClientSession(loop=self.bot.loop)
 
+    async def config_converter(self):
+        """Update configs
+
+        Versions:
+        1. Remove disabled leveler and switch it to Red's disabled cogs system"""
+        if not await self.config.config_version() or await self.config.config_version() < 1:
+            self.log.info(
+                'Converting config to v1: Moving disabled guilds to core\'s "command disablecog"...'
+            )
+            if not hasattr(self.bot, "_disabled_cog_cache") or not hasattr(
+                self.bot._disabled_cog_cache, "disable_cog_in_guild"
+            ):
+                self.log.error(
+                    "Unable to convert config: missing cog disable function."
+                    "PLease report this to cog author ASAP for fix."
+                )
+                return
+            if (
+                self.bot._disabled_cog_cache.disable_cog_in_guild.__annotations__
+                != DISABLE_COG_IN_GUILD_ANNOTATIONS
+            ):
+                self.log.error(
+                    "Unable to convert config: cog disable function annotations has changed. "
+                    "Please report this to cog author ASAP for fix."
+                )
+                return
+            for guild, data in (await self.config.all_guilds()).items():
+                if data.get("disabled"):
+                    self.log.info(f"Moving for guild {guild}")
+                    await self.bot._disabled_cog_cache.disable_cog_in_guild(
+                        self.qualified_name, guild
+                    )
+                await self.config.guild_from_id(guild).disabled.clear()
+            self.log.info("Config updated to version 1")
+            await self.config.config_version.set(1)
+
     async def initialize(self):
+        await self.config_converter()
         await self._connect_to_mongo()
 
     async def cog_check(self, ctx):

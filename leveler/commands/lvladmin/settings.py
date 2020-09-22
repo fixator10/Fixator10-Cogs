@@ -24,7 +24,6 @@ class Settings(MixinMeta):
 
         em = discord.Embed(colour=await ctx.embed_color())
         settings = {
-            "Enabled": self.bool_emojify(not await self.config.guild(ctx.guild).disabled()),
             "Text only mode": self.bool_emojify(await self.config.guild(ctx.guild).text_only()),
             "Level messages enabled": self.bool_emojify(
                 await self.config.guild(ctx.guild).lvl_msg()
@@ -98,18 +97,6 @@ class Settings(MixinMeta):
         else:
             await self.config.mention.set(True)
             await ctx.send("**Mentions enabled.**")
-
-    @lvladmin.command()
-    @commands.guild_only()
-    async def toggle(self, ctx):
-        """Toggle most leveler commands on the current server."""
-        server = ctx.guild
-        if await self.config.guild(server).disabled():
-            await self.config.guild(server).disabled.set(False)
-            await ctx.send("**Leveler enabled on `{}`.**".format(server.name))
-        else:
-            await self.config.guild(server).disabled.set(True)
-            await ctx.send("**Leveler disabled on `{}`.**".format(server.name))
 
     @lvladmin.command()
     @commands.guild_only()

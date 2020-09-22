@@ -34,10 +34,6 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
         user = ctx.author
         owner = is_owner if not await self.config.allow_global_top() else True
 
-        if await self.config.guild(ctx.guild).disabled():
-            await ctx.send("**Leveler commands for this server are disabled!**")
-            return
-
         async with ctx.typing():
             users = []
             user_stat = []

@@ -23,9 +23,6 @@ class Other(MixinMeta, metaclass=CompositeMetaClass):
         org_userinfo = await self.db.users.find_one({"user_id": str(org_user.id)})
         curr_time = time.time()
 
-        if await self.config.guild(ctx.guild).disabled():
-            await ctx.send("**Leveler commands for this server are disabled!**")
-            return
         if user and user.id == org_user.id:
             await ctx.send("**You can't give a rep to yourself!**")
             return
@@ -68,10 +65,6 @@ class Other(MixinMeta, metaclass=CompositeMetaClass):
         type can be: `profile`, `rank` or `levelup`."""
         server = ctx.guild
         backgrounds = await self.config.backgrounds()
-
-        if await self.config.guild(server).disabled():
-            await ctx.send("**Leveler commands for this server are disabled!**")
-            return
 
         em = discord.Embed(colour=await ctx.embed_color())
         if bg_type.lower() == "profile":

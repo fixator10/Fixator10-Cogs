@@ -25,11 +25,6 @@ class Profiles(MixinMeta, metaclass=CompositeMetaClass):
         await self._create_user(user, server)
         userinfo = await self.db.users.find_one({"user_id": str(user.id)})
 
-        # check if disabled
-        if await self.config.guild(ctx.guild).disabled():
-            await ctx.send("**Leveler commands for this server are disabled!**")
-            return
-
         if await self.config.guild(ctx.guild).text_only():
             em = await self.profile_text(user, server, userinfo)
             await channel.send(embed=em)
@@ -91,11 +86,6 @@ class Profiles(MixinMeta, metaclass=CompositeMetaClass):
         await self._create_user(user, server)
         userinfo = await self.db.users.find_one({"user_id": str(user.id)})
 
-        # check if disabled
-        if await self.config.guild(ctx.guild).disabled():
-            await ctx.send("**Leveler commands for this server are disabled!**")
-            return
-
         # no cooldown for text only
         if await self.config.guild(server).text_only():
             em = await self.rank_text(user, server, userinfo)
@@ -135,10 +125,6 @@ class Profiles(MixinMeta, metaclass=CompositeMetaClass):
             return
         server = ctx.guild
         userinfo = await self.db.users.find_one({"user_id": str(user.id)})
-
-        if await self.config.guild(ctx.guild).disabled():
-            await ctx.send("**Leveler commands for this server are disabled!**")
-            return
 
         # creates user if doesn't exist
         await self._create_user(user, server)

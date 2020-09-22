@@ -45,9 +45,7 @@ class XP(MixinMeta):
         curr_time = time.time()
         userinfo = await self.db.users.find_one({"user_id": str(user.id)})
 
-        if not server or await self.config.guild(server).disabled():
-            return
-        if await self.bot.cog_disabled_in_guild(self, server):
+        if not server or await self.bot.cog_disabled_in_guild(self, server):
             return
         if user.bot:
             return

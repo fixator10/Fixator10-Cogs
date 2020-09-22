@@ -166,10 +166,6 @@ class Badge(MixinMeta):
         else:
             serverid = server.id
 
-        if await self.config.guild(server).disabled():
-            await ctx.send("**Leveler commands for this server are disabled!**")
-            return
-
         serverbadges = await self.db.badges.find_one({"server_id": str(serverid)})
         if name in serverbadges["badges"].keys():
             del serverbadges["badges"][name]
@@ -215,10 +211,6 @@ class Badge(MixinMeta):
         userinfo = await self.db.users.find_one({"user_id": str(user.id)})
         userinfo = await self._badge_convert_dict(userinfo)
 
-        if await self.config.guild(server).disabled():
-            await ctx.send("**Leveler commands for this server are disabled!**")
-            return
-
         serverbadges = await self.db.badges.find_one({"server_id": str(server.id)})
         badges = serverbadges["badges"]
         badge_name = "{}_{}".format(name, server.id)
@@ -257,10 +249,6 @@ class Badge(MixinMeta):
         server = ctx.guild
         userinfo = await self.db.users.find_one({"user_id": str(user.id)})
         userinfo = await self._badge_convert_dict(userinfo)
-
-        if await self.config.guild(server).disabled():
-            await ctx.send("**Leveler commands for this server are disabled!**")
-            return
 
         serverbadges = await self.db.badges.find_one({"server_id": str(server.id)})
         badges = serverbadges["badges"]

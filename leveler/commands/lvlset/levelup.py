@@ -34,10 +34,6 @@ class Levelup(MixinMeta):
         default_info_color = (30, 30, 30, 200)
         default_a = 200
 
-        if await self.config.guild(ctx.guild).disabled():
-            await ctx.send("**Leveler commands for this server are disabled!**")
-            return
-
         if await self.config.guild(ctx.guild).text_only():
             await ctx.send("**Text-only commands allowed.**")
             return
@@ -81,10 +77,6 @@ class Levelup(MixinMeta):
         """Set your level-up background."""
         user = ctx.author
         backgrounds = await self.config.backgrounds()
-
-        if await self.config.guild(ctx.guild).disabled():
-            await ctx.send("**Leveler commands for this server are disabled!**")
-            return
 
         if await self.config.guild(ctx.guild).text_only():
             await ctx.send("**Text-only commands allowed.**")

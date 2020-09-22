@@ -63,10 +63,6 @@ class Users(MixinMeta):
             return
         userinfo = await self.db.users.find_one({"user_id": str(user.id)})
 
-        if await self.config.guild(ctx.guild).disabled():
-            await ctx.send("Leveler commands for this server are disabled.")
-            return
-
         if level < 0:
             await ctx.send("**Please enter a positive number.**")
             return

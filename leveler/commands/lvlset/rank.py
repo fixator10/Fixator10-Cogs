@@ -37,10 +37,6 @@ class Rank(MixinMeta):
         default_badge = (128, 151, 165, 230)
         default_a = 200
 
-        if await self.config.guild(ctx.guild).disabled():
-            await ctx.send("**Leveler commands for this server are disabled!**")
-            return
-
         if await self.config.guild(ctx.guild).text_only():
             await ctx.send("**Text-only commands allowed.**")
             return
@@ -139,10 +135,6 @@ class Rank(MixinMeta):
         """Set your rank background."""
         user = ctx.author
         backgrounds = await self.config.backgrounds()
-
-        if await self.config.guild(ctx.guild).disabled():
-            await ctx.send("Leveler commands for this server are disabled.")
-            return
 
         if await self.config.guild(ctx.guild).text_only():
             await ctx.send("**Text-only commands allowed.**")

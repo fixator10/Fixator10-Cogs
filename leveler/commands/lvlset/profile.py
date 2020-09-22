@@ -36,10 +36,6 @@ class Profile(MixinMeta):
         default_exp = (255, 255, 255, 230)
         default_a = 200
 
-        if await self.config.guild(ctx.guild).disabled():
-            await ctx.send("**Leveler commands for this server are disabled!**")
-            return
-
         if await self.config.guild(ctx.guild).text_only():
             await ctx.send("**Text-only commands allowed.**")
             return
@@ -160,10 +156,6 @@ class Profile(MixinMeta):
         user = ctx.author
         backgrounds = await self.config.backgrounds()
 
-        if await self.config.guild(ctx.guild).disabled():
-            await ctx.send("**Leveler commands for this server are disabled!**")
-            return
-
         if await self.config.guild(ctx.guild).text_only():
             await ctx.send("**Text-only commands allowed.**")
             return
@@ -188,10 +180,6 @@ class Profile(MixinMeta):
         userinfo = await self.db.users.find_one({"user_id": str(user.id)})
         max_char = 20
 
-        if await self.config.guild(ctx.guild).disabled():
-            await ctx.send("**Leveler commands for this server are disabled!**")
-            return
-
         if len(title) < max_char:
             userinfo["title"] = title
             await self.db.users.update_one({"user_id": str(user.id)}, {"$set": {"title": title}})
@@ -207,10 +195,6 @@ class Profile(MixinMeta):
         """Set your user info."""
         user = ctx.author
         max_char = 150
-
-        if await self.config.guild(ctx.guild).disabled():
-            await ctx.send("**Leveler commands for this server are disabled!**")
-            return
 
         if len(info) < max_char:
             await self.db.users.update_one({"user_id": str(user.id)}, {"$set": {"info": info}})
