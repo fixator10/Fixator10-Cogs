@@ -76,6 +76,7 @@ class ImageGenerators(MixinMeta):
                 else:
                     draw.text((write_pos, y), "{}".format(char), font=unicode_font, fill=fill)
                     write_pos += unicode_font.getsize(char)[0]
+            check_font.close()
 
         # set canvas
         width = 390
@@ -410,6 +411,7 @@ class ImageGenerators(MixinMeta):
                 else:
                     draw.text((write_pos, y), "{}".format(char), font=unicode_font, fill=fill)
                     write_pos += unicode_font.getsize(char)[0]
+            check_font.close()
 
         # COLORS
         white_color = (240, 240, 240, 255)
