@@ -29,7 +29,7 @@ SERVICE_STATUS = {
 class MinecraftData(commands.Cog):
     """Minecraft-Related data"""
 
-    __version__ = "2.0.2"
+    __version__ = "2.0.3"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -274,8 +274,9 @@ class MinecraftData(commands.Cog):
                 query = await self.bot.loop.run_in_executor(None, server.query)
             except (ConnectionResetError, OSError):
                 query = None
+        icon_file = None
         icon = (
-            discord.File(BytesIO(b64decode(status.favicon.split(",", 1)[1])), filename="icon.png")
+            discord.File(icon_file := BytesIO(b64decode(status.favicon.split(",", 1)[1])), filename="icon.png")
             if status.favicon
             else None
         )
@@ -317,6 +318,8 @@ class MinecraftData(commands.Cog):
                 # f"Plugins: {query.software.plugins}"
             )
         await ctx.send(file=icon, embed=embed)
+        if icon_file:
+            icon_file.close()
 
     @minecraft.command()
     @checks.bot_has_permissions(embed_links=True)
