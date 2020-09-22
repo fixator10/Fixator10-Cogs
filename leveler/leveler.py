@@ -12,7 +12,6 @@ from .image_generators import ImageGenerators
 from .mongodb import MongoDB
 from .utils import Utils
 
-
 DISABLE_COG_IN_GUILD_ANNOTATIONS = {"cog_name": "str", "guild_id": "int", "return": "bool"}
 
 
