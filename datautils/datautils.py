@@ -23,7 +23,7 @@ _ = Translator("DataUtils", __file__)
 
 TWEMOJI_URL = "https://twemoji.maxcdn.com/v/latest/72x72"
 APP_ICON_URL = "https://cdn.discordapp.com/app-icons/{app_id}/{icon_hash}.png"
-NON_ESCAPEABLE_CHARACTERS = string.ascii_letters + string.digits
+NON_ESCAPABLE_CHARACTERS = string.ascii_letters + string.digits
 
 GUILD_FEATURES = {
     "VIP_REGIONS": _("384kbps voice bitrate"),
@@ -84,7 +84,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.4.9"
+    __version__ = "2.4.10"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -715,7 +715,9 @@ class DataUtils(commands.Cog):
         """Make embed with info about emoji"""
         em = discord.Embed(
             title=isinstance(emoji, str)
-            and "\n".join(map(unicodedata.name, emoji))
+            and "\n".join(
+                map(lambda c: unicodedata.name(c, _("[Unable to resolve unicode name]")), emoji)
+            )
             or chat.escape(emoji.name, formatting=True),
             color=await ctx.embed_color(),
         )
@@ -724,7 +726,7 @@ class DataUtils(commands.Cog):
             em.add_field(
                 name=_("Unicode character"),
                 value="\n".join(
-                    f"\\{c}" if c not in NON_ESCAPEABLE_CHARACTERS else c for c in emoji
+                    f"\\{c}" if c not in NON_ESCAPABLE_CHARACTERS else c for c in emoji
                 ),
             )
             em.add_field(
