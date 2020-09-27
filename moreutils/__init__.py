@@ -11,7 +11,7 @@ async def setup_after_ready(bot):
     await bot.wait_until_red_ready()
     cog = MoreUtils(bot)
     for name, command in cog.all_commands.items():
-        if command.parent:
+        if not command.parent:
             if bot.get_command(name):
                 command.name = f"mu{command.name}"
             for alias in command.aliases:
