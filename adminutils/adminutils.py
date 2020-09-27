@@ -21,7 +21,7 @@ EMOJI_RE = re.compile(r"(<(a)?:[a-zA-Z0-9\_]+:([0-9]+)>)")
 class AdminUtils(commands.Cog):
     """Useful commands for server administrators."""
 
-    __version__ = "2.5.1"
+    __version__ = "2.5.2"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
