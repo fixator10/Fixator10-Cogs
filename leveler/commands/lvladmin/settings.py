@@ -158,7 +158,7 @@ class Settings(MixinMeta):
             await ctx.send("**Private level-up alerts enabled for `{}`.**".format(server.name))
 
     @checks.is_owner()
-    @lvladmin.command(name="antirepfarm")
+    @lvladmin.command()
     @commands.guild_only()
     async def antirepfarm(self, ctx):
         """Toggles or not the anti-rep points farm.
