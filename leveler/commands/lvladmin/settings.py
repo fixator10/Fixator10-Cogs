@@ -160,7 +160,7 @@ class Settings(MixinMeta):
     @checks.is_owner()
     @lvladmin.command()
     @commands.guild_only()
-    async def antirepfarm(self, ctx):
+    async def reprotation(self, ctx):
         """Toggles or not the anti-rep points farm.
         This prevents two member from farming their reputation points after the cooldown is over.
         """
