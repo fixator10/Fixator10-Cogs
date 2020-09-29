@@ -9,7 +9,7 @@ from redbot.core.errors import CogLoadError
 from .abc import MixinMeta
 
 try:
-    from PIL import Image, ImageDraw, ImageFilter
+    from PIL import Image, ImageDraw
 except Exception as e:
     raise CogLoadError(
         f"Can't load pillow: {e}\n"

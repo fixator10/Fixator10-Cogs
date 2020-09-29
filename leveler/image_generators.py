@@ -13,7 +13,7 @@ from redbot.core.utils import AsyncIter
 from .abc import MixinMeta
 
 try:
-    from PIL import Image, ImageColor, ImageDraw, ImageFilter, ImageFont, ImageOps
+    from PIL import Image, ImageDraw, ImageFont, ImageOps
     from PIL import features as pil_features
 except Exception as e:
     raise CogLoadError(
@@ -605,7 +605,6 @@ class ImageGenerators(MixinMeta):
             fill=exp_font_color,
         )  # Exp Text
 
-        bank_credits = bank_credits
         credit_txt = (
             f"{bank_credits}"
             f"{credits_name if (credits_name := credits_name[0]) != '<' else '$'}"

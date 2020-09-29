@@ -67,7 +67,6 @@ class Other(MixinMeta, metaclass=CompositeMetaClass):
         """Gives a list of backgrounds.
 
         type can be: `profile`, `rank` or `levelup`."""
-        server = ctx.guild
         backgrounds = await self.config.backgrounds()
 
         em = discord.Embed(colour=await ctx.embed_color())

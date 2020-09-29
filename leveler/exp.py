@@ -1,5 +1,4 @@
 import math
-import operator
 import random
 import time
 
