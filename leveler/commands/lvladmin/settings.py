@@ -36,12 +36,12 @@ class Settings(MixinMeta):
         if is_owner:
             owner_settings.update(
                 {
-                    "Rep users rotation": self.bool_emojify(await self.config.rep_rotation()),
                     "Unique registered users": str(await self.db.users.count_documents({})),
                     "XP per message": "{}-{}".format(*await self.config.xp()),
                     "Min message length": str(await self.config.message_length()),
                     "Global top": self.bool_emojify(await self.config.allow_global_top()),
                     "Mentions": self.bool_emojify(await self.config.mention()),
+                    "Rep users rotation": self.bool_emojify(await self.config.rep_rotation()),
                     "Badges type": await self.config.badge_type(),
                 }
             )
@@ -148,15 +148,16 @@ class Settings(MixinMeta):
     @lvladmin.command()
     @commands.guild_only()
     async def reprotation(self, ctx):
-        """Toggles or not the anti-rep points farm.
-        This prevents two member from farming their reputation points after the cooldown is over.
+        """Toggles rep rotation.
+
+        Forces users to change target for rep each time.
         """
         if await self.config.rep_rotation():
             await self.config.rep_rotation.set(False)
-            await ctx.send("**Anti-Rep Farming is disabled for `{}`.**".format(ctx.guild.name))
+            await ctx.send("**Rep rotation is disabled.**")
         else:
             await self.config.rep_rotation.set(True)
-            await ctx.send("**Anti-Rep Farming is enabled for `{}`.**".format(ctx.guild.name))
+            await ctx.send("**Rep rotation is enabled.**")
 
     @lvladmin.command(aliases=["exp"])
     @commands.is_owner()
