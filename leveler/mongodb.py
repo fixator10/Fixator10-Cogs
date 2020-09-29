@@ -66,6 +66,7 @@ class MongoDB(MixinMeta):
                     "badge_col_color": [],
                     "rep_block": 0,
                     "chat_block": 0,
+                    "lastrep": 0,
                     "last_message": "",
                 }
                 await self.db.users.insert_one(new_account)
