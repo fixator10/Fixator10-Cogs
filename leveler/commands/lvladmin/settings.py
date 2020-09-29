@@ -1,7 +1,7 @@
 from functools import partial
 
 import discord
-from redbot.core import commands
+from redbot.core import commands, checks
 from redbot.core.utils import chat_formatting as chat
 from tabulate import tabulate
 
@@ -36,6 +36,7 @@ class Settings(MixinMeta):
         if is_owner:
             owner_settings.update(
                 {
+                    "Rep users rotation": self.bool_emojify(await self.config.rep_rotation()),
                     "Unique registered users": str(await self.db.users.count_documents({})),
                     "XP per message": "{}-{}".format(*await self.config.xp()),
                     "Min message length": str(await self.config.message_length()),
@@ -59,6 +60,14 @@ class Settings(MixinMeta):
             name="Settings Overview for {}".format(ctx.guild.name), icon_url=ctx.guild.icon_url
         )
         await ctx.send(embed=em)
+
+    @checks.is_owner()
+    @lvladmin.command()
+    async def resetrep(self, ctx):
+        """Resets all reputation points from MonogoDB"""
+        async with ctx.typing():
+            await self.db.users.update_many({}, {"$set": {"rep": 0}})
+            await ctx.send("**All reputation points have been removed.**")
 
     @lvladmin.command()
     @commands.guild_only()
@@ -134,6 +143,20 @@ class Settings(MixinMeta):
         else:
             await self.config.guild(server).private_lvl_message.set(True)
             await ctx.send("**Private level-up alerts enabled for `{}`.**".format(server.name))
+
+    @checks.is_owner()
+    @lvladmin.command()
+    @commands.guild_only()
+    async def reprotation(self, ctx):
+        """Toggles or not the anti-rep points farm.
+        This prevents two member from farming their reputation points after the cooldown is over.
+        """
+        if await self.config.rep_rotation():
+            await self.config.rep_rotation.set(False)
+            await ctx.send("**Anti-Rep Farming is disabled for `{}`.**".format(ctx.guild.name))
+        else:
+            await self.config.rep_rotation.set(True)
+            await ctx.send("**Anti-Rep Farming is enabled for `{}`.**".format(ctx.guild.name))
 
     @lvladmin.command(aliases=["exp"])
     @commands.is_owner()

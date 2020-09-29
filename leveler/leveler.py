@@ -49,6 +49,7 @@ class Leveler(
             "mention": True,
             "allow_global_top": False,
             "global_levels": False,
+            "rep_rotation": False,
             "backgrounds": {
                 "profile": {
                     "alice": "http://i.imgur.com/MUSuMao.png",
