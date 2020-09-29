@@ -1,7 +1,7 @@
 from functools import partial
 
 import discord
-from redbot.core import commands, checks
+from redbot.core import checks, commands
 from redbot.core.utils import chat_formatting as chat
 from tabulate import tabulate
 

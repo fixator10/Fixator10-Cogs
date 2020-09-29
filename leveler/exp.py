@@ -86,12 +86,10 @@ class XP(MixinMeta):
                 {"user_id": str(user.id)},
                 {
                     "$set": {
-                        f"servers.{server.id}.level": userinfo["servers"][str(server.id)][
-                            "level"
-                        ],
-                        f"servers.{server.id}.current_exp": userinfo["servers"][
-                            str(server.id)
-                        ]["current_exp"]
+                        f"servers.{server.id}.level": userinfo["servers"][str(server.id)]["level"],
+                        f"servers.{server.id}.current_exp": userinfo["servers"][str(server.id)][
+                            "current_exp"
+                        ]
                         + exp
                         - required,
                         "chat_block": time.time(),
