@@ -33,6 +33,7 @@ class XP(MixinMeta):
 
     @commands.Cog.listener("on_message_without_command")
     async def _handle_on_message(self, message):
+        await self.bot.wait_until_red_ready()  # just in case, lets see if that helps
         if message.is_system():
             return
         if not self._db_ready:
@@ -50,17 +51,11 @@ class XP(MixinMeta):
         if user.bot:
             return
 
-        # check if chat_block exists
-        if "chat_block" not in userinfo:
-            userinfo["chat_block"] = 0
-
-        if "last_message" not in userinfo:
-            userinfo["last_message"] = 0
         if all(
             [
-                float(curr_time) - float(userinfo["chat_block"]) >= 120,
+                float(curr_time) - float(userinfo.get("chat_block", 0)) >= 120,
                 len(message.content) > await self.config.message_length() or message.attachments,
-                message.content != userinfo["last_message"],
+                message.content != userinfo.get("last_message"),
                 message.channel.id not in await self.config.guild(server).ignored_channels(),
             ]
         ):
@@ -83,18 +78,17 @@ class XP(MixinMeta):
             self.log.error(f"Unable to process xp for {user.id}: {exc}")
         # FIXME: Sometimes this creates discrepancy in global total_exp and xp for all servers
         # If this happens again, some sort of debug is needed here
-        # eval to check "db integrity":
-        # https://discord.com/channels/133049272517001216/133251234164375552/755416780968558653
+        # This happened again, end me pls
         if userinfo["servers"][str(server.id)]["current_exp"] + exp >= required:
             userinfo["servers"][str(server.id)]["level"] += 1
             await self.db.users.update_one(
                 {"user_id": str(user.id)},
                 {
                     "$set": {
-                        "servers.{}.level".format(server.id): userinfo["servers"][str(server.id)][
+                        f"servers.{server.id}.level": userinfo["servers"][str(server.id)][
                             "level"
                         ],
-                        "servers.{}.current_exp".format(server.id): userinfo["servers"][
+                        f"servers.{server.id}.current_exp": userinfo["servers"][
                             str(server.id)
                         ]["current_exp"]
                         + exp
