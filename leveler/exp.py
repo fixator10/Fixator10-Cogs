@@ -67,19 +67,20 @@ class XP(MixinMeta):
         channel = message.channel
         user = message.author
         # add to total exp
-        required = await self._required_exp(userinfo["servers"][str(server.id)]["level"])
         try:
             await self.db.users.update_one(
                 {"user_id": str(user.id)},
                 {"$set": {"total_exp": userinfo["total_exp"] + exp}},
             )
-            self.bot.dispatch("leveler_process_exp", message, exp)
         except Exception as exc:
             self.log.error(f"Unable to process xp for {user.id}: {exc}")
+        required = await self._required_exp(userinfo["servers"][str(server.id)]["level"])
         # FIXME: Sometimes this creates discrepancy in global total_exp and xp for all servers
         # If this happens again, some sort of debug is needed here
         # This happened again, end me pls
+        # Lets try Draper proposal here
         if userinfo["servers"][str(server.id)]["current_exp"] + exp >= required:
+            # The actual issue may be somewhere here, but im bad at math, and not sure
             userinfo["servers"][str(server.id)]["level"] += 1
             await self.db.users.update_one(
                 {"user_id": str(user.id)},
@@ -113,6 +114,7 @@ class XP(MixinMeta):
                     }
                 },
             )
+        self.bot.dispatch("leveler_process_exp", message, exp)
 
     async def _handle_levelup(self, user, userinfo, server, channel):
         # channel lock implementation
