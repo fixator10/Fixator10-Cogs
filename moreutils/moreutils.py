@@ -43,7 +43,7 @@ def bool_emojify(bool_var: bool) -> str:
 class MoreUtils(commands.Cog):
     """Some (maybe) useful utils."""
 
-    __version__ = "2.0.9"
+    __version__ = "2.0.10"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -70,13 +70,7 @@ class MoreUtils(commands.Cog):
         colorhls = colorsys.rgb_to_hls(colorrgb[0], colorrgb[1], colorrgb[2])
         coloryiq = colorsys.rgb_to_yiq(colorrgb[0], colorrgb[1], colorrgb[2])
         colorcmyk = rgb_to_cmyk(colorrgb[0], colorrgb[1], colorrgb[2])
-        async with self.session.get(
-            f"https://api.alexflipnote.dev/color/{str(color)[1:]}"
-        ) as data:
-            color_name = (await data.json()).get("name", "?")
-        em = discord.Embed(
-            title=str(color),
-            description="Name: {}\n"
+        colors_text = (
             "HEX: {}\n"
             "RGB: {}\n"
             "CMYK: {}\n"
@@ -84,7 +78,6 @@ class MoreUtils(commands.Cog):
             "HLS: {}\n"
             "YIQ: {}\n"
             "int: {}".format(
-                color_name,
                 str(color),
                 colorrgb,
                 tuple(map(lambda x: isinstance(x, float) and round(x, 2) or x, colorcmyk)),
@@ -92,14 +85,24 @@ class MoreUtils(commands.Cog):
                 tuple(map(lambda x: isinstance(x, float) and round(x, 2) or x, colorhls)),
                 tuple(map(lambda x: isinstance(x, float) and round(x, 2) or x, coloryiq)),
                 color.value,
-            ),
+            )
+        )
+        em = discord.Embed(
+            title=str(color),
+            description=_("Name: Loading...\n") + colors_text,
             url=f"http://www.color-hex.com/color/{str(color)[1:]}",
             colour=color,
             timestamp=ctx.message.created_at,
         )
         em.set_thumbnail(url=f"https://api.alexflipnote.dev/color/image/{str(color)[1:]}")
         em.set_image(url=f"https://api.alexflipnote.dev/color/image/gradient/{str(color)[1:]}")
-        await ctx.send(embed=em)
+        m = await ctx.send(embed=em)
+        async with self.session.get(
+            f"https://api.alexflipnote.dev/color/{str(color)[1:]}"
+        ) as data:
+            color_name = (await data.json()).get("name", "?")
+        em.description = _("Name: {}\n").format(color_name) + colors_text
+        await m.edit(embed=em)
 
     @commands.command(pass_context=True, no_pm=True)
     async def someone(self, ctx, *, text: str = None):
