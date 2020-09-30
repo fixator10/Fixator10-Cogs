@@ -22,7 +22,7 @@ async def has_assigned_role(ctx):
 class PersonalRoles(commands.Cog):
     """Assign and edit personal roles"""
 
-    __version__ = "2.1.1"
+    __version__ = "2.1.2"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -105,7 +105,7 @@ class PersonalRoles(commands.Cog):
     @checks.admin_or_permissions(manage_roles=True)
     async def mr_persistence(self, ctx):
         """Toggle auto-adding role on rejoin."""
-        editing = self.config.guild(ctx.guild).editing
+        editing = self.config.guild(ctx.guild).role_persistence
         new_state = not await editing()
         await editing.set(new_state)
         await ctx.send(
