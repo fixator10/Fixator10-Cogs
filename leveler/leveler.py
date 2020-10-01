@@ -91,7 +91,7 @@ class Leveler(
         self._db_ready = False
         self.client = None
         self.db = None
-        self.session = aiohttp.ClientSession(loop=self.bot.loop)
+        self.session = aiohttp.ClientSession()
 
     async def config_converter(self):
         """Update configs
