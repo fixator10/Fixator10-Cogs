@@ -715,8 +715,8 @@ class ImageGenerators(MixinMeta):
                 border_color = badge["border_color"]
 
                 badge_image_original = Image.open(badges_images[num])
-                badges_images[num].close()
                 badge_image = badge_image_original.convert("RGBA")
+                badges_images[num].close()
                 badge_image_original.close()
                 badge_image_resized = badge_image.resize((raw_length, raw_length), Image.ANTIALIAS)
                 badge_image.close()
