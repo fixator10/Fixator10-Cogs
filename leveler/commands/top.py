@@ -1,4 +1,5 @@
 from argparse import Namespace
+from asyncio import sleep
 from textwrap import shorten
 
 from redbot.core import commands
@@ -12,6 +13,7 @@ from ..menus.top import TopMenu, TopPager
 class Top(MixinMeta, metaclass=CompositeMetaClass):
     @commands.command(usage="[page] [--global] [--rep] [--server SERVER]")
     @commands.guild_only()
+    @commands.cooldown(1, 30, commands.BucketType.guild)
     @commands.max_concurrency(1, commands.BucketType.guild)
     async def top(
         self,
@@ -55,6 +57,7 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
 
                     if str(user.id) == userinfo["user_id"]:
                         user_stat = [await self._find_global_rep_rank(user), userinfo["rep"]]
+                    await sleep(0)
 
                 board_type = "Rep"
                 icon_url = self.bot.user.avatar_url
@@ -98,6 +101,7 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
                             ]
                         else:
                             user_stat = [await self._find_global_rank(user), userinfo["total_exp"]]
+                    await sleep(0)
 
                 board_type = "Points"
                 icon_url = self.bot.user.avatar_url
@@ -124,6 +128,7 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
                             await self._find_server_rep_rank(user, server),
                             userinfo["rep"],
                         ]
+                    await sleep(0)
 
                 board_type = "Rep"
                 icon_url = server.icon_url
@@ -161,6 +166,7 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
                                 ),
                             )
                         )
+                    await sleep(0)
                 board_type = "Points"
                 icon_url = server.icon_url
 
