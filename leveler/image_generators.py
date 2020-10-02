@@ -59,8 +59,12 @@ class ImageGenerators(MixinMeta):
         large_fnt = ImageFont.truetype(font_thin_file, 24)
         symbol_u_fnt = ImageFont.truetype(font_unicode_file, 15)
 
-        bg_image = Image.open(rank_background).convert("RGBA")
-        profile_image = Image.open(rank_avatar).convert("RGBA")
+        bg_image_original = Image.open(rank_background)
+        bg_image = bg_image_original.convert("RGBA")
+        bg_image_original.close()
+        profile_image_original = Image.open(rank_avatar)
+        profile_image = profile_image_original.convert("RGBA")
+        profile_image_original.close()
         rank_background.close()
         rank_avatar.close()
 
@@ -91,8 +95,12 @@ class ImageGenerators(MixinMeta):
         info_section = Image.new("RGBA", (bg_width, height), bg_color)
         info_section_process = Image.new("RGBA", (bg_width, height), bg_color)
         # puts in background
+        temp = bg_image
         bg_image = bg_image.resize((width, height), Image.ANTIALIAS)
+        temp.close()
+        temp = bg_image
         bg_image = bg_image.crop((0, 0, width, height))
+        temp.close()
         info_section.paste(bg_image, (0, 0))
 
         # draw transparent overlays
@@ -142,9 +150,12 @@ class ImageGenerators(MixinMeta):
         draw_lvl_circle = ImageDraw.Draw(lvl_circle)
         draw_lvl_circle.ellipse([0, 0, raw_length, raw_length], fill=(250, 250, 250, 250))
         # put on profile circle background
+        temp = lvl_circle
         lvl_circle = lvl_circle.resize((lvl_circle_dia, lvl_circle_dia), Image.ANTIALIAS)
+        temp.close()
         lvl_bar_mask = mask.resize((lvl_circle_dia, lvl_circle_dia), Image.ANTIALIAS)
         process.paste(lvl_circle, (circle_left, circle_top), lvl_bar_mask)
+        lvl_bar_mask.close()
 
         # draws mask
         total_gap = 6
@@ -153,9 +164,15 @@ class ImageGenerators(MixinMeta):
         raw_length = profile_size * multiplier
         # put in profile picture
         output = ImageOps.fit(profile_image, (raw_length, raw_length), centering=(0.5, 0.5))
+        temp = output
         output.resize((profile_size, profile_size), Image.ANTIALIAS)
+        temp.close()
+        temp = mask
         mask = mask.resize((profile_size, profile_size), Image.ANTIALIAS)
+        temp.close()
+        temp = profile_image
         profile_image = profile_image.resize((profile_size, profile_size), Image.ANTIALIAS)
+        temp.close()
         process.paste(profile_image, (circle_left + border, circle_top + border), mask)
 
         # draw text
@@ -269,8 +286,12 @@ class ImageGenerators(MixinMeta):
         font_thin_file = f"{bundled_data_path(self)}/Uni_Sans_Thin.ttf"
         level_fnt = ImageFont.truetype(font_thin_file, 23)
 
-        bg_image = Image.open(level_background).convert("RGBA")
-        profile_image = Image.open(level_avatar).convert("RGBA")
+        bg_image_original = Image.open(level_background)
+        bg_image = bg_image_original.convert("RGBA")
+        bg_image_original.close()
+        profile_image_original = Image.open(level_avatar)
+        profile_image = profile_image_original.convert("RGBA")
+        profile_image_original.close()
         level_background.close()
         level_avatar.close()
 
@@ -283,8 +304,12 @@ class ImageGenerators(MixinMeta):
         draw = ImageDraw.Draw(process)
 
         # puts in background
+        temp = bg_image
         bg_image = bg_image.resize((width, height), Image.ANTIALIAS)
+        temp.close()
+        temp = bg_image
         bg_image = bg_image.crop((0, 0, width, height))
+        temp.close()
         result.paste(bg_image, (0, 0))
 
         # info section
@@ -327,17 +352,26 @@ class ImageGenerators(MixinMeta):
         lvl_circle = Image.new("RGBA", (raw_length, raw_length))
         draw_lvl_circle = ImageDraw.Draw(lvl_circle)
         draw_lvl_circle.ellipse([0, 0, raw_length, raw_length], fill=(250, 250, 250, 180))
+        temp = lvl_circle
         lvl_circle = lvl_circle.resize((lvl_circle_dia, lvl_circle_dia), Image.ANTIALIAS)
+        temp.close()
         lvl_bar_mask = mask.resize((lvl_circle_dia, lvl_circle_dia), Image.ANTIALIAS)
         process.paste(lvl_circle, (circle_left, circle_top), lvl_bar_mask)
+        lvl_bar_mask.close()
 
         profile_size = lvl_circle_dia - total_gap
         raw_length = profile_size * multiplier
         # put in profile picture
         output = ImageOps.fit(profile_image, (raw_length, raw_length), centering=(0.5, 0.5))
+        temp = output
         output.resize((profile_size, profile_size), Image.ANTIALIAS)
+        temp.close()
+        temp = mask
         mask = mask.resize((profile_size, profile_size), Image.ANTIALIAS)
+        temp.close()
+        temp = profile_image
         profile_image = profile_image.resize((profile_size, profile_size), Image.ANTIALIAS)
+        temp.close()
         process.paste(profile_image, (circle_left + border, circle_top + border), mask)
 
         # write label text
@@ -438,8 +472,12 @@ class ImageGenerators(MixinMeta):
         else:
             level_fill = self._contrast(exp_fill, rep_fill, badge_fill)
 
-        bg_image = Image.open(profile_background).convert("RGBA")
-        profile_image = Image.open(profile_avatar).convert("RGBA")
+        bg_image_original = Image.open(profile_background)
+        bg_image = bg_image_original.convert("RGBA")
+        bg_image_original.close()
+        profile_image_original = Image.open(profile_avatar)
+        profile_image = profile_image_original.convert("RGBA")
+        profile_image_original.close()
         profile_background.close()
         profile_avatar.close()
 
@@ -452,8 +490,12 @@ class ImageGenerators(MixinMeta):
         draw = ImageDraw.Draw(process)
 
         # puts in background
+        temp = bg_image
         bg_image = bg_image.resize((340, 340), Image.ANTIALIAS)
+        temp.close()
+        temp = bg_image
         bg_image = bg_image.crop((0, 0, 340, 305))
+        temp.close()
         result.paste(bg_image, (0, 0))
 
         # draw filter
@@ -481,16 +523,23 @@ class ImageGenerators(MixinMeta):
             outline=(255, 255, 255, 250),
         )
         # put border
+        temp = lvl_circle
         lvl_circle = lvl_circle.resize((lvl_circle_dia, lvl_circle_dia), Image.ANTIALIAS)
+        temp.close()
         lvl_bar_mask = mask.resize((lvl_circle_dia, lvl_circle_dia), Image.ANTIALIAS)
         process.paste(lvl_circle, (circle_left, circle_top), lvl_bar_mask)
+        lvl_bar_mask.close()
 
         # put in profile picture
         total_gap = 6
         border = int(total_gap / 2)
         profile_size = lvl_circle_dia - total_gap
+        temp = mask
         mask = mask.resize((profile_size, profile_size), Image.ANTIALIAS)
+        temp.close()
+        temp = profile_image
         profile_image = profile_image.resize((profile_size, profile_size), Image.ANTIALIAS)
+        temp.close()
         process.paste(profile_image, (circle_left + border, circle_top + border), mask)
 
         # write label text
@@ -665,44 +714,56 @@ class ImageGenerators(MixinMeta):
                 badge = pair[0]
                 border_color = badge["border_color"]
 
-                badge_image = Image.open(badges_images[num]).convert("RGBA")
+                badge_image_original = Image.open(badges_images[num])
                 badges_images[num].close()
-                badge_image = badge_image.resize((raw_length, raw_length), Image.ANTIALIAS)
+                badge_image = badge_image_original.convert("RGBA")
+                badge_image_original.close()
+                badge_image_resized = badge_image.resize((raw_length, raw_length), Image.ANTIALIAS)
+                badge_image.close()
 
                 # structured like this because if border = 0, still leaves outline.
                 if border_color:
                     square = Image.new("RGBA", (raw_length, raw_length), border_color)
                     # put border on ellipse/circle
                     output = ImageOps.fit(square, (raw_length, raw_length), centering=(0.5, 0.5))
+                    temp = output
                     output = output.resize((size, size), Image.ANTIALIAS)
+                    temp.close()
                     outer_mask = mask.resize((size, size), Image.ANTIALIAS)
                     process.paste(output, coord, outer_mask)
+                    outer_mask.close()
 
                     # put on ellipse/circle
                     output = ImageOps.fit(
-                        badge_image,
+                        badge_image_resized,
                         (raw_length, raw_length),
                         centering=(0.5, 0.5),
                     )
+                    temp = output
                     output = output.resize((size - total_gap, size - total_gap), Image.ANTIALIAS)
+                    temp.close()
                     inner_mask = mask.resize((size - total_gap, size - total_gap), Image.ANTIALIAS)
                     process.paste(
                         output,
                         (coord[0] + border_width, coord[1] + border_width),
                         inner_mask,
                     )
+                    inner_mask.close()
                     square.close()
                 else:
                     # put on ellipse/circle
                     output = ImageOps.fit(
-                        badge_image,
+                        badge_image_resized,
                         (raw_length, raw_length),
                         centering=(0.5, 0.5),
                     )
+                    temp = output
                     output = output.resize((size, size), Image.ANTIALIAS)
+                    temp.close()
                     outer_mask = mask.resize((size, size), Image.ANTIALIAS)
                     process.paste(output, coord, outer_mask)
-                badge_image.close()
+                    outer_mask.close()
+                badge_image_resized.close()
             else:
                 plus_fill = exp_fill
                 # put on ellipse/circle
@@ -733,9 +794,12 @@ class ImageGenerators(MixinMeta):
                 )
                 # put border on ellipse/circle
                 output = ImageOps.fit(plus_square, (raw_length, raw_length), centering=(0.5, 0.5))
+                temp = output
                 output = output.resize((size, size), Image.ANTIALIAS)
+                temp.close()
                 outer_mask = mask.resize((size, size), Image.ANTIALIAS)
                 process.paste(output, coord, outer_mask)
+                outer_mask.close()
                 plus_square.close()
             mask.close()
 
