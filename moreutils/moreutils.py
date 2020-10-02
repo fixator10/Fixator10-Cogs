@@ -43,7 +43,7 @@ def bool_emojify(bool_var: bool) -> str:
 class MoreUtils(commands.Cog):
     """Some (maybe) useful utils."""
 
-    __version__ = "2.0.10"
+    __version__ = "2.0.11"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
