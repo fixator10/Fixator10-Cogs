@@ -1,14 +1,12 @@
-import math
 from argparse import Namespace
+from textwrap import shorten
 
-import discord
 from redbot.core import commands
 from redbot.core.utils import AsyncIter
-from redbot.core.utils import chat_formatting as chat
-from tabulate import tabulate
 
 from ..abc import CompositeMetaClass, MixinMeta
 from ..argparsers import TopParser
+from ..menus.top import TopMenu, TopPager
 
 
 class Top(MixinMeta, metaclass=CompositeMetaClass):
@@ -38,10 +36,22 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
             users = []
             user_stat = []
             is_level = False
+            pos = 0
             if options.rep and options.global_top and owner:
                 title = "Global Rep Leaderboard for {}\n".format(self.bot.user.name)
                 async for userinfo in self.db.users.find({}).sort("rep", -1):
-                    users.append((userinfo.get("username", userinfo["user_id"]), userinfo["rep"]))
+                    pos += 1
+                    users.append(
+                        (
+                            pos,
+                            userinfo["rep"],
+                            shorten(
+                                userinfo.get("username", userinfo["user_id"]),
+                                20,
+                                placeholder="\N{HORIZONTAL ELLIPSIS}",
+                            ),
+                        )
+                    )
 
                     if str(user.id) == userinfo["user_id"]:
                         user_stat = [await self._find_global_rep_rank(user), userinfo["rep"]]
@@ -52,17 +62,31 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
                 is_level = True if await self.config.global_levels() else False
                 title = "Global Exp Leaderboard for {}\n".format(self.bot.user.name)
                 async for userinfo in self.db.users.find({}).sort("total_exp", -1):
+                    pos += 1
                     if is_level:
                         users.append(
                             (
-                                userinfo.get("username", userinfo["user_id"]),
+                                pos,
                                 userinfo["total_exp"],
                                 await self._find_level(userinfo["total_exp"]),
+                                shorten(
+                                    userinfo.get("username", userinfo["user_id"]),
+                                    20,
+                                    placeholder="\N{HORIZONTAL ELLIPSIS}",
+                                ),
                             )
                         )
                     else:
                         users.append(
-                            (userinfo.get("username", userinfo["user_id"]), userinfo["total_exp"])
+                            (
+                                pos,
+                                userinfo["total_exp"],
+                                shorten(
+                                    userinfo.get("username", userinfo["user_id"]),
+                                    20,
+                                    placeholder="\N{HORIZONTAL ELLIPSIS}",
+                                ),
+                            )
                         )
 
                     if str(user.id) == userinfo["user_id"]:
@@ -82,7 +106,18 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
                 async for userinfo in self.db.users.find(
                     {f"servers.{server.id}": {"$exists": True}}
                 ).sort("rep", -1):
-                    users.append((userinfo.get("username", userinfo["user_id"]), userinfo["rep"]))
+                    pos += 1
+                    users.append(
+                        (
+                            pos,
+                            userinfo["rep"],
+                            shorten(
+                                userinfo.get("username", userinfo["user_id"]),
+                                20,
+                                placeholder="\N{HORIZONTAL ELLIPSIS}",
+                            ),
+                        )
+                    )
 
                     if str(user.id) == userinfo["user_id"]:
                         user_stat = [
@@ -100,71 +135,41 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
                 ).sort(
                     [(f"servers.{server.id}.level", -1), (f"servers.{server.id}.current_exp", -1)]
                 ):
+                    pos += 1
                     if str(user.id) == userinfo["user_id"]:
                         user_stat = [
                             await self._find_server_rank(user, server),
                             await self._find_server_exp(user, server),
                             userinfo["servers"].get(str(server.id), {}).get("level"),
                         ]
-                    try:
-                        if userinfo.get("servers", {}).get(str(server.id)):
-                            server_exp = 0
-                            for i in range(userinfo["servers"][str(server.id)]["level"]):
-                                server_exp += await self._required_exp(i)
-                            server_exp += userinfo["servers"][str(server.id)]["current_exp"]
-                            users.append(
-                                (
+                    if userinfo.get("servers", {}).get(str(server.id)):
+                        server_exp = 0
+                        async for i in AsyncIter(
+                            range(userinfo["servers"][str(server.id)].get("level", 0))
+                        ):
+                            server_exp += await self._required_exp(i)
+                        server_exp += userinfo["servers"][str(server.id)].get("current_exp", 0)
+                        users.append(
+                            (
+                                pos,
+                                server_exp,
+                                userinfo["servers"][str(server.id)].get("level", 0),
+                                shorten(
                                     userinfo.get("username", userinfo["user_id"]),
-                                    server_exp,
-                                    userinfo["servers"][str(server.id)]["level"],
-                                )
+                                    20,
+                                    placeholder="\N{HORIZONTAL ELLIPSIS}",
+                                ),
                             )
-                    except KeyError:
-                        pass
+                        )
                 board_type = "Points"
                 icon_url = server.icon_url
 
-            # multiple page support
+            pages = TopPager(users, board_type, is_level, user_stat, icon_url, title)
+            menu = TopMenu(pages)
+            await menu.start(ctx)
             page = options.page
-            per_page = 15
-            pages = math.ceil(len(users) / per_page)
+            if page > pages.get_max_pages():
+                page = pages.get_max_pages()
             if page < 1:
                 page = 1
-            if page > pages:
-                page = pages
-
-            msg = ""
-            rank = 1 + per_page * (page - 1)
-            start_index = per_page * page - per_page
-            end_index = per_page * page
-            members = []
-
-            async for rank, single_user in AsyncIter(users[start_index:end_index]).enumerate(rank):
-                members.append(
-                    (rank, single_user[1], single_user[2], single_user[0])
-                    if is_level
-                    else (rank, single_user[1], single_user[0])
-                )
-            table = tabulate(
-                members,
-                headers=["#", board_type, "Level", "Username"]
-                if is_level
-                else ["#", board_type, "Username"],
-                tablefmt="rst",
-            )
-            table_width = len(table.splitlines()[0])
-            msg += "[Page {}/{}]".format(page, pages).rjust(table_width)
-            msg += "\n"
-            msg += table
-            msg += "\n"
-            msg += "Your rank: {}".format(user_stat[0]).rjust(table_width)
-            msg += "\n"
-            msg += "{}: {}".format(board_type, user_stat[1]).rjust(table_width)
-            msg += "\n"
-            if is_level:
-                msg += "Level: {}".format(user_stat[2]).rjust(table_width)
-
-            em = discord.Embed(description=chat.box(msg), colour=user.colour)
-            em.set_author(name=title, icon_url=icon_url)
-
-        await ctx.send(embed=em)
+            await menu.show_page(page - 1)
