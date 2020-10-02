@@ -105,7 +105,7 @@ class MoreUtils(commands.Cog):
         await m.edit(embed=em)
 
     @commands.guild_only()
-    @commands.command(pass_context=True, no_pm=True)
+    @commands.command()
     async def someone(self, ctx, *, text: str = None):
         """Help I've fallen and I need @someone.
 
