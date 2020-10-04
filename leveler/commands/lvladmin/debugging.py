@@ -35,7 +35,7 @@ class Debugging(MixinMeta):
                         "PIL version": pilfeatures.version("pil"),
                         "PIL features": tabulate(
                             {
-                                feature: pilfeatures.version(feature)
+                                feature: pilfeatures.version(feature) or "N/A"
                                 for feature in pilfeatures.get_supported()
                             },
                             tablefmt="psql",
