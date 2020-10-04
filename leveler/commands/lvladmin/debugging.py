@@ -26,21 +26,26 @@ class Debugging(MixinMeta):
 
     @debug_commands.command(name="info")
     async def debug_info(self, ctx):
+        """Get info about libs used by leveler and environment data"""
         await ctx.send(
             chat.box(
                 tabulate(
-                    {
-                        "pymongo version": pymongoversion,
-                        "motor version": motorversion,
-                        "PIL version": pilfeatures.version("pil"),
-                        "PIL features": tabulate(
-                            {
-                                feature: pilfeatures.version(feature) or "N/A"
-                                for feature in pilfeatures.get_supported()
-                            },
-                            tablefmt="psql",
+                    [
+                        ("pymongo version", pymongoversion),
+                        ("motor version", motorversion),
+                        ("Mongo DB version", (await self.client.server_info()).get("version", "?")),
+                        ("PIL version", pilfeatures.version("pil")),
+                        (
+                            "PIL features",
+                            tabulate(
+                                [
+                                    (feature, pilfeatures.version(feature) or "N/A")
+                                    for feature in pilfeatures.get_supported()
+                                ],
+                                tablefmt="psql",
+                            ),
                         ),
-                    },
+                    ],
                     tablefmt="psql",
                 )
             )
