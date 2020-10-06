@@ -84,7 +84,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.4.12"
+    __version__ = "2.4.13"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -220,7 +220,7 @@ class DataUtils(commands.Cog):
         em.add_field(name=_("Joined server"), value=member.joined_at.strftime(self.TIME_FORMAT))
         em.add_field(name="ID", value=member.id)
         em.add_field(
-            name=_("Has existed since"),
+            name=_("Exists since"),
             value=member.created_at.strftime(self.TIME_FORMAT),
         )
         if member.color.value:
@@ -486,7 +486,7 @@ class DataUtils(commands.Cog):
             value=CHANNEL_TYPE_EMOJIS.get(channel.type, str(channel.type)),
         )
         em.add_field(
-            name=_("Has existed since"),
+            name=_("Exists since"),
             value=channel.created_at.strftime(self.TIME_FORMAT),
         )
         em.add_field(
@@ -597,7 +597,7 @@ class DataUtils(commands.Cog):
             ),
         )
         em.add_field(
-            name=_("Has existed since"),
+            name=_("Exists since"),
             value=role.created_at.strftime(self.TIME_FORMAT),
         )
         em.add_field(name=_("Hoist"), value=bool_emojify(role.hoist))
@@ -740,7 +740,7 @@ class DataUtils(commands.Cog):
             em.set_image(url=emoji.url)
         if isinstance(emoji, discord.Emoji):
             em.add_field(
-                name=_("Has existed since"),
+                name=_("Exists since"),
                 value=emoji.created_at.strftime(self.TIME_FORMAT),
             )
             em.add_field(name=_('":" required'), value=bool_emojify(emoji.require_colons))
@@ -756,7 +756,7 @@ class DataUtils(commands.Cog):
                 )
         elif isinstance(emoji, discord.PartialEmoji):
             em.add_field(
-                name=_("Has existed since"),
+                name=_("Exists since"),
                 value=discord.utils.snowflake_time(emoji.id).strftime(self.TIME_FORMAT),
             )
             em.add_field(name=_("Custom emoji"), value=bool_emojify(emoji.is_custom_emoji()))
