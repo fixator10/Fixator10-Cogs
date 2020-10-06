@@ -22,7 +22,7 @@ async def has_assigned_role(ctx):
 class PersonalRoles(commands.Cog):
     """Assign and edit personal roles"""
 
-    __version__ = "2.1.2"
+    __version__ = "2.1.3"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -161,7 +161,7 @@ class PersonalRoles(commands.Cog):
         else:
             await ctx.send(chat.info(_("There is no blocklisted roles")))
 
-    @commands.cooldown(1, 30, commands.BucketType.user)
+    @commands.cooldown(1, 30, commands.BucketType.member)
     @myrole.command(aliases=["color"])
     @commands.guild_only()
     @commands.check(has_assigned_role)
@@ -196,7 +196,7 @@ class PersonalRoles(commands.Cog):
                     )
                 )
 
-    @commands.cooldown(1, 30, commands.BucketType.user)
+    @commands.cooldown(1, 30, commands.BucketType.member)
     @myrole.command()
     @commands.guild_only()
     @commands.check(has_assigned_role)
