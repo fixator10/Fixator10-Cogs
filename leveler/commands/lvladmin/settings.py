@@ -210,6 +210,7 @@ class Settings(MixinMeta):
             )
 
     @lvladmin.command()
+    @commands.is_owner()
     async def globallevels(self, ctx):
         """Show levels in global leaderboard.
 

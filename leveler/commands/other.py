@@ -61,12 +61,10 @@ class Other(MixinMeta, metaclass=CompositeMetaClass):
                 )
             )
 
-    @commands.command(name="backgrounds", usage="<type>")
+    @commands.command(name="backgrounds", usage="<profile|rank|levelup>")
     @commands.guild_only()
-    async def disp_backgrounds(self, ctx, bg_type: str):
-        """Gives a list of backgrounds.
-
-        type can be: `profile`, `rank` or `levelup`."""
+    async def list_backgrounds(self, ctx, bg_type: str):
+        """Gives a list of backgrounds."""
         backgrounds = await self.config.backgrounds()
 
         em = discord.Embed(colour=await ctx.embed_color())
