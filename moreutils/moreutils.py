@@ -4,12 +4,20 @@ import random
 
 import aiohttp
 import discord
-from dateutil.parser import parse
 from redbot.core import checks, commands
 from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils import chat_formatting as chat
+from tabulate import tabulate
 
 _ = Translator("MoreUtils", __file__)
+
+
+DISCORD_STATUS_NAMES = {
+    "none": _("OK"),
+    "minor": _("Minor problems"),
+    "major": _("Major problems"),
+    "critical": _("Critical problems"),
+}
 
 
 def rgb_to_cmyk(r, g, b):
@@ -43,7 +51,7 @@ def bool_emojify(bool_var: bool) -> str:
 class MoreUtils(commands.Cog):
     """Some (maybe) useful utils."""
 
-    __version__ = "2.0.11"
+    __version__ = "2.0.12"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -136,37 +144,40 @@ class MoreUtils(commands.Cog):
     @commands.command(pass_context=True)
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def discordstatus(self, ctx):
-        """Get current discord status from status.discordapp.com"""
-        try:
-            async with self.session.get(
-                "https://srhpyqt94yxb.statuspage.io/api/v2/summary.json"
-            ) as data:
-                response = await data.json()
-        except Exception as e:
-            await ctx.send(
-                chat.error(
-                    _("Unable to get data from https://status.discordapp.com: {}").format(e)
+        """Get current discord status from discordstatus.com"""
+        async with ctx.typing():
+            try:
+                async with self.session.get(
+                    "https://srhpyqt94yxb.statuspage.io/api/v2/summary.json"
+                ) as data:
+                    response = await data.json()
+            except Exception as e:
+                await ctx.send(
+                    chat.error(
+                        _("Unable to get data from https://discordstatus.com: {}").format(e)
+                    )
                 )
-            )
-            return
-        status = response["status"]
-        status_indicators = {
-            "none": _("OK"),
-            "minor": _("Minor problems"),
-            "major": _("Major problems"),
-            "critical": _("Critical problems"),
-        }
-        components = response["components"]
-        embed = discord.Embed(
-            title=_("Discord Status"),
-            timestamp=parse(response["page"]["updated_at"]),
-            color=await ctx.embed_color(),
-            url="https://discordstatus.com",
-        )
-        embed.description = status_indicators.get(status["indicator"], status["indicator"])
-        for component in components:
-            embed.add_field(
-                name=component["name"],
-                value=component["status"].capitalize().replace("_", " "),
-            )
-        await ctx.send(embed=embed)
+                return
+            status = response["status"]
+            components = response["components"]
+            if await ctx.embed_requested():
+                embed = discord.Embed(
+                    title=_("Discord Status"),
+                    description=DISCORD_STATUS_NAMES.get(status["indicator"], status["indicator"]),
+                    timestamp=datetime.datetime.fromisoformat(response["page"]["updated_at"])
+                    .astimezone(datetime.timezone.utc)
+                    .replace(tzinfo=None),  # make naive
+                    color=await ctx.embed_color(),
+                    url="https://discordstatus.com",
+                )
+                for component in components:
+                    embed.add_field(
+                        name=component["name"],
+                        value=component["status"].capitalize().replace("_", " "),
+                    )
+                await ctx.send(embed=embed)
+            else:
+                await ctx.send(
+                    f"{DISCORD_STATUS_NAMES.get(status['indicator'], status['indicator'])}\n"
+                    f"{chat.box(tabulate([(c['name'], c['status'].capitalize().replace('_', ' ')) for c in components]))}"
+                )
