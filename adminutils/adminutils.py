@@ -189,7 +189,7 @@ class AdminUtils(commands.Cog):
         except discord.HTTPException as e:
             await ctx.send(chat.error(_("An error occured on adding an emoji: {}").format(e)))
         else:
-            await ctx.send(_(f"{e} created with the name `{e.name}`."))
+            await ctx.send(_("{em} created with the name `{em.name}`.".format(em=e)))
             await ctx.tick()
 
     @emoji.command(name="import")
@@ -213,6 +213,8 @@ class AdminUtils(commands.Cog):
         if isinstance(location, (discord.Emoji, discord.PartialEmoji)):
             async with self.session.get(str(location.url)) as r:
                 data = await r.read()
+            if name == "_":
+                name = location.name
         elif isinstance(location, discord.Message):
             emoji = EMOJI_RE.search(location.content)
             if not emoji:
@@ -239,6 +241,8 @@ class AdminUtils(commands.Cog):
                 return
             async with self.session.get(str(emoji.url)) as r:
                 data = await r.read()
+            if name == "_":
+                name = location.name
         try:
             em = await ctx.guild.create_custom_emoji(
                 name=name,
@@ -247,7 +251,7 @@ class AdminUtils(commands.Cog):
                 reason=get_audit_reason(
                     ctx.author,
                     _("Restricted to roles: {}").format(
-                        ", ".join([f"{role.name}" for role in roles])
+                        ", ".join([role.name for role in roles])
                     )
                     if roles
                     else None,
@@ -263,7 +267,9 @@ class AdminUtils(commands.Cog):
         except discord.HTTPException as e:
             await ctx.send(chat.error(_("An error occurred on adding an emoji: {}").format(e)))
         else:
-            await ctx.send(_(f"{em} created with the name `{em.name}`."))
+            msg = _("{em} created with the name `{em.name}`".format(em=em))
+            msg += _(" and locked to the roles {}.".format(chat.humanize_list(role.name for role in roles)) if roles else ".")
+            await ctx.send(msg)
             await ctx.tick()
 
     @emoji.command(name="rename")
@@ -296,7 +302,7 @@ class AdminUtils(commands.Cog):
         except discord.Forbidden:
             await ctx.send(chat.error(_("I can't edit this emoji")))
         else:
-            await ctx.send(_(f"{em} edited to `{em.name}`."))
+            await ctx.send(_("{em} created with the name `{em.name}`.".format(em=em)))
         await ctx.tick()
 
     @emoji.command(name="remove")
