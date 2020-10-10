@@ -189,7 +189,9 @@ class AdminUtils(commands.Cog):
         except discord.HTTPException as e:
             await ctx.send(chat.error(_("An error occured on adding an emoji: {}").format(e)))
         else:
-            await ctx.send(_("{em} created with the name `{em.name}`.".format(em=e)))
+            msg = _("{em} created with the name `{em.name}`".format(em=em))
+            msg += _(" and locked to the roles {}.".format(chat.humanize_list([role.name for role in roles])) if roles else ".")
+            await ctx.send(msg)
             await ctx.tick()
 
     @emoji.command(name="import")
