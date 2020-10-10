@@ -271,7 +271,7 @@ class AdminUtils(commands.Cog):
             await ctx.send(chat.error(_("An error occurred on adding an emoji: {}").format(e)))
         else:
             msg = _("{em} created with the name `{em.name}`".format(em=em))
-            msg += _(" and locked to the roles {}.".format(chat.humanize_list(role.name for role in roles)) if roles else ".")
+            msg += _(" and locked to the roles {}.".format(chat.humanize_list([role.name for role in roles])) if roles else ".")
             await ctx.send(msg)
             await ctx.tick()
 
