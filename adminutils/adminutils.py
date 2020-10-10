@@ -305,7 +305,9 @@ class AdminUtils(commands.Cog):
         except discord.Forbidden:
             await ctx.send(chat.error(_("I can't edit this emoji")))
         else:
-            await ctx.send(_("{em} created with the name `{em.name}`.".format(em=em)))
+            msg = _("{em} name changed to `{em.name}`".format(em=em))
+            msg += _(" and locked to the roles {}.".format(chat.humanize_list([role.name for role in roles])) if roles else ".")
+            await ctx.send(msg)
         await ctx.tick()
 
     @emoji.command(name="remove")
