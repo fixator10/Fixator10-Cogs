@@ -1,4 +1,3 @@
-import base64
 import itertools
 import random
 import re
@@ -10,11 +9,17 @@ from urllib import parse
 
 import aiohttp
 import discord
+import pybase64
 from redbot.core import commands
 from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils import chat_formatting as chat
 
 from .converters import PySupportedEncoding
+
+try:
+    from redbot import json  # support of Draper's branch
+except ImportError:
+    import json
 
 _ = Translator("Translators", __file__)
 
@@ -43,12 +48,12 @@ EMOJIFY_CHARS = {
 class Translators(commands.Cog):
     """Useful (and not) translators"""
 
-    __version__ = "2.2.0"
+    __version__ = "2.2.2"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
         self.bot = bot
-        self.session = aiohttp.ClientSession(loop=self.bot.loop)
+        self.session = aiohttp.ClientSession(json_serialize=json.dumps)
 
     def cog_unload(self):
         self.bot.loop.create_task(self.session.close())
@@ -240,7 +245,7 @@ class Translators(commands.Cog):
         if not encoding:
             encoding = "utf-8"
         text = text.encode(encoding=encoding, errors="replace")
-        output = base64.standard_b64encode(text)
+        output = pybase64.standard_b64encode(text)
         result = output.decode()
         for page in chat.pagify(result):
             await ctx.send(chat.box(page))
@@ -253,7 +258,7 @@ class Translators(commands.Cog):
         encoded = encoded + "=="  # extra padding if padding is missing from string
         encoded = encoded.encode()
         try:
-            decoded = base64.standard_b64decode(encoded)
+            decoded = pybase64.standard_b64decode(encoded)
         except binasciiError:
             await ctx.send(chat.error(_("Invalid Base64 string provided")))
             return

@@ -23,7 +23,7 @@ _ = Translator("DataUtils", __file__)
 
 TWEMOJI_URL = "https://twemoji.maxcdn.com/v/latest/72x72"
 APP_ICON_URL = "https://cdn.discordapp.com/app-icons/{app_id}/{icon_hash}.png"
-NON_ESCAPEABLE_CHARACTERS = string.ascii_letters + string.digits
+NON_ESCAPABLE_CHARACTERS = string.ascii_letters + string.digits
 
 GUILD_FEATURES = {
     "VIP_REGIONS": _("384kbps voice bitrate"),
@@ -84,7 +84,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.4.8"
+    __version__ = "2.4.13"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -179,7 +179,7 @@ class DataUtils(commands.Cog):
                     value="\n".join(GUILD_FEATURES.get(f, f) for f in guild.features).format(
                         banner=guild.banner and f" [🔗]({guild.banner_url_as(format='png')})" or "",
                         splash=guild.splash and f" [🔗]({guild.splash_url_as(format='png')})" or "",
-                        discovery=guild.discovery_splash
+                        discovery=getattr(guild, "discovery_splash", None)
                         and f" [🔗]({guild.discovery_splash_url_as(format='png')})"
                         or "",
                     ),
@@ -220,7 +220,7 @@ class DataUtils(commands.Cog):
         em.add_field(name=_("Joined server"), value=member.joined_at.strftime(self.TIME_FORMAT))
         em.add_field(name="ID", value=member.id)
         em.add_field(
-            name=_("Has existed since"),
+            name=_("Exists since"),
             value=member.created_at.strftime(self.TIME_FORMAT),
         )
         if member.color.value:
@@ -486,7 +486,7 @@ class DataUtils(commands.Cog):
             value=CHANNEL_TYPE_EMOJIS.get(channel.type, str(channel.type)),
         )
         em.add_field(
-            name=_("Has existed since"),
+            name=_("Exists since"),
             value=channel.created_at.strftime(self.TIME_FORMAT),
         )
         em.add_field(
@@ -597,7 +597,7 @@ class DataUtils(commands.Cog):
             ),
         )
         em.add_field(
-            name=_("Has existed since"),
+            name=_("Exists since"),
             value=role.created_at.strftime(self.TIME_FORMAT),
         )
         em.add_field(name=_("Hoist"), value=bool_emojify(role.hoist))
@@ -715,7 +715,9 @@ class DataUtils(commands.Cog):
         """Make embed with info about emoji"""
         em = discord.Embed(
             title=isinstance(emoji, str)
-            and "\n".join(map(unicodedata.name, emoji))
+            and "\n".join(
+                map(lambda c: unicodedata.name(c, _("[Unable to resolve unicode name]")), emoji)
+            )
             or chat.escape(emoji.name, formatting=True),
             color=await ctx.embed_color(),
         )
@@ -724,7 +726,7 @@ class DataUtils(commands.Cog):
             em.add_field(
                 name=_("Unicode character"),
                 value="\n".join(
-                    f"\\{c}" if c not in NON_ESCAPEABLE_CHARACTERS else c for c in emoji
+                    f"\\{c}" if c not in NON_ESCAPABLE_CHARACTERS else c for c in emoji
                 ),
             )
             em.add_field(
@@ -738,7 +740,7 @@ class DataUtils(commands.Cog):
             em.set_image(url=emoji.url)
         if isinstance(emoji, discord.Emoji):
             em.add_field(
-                name=_("Has existed since"),
+                name=_("Exists since"),
                 value=emoji.created_at.strftime(self.TIME_FORMAT),
             )
             em.add_field(name=_('":" required'), value=bool_emojify(emoji.require_colons))
@@ -754,7 +756,7 @@ class DataUtils(commands.Cog):
                 )
         elif isinstance(emoji, discord.PartialEmoji):
             em.add_field(
-                name=_("Has existed since"),
+                name=_("Exists since"),
                 value=discord.utils.snowflake_time(emoji.id).strftime(self.TIME_FORMAT),
             )
             em.add_field(name=_("Custom emoji"), value=bool_emojify(emoji.is_custom_emoji()))

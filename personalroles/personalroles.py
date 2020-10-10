@@ -22,14 +22,14 @@ async def has_assigned_role(ctx):
 class PersonalRoles(commands.Cog):
     """Assign and edit personal roles"""
 
-    __version__ = "2.0.7"
+    __version__ = "2.1.3"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
         self.bot = bot
         self.config = Config.get_conf(self, identifier=0x3D86BBD3E2B744AE8AA8B5D986EB4DD8)
         default_member = {"role": None}
-        default_guild = {"blacklist": []}
+        default_guild = {"blacklist": [], "role_persistence": True}
         self.config.register_member(**default_member)
         self.config.register_guild(**default_guild)
 
@@ -101,6 +101,21 @@ class PersonalRoles(commands.Cog):
         else:
             await ctx.send(chat.info(_("There is no assigned personal roles on this server")))
 
+    @myrole.command(name="persistence")
+    @checks.admin_or_permissions(manage_roles=True)
+    async def mr_persistence(self, ctx):
+        """Toggle auto-adding role on rejoin."""
+        editing = self.config.guild(ctx.guild).role_persistence
+        new_state = not await editing()
+        await editing.set(new_state)
+        await ctx.send(
+            chat.info(
+                _("Users will {}get their roles on rejoin now.").format(
+                    "" if new_state else _("not ")
+                )
+            )
+        )
+
     @myrole.group(name="blocklist", aliases=["blacklist"])
     @commands.guild_only()
     @checks.admin_or_permissions(manage_roles=True)
@@ -146,7 +161,7 @@ class PersonalRoles(commands.Cog):
         else:
             await ctx.send(chat.info(_("There is no blocklisted roles")))
 
-    @commands.cooldown(1, 30, commands.BucketType.user)
+    @commands.cooldown(1, 30, commands.BucketType.member)
     @myrole.command(aliases=["color"])
     @commands.guild_only()
     @commands.check(has_assigned_role)
@@ -181,7 +196,7 @@ class PersonalRoles(commands.Cog):
                     )
                 )
 
-    @commands.cooldown(1, 30, commands.BucketType.user)
+    @commands.cooldown(1, 30, commands.BucketType.member)
     @myrole.command()
     @commands.guild_only()
     @commands.check(has_assigned_role)
@@ -217,9 +232,11 @@ class PersonalRoles(commands.Cog):
             )
 
     @commands.Cog.listener("on_member_join")
-    async def role_persistance(self, member):
+    async def role_persistence(self, member):
         """Automatically give already assigned roles on join"""
         if await self.bot.cog_disabled_in_guild(self, member.guild):
+            return
+        if not await self.config.guild(member.guild).role_persistence():
             return
         role = await self.config.member(member).role()
         if role:

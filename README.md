@@ -1,13 +1,13 @@
 <p align="center">
-    <img src="https://Moeka.is-a-good-waifu.com/u2P2sMM.png">
+    <img alt="Fixator10-Cogs Logo" src="https://Moeka.is-a-good-waifu.com/u2P2sMM.png">
     <a href="https://fixator10.ru/discord">
-        <img src="https://img.shields.io/discord/221158719025709056.svg?style=for-the-badge&logo=discord">
+        <img alt="Discord" src="https://img.shields.io/discord/221158719025709056.svg?style=for-the-badge&logo=discord">
     </a>
     <a href="https://github.com/Cog-Creators/Red-DiscordBot">
-        <img src="https://img.shields.io/badge/Red-DiscordBot-red.svg?style=for-the-badge">
+        <img alt="Red-DiscordBot" src="https://img.shields.io/badge/Red-DiscordBot-red.svg?style=for-the-badge">
     </a>
     <a href="https://www.codefactor.io/repository/github/fixator10/fixator10-cogs">
-        <img src="https://www.codefactor.io/repository/github/fixator10/fixator10-cogs/badge?style=for-the-badge">
+        <img alt="Codefactor" src="https://www.codefactor.io/repository/github/fixator10/fixator10-cogs/badge?style=for-the-badge">
     </a>
     <a href="https://github.com/ambv/black">
         <img alt="GitHub Workflow Status: Black" 
@@ -19,7 +19,7 @@
     </a>
     <br>
     <a href="https://i18n.fixator10.ru/project/fixator10-cogs">
-        <img src="https://badges.crowdin.net/fixator10-cogs/localized.svg">
+        <img alt="i18n status" src="https://badges.crowdin.net/fixator10-cogs/localized.svg">
     </a>
 </p>
 

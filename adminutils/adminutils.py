@@ -14,19 +14,19 @@ from redbot.core.utils.predicates import MessagePredicate
 _ = Translator("AdminUtils", __file__)
 
 
-EMOJI_RE = re.compile(r"(<(a)?:[a-zA-Z0-9\_]+:([0-9]+)>)")
+EMOJI_RE = re.compile(r"(<(a)?:[a-zA-Z0-9_]+:([0-9]+)>)")
 
 
 @cog_i18n(_)
 class AdminUtils(commands.Cog):
     """Useful commands for server administrators."""
 
-    __version__ = "2.5.1"
+    __version__ = "2.5.4"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
         self.bot = bot
-        self.session = aiohttp.ClientSession(loop=self.bot.loop)
+        self.session = aiohttp.ClientSession(json_serialize=json.dumps)
 
     def cog_unload(self):
         self.bot.loop.create_task(self.session.close())

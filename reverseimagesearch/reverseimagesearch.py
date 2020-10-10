@@ -13,6 +13,11 @@ from .converters import ImageFinder
 from .saucenao import SauceNAO
 from .tracemoe import TraceMoe
 
+try:
+    from redbot import json  # support of Draper's branch
+except ImportError:
+    import json
+
 _ = Translator("ReverseImageSearch", __file__)
 
 
@@ -52,7 +57,7 @@ TRACEMOE_MENU_CONTROLS = {**DEFAULT_CONTROLS, "\N{FILM FRAMES}": send_preview}
 class ReverseImageSearch(commands.Cog):
     """(Anime) Reverse Image Search"""
 
-    __version__ = "2.1.2"
+    __version__ = "2.1.4"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -63,7 +68,7 @@ class ReverseImageSearch(commands.Cog):
             "long_remaining": None,
             "short_remaining": None,
         }
-        self.session = aiohttp.ClientSession(loop=self.bot.loop)
+        self.session = aiohttp.ClientSession(json_serialize=json.dumps)
         self.config = Config.get_conf(self, identifier=0x02E801D017C140A9A0C840BA01A25066)
         default_global = {"numres": 6}
         self.config.register_global(**default_global)

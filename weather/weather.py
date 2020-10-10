@@ -14,6 +14,11 @@ from redbot.core.utils.menus import DEFAULT_CONTROLS, menu
 from requests.exceptions import ConnectionError as RequestsConnectionError
 from requests.exceptions import HTTPError, Timeout
 
+try:
+    from redbot import json  # support of Draper's branch
+except ImportError:
+    import json
+
 FORECASTIO_SUPPORTED_LANGS = [
     "ar",
     "az",
@@ -129,7 +134,7 @@ PRECIP_TYPE_I18N = {"rain": _("Rain"), "snow": _("Snow"), "sleet": _("Sleet")}
 class Weather(commands.Cog):
     """Weather forecast"""
 
-    __version__ = "2.0.3"
+    __version__ = "2.0.4"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -138,7 +143,7 @@ class Weather(commands.Cog):
         default_guild = {"units": "si"}
         self.config.register_guild(**default_guild)
         self.session = aiohttp.ClientSession(
-            loop=self.bot.loop,
+            json_serialize=json.dumps,
             raise_for_status=True,
         )
 
@@ -256,7 +261,7 @@ class Weather(commands.Cog):
                         "User-Agent": f"Red-DiscordBot/{redbot_ver} Fixator10-Cogs/Weather/{self.__version__}",
                     },
                 ) as r:
-                    location = await r.json()
+                    location = await r.json(loads=json.loads)
             except aiohttp.ClientResponseError as e:
                 await ctx.send(
                     chat.error(
@@ -381,7 +386,7 @@ class Weather(commands.Cog):
                         "User-Agent": f"Red-DiscordBot/{redbot_ver} Fixator10-Cogs/Weather/{self.__version__}",
                     },
                 ) as r:
-                    location = await r.json()
+                    location = await r.json(loads=json.loads)
             except aiohttp.ClientResponseError as e:
                 await ctx.send(
                     chat.error(

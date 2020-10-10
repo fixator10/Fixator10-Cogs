@@ -4,12 +4,25 @@ import random
 
 import aiohttp
 import discord
-from dateutil.parser import parse
 from redbot.core import checks, commands
 from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils import chat_formatting as chat
+from tabulate import tabulate
+
+try:
+    from redbot import json  # support of Draper's branch
+except ImportError:
+    import json
+
 
 _ = Translator("MoreUtils", __file__)
+
+DISCORD_STATUS_NAMES = {
+    "none": _("OK"),
+    "minor": _("Minor problems"),
+    "major": _("Major problems"),
+    "critical": _("Critical problems"),
+}
 
 
 def rgb_to_cmyk(r, g, b):
@@ -43,12 +56,12 @@ def bool_emojify(bool_var: bool) -> str:
 class MoreUtils(commands.Cog):
     """Some (maybe) useful utils."""
 
-    __version__ = "2.0.7"
+    __version__ = "2.0.13"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
         self.bot = bot
-        self.session = aiohttp.ClientSession(loop=self.bot.loop)
+        self.session = aiohttp.ClientSession(json_serialize=json.dumps)
 
     def cog_unload(self):
         self.bot.loop.create_task(self.session.close())
@@ -70,13 +83,7 @@ class MoreUtils(commands.Cog):
         colorhls = colorsys.rgb_to_hls(colorrgb[0], colorrgb[1], colorrgb[2])
         coloryiq = colorsys.rgb_to_yiq(colorrgb[0], colorrgb[1], colorrgb[2])
         colorcmyk = rgb_to_cmyk(colorrgb[0], colorrgb[1], colorrgb[2])
-        async with self.session.get(
-            f"https://api.alexflipnote.dev/color/{str(color)[1:]}"
-        ) as data:
-            color_name = (await data.json()).get("name", "?")
-        em = discord.Embed(
-            title=str(color),
-            description="Name: {}\n"
+        colors_text = (
             "HEX: {}\n"
             "RGB: {}\n"
             "CMYK: {}\n"
@@ -84,7 +91,6 @@ class MoreUtils(commands.Cog):
             "HLS: {}\n"
             "YIQ: {}\n"
             "int: {}".format(
-                color_name,
                 str(color),
                 colorrgb,
                 tuple(map(lambda x: isinstance(x, float) and round(x, 2) or x, colorcmyk)),
@@ -92,16 +98,27 @@ class MoreUtils(commands.Cog):
                 tuple(map(lambda x: isinstance(x, float) and round(x, 2) or x, colorhls)),
                 tuple(map(lambda x: isinstance(x, float) and round(x, 2) or x, coloryiq)),
                 color.value,
-            ),
+            )
+        )
+        em = discord.Embed(
+            title=str(color),
+            description=_("Name: Loading...\n") + colors_text,
             url=f"http://www.color-hex.com/color/{str(color)[1:]}",
             colour=color,
             timestamp=ctx.message.created_at,
         )
         em.set_thumbnail(url=f"https://api.alexflipnote.dev/color/image/{str(color)[1:]}")
         em.set_image(url=f"https://api.alexflipnote.dev/color/image/gradient/{str(color)[1:]}")
-        await ctx.send(embed=em)
+        m = await ctx.send(embed=em)
+        async with self.session.get(
+            f"https://api.alexflipnote.dev/color/{str(color)[1:]}"
+        ) as data:
+            color_name = (await data.json(loads=json.loads)).get("name", "?")
+        em.description = _("Name: {}\n").format(color_name) + colors_text
+        await m.edit(embed=em)
 
-    @commands.command(pass_context=True, no_pm=True)
+    @commands.guild_only()
+    @commands.command()
     async def someone(self, ctx, *, text: str = None):
         """Help I've fallen and I need @someone.
 
@@ -132,37 +149,40 @@ class MoreUtils(commands.Cog):
     @commands.command(pass_context=True)
     @commands.cooldown(1, 10, commands.BucketType.user)
     async def discordstatus(self, ctx):
-        """Get current discord status from status.discordapp.com"""
-        try:
-            async with self.session.get(
-                "https://srhpyqt94yxb.statuspage.io/api/v2/summary.json"
-            ) as data:
-                response = await data.json()
-        except Exception as e:
-            await ctx.send(
-                chat.error(
-                    _("Unable to get data from https://status.discordapp.com: {}").format(e)
+        """Get current discord status from discordstatus.com"""
+        async with ctx.typing():
+            try:
+                async with self.session.get(
+                    "https://srhpyqt94yxb.statuspage.io/api/v2/summary.json"
+                ) as data:
+                    response = await data.json(loads=json.loads)
+            except Exception as e:
+                await ctx.send(
+                    chat.error(
+                        _("Unable to get data from https://discordstatus.com: {}").format(e)
+                    )
                 )
-            )
-            return
-        status = response["status"]
-        status_indicators = {
-            "none": _("OK"),
-            "minor": _("Minor problems"),
-            "major": _("Major problems"),
-            "critical": _("Critical problems"),
-        }
-        components = response["components"]
-        embed = discord.Embed(
-            title=_("Discord Status"),
-            timestamp=parse(response["page"]["updated_at"]),
-            color=await ctx.embed_color(),
-            url="https://discordstatus.com",
-        )
-        embed.description = status_indicators.get(status["indicator"], status["indicator"])
-        for component in components:
-            embed.add_field(
-                name=component["name"],
-                value=component["status"].capitalize().replace("_", " "),
-            )
-        await ctx.send(embed=embed)
+                return
+            status = response["status"]
+            components = response["components"]
+            if await ctx.embed_requested():
+                embed = discord.Embed(
+                    title=_("Discord Status"),
+                    description=DISCORD_STATUS_NAMES.get(status["indicator"], status["indicator"]),
+                    timestamp=datetime.datetime.fromisoformat(response["page"]["updated_at"])
+                    .astimezone(datetime.timezone.utc)
+                    .replace(tzinfo=None),  # make naive
+                    color=await ctx.embed_color(),
+                    url="https://discordstatus.com",
+                )
+                for component in components:
+                    embed.add_field(
+                        name=component["name"],
+                        value=component["status"].capitalize().replace("_", " "),
+                    )
+                await ctx.send(embed=embed)
+            else:
+                await ctx.send(
+                    f"{DISCORD_STATUS_NAMES.get(status['indicator'], status['indicator'])}\n"
+                    f"{chat.box(tabulate([(c['name'], c['status'].capitalize().replace('_', ' ')) for c in components]))}"
+                )
