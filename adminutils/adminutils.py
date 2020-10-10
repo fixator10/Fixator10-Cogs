@@ -11,7 +11,6 @@ from redbot.core.utils import chat_formatting as chat
 from redbot.core.utils.mod import get_audit_reason
 from redbot.core.utils.predicates import MessagePredicate
 
-
 try:
     from redbot import json  # support of Draper's branch
 except ImportError:
