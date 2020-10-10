@@ -11,6 +11,7 @@ class MongoDB(MixinMeta):
     """MongoDB connection handling"""
 
     async def _connect_to_mongo(self):
+        self.log.info("Connecting to MongoDB...")
         if self._db_ready:
             self._db_ready = False
         self._disconnect_mongo()
@@ -22,6 +23,7 @@ class MongoDB(MixinMeta):
             await self.client.server_info()
             self.db = self.client[config["db_name"]]
             self._db_ready = True
+            self.log.info("MongoDB: connection established.")
         except (
             mongoerrors.ServerSelectionTimeoutError,
             mongoerrors.ConfigurationError,

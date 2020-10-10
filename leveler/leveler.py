@@ -107,7 +107,7 @@ class Leveler(
             ):
                 self.log.error(
                     "Unable to convert config: missing cog disable function."
-                    "PLease report this to cog author ASAP for fix."
+                    "Please report this to cog author ASAP for fix."
                 )
                 return
             if (
