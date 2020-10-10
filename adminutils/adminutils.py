@@ -206,9 +206,9 @@ class AdminUtils(commands.Cog):
         Use double quotes if role name has spaces
 
         Examples:
-            `[p]emoji import 236598364265634245`
-            `[p]emoji import Username#0000 peepoDance`
-            `[p]emoji import :thonk: thonk emojiRole`
+            `[p]emoji import SomeonesEmoji 236598364265634245`
+            `[p]emoji import peepoStolenDance Username#0000`
+            `[p]emoji import thonk :thonk: emojiRole`
         """
         if isinstance(location, (discord.Emoji, discord.PartialEmoji)):
             async with self.session.get(str(location.url)) as r:
