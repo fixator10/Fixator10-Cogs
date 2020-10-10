@@ -242,7 +242,7 @@ class AdminUtils(commands.Cog):
             async with self.session.get(str(emoji.url)) as r:
                 data = await r.read()
             if name == "_":
-                name = location.name
+                name = emoji.name
         try:
             em = await ctx.guild.create_custom_emoji(
                 name=name,
