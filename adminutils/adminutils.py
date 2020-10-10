@@ -18,7 +18,7 @@ except ImportError:
 
 _ = Translator("AdminUtils", __file__)
 
-EMOJI_RE = re.compile(r"(<(a)?:[a-zA-Z0-9_]+:([0-9]+)>)")
+EMOJI_RE = re.compile(r"(<(a)?:([a-zA-Z0-9_]+):([0-9]+)>)")
 
 
 @cog_i18n(_)
@@ -203,7 +203,8 @@ class AdminUtils(commands.Cog):
         """
         Add an emoji from either a member's status, a message, or an emoji from another server.
 
-        Use double quotes if role name has spaces
+        Use double quotes if role name has spaces.
+        Use `_` as name to preserve original emoji name.
 
         Examples:
             `[p]emoji import SomeonesEmoji 236598364265634245`
@@ -222,8 +223,10 @@ class AdminUtils(commands.Cog):
                 return
             url = (
                 "https://cdn.discordapp.com/emojis/"
-                f"{emoji.group(3)}.{'gif' if emoji.group(2) else 'png'}?v=1"
+                f"{emoji.group(4)}.{'gif' if emoji.group(2) else 'png'}?v=1"
             )
+            if name == "_":
+                name = emoji.group(3)
             async with self.session.get(url) as r:
                 data = await r.read()
         elif isinstance(location, discord.Member):
