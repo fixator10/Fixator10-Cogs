@@ -9,8 +9,13 @@ from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils import chat_formatting as chat
 from tabulate import tabulate
 
-_ = Translator("MoreUtils", __file__)
+try:
+    from redbot import json  # support of Draper's branch
+except ImportError:
+    import json
 
+
+_ = Translator("MoreUtils", __file__)
 
 DISCORD_STATUS_NAMES = {
     "none": _("OK"),
@@ -51,12 +56,12 @@ def bool_emojify(bool_var: bool) -> str:
 class MoreUtils(commands.Cog):
     """Some (maybe) useful utils."""
 
-    __version__ = "2.0.12"
+    __version__ = "2.0.13"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
         self.bot = bot
-        self.session = aiohttp.ClientSession(loop=self.bot.loop)
+        self.session = aiohttp.ClientSession(json_serialize=json.dumps)
 
     def cog_unload(self):
         self.bot.loop.create_task(self.session.close())
@@ -108,7 +113,7 @@ class MoreUtils(commands.Cog):
         async with self.session.get(
             f"https://api.alexflipnote.dev/color/{str(color)[1:]}"
         ) as data:
-            color_name = (await data.json()).get("name", "?")
+            color_name = (await data.json(loads=json.loads)).get("name", "?")
         em.description = _("Name: {}\n").format(color_name) + colors_text
         await m.edit(embed=em)
 
@@ -150,7 +155,7 @@ class MoreUtils(commands.Cog):
                 async with self.session.get(
                     "https://srhpyqt94yxb.statuspage.io/api/v2/summary.json"
                 ) as data:
-                    response = await data.json()
+                    response = await data.json(loads=json.loads)
             except Exception as e:
                 await ctx.send(
                     chat.error(

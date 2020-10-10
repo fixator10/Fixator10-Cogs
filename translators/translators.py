@@ -16,6 +16,11 @@ from redbot.core.utils import chat_formatting as chat
 
 from .converters import PySupportedEncoding
 
+try:
+    from redbot import json  # support of Draper's branch
+except ImportError:
+    import json
+
 _ = Translator("Translators", __file__)
 
 USERAGENT = (
@@ -43,12 +48,12 @@ EMOJIFY_CHARS = {
 class Translators(commands.Cog):
     """Useful (and not) translators"""
 
-    __version__ = "2.2.1"
+    __version__ = "2.2.2"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
         self.bot = bot
-        self.session = aiohttp.ClientSession(loop=self.bot.loop)
+        self.session = aiohttp.ClientSession(json_serialize=json.dumps)
 
     def cog_unload(self):
         self.bot.loop.create_task(self.session.close())

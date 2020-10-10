@@ -5,6 +5,11 @@ from redbot.core.utils import chat_formatting as chat
 
 from .godvilleuser import GodvilleUser
 
+try:
+    from redbot import json  # support of Draper's branch
+except ImportError:
+    import json
+
 BASE_API = "https://godville.net/gods/api/"
 BASE_API_GLOBAL = "http://godvillegame.com/gods/api/"
 
@@ -44,7 +49,7 @@ class GodConverter(commands.MemberConverter):
 class GodvilleData(commands.Cog):
     """Get data about Godville profiles"""
 
-    __version__ = "2.1.2"
+    __version__ = "2.1.3"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -55,7 +60,7 @@ class GodvilleData(commands.Cog):
             "godvillegame": {"apikey": None, "godname": None},
         }
         self.config.register_user(**default_user)
-        self.session = aiohttp.ClientSession(loop=self.bot.loop)
+        self.session = aiohttp.ClientSession(json_serialize=json.dumps)
 
     def cog_unload(self):
         self.bot.loop.create_task(self.session.close())
@@ -81,7 +86,7 @@ class GodvilleData(commands.Cog):
                     chat.error("Something went wrong. Server returned {}.".format(sg.status))
                 )
                 return
-            profile = await sg.json()
+            profile = await sg.json(loads=json.loads)
         profile = GodvilleUser(profile)
         text_header = "{} и его {}\n{}\n".format(
             chat.bold(profile.god),
@@ -198,7 +203,7 @@ class GodvilleData(commands.Cog):
                     chat.error("Something went wrong. Server returned {}.".format(sg.status))
                 )
                 return
-            profile = await sg.json()
+            profile = await sg.json(loads=json.loads)
         profile = GodvilleUser(profile)
         text_header = "{} and his {}\n{}\n".format(
             chat.bold(profile.god),

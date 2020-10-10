@@ -16,6 +16,12 @@ from redbot.core.utils.menus import DEFAULT_CONTROLS, menu
 
 from .minecraftplayer import MCPlayer
 
+try:
+    from redbot import json  # support of Draper's branch
+except ImportError:
+    import json
+
+
 _ = Translator("MinecraftData", __file__)
 
 SERVICE_STATUS = {
@@ -29,12 +35,12 @@ SERVICE_STATUS = {
 class MinecraftData(commands.Cog):
     """Minecraft-Related data"""
 
-    __version__ = "2.0.3"
+    __version__ = "2.0.4"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
         self.bot = bot
-        self.session = aiohttp.ClientSession(loop=self.bot.loop)
+        self.session = aiohttp.ClientSession(json_serialize=json.dumps)
 
     def cog_unload(self):
         self.bot.loop.create_task(self.session.close())
@@ -203,7 +209,7 @@ class MinecraftData(commands.Cog):
             async with self.session.get(
                 f"http://textures.5zig.net/textures/2/{uuid}", raise_for_status=True
             ) as data:
-                response_data = await data.json(content_type=None)
+                response_data = await data.json(content_type=None, loads=json.loads)
             cape = response_data["cape"]
         except aiohttp.ClientResponseError as e:
             if e.status == 404:
@@ -230,7 +236,7 @@ class MinecraftData(commands.Cog):
             async with self.session.get(
                 f"http://textures.5zig.net/textures/2/{uuid}", raise_for_status=True
             ) as data:
-                response_data = await data.json(content_type=None)
+                response_data = await data.json(content_type=None, loads=json.loads)
             if "animatedCape" not in response_data:
                 await ctx.send(
                     chat.error(_("{} doesn't have animated 5zig cape")).format(player.name)
@@ -330,7 +336,7 @@ class MinecraftData(commands.Cog):
         """Get status of minecraft services"""
         try:
             async with self.session.get("https://status.mojang.com/check") as data:
-                data = await data.json()
+                data = await data.json(loads=json.loads)
             em = discord.Embed(
                 title=_("Status of minecraft services"),
                 timestamp=ctx.message.created_at,
@@ -357,7 +363,7 @@ class MinecraftData(commands.Cog):
             async with self.session.get(
                 "https://api.mojang.com/user/profiles/{}/names".format(uuid)
             ) as data:
-                data_history = await data.json()
+                data_history = await data.json(loads=json.loads)
             for nick in data_history:
                 try:
                     nick["changedToAt"] = datetime.fromtimestamp(

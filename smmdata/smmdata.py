@@ -5,6 +5,11 @@ from redbot.core.i18n import Translator, cog_i18n
 
 from .smmbookmark import SMMB_BASE_URL, Level, Maker
 
+try:
+    from redbot import json  # support of Draper's branch
+except ImportError:
+    import json
+
 _ = Translator("SMMData", __file__)
 
 BOOKMARKS_ICON_URL = f"{SMMB_BASE_URL}/assets/favicon/icon76-08f927f066250b84f628e92e0b94f58d.png"
@@ -15,12 +20,12 @@ EMBED_EMPTY_VALUE = "\N{Invisible Separator}"
 class SMMData(commands.Cog):
     """Super Mario Maker-related data"""
 
-    __version__ = "2.0.1"
+    __version__ = "2.0.2"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
         self.bot = bot
-        self.session = aiohttp.ClientSession(loop=self.bot.loop)
+        self.session = aiohttp.ClientSession(json_serialize=json.dumps)
 
     def cog_unload(self):
         self.bot.loop.create_task(self.session.close())

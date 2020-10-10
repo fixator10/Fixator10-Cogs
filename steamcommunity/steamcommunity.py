@@ -22,6 +22,12 @@ with suppress(Exception):
 
 from .steamuser import SteamUser
 
+try:
+    from redbot import json  # support of Draper's branch
+except ImportError:
+    import json
+
+
 LOAD_INDICATORS = ["\N{GREEN HEART}", "\N{YELLOW HEART}", "\N{BROKEN HEART}"]
 
 
@@ -112,13 +118,13 @@ filterwarnings("ignore", category=FutureWarning, module=r"valve.")
 class SteamCommunity(commands.Cog):
     """SteamCommunity commands"""
 
-    __version__ = "2.1.7"
+    __version__ = "2.1.8"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
         self.bot = bot
         self.steam = None
-        self.session = aiohttp.ClientSession(loop=self.bot.loop)
+        self.session = aiohttp.ClientSession(json_serialize=json.dumps)
 
     def cog_unload(self):
         self.bot.loop.create_task(self.session.close())
@@ -236,7 +242,7 @@ class SteamCommunity(commands.Cog):
                 async with self.session.get(
                     "https://crowbar.steamstat.us/gravity.json", raise_for_status=True
                 ) as gravity:
-                    data = await gravity.json()
+                    data = await gravity.json(loads=json.loads)
             except aiohttp.ClientResponseError as e:
                 await ctx.send(
                     chat.error(

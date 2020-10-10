@@ -7,6 +7,11 @@ from aiohttp import ClientResponseError
 from PIL import Image, UnidentifiedImageError
 from redbot.core.i18n import Translator
 
+try:
+    from redbot import json  # support of Draper's branch
+except ImportError:
+    import json
+
 _ = Translator("ReverseImageSearch", __file__)
 
 BASE_URL = "https://trace.moe"
@@ -91,7 +96,7 @@ class TraceMoe:
                     raise_for_status=True,
                 ) as data:
                     image_file.close()
-                    return cls(await data.json())
+                    return cls(await data.json(loads=json.loads))
             except ClientResponseError as e:
                 raise ValueError(
                     _(
@@ -102,7 +107,7 @@ class TraceMoe:
     @classmethod
     async def me(cls, ctx):
         async with ctx.cog.session.get(f"{BASE_API_URL}/me") as data:
-            data = await data.json()
+            data = await data.json(loads=json.loads)
         me_tuple = namedtuple(
             "me",
             "user_id, email, limit, limit_ttl, quota, "
