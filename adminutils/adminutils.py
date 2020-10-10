@@ -11,8 +11,12 @@ from redbot.core.utils import chat_formatting as chat
 from redbot.core.utils.mod import get_audit_reason
 from redbot.core.utils.predicates import MessagePredicate
 
-_ = Translator("AdminUtils", __file__)
+try:
+    from redbot import json  # support of Draper's branch
+except ImportError:
+    import json
 
+_ = Translator("AdminUtils", __file__)
 
 EMOJI_RE = re.compile(r"(<(a)?:[a-zA-Z0-9_]+:([0-9]+)>)")
 
@@ -21,7 +25,7 @@ EMOJI_RE = re.compile(r"(<(a)?:[a-zA-Z0-9_]+:([0-9]+)>)")
 class AdminUtils(commands.Cog):
     """Useful commands for server administrators."""
 
-    __version__ = "2.5.4"
+    __version__ = "2.5.5"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
