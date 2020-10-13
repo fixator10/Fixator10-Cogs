@@ -33,9 +33,8 @@ GUILD_FEATURES = {
     "PARTNERED": _("Discord Partner"),
     "MORE_EMOJI": _("Extended emoji limit"),  # Non-boosted?
     "DISCOVERABLE": _("Shows in Server Discovery{discovery}"),
-    "FEATURABLE": _('Can be in "Featured" section of Server Discovery'),
+    # "FEATURABLE": _('Can be in "Featured" section of Server Discovery'),
     "COMMERCE": _("Store channels"),
-    # "PUBLIC": _("Can be joined without an invite"),
     "NEWS": _("News channels"),
     "BANNER": _("Banner{banner}"),
     "ANIMATED_ICON": _("Animated icon"),
@@ -43,6 +42,14 @@ GUILD_FEATURES = {
     "PUBLIC_DISABLED": _("Cannot be public"),
     "ENABLED_DISCOVERABLE_BEFORE": _("Was in Server Discovery"),
     "COMMUNITY": _("Community server"),
+    # Docs from https://github.com/vDelite/DiscordLists:
+    "PREVIEW_ENABLED": _("Preview enabled (\"Lurkable\")"),
+    "MEMBER_VERIFICATION_GATE_ENABLED": _("Member verification gate enabled"),
+    "MEMBER_LIST_DISABLED": _("Member list disabled"),
+    # im honestly idk what the fuck that shit means, and discord doesnt provides much docs,
+    # so if you see that on your server while using my cog - idk what the fuck is that and how it got there,
+    # ask discord to write fucking docs already
+    "FORCE_RELAY": _("Shards connections to the guild to different nodes that relay information between each other."),
 }
 
 ACTIVITY_TYPES = {
@@ -84,7 +91,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.4.13"
+    __version__ = "2.4.14"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
