@@ -43,13 +43,15 @@ GUILD_FEATURES = {
     "ENABLED_DISCOVERABLE_BEFORE": _("Was in Server Discovery"),
     "COMMUNITY": _("Community server"),
     # Docs from https://github.com/vDelite/DiscordLists:
-    "PREVIEW_ENABLED": _("Preview enabled (\"Lurkable\")"),
+    "PREVIEW_ENABLED": _('Preview enabled ("Lurkable")'),
     "MEMBER_VERIFICATION_GATE_ENABLED": _("Member verification gate enabled"),
     "MEMBER_LIST_DISABLED": _("Member list disabled"),
     # im honestly idk what the fuck that shit means, and discord doesnt provides much docs,
     # so if you see that on your server while using my cog - idk what the fuck is that and how it got there,
     # ask discord to write fucking docs already
-    "FORCE_RELAY": _("Shards connections to the guild to different nodes that relay information between each other."),
+    "FORCE_RELAY": _(
+        "Shards connections to the guild to different nodes that relay information between each other."
+    ),
 }
 
 ACTIVITY_TYPES = {
