@@ -253,7 +253,7 @@ class ImageGenerators(MixinMeta):
             font=large_fnt,
             fill=info_text_color,
         )  # Balance
-        exp_text = "{}/{}".format(exp_frac, exp_total)
+        exp_text = f"{exp_frac}/{exp_total}"
         draw.text(
             (self._center(80, 360, exp_text, exp_fnt), 19),
             exp_text,
@@ -409,6 +409,7 @@ class ImageGenerators(MixinMeta):
         global_rank,
         level,
         level_exp,
+        next_level_exp,
         bank_credits,
         credits_name,
         sorted_badges,
@@ -636,8 +637,8 @@ class ImageGenerators(MixinMeta):
         # draw level bar
         exp_font_color = self._contrast(exp_fill, light_color, dark_color)
         exp_frac = int(userinfo["total_exp"] - level_exp)
-        exp_total = level_exp
-        bar_length = int(exp_frac / exp_total * 340)
+        bar_length = int(340 * (exp_frac / next_level_exp))
+        # fix10: idk what im doing here, if you understand something, pls help
         draw.rectangle(
             [(0, 305), (340, 323)],
             fill=(level_fill[0], level_fill[1], level_fill[2], 245),
@@ -646,7 +647,7 @@ class ImageGenerators(MixinMeta):
             [(0, 305), (bar_length, 323)],
             fill=(exp_fill[0], exp_fill[1], exp_fill[2], 255),
         )  # box
-        exp_text = "{}/{}".format(exp_frac, exp_total)  # Exp
+        exp_text = f"{exp_frac}/{next_level_exp}"  # Exp
         draw.text(
             (self._center(0, 340, exp_text, exp_fnt), 305),
             exp_text,
@@ -881,7 +882,6 @@ class ImageGenerators(MixinMeta):
             profile_avatar = f"{bundled_data_path(self)}/defaultavatar.png"
 
         level = await self._find_level(userinfo["total_exp"])
-        level_exp = await self._level_exp(level)
 
         priority_badges = []
         async for badgename in AsyncIter(userinfo["badges"].keys()):
@@ -909,7 +909,8 @@ class ImageGenerators(MixinMeta):
             userinfo,
             await self._find_global_rank(user),
             level,
-            level_exp,
+            await self._level_exp(level),
+            await self._required_exp(level),
             await bank.get_balance(user),
             await bank.get_currency_name(server),
             sorted_badges,
