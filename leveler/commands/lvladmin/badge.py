@@ -359,13 +359,13 @@ class Badge(MixinMeta):
 
         pages = list(chat.pagify(msg, page_length=2048))
         embeds = []
+        # TODO: Use dpy menus
         for i, page in enumerate(pages, start=1):
-            em = discord.Embed(colour=await ctx.embed_color())
+            em = discord.Embed(description=page, colour=await ctx.embed_color())
             em.set_author(
                 name="Current Badge - Level Links for {}".format(server.name),
                 icon_url=server.icon_url,
             )
             em.set_footer(text=f"Page {i}/{len(pages)}")
-            em.description = msg
             embeds.append(em)
         await menu(ctx, embeds, DEFAULT_CONTROLS)

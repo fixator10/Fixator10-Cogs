@@ -136,7 +136,7 @@ class Badge(MixinMeta, ABC):
                 if "{}_{}".format(name, str(serverid)) not in userinfo["badges"].keys():
                     badge_info = server_badges[name]
                     if badge_info["price"] == -1:
-                        await ctx.send("**That badge is not purchasable.**".format(name))
+                        await ctx.send("**That badge is not purchasable.**")
                     elif badge_info["price"] == 0:
                         userinfo["badges"]["{}_{}".format(name, str(serverid))] = server_badges[
                             name
