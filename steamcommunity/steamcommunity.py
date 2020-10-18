@@ -76,7 +76,7 @@ filterwarnings("ignore", category=FutureWarning, module=r"valve.")
 class SteamCommunity(commands.Cog):
     """SteamCommunity commands"""
 
-    __version__ = "2.1.9"
+    __version__ = "2.1.10"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -404,5 +404,6 @@ class SteamCommunity(commands.Cog):
             ax.set(xlabel="Date", ylabel="%", title="Steam Connection Managers")
             ax.set_yticks(np.arange(0, 100, 5))
             fig.savefig(graphfile)
+            plt.close(fig)
         graphfile.seek(0)
         return graphfile
