@@ -76,7 +76,7 @@ filterwarnings("ignore", category=FutureWarning, module=r"valve.")
 class SteamCommunity(commands.Cog):
     """SteamCommunity commands"""
 
-    __version__ = "2.1.10"
+    __version__ = "2.1.11"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -193,6 +193,7 @@ class SteamCommunity(commands.Cog):
     @steamcommunity.command(name="status")
     @commands.cooldown(1, 45, commands.BucketType.guild)
     @commands.bot_has_permissions(embed_links=True)
+    @commands.max_concurrency(1, commands.BucketType.user)
     async def steamstatus(self, ctx):
         """Get status of steam services"""
         async with ctx.typing():
