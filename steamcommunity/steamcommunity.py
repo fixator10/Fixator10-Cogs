@@ -17,9 +17,7 @@ from redbot.core.utils import chat_formatting as chat
 from valve.steam.api import interface
 
 with suppress(Exception):
-    import matplotlib.pyplot as plt
-    import matplotlib.units as munits
-    import matplotlib.dates as mdates
+    from matplotlib import pyplot, units as munits, dates as mdates, use as mpluse
     import numpy as np
 
 from .steamuser import SteamUser
@@ -261,7 +259,7 @@ class SteamCommunity(commands.Cog):
             ),
         )
         graph_file = None
-        if all(lib in globals().keys() for lib in ["plt", "np"]):
+        if all(lib in globals().keys() for lib in ["pyplot", "np"]):
             graph_file = await self.asyncify(self.gen_steam_cm_graph, graph)
             graph_file = discord.File(graph_file, filename="CMgraph.png")
             em.set_image(url="attachment://CMgraph.png")
@@ -368,6 +366,7 @@ class SteamCommunity(commands.Cog):
 
     def gen_steam_cm_graph(self, graphdata: dict):
         """Make an graph for connection managers"""
+        mpluse("Agg")
         formats = [
             "%y",  # ticks are mostly years
             "%b",  # ticks are mostly months
@@ -397,14 +396,14 @@ class SteamCommunity(commands.Cog):
         x = [datetime.utcfromtimestamp(_x / 1000) for _x in x]
         y = graphdata["data"]
         graphfile = BytesIO()
-        with plt.style.context(path.join(bundled_data_path(self), "discord.mplstyle")):
-            fig, ax = plt.subplots()
+        with pyplot.style.context(path.join(bundled_data_path(self), "discord.mplstyle")):
+            fig, ax = pyplot.subplots()
             ax.plot(x, y)
             ax.set_ylim(bottom=0)
             ax.grid()
             ax.set(xlabel="Date", ylabel="%", title="Steam Connection Managers")
             ax.set_yticks(np.arange(0, 100, 5))
             fig.savefig(graphfile)
-            plt.close(fig)
+            pyplot.close(fig)
         graphfile.seek(0)
         return graphfile
