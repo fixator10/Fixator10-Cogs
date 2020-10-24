@@ -56,7 +56,7 @@ def bool_emojify(bool_var: bool) -> str:
 class MoreUtils(commands.Cog):
     """Some (maybe) useful utils."""
 
-    __version__ = "2.0.14"
+    __version__ = "2.0.15"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -76,6 +76,7 @@ class MoreUtils(commands.Cog):
 
     @commands.command(aliases=["HEX", "hex", "colour"])
     @checks.bot_has_permissions(embed_links=True)
+    @commands.max_concurrency(1, commands.BucketType.user)
     async def color(self, ctx, *, color: discord.Color):
         """Shows some info about provided color."""
         colorrgb = color.to_rgb()
@@ -148,6 +149,7 @@ class MoreUtils(commands.Cog):
 
     @commands.command(pass_context=True)
     @commands.cooldown(1, 10, commands.BucketType.user)
+    @commands.max_concurrency(1, commands.BucketType.user)
     async def discordstatus(self, ctx):
         """Get current discord status from discordstatus.com"""
         async with ctx.typing():
