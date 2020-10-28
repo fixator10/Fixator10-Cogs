@@ -1,109 +1,111 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fixator10-cogs\n"
-"POT-Creation-Date: 2020-02-07 15:35+0400\n"
-"PO-Revision-Date: 2020-02-07 11:59\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2020-10-28 11:33+0400\n"
+"PO-Revision-Date: 2020-10-28 09:37\n"
+"Last-Translator: \n"
 "Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: redgettext 3.1\n"
+"Generated-By: redgettext 3.3\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Crowdin-Project: fixator10-cogs\n"
+"X-Crowdin-Project-ID: 387695\n"
 "X-Crowdin-Language: ru\n"
 "X-Crowdin-File: /V3/smmdata/locales/messages.pot\n"
+"X-Crowdin-File-ID: 73\n"
 "Language: ru_RU\n"
 
-#: smmdata\smmbookmark.py:178
+#: smmdata\smmbookmark.py:168
 msgid "Unable to find level {level}: {status}"
 msgstr "Невозможно найти уровень {level}: {status}"
 
-#: smmdata\smmbookmark.py:235
+#: smmdata\smmbookmark.py:221
 msgid "The specified user could not be found."
 msgstr "Не удалось найти указанного пользователя."
 
-#: smmdata\smmbookmark.py:237
+#: smmdata\smmbookmark.py:223
 msgid "Unable to find user {user}: {status}"
 msgstr "Невозможно найти пользователя {user}: {status}"
 
-#: smmdata\smmdata.py:18
+#: smmdata\smmdata.py:21
 #, docstring
 msgid "Super Mario Maker-related data"
 msgstr "Информация связанная с Super Mario Maker"
 
-#: smmdata\smmdata.py:32
+#: smmdata\smmdata.py:39
 #, docstring
 msgid "Get Super Mario Maker-related data"
 msgstr "Получить информацию связанную с Super Mario Maker"
 
-#: smmdata\smmdata.py:37
+#: smmdata\smmdata.py:44
 #, docstring
 msgid "Get info about SMM level"
 msgstr "Получить информацию о уровне SMM"
 
-#: smmdata\smmdata.py:45
+#: smmdata\smmdata.py:52
 msgid "Game Style"
 msgstr "Стиль"
 
-#: smmdata\smmdata.py:46
+#: smmdata\smmdata.py:53
 msgid "Stars"
 msgstr "Звёзд"
 
-#: smmdata\smmdata.py:47
+#: smmdata\smmdata.py:54
 msgid "Unique Players"
 msgstr "Уникальных игроков"
 
-#: smmdata\smmdata.py:48
+#: smmdata\smmdata.py:55
 msgid "Share count"
 msgstr "Поделились"
 
-#: smmdata\smmdata.py:50
+#: smmdata\smmdata.py:56
 msgid "Clears"
 msgstr "Пройдено"
 
-#: smmdata\smmdata.py:54
+#: smmdata\smmdata.py:59
 msgid "First clear"
 msgstr "Первым прошёл"
 
-#: smmdata\smmdata.py:59
+#: smmdata\smmdata.py:64
 msgid "World record"
 msgstr "Рекорд"
 
-#: smmdata\smmdata.py:60
+#: smmdata\smmdata.py:65
 msgid "{time} by [{player}]({url})"
 msgstr "[{player}]({url}) за {time}"
 
-#: smmdata\smmdata.py:76
+#: smmdata\smmdata.py:79
 #, docstring
 msgid "Get info about levels maker"
 msgstr "Получить информацию о дизайнере"
 
-#: smmdata\smmdata.py:83
+#: smmdata\smmdata.py:86
 msgid "Stars Received"
 msgstr "Получено звезд"
 
-#: smmdata\smmdata.py:84
+#: smmdata\smmdata.py:87
 msgid "Medals Earned"
 msgstr "Полученные медали"
 
-#: smmdata\smmdata.py:85
+#: smmdata\smmdata.py:88
 msgid "Uploaded Courses"
 msgstr "Отправленные уровни"
 
-#: smmdata\smmdata.py:87
+#: smmdata\smmdata.py:89
 msgid "100 Mario Challenge"
 msgstr "100 жизней Марио"
 
-#: smmdata\smmdata.py:89
+#: smmdata\smmdata.py:90
 msgid "Easy clears"
 msgstr "Легкие уровни"
 
-#: smmdata\smmdata.py:90
+#: smmdata\smmdata.py:91
 msgid "Normal clears"
 msgstr "Обычные уровни"
 
-#: smmdata\smmdata.py:91
+#: smmdata\smmdata.py:92
 msgid "Expert clears"
 msgstr "Сложные уровни"
 
@@ -111,23 +113,23 @@ msgstr "Сложные уровни"
 msgid "Super Expert clears"
 msgstr "Очень сложные уровни"
 
-#: smmdata\smmdata.py:95
+#: smmdata\smmdata.py:94
 msgid "Play History"
 msgstr "Прочая статистика"
 
-#: smmdata\smmdata.py:96
+#: smmdata\smmdata.py:95
 msgid "Courses played"
 msgstr "Посещено уровней"
 
-#: smmdata\smmdata.py:97
+#: smmdata\smmdata.py:96
 msgid "Courses cleared"
 msgstr "Пройдено уровней"
 
-#: smmdata\smmdata.py:98
+#: smmdata\smmdata.py:97
 msgid "Total plays"
 msgstr "Сыграно раз"
 
-#: smmdata\smmdata.py:99
+#: smmdata\smmdata.py:98
 msgid "Lives lost"
 msgstr "Потеряно жизней"
 
