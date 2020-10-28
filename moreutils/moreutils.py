@@ -15,7 +15,8 @@ except ImportError:
     import json
 
 
-_ = Translator("MoreUtils", __file__)
+T_ = Translator("MoreUtils", __file__)
+_ = lambda s: s
 
 DISCORD_STATUS_NAMES = {
     "none": _("OK"),
@@ -23,6 +24,8 @@ DISCORD_STATUS_NAMES = {
     "major": _("Major problems"),
     "critical": _("Critical problems"),
 }
+
+_ = T_
 
 
 def rgb_to_cmyk(r, g, b):
@@ -170,7 +173,7 @@ class MoreUtils(commands.Cog):
             if await ctx.embed_requested():
                 embed = discord.Embed(
                     title=_("Discord Status"),
-                    description=DISCORD_STATUS_NAMES.get(status["indicator"], status["indicator"]),
+                    description=_(DISCORD_STATUS_NAMES.get(status["indicator"], status["indicator"])),
                     timestamp=datetime.datetime.fromisoformat(response["page"]["updated_at"])
                     .astimezone(datetime.timezone.utc)
                     .replace(tzinfo=None),  # make naive
@@ -185,6 +188,6 @@ class MoreUtils(commands.Cog):
                 await ctx.send(embed=embed)
             else:
                 await ctx.send(
-                    f"{DISCORD_STATUS_NAMES.get(status['indicator'], status['indicator'])}\n"
+                    f"{_(DISCORD_STATUS_NAMES.get(status['indicator'], status['indicator']))}\n"
                     f"{chat.box(tabulate([(c['name'], c['status'].capitalize().replace('_', ' ')) for c in components]))}"
                 )
