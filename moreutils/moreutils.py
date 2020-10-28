@@ -173,7 +173,9 @@ class MoreUtils(commands.Cog):
             if await ctx.embed_requested():
                 embed = discord.Embed(
                     title=_("Discord Status"),
-                    description=_(DISCORD_STATUS_NAMES.get(status["indicator"], status["indicator"])),
+                    description=_(
+                        DISCORD_STATUS_NAMES.get(status["indicator"], status["indicator"])
+                    ),
                     timestamp=datetime.datetime.fromisoformat(response["page"]["updated_at"])
                     .astimezone(datetime.timezone.utc)
                     .replace(tzinfo=None),  # make naive
