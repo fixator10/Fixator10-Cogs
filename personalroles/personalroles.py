@@ -4,7 +4,7 @@ from typing import Union
 import discord
 from redbot.core import checks, commands
 from redbot.core.config import Config
-from redbot.core.i18n import Translator, cog_i18n
+from redbot.core.i18n import Translator, cog_i18n, set_contextual_locales_from_guild
 from redbot.core.utils import AsyncIter
 from redbot.core.utils import chat_formatting as chat
 from redbot.core.utils.menus import DEFAULT_CONTROLS, menu
@@ -22,7 +22,7 @@ async def has_assigned_role(ctx):
 class PersonalRoles(commands.Cog):
     """Assign and edit personal roles"""
 
-    __version__ = "2.1.3"
+    __version__ = "2.1.4"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -238,6 +238,7 @@ class PersonalRoles(commands.Cog):
             return
         if not await self.config.guild(member.guild).role_persistence():
             return
+        await set_contextual_locales_from_guild(self.bot, member.guild)
         role = await self.config.member(member).role()
         if role:
             role = member.guild.get_role(role)
