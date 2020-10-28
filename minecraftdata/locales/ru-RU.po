@@ -1,65 +1,67 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fixator10-cogs\n"
-"POT-Creation-Date: 2020-02-07 15:35+0400\n"
-"PO-Revision-Date: 2020-02-07 20:10\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2020-10-28 11:33+0400\n"
+"PO-Revision-Date: 2020-10-28 09:37\n"
+"Last-Translator: \n"
 "Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: redgettext 3.1\n"
+"Generated-By: redgettext 3.3\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Crowdin-Project: fixator10-cogs\n"
+"X-Crowdin-Project-ID: 387695\n"
 "X-Crowdin-Language: ru\n"
 "X-Crowdin-File: /V3/minecraftdata/locales/messages.pot\n"
+"X-Crowdin-File-ID: 65\n"
 "Language: ru_RU\n"
 
-#: minecraftdata\minecraftdata.py:23
+#: minecraftdata\minecraftdata.py:28
 msgid "💔 **UNAVAILABLE**"
 msgstr "💔 **НЕДОСТУПЕН**"
 
-#: minecraftdata\minecraftdata.py:24
+#: minecraftdata\minecraftdata.py:29
 msgid "💛 **SOME ISSUES**"
 msgstr "💛 **НЕКОТОРЫЕ ПРОБЛЕМЫ**"
 
-#: minecraftdata\minecraftdata.py:25
+#: minecraftdata\minecraftdata.py:30
 msgid "💚 **OK**"
-msgstr ""
+msgstr "💚 **ОК**"
 
-#: minecraftdata\minecraftdata.py:31
+#: minecraftdata\minecraftdata.py:36
 #, docstring
 msgid "Minecraft-Related data"
 msgstr "Информация связанная с Minecraft"
 
-#: minecraftdata\minecraftdata.py:44
+#: minecraftdata\minecraftdata.py:53
 #, docstring
 msgid "Get Minecraft-Related data"
 msgstr "Получить информацию связанную с Minecraft"
 
-#: minecraftdata\minecraftdata.py:50
+#: minecraftdata\minecraftdata.py:59
 #, docstring
 msgid "Get minecraft skin by nickname"
 msgstr "Получить скин по никнейму"
 
-#: minecraftdata\minecraftdata.py:83
+#: minecraftdata\minecraftdata.py:91
 msgid "Unable to get data from Crafatar: {}"
 msgstr "Невозможно получить информацию от Crafatar: {}"
 
-#: minecraftdata\minecraftdata.py:98
+#: minecraftdata\minecraftdata.py:102
 msgid "Provided by Crafatar"
 msgstr "Предоставлено Crafatar"
 
-#: minecraftdata\minecraftdata.py:105
+#: minecraftdata\minecraftdata.py:111
 #, docstring
 msgid "Get Minecraft capes by nickname"
 msgstr "Получить плащ Minecraft по никнейму"
 
-#: minecraftdata\minecraftdata.py:113
+#: minecraftdata\minecraftdata.py:118
 msgid "{} doesn't have cape"
 msgstr "{} не имеет плаща"
 
-#: minecraftdata\minecraftdata.py:117
+#: minecraftdata\minecraftdata.py:120
 msgid "Unable to get cape: {}"
 msgstr "Невозможно получить плащ: {}"
 
@@ -68,150 +70,156 @@ msgstr "Невозможно получить плащ: {}"
 msgid "Get OptiFine cape by nickname"
 msgstr "Получить плащ OptiFine по никнейму"
 
-#: minecraftdata\minecraftdata.py:137
+#: minecraftdata\minecraftdata.py:136
 msgid "{} doesn't have OptiFine cape"
 msgstr "{} не имеет плаща OptiFine"
 
-#: minecraftdata\minecraftdata.py:142
+#: minecraftdata\minecraftdata.py:140
 msgid "Unable to get {player}'s OptiFine cape: {message}"
 msgstr "Невозможно получить плащ OptiFine игрока {player}: {message}"
 
-#: minecraftdata\minecraftdata.py:159
+#: minecraftdata\minecraftdata.py:153
 #, docstring
 msgid "Get LabyMod cape by nickname"
 msgstr "Получить плащ LabyMod по никнейму"
 
-#: minecraftdata\minecraftdata.py:169
+#: minecraftdata\minecraftdata.py:162
 msgid "{} doesn't have LabyMod cape"
 msgstr "{} не имеет плаща LabyMod"
 
-#: minecraftdata\minecraftdata.py:174
+#: minecraftdata\minecraftdata.py:166
 msgid "Unable to get data: {message} ({status})"
 msgstr "Невозможно получить информацию: {message} ({{status})"
 
-#: minecraftdata\minecraftdata.py:187
+#: minecraftdata\minecraftdata.py:179
 #, docstring
 msgid "Get MinecraftCapes.co.uk cape by nickname"
 msgstr "Получить плащ MinecraftCapes.co.uk по никнейму"
 
-#: minecraftdata\minecraftdata.py:197
+#: minecraftdata\minecraftdata.py:188
 msgid "{} doesn't have MinecraftCapes cape"
 msgstr "{} не имеет плаща MinecraftCapes"
 
-#: minecraftdata\minecraftdata.py:203
+#: minecraftdata\minecraftdata.py:193
 msgid "Unable to get {player}'s MinecraftCapes cape: {message}"
 msgstr "Невозможно получить плащ MinecraftCapes игрока {player}: {message}"
 
-#: minecraftdata\minecraftdata.py:220
+#: minecraftdata\minecraftdata.py:206
 #, docstring
 msgid "Get 5zig cape by nickname"
 msgstr "Получить плащ 5zig по никнейму"
 
-#: minecraftdata\minecraftdata.py:231 minecraftdata\minecraftdata.py:267
+#: minecraftdata\minecraftdata.py:216 minecraftdata\minecraftdata.py:248
 msgid "{} doesn't have 5zig cape"
 msgstr "{} не имеет плаща 5zig"
 
-#: minecraftdata\minecraftdata.py:236 minecraftdata\minecraftdata.py:272
+#: minecraftdata\minecraftdata.py:220 minecraftdata\minecraftdata.py:252
 msgid "Unable to get {player}'s 5zig cape: {message}"
 msgstr "Невозможно получить плащ 5zig игрока {player}: {message}"
 
-#: minecraftdata\minecraftdata.py:249
+#: minecraftdata\minecraftdata.py:233
 #, docstring
 msgid "Get 5zig animated cape by nickname"
 msgstr "Получить анимированный плащ 5zig по никнейму"
 
-#: minecraftdata\minecraftdata.py:258
+#: minecraftdata\minecraftdata.py:242
 msgid "{} doesn't have animated 5zig cape"
 msgstr "{} не имеет анимированного плаща 5zig"
 
-#: minecraftdata\minecraftdata.py:287
+#: minecraftdata\minecraftdata.py:267
 #, docstring
 msgid "Get info about server"
 msgstr "Получить информацию о сервере"
 
-#: minecraftdata\minecraftdata.py:293
+#: minecraftdata\minecraftdata.py:271
 msgid "Unable to resolve IP: {}"
 msgstr "Невозможно преобразовать IP адрес: {}"
 
-#: minecraftdata\minecraftdata.py:300
+#: minecraftdata\minecraftdata.py:277
 msgid "Unable to get server's status: {}"
 msgstr "Невозможно получить информацию о состоянии сервера: {}"
 
-#: minecraftdata\minecraftdata.py:321
+#: minecraftdata\minecraftdata.py:299
 msgid "Latency"
 msgstr "Задержка"
 
-#: minecraftdata\minecraftdata.py:323
+#: minecraftdata\minecraftdata.py:301
 msgid "Players"
 msgstr "Игроков"
 
-#: minecraftdata\minecraftdata.py:341
+#: minecraftdata\minecraftdata.py:319
 msgid "Version"
 msgstr "Версия"
 
-#: minecraftdata\minecraftdata.py:342
-msgid "{}\\nProtocol: {}"
-msgstr "{}\\nПротокол: {}"
+#: minecraftdata\minecraftdata.py:320
+msgid "{}\n"
+"Protocol: {}"
+msgstr "{}\n"
+"Протокол: {}"
 
-#: minecraftdata\minecraftdata.py:347
+#: minecraftdata\minecraftdata.py:323
 msgid "World"
 msgstr "Мир"
 
-#: minecraftdata\minecraftdata.py:349
+#: minecraftdata\minecraftdata.py:325
 msgid "Software"
 msgstr "ПО"
 
-#: minecraftdata\minecraftdata.py:350
-msgid "{}\\nVersion: {}"
-msgstr "{}\\nВерсия: {}"
+#: minecraftdata\minecraftdata.py:326
+msgid "{}\n"
+"Version: {}"
+msgstr "{}\n"
+"Версия: {}"
 
-#: minecraftdata\minecraftdata.py:360
+#: minecraftdata\minecraftdata.py:336
 #, docstring
 msgid "Get status of minecraft services"
 msgstr "Получить статус сервисов Minecraft"
 
-#: minecraftdata\minecraftdata.py:365
+#: minecraftdata\minecraftdata.py:341
 msgid "Status of minecraft services"
 msgstr "Статус сервисов Minecraft"
 
-#: minecraftdata\minecraftdata.py:376
+#: minecraftdata\minecraftdata.py:352
 msgid "Unable to check. An error has been occurred: {}"
 msgstr "Невозможно проверить. Произошла ошибка: {}"
 
-#: minecraftdata\minecraftdata.py:384
+#: minecraftdata\minecraftdata.py:360
 #, docstring
 msgid "Check history of player's nicks"
 msgstr "Получить историю ников игрока"
 
-#: minecraftdata\minecraftdata.py:395
+#: minecraftdata\minecraftdata.py:371
 msgid "%d.%m.%Y %H:%M:%S"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:397
+#: minecraftdata\minecraftdata.py:373
 msgid "Initial"
 msgstr "Изначальный"
 
-#: minecraftdata\minecraftdata.py:401
+#: minecraftdata\minecraftdata.py:377
 msgid "Nickname"
 msgstr "Никнейм"
 
-#: minecraftdata\minecraftdata.py:402
+#: minecraftdata\minecraftdata.py:378
 msgid "Changed to at... (UTC)"
 msgstr "Изменено в... (UTC)"
 
-#: minecraftdata\minecraftdata.py:411
-msgid "Unable to check name history.\\nAn error has been occurred: "
-msgstr "Невозможно получить историю никнеймов\\nПроизошла ошибка: "
+#: minecraftdata\minecraftdata.py:387
+msgid "Unable to check name history.\n"
+"An error has been occurred: "
+msgstr "Невозможно проверить историю никнеймов\n"
+"Произошла ошибка: "
 
-#: minecraftdata\minecraftplayer.py:31
+#: minecraftdata\minecraftplayer.py:35
 msgid "Unable to get data from Minecraft API: {}"
 msgstr "Невозможно получить информацию от Minecraft API: {}"
 
-#: minecraftdata\minecraftplayer.py:34
+#: minecraftdata\minecraftplayer.py:37
 msgid "{} not found on Mojang servers"
 msgstr "{} не найден на серверах Mojang"
 
-#: minecraftdata\minecraftplayer.py:41
+#: minecraftdata\minecraftplayer.py:43
 msgid "{} is found, but has incorrect UUID."
 msgstr "{} найден, но имеет неверный UUID."
 
