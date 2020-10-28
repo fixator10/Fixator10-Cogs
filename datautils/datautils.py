@@ -93,7 +93,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.4.14"
+    __version__ = "2.4.15"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -310,7 +310,7 @@ class DataUtils(commands.Cog):
         )
         em.add_field(name=_("Name"), value=chat.escape(server.name, formatting=True))
         em.add_field(name=_("Server ID"), value=server.id)
-        em.add_field(name=_("Existed since"), value=server.created_at.strftime(self.TIME_FORMAT))
+        em.add_field(name=_("Exists since"), value=server.created_at.strftime(self.TIME_FORMAT))
         em.add_field(name=_("Region"), value=server.region)
         if server.preferred_locale:
             em.add_field(name=_("Discovery language"), value=server.preferred_locale)

@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-10-28 11:33+0400\n"
+"POT-Creation-Date: 2020-10-28 11:54+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -219,9 +219,9 @@ msgstr ""
 msgid "Joined server"
 msgstr ""
 
-#: datautils\datautils.py:232 datautils\datautils.py:498
-#: datautils\datautils.py:609 datautils\datautils.py:752
-#: datautils\datautils.py:768
+#: datautils\datautils.py:232 datautils\datautils.py:313
+#: datautils\datautils.py:498 datautils\datautils.py:609
+#: datautils\datautils.py:752 datautils\datautils.py:768
 msgid "Exists since"
 msgstr ""
 
@@ -265,10 +265,6 @@ msgstr ""
 
 #: datautils\datautils.py:312
 msgid "Server ID"
-msgstr ""
-
-#: datautils\datautils.py:313
-msgid "Existed since"
 msgstr ""
 
 #: datautils\datautils.py:314
