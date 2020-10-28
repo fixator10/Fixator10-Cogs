@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-08-09 13:37+0400\n"
+"POT-Creation-Date: 2020-10-28 11:33+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -39,19 +39,19 @@ msgstr ""
 msgid "Change name of #general"
 msgstr ""
 
-#: generalchannel\generalchannel.py:70
+#: generalchannel\generalchannel.py:71
 msgid "General channel name change"
 msgstr ""
 
-#: generalchannel\generalchannel.py:73
+#: generalchannel\generalchannel.py:74
 msgid "Unable to change channel's name: Missing permissions"
 msgstr ""
 
-#: generalchannel\generalchannel.py:76
+#: generalchannel\generalchannel.py:77
 msgid "Unable to change channel's name: Failed: {}"
 msgstr ""
 
-#: generalchannel\generalchannel.py:85
+#: generalchannel\generalchannel.py:86
 #, docstring
 msgid ""
 "Change topic of #general\n"
@@ -60,14 +60,14 @@ msgid ""
 "        to end of topic"
 msgstr ""
 
-#: generalchannel\generalchannel.py:102
+#: generalchannel\generalchannel.py:103
 msgid "General channel topic change"
 msgstr ""
 
-#: generalchannel\generalchannel.py:105
+#: generalchannel\generalchannel.py:106
 msgid "Unable to change channel's topic: Missing permissions"
 msgstr ""
 
-#: generalchannel\generalchannel.py:108
+#: generalchannel\generalchannel.py:109
 msgid "Unable to change channel's topic: Failed: {}"
 msgstr ""

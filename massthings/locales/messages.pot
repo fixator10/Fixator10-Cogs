@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-08-09 13:37+0400\n"
+"POT-Creation-Date: 2020-10-28 11:33+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,55 +31,55 @@ msgstr ""
 msgid "Mass nicknames everyone on the server"
 msgstr ""
 
-#: massthings\massthings.py:67
+#: massthings\massthings.py:68
 msgid "Massnick"
 msgstr ""
 
-#: massthings\massthings.py:74
+#: massthings\massthings.py:75
 msgid "Finished nicknaming server. {} nicknames could not be completed."
 msgstr ""
 
-#: massthings\massthings.py:83
+#: massthings\massthings.py:84
 #, docstring
 msgid "Resets nicknames on the server"
 msgstr ""
 
-#: massthings\massthings.py:90
+#: massthings\massthings.py:91
 msgid "Reset nicks"
 msgstr ""
 
-#: massthings\massthings.py:97
+#: massthings\massthings.py:98
 msgid "Finished resetting server nicknames. Unable to reset {} nicknames."
 msgstr ""
 
-#: massthings\massthings.py:109
+#: massthings\massthings.py:110
 #, docstring
 msgid "Steal all emoji provided in arguments"
 msgstr ""
 
-#: massthings\massthings.py:121
+#: massthings\massthings.py:122
 msgid ""
 "You tried to add too many emojis, you can add only {} emojis more to this server\n"
 "You tried to add {}."
 msgstr ""
 
-#: massthings\massthings.py:131
+#: massthings\massthings.py:132
 msgid ""
 "You tried to add too many animated emojis, you can add only {} emojis more to this server.\n"
 "You tried to add {}."
 msgstr ""
 
-#: massthings\massthings.py:145
+#: massthings\massthings.py:146
 msgid "Emoji steal"
 msgstr ""
 
-#: massthings\massthings.py:156
+#: massthings\massthings.py:157
 msgid ""
 "Stealed emojis:\n"
 "{}"
 msgstr ""
 
-#: massthings\massthings.py:169
+#: massthings\massthings.py:170
 #, docstring
 msgid ""
 "Unban all users that banned by specified user\n"
@@ -87,13 +87,13 @@ msgid ""
 "        Uses modlog data, since discord not saves author of ban."
 msgstr ""
 
-#: massthings\massthings.py:190 massthings\massthings.py:216
+#: massthings\massthings.py:191 massthings\massthings.py:218
 msgid ""
 "Unbanned users:\n"
 "{}"
 msgstr ""
 
-#: massthings\massthings.py:200
+#: massthings\massthings.py:201
 #, docstring
 msgid "Unban everyone from current guild"
 msgstr ""

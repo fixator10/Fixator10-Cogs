@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-08-09 13:37+0400\n"
+"POT-Creation-Date: 2020-10-28 11:33+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,57 +11,65 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: redgettext 3.3\n"
 
-#: reverseimagesearch\converters.py:66
+#: reverseimagesearch\converters.py:68
 msgid "No images provided."
 msgstr ""
 
-#: reverseimagesearch\converters.py:80
+#: reverseimagesearch\converters.py:82
 msgid "No Images found in recent history."
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:18
+#: reverseimagesearch\reverseimagesearch.py:48
+msgid "Unable to get video preview: {}"
+msgstr ""
+
+#: reverseimagesearch\reverseimagesearch.py:50
+msgid "Unable to send video preview: {}"
+msgstr ""
+
+#: reverseimagesearch\reverseimagesearch.py:58
 #, docstring
 msgid "(Anime) Reverse Image Search"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:45
+#: reverseimagesearch\reverseimagesearch.py:85
 #, docstring
 msgid "Reverse search image via SauceNAO"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:59
-#: reverseimagesearch\reverseimagesearch.py:98
-#: reverseimagesearch\reverseimagesearch.py:203
+#: reverseimagesearch\reverseimagesearch.py:99
+#: reverseimagesearch\reverseimagesearch.py:138
+#: reverseimagesearch\reverseimagesearch.py:244
 msgid "Nothing found"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:78
+#: reverseimagesearch\reverseimagesearch.py:118
 msgid "Similarity: {}%"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:80
+#: reverseimagesearch\reverseimagesearch.py:120
 msgid "Part/Episode: {}"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:81
+#: reverseimagesearch\reverseimagesearch.py:121
 msgid "Year: {}"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:82
-#: reverseimagesearch\reverseimagesearch.py:181
+#: reverseimagesearch\reverseimagesearch.py:122
+#: reverseimagesearch\reverseimagesearch.py:221
 msgid "Est. Time: {}"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:90
+#: reverseimagesearch\reverseimagesearch.py:130
 msgid "Via SauceNAO • Page {}/{}"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:103
+#: reverseimagesearch\reverseimagesearch.py:143
 #, docstring
 msgid "Set API key for SauceNAO"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:104
+#: reverseimagesearch\reverseimagesearch.py:144
 msgid ""
 "To get SauceNAO API key:\n"
 "1. [Login](https://saucenao.com/user.php) to your SauceNAO account\n"
@@ -73,7 +81,7 @@ msgid ""
 "or in DM with the bot."
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:118
+#: reverseimagesearch\reverseimagesearch.py:158
 #, docstring
 msgid ""
 "Set API count of results count for SauceNAO\n"
@@ -81,23 +89,23 @@ msgid ""
 "        6 by default"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:127
+#: reverseimagesearch\reverseimagesearch.py:167
 #, docstring
 msgid "See how many requests are left"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:130
+#: reverseimagesearch\reverseimagesearch.py:170
 msgid ""
 "Remaining requests:\n"
 "Short (30 seconds): {}/{}\n"
 "Long: (24 hours): {}/{}"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:140
+#: reverseimagesearch\reverseimagesearch.py:180
 msgid "Command `{}` has not been used yet"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:144
+#: reverseimagesearch\reverseimagesearch.py:184
 #, docstring
 msgid ""
 "Reverse search image via WAIT\n"
@@ -105,44 +113,44 @@ msgid ""
 "        If search performed not in NSFW channel, NSFW results will be not shown"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:172
+#: reverseimagesearch\reverseimagesearch.py:212
 msgid "Similarity: {:.2f}%"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:174
+#: reverseimagesearch\reverseimagesearch.py:214
 msgid "Native title: {}"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:176
+#: reverseimagesearch\reverseimagesearch.py:216
 msgid "Romaji transcription: {}"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:178
+#: reverseimagesearch\reverseimagesearch.py:218
 msgid "Chinese title: {}"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:180
+#: reverseimagesearch\reverseimagesearch.py:220
 msgid "English title: {}"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:182
+#: reverseimagesearch\reverseimagesearch.py:222
 msgid "Episode: {}"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:184
+#: reverseimagesearch\reverseimagesearch.py:224
 msgid "Also known as: {}"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:196
+#: reverseimagesearch\reverseimagesearch.py:236
 msgid "Via WAIT (trace.moe) • Page {}/{}"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:208
+#: reverseimagesearch\reverseimagesearch.py:249
 #, docstring
 msgid "See how many requests are left and time until reset"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:211
+#: reverseimagesearch\reverseimagesearch.py:252
 msgid ""
 "Remaining requests (ratelimit): {}/{}\n"
 "Remaining requests (quota): {}/{}\n"
@@ -150,22 +158,26 @@ msgid ""
 "Quota reset in {}/{}\n"
 msgstr ""
 
-#: reverseimagesearch\saucenao.py:91
+#: reverseimagesearch\saucenao.py:96
 msgid ""
 "Unable to search for provided image, SauceNAO returned {status} ({message})\n"
 "This is server issue, try again later."
 msgstr ""
 
-#: reverseimagesearch\saucenao.py:99 reverseimagesearch\saucenao.py:106
+#: reverseimagesearch\saucenao.py:105 reverseimagesearch\saucenao.py:112
 msgid ""
 "Unable to search for provided image, SauceNAO returned {status} ({message})"
 msgstr ""
 
-#: reverseimagesearch\tracemoe.py:74
+#: reverseimagesearch\tracemoe.py:88
+msgid "Unable to convert image."
+msgstr ""
+
+#: reverseimagesearch\tracemoe.py:90
 msgid "Unable to get image: {}"
 msgstr ""
 
-#: reverseimagesearch\tracemoe.py:85
+#: reverseimagesearch\tracemoe.py:102
 msgid ""
 "Unable to search for provided image, trace.moe returned {status} ({message})"
 msgstr ""

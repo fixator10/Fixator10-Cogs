@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-08-28 17:50+0400\n"
+"POT-Creation-Date: 2020-10-28 11:33+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,22 +11,22 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: redgettext 3.3\n"
 
-#: messageslog.py:41
+#: messageslog\messageslog.py:41
 #, docstring
 msgid "Log deleted and redacted messages to the defined channel"
 msgstr ""
 
-#: messageslog.py:86
+#: messageslog\messageslog.py:86
 #, docstring
 msgid "Manage message logging"
 msgstr ""
 
-#: messageslog.py:91
+#: messageslog\messageslog.py:91
 #, docstring
 msgid "Set the channels for logs"
 msgstr ""
 
-#: messageslog.py:96
+#: messageslog\messageslog.py:96
 #, docstring
 msgid ""
 "Set the channel for deleted messages logs\n"
@@ -34,7 +34,7 @@ msgid ""
 "        If channel is not specified, then logging will be disabled"
 msgstr ""
 
-#: messageslog.py:104
+#: messageslog\messageslog.py:104
 #, docstring
 msgid ""
 "Set the channel for edited messages logs\n"
@@ -42,7 +42,7 @@ msgid ""
 "        If channel is not specified, then logging will be disabled"
 msgstr ""
 
-#: messageslog.py:112
+#: messageslog\messageslog.py:112
 #, docstring
 msgid ""
 "Set the channel for bulk deletion logs\n"
@@ -50,7 +50,7 @@ msgid ""
 "        If channel is not specified, then logging will be disabled"
 msgstr ""
 
-#: messageslog.py:120
+#: messageslog\messageslog.py:120
 #, docstring
 msgid ""
 "Set the channel for all logs\n"
@@ -58,68 +58,70 @@ msgid ""
 "        If channel is not specified, then logging will be disabled"
 msgstr ""
 
-#: messageslog.py:130
+#: messageslog\messageslog.py:130
 #, docstring
 msgid "View current channels settings"
 msgstr ""
 
-#: messageslog.py:133
+#: messageslog\messageslog.py:133
 msgid "Deletion: {}"
 msgstr ""
 
-#: messageslog.py:135
+#: messageslog\messageslog.py:135
 msgid "Edit: {}"
 msgstr ""
 
-#: messageslog.py:137
+#: messageslog\messageslog.py:137
 msgid "Bulk deletion: {}"
 msgstr ""
 
-#: messageslog.py:138
+#: messageslog\messageslog.py:138
 msgid "No channels set"
 msgstr ""
 
-#: messageslog.py:142
+#: messageslog\messageslog.py:142
 #, docstring
 msgid "Toggle logging"
 msgstr ""
 
-#: messageslog.py:148
+#: messageslog\messageslog.py:148
 #, docstring
 msgid "Toggle logging of message deletion"
 msgstr ""
 
-#: messageslog.py:151 messageslog.py:160 messageslog.py:169
+#: messageslog\messageslog.py:151 messageslog\messageslog.py:160
+#: messageslog\messageslog.py:169
 msgid "enabled"
 msgstr ""
 
-#: messageslog.py:151 messageslog.py:160 messageslog.py:169
+#: messageslog\messageslog.py:151 messageslog\messageslog.py:160
+#: messageslog\messageslog.py:169
 msgid "disabled"
 msgstr ""
 
-#: messageslog.py:152
+#: messageslog\messageslog.py:152
 msgid "Message deletion logging {}"
 msgstr ""
 
-#: messageslog.py:157
+#: messageslog\messageslog.py:157
 #, docstring
 msgid "Toggle logging of message editing"
 msgstr ""
 
-#: messageslog.py:161
+#: messageslog\messageslog.py:161
 msgid "Message editing logging {}"
 msgstr ""
 
-#: messageslog.py:166
+#: messageslog\messageslog.py:166
 #, docstring
 msgid "Toggle saving of bulk message deletion"
 msgstr ""
 
-#: messageslog.py:170
+#: messageslog\messageslog.py:170
 msgid "Bulk message removal saving {}"
 msgstr ""
 
-#: messageslog.py:178
+#: messageslog\messageslog.py:178
 #, docstring
 msgid ""
 "Manage message logging blocklist\n"
@@ -129,70 +131,72 @@ msgid ""
 "        If item is in blocklist, removes it"
 msgstr ""
 
-#: messageslog.py:195
+#: messageslog\messageslog.py:195
 msgid "Nothing is ignored"
 msgstr ""
 
-#: messageslog.py:201
+#: messageslog\messageslog.py:201
 msgid "Ignored users"
 msgstr ""
 
-#: messageslog.py:203
+#: messageslog\messageslog.py:203
 msgid "Ignored channels"
 msgstr ""
 
-#: messageslog.py:206
+#: messageslog\messageslog.py:206
 msgid "Ignored categories"
 msgstr ""
 
-#: messageslog.py:253
+#: messageslog\messageslog.py:254
 msgid "Message deleted"
 msgstr ""
 
-#: messageslog.py:254 messageslog.py:405
+#: messageslog\messageslog.py:255 messageslog\messageslog.py:409
 msgid "No text"
 msgstr ""
 
-#: messageslog.py:260 messageslog.py:412
+#: messageslog\messageslog.py:261 messageslog\messageslog.py:416
 msgid "Attachments"
 msgstr ""
 
-#: messageslog.py:263 messageslog.py:415
+#: messageslog\messageslog.py:264 messageslog\messageslog.py:419
 msgid "[{0.filename}]({0.url}) ([Cached]({0.proxy_url}))"
 msgstr ""
 
-#: messageslog.py:269 messageslog.py:307 messageslog.py:421
+#: messageslog\messageslog.py:270 messageslog\messageslog.py:309
+#: messageslog\messageslog.py:425
 msgid "ID: {} • Sent at"
 msgstr ""
 
-#: messageslog.py:270 messageslog.py:308 messageslog.py:370
+#: messageslog\messageslog.py:271 messageslog\messageslog.py:310
+#: messageslog\messageslog.py:373
 msgid "Channel"
 msgstr ""
 
-#: messageslog.py:303
+#: messageslog\messageslog.py:305
 msgid "Old message deleted"
 msgstr ""
 
-#: messageslog.py:360
+#: messageslog\messageslog.py:363
 msgid "Multiple messages deleted"
 msgstr ""
 
-#: messageslog.py:361
+#: messageslog\messageslog.py:364
 msgid "{} messages removed"
 msgstr ""
 
-#: messageslog.py:363
+#: messageslog\messageslog.py:366
 msgid "{} messages saved to file above"
 msgstr ""
 
-#: messageslog.py:404
+#: messageslog\messageslog.py:408
 msgid "Message redacted"
 msgstr ""
 
-#: messageslog.py:409
+#: messageslog\messageslog.py:413
 msgid "Now"
 msgstr ""
 
-#: messageslog.py:409
+#: messageslog\messageslog.py:413
 msgid "[View message]({})"
 msgstr ""
