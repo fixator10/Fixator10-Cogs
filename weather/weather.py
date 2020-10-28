@@ -137,7 +137,7 @@ _ = T_
 class Weather(commands.Cog):
     """Weather forecast"""
 
-    __version__ = "2.0.4"
+    __version__ = "2.0.5"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -368,7 +368,7 @@ class Weather(commands.Cog):
             )
             + (
                 preciptype
-                and _("\nType: {}").format(PRECIP_TYPE_I18N.get(preciptype, preciptype))
+                and _("\nType: {}").format(_(PRECIP_TYPE_I18N.get(preciptype, preciptype)))
                 or ""
             ),
         )
@@ -511,7 +511,7 @@ class Weather(commands.Cog):
                 )
                 + (
                     preciptype
-                    and _("\nType: {}").format(PRECIP_TYPE_I18N.get(preciptype, preciptype))
+                    and _("\nType: {}").format(_(PRECIP_TYPE_I18N.get(preciptype, preciptype)))
                     or ""
                 )
                 + (
@@ -537,14 +537,14 @@ class Weather(commands.Cog):
     async def get_localized_units(self, ctx: commands.Context, units_type: str):
         """Get translated contextual units for type"""
         if not ctx.guild:
-            return UNITS.get(await self.config.user(ctx.author).units(), UNITS["si"]).get(
+            return _(UNITS.get(await self.config.user(ctx.author).units(), UNITS["si"]).get(
                 units_type, "?"
-            )
+            ))
         current_system = (
             await self.config.user(ctx.author).units()
             or await self.config.guild(ctx.guild).units()
         )
-        return UNITS.get(current_system, {}).get(units_type, "?")
+        return _(UNITS.get(current_system, {}).get(units_type, "?"))
 
     async def get_lang(self):
         """Get language for forecastio, based on current's bot language"""
