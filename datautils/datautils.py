@@ -19,7 +19,8 @@ def bool_emojify(bool_var: bool) -> str:
     return "✅" if bool_var else "❌"
 
 
-_ = Translator("DataUtils", __file__)
+T_ = Translator("DataUtils", __file__)
+_ = lambda s: s
 
 TWEMOJI_URL = "https://twemoji.maxcdn.com/v/latest/72x72"
 APP_ICON_URL = "https://cdn.discordapp.com/app-icons/{app_id}/{icon_hash}.png"
@@ -69,6 +70,7 @@ CHANNEL_TYPE_EMOJIS = {
     discord.ChannelType.private: "\N{BUST IN SILHOUETTE}",
     discord.ChannelType.group: "\N{BUSTS IN SILHOUETTE}",
 }
+_ = T_
 
 
 async def get_twemoji(emoji: str):
@@ -93,7 +95,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.4.15"
+    __version__ = "2.4.16"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -185,7 +187,7 @@ class DataUtils(commands.Cog):
             if guild.features:
                 em.add_field(
                     name=_("Features"),
-                    value="\n".join(GUILD_FEATURES.get(f, f) for f in guild.features).format(
+                    value="\n".join(_(GUILD_FEATURES.get(f, f)) for f in guild.features).format(
                         banner=guild.banner and f" [🔗]({guild.banner_url_as(format='png')})" or "",
                         splash=guild.splash and f" [🔗]({guild.splash_url_as(format='png')})" or "",
                         discovery=getattr(guild, "discovery_splash", None)
@@ -412,7 +414,7 @@ class DataUtils(commands.Cog):
         if server.features:
             em.add_field(
                 name=_("Features"),
-                value="\n".join(GUILD_FEATURES.get(f, f) for f in server.features).format(
+                value="\n".join(_(GUILD_FEATURES.get(f, f)) for f in server.features).format(
                     banner=server.banner and f" [🔗]({server.banner_url_as(format='png')})" or "",
                     splash=server.splash and f" [🔗]({server.splash_url_as(format='png')})" or "",
                     discovery=server.discovery_splash
@@ -818,7 +820,7 @@ class DataUtils(commands.Cog):
             party_size = activity.party.get("size")
             party_size = f" ({party_size[0]}/{party_size[1]})" if party_size else ""
             em = discord.Embed(
-                title=f"{ACTIVITY_TYPES.get(activity.type, activity.type)} {activity.name}",
+                title=f"{_(ACTIVITY_TYPES.get(activity.type, activity.type))} {activity.name}",
                 description=f"{activity.details and activity.details or ''}\n"
                 f"{activity.state and activity.state or ''}{party_size}",
                 color=await ctx.embed_color(),
