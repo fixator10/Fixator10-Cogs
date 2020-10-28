@@ -74,8 +74,6 @@ FORECASTIO_SUPPORTED_LANGS = [
     "zh-tw",
 ]
 
-_ = Translator("Weather", __file__)
-
 WEATHER_STATES = {
     "clear-day": "\N{Black Sun with Rays}",
     "clear-night": "\N{Night with Stars}",
@@ -91,6 +89,9 @@ WEATHER_STATES = {
 
 # Emoji that will be used for "unknown" strings
 UNKNOWN_EMOJI = "\N{White Question Mark Ornament}"
+
+T_ = Translator("Weather", __file__)
+_ = lambda s: s
 
 UNITS = {
     "si": {
@@ -128,6 +129,8 @@ UNITS = {
 }
 
 PRECIP_TYPE_I18N = {"rain": _("Rain"), "snow": _("Snow"), "sleet": _("Sleet")}
+
+_ = T_
 
 
 @cog_i18n(_)
