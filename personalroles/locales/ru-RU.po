@@ -1,18 +1,20 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fixator10-cogs\n"
-"POT-Creation-Date: 2020-02-07 15:35+0400\n"
-"PO-Revision-Date: 2020-02-07 11:59\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2020-10-28 11:33+0400\n"
+"PO-Revision-Date: 2020-10-28 09:37\n"
+"Last-Translator: \n"
 "Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: redgettext 3.1\n"
+"Generated-By: redgettext 3.3\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Crowdin-Project: fixator10-cogs\n"
+"X-Crowdin-Project-ID: 387695\n"
 "X-Crowdin-Language: ru\n"
 "X-Crowdin-File: /V3/personalroles/locales/messages.pot\n"
+"X-Crowdin-File-ID: 69\n"
 "Language: ru_RU\n"
 
 #: personalroles\personalroles.py:23
@@ -20,122 +22,145 @@ msgstr ""
 msgid "Assign and edit personal roles"
 msgstr "Назначение и редактирование персональных ролей"
 
-#: personalroles\personalroles.py:40
+#: personalroles\personalroles.py:46
 #, docstring
 msgid "Control of personal role"
 msgstr "Управление персональной ролью"
 
-#: personalroles\personalroles.py:46
+#: personalroles\personalroles.py:52
 #, docstring
 msgid "Assign personal role to someone"
 msgstr "Назначить роль кому-либо"
 
-#: personalroles\personalroles.py:49
+#: personalroles\personalroles.py:55
 msgid "Ok. I just assigned {user.name} ({user.id}) to role {role.name} ({role.id})."
 msgstr "Ок. Я назначил роль {role.name} ({role.id}) пользователю {user.name} ({user.id})."
 
-#: personalroles\personalroles.py:57
+#: personalroles\personalroles.py:63
 #, docstring
 msgid "Unassign personal role from someone"
 msgstr "Отменить привязку роли к кому-либо"
 
-#: personalroles\personalroles.py:67
+#: personalroles\personalroles.py:72
+msgid "[Unknown or Deleted User]"
+msgstr "[Неизвестный или удаленный пользователь]"
+
+#: personalroles\personalroles.py:74
 msgid "Ok. I just unassigned {user.name} ({user.id}) from his personal role."
 msgstr "Ок. Я отменил привязку роли пользователя {user.name} ({user.id})"
 
-#: personalroles\personalroles.py:75
+#: personalroles\personalroles.py:82
 #, docstring
 msgid "Assigned roles list"
 msgstr "Список назначенных ролей"
 
-#: personalroles\personalroles.py:79
-msgid "There is no assigned personal roles on this server"
-msgstr "На данном сервере нет назначенных ролей"
-
-#: personalroles\personalroles.py:87
+#: personalroles\personalroles.py:89
 msgid "User"
 msgstr "Пользователь"
 
-#: personalroles\personalroles.py:88
+#: personalroles\personalroles.py:90
 msgid "Role"
 msgstr "Роль"
 
-#: personalroles\personalroles.py:105
-#, docstring
-msgid "Manage blacklisted names"
-msgstr "Управление запрещенными именами"
+#: personalroles\personalroles.py:102
+msgid "There is no assigned personal roles on this server"
+msgstr "На данном сервере нет назначенных ролей"
 
-#: personalroles\personalroles.py:111
+#: personalroles\personalroles.py:107
 #, docstring
-msgid "Add rolename to blacklist\\n        Members will be not able to change name of role to blacklisted names"
-msgstr ""
+msgid "Toggle auto-adding role on rejoin."
+msgstr "Переключить автовыдачу роли при перезаходе."
 
-#: personalroles\personalroles.py:117
-msgid "`{}` is already in blacklist"
-msgstr "`{}` уже в чёрном списке"
+#: personalroles\personalroles.py:113
+msgid "Users will {}get their roles on rejoin now."
+msgstr "Теперь пользователи {}будут получать свои роли при перезаходе."
+
+#: personalroles\personalroles.py:114
+msgid "not "
+msgstr "не "
 
 #: personalroles\personalroles.py:123
-msgid "Added `{}` to blacklisted roles list"
+#, docstring
+msgid "Manage blocklisted names"
+msgstr "Управление запрещенными названиями"
+
+#: personalroles\personalroles.py:128
+#, docstring
+msgid "Add rolename to blocklist\n"
+"        Members will be not able to change name of role to blocklisted names"
+msgstr "Добавить название роли в чёрный список\n"
+"        Участники не смогут менять название роли на названия из чёрного списка"
+
+#: personalroles\personalroles.py:133
+msgid "`{}` is already in blocklist"
+msgstr "`{}` уже в чёрном списке"
+
+#: personalroles\personalroles.py:137
+msgid "Added `{}` to blocklisted roles list"
 msgstr "`{}` добавлено в чёрный список"
 
-#: personalroles\personalroles.py:130
+#: personalroles\personalroles.py:142
 #, docstring
-msgid "Remove rolename from blacklist"
+msgid "Remove rolename from blocklist"
 msgstr "Убрать роль из чёрного списка"
 
-#: personalroles\personalroles.py:135
-msgid "`{}` is not blacklisted"
+#: personalroles\personalroles.py:146
+msgid "`{}` is not blocklisted"
 msgstr "`{}` не в чёрном списке"
 
-#: personalroles\personalroles.py:141
-msgid "Removed `{}` from blacklisted roles list"
+#: personalroles\personalroles.py:150
+msgid "Removed `{}` from blocklisted roles list"
 msgstr "`{}` удалено из чёрного списка"
 
-#: personalroles\personalroles.py:148
+#: personalroles\personalroles.py:156
 #, docstring
-msgid "List of blacklisted role names"
+msgid "List of blocklisted role names"
 msgstr "Чёрный список названия ролей"
 
-#: personalroles\personalroles.py:154
-msgid "There is no blacklisted roles"
+#: personalroles\personalroles.py:162
+msgid "There is no blocklisted roles"
 msgstr "В чёрном списке нет запрещенных названий"
 
-#: personalroles\personalroles.py:161
+#: personalroles\personalroles.py:169
 #, docstring
 msgid "Change color of personal role"
 msgstr "Сменить цвет персональной роли"
 
-#: personalroles\personalroles.py:166 personalroles\personalroles.py:203
-#: personalroles\personalroles.py:233
+#: personalroles\personalroles.py:173 personalroles\personalroles.py:213
+#: personalroles\personalroles.py:247
 msgid "Personal Role"
 msgstr "Персональная роль"
 
-#: personalroles\personalroles.py:172
-msgid "Unable to edit role.\\nRole must be lower than my top role and i must have permission \\\"Manage Roles\\\""
-msgstr ""
+#: personalroles\personalroles.py:178 personalroles\personalroles.py:218
+msgid "Unable to edit role.\n"
+"Role must be lower than my top role and i must have permission \"Manage Roles\""
+msgstr "Не удаётся изменить роль.\n"
+"Роль должна быть ниже моей высшей роли и я должен иметь права \"Управлять ролями\""
 
-#: personalroles\personalroles.py:180 personalroles\personalroles.py:217
+#: personalroles\personalroles.py:186 personalroles\personalroles.py:226
 msgid "Unable to edit role: {}"
 msgstr "Невозможно изменить роль: {}"
 
-#: personalroles\personalroles.py:183
+#: personalroles\personalroles.py:190
+msgid "Reset {user}'s personal role color"
+msgstr "Сбросил цвет персональной роли для {user}"
+
+#: personalroles\personalroles.py:194
 msgid "Changed color of {user}'s personal role to {color}"
 msgstr "Цвет персональной роли {user} изменен на {color}"
 
-#: personalroles\personalroles.py:193
+#: personalroles\personalroles.py:204
 #, docstring
-msgid "Change name of personal role\\n        You cant use blacklisted names"
-msgstr ""
+msgid "Change name of personal role\n"
+"        You cant use blocklisted names"
+msgstr "Изменить название персональной роли\n"
+"        Вы не можете использовать имена из черного списка"
 
-#: personalroles\personalroles.py:199
-msgid "NONONO!!! This rolename is blacklisted."
+#: personalroles\personalroles.py:210
+msgid "NONONO!!! This rolename is blocklisted."
 msgstr "НЕНЕНЕ!!! Это название роли в чёрном списке."
 
-#: personalroles\personalroles.py:209
-msgid "Unable to edit role.\\nRole must be lower than my top role and i must have permission \\\"Manage Roles\\\""
-msgstr ""
-
-#: personalroles\personalroles.py:220
+#: personalroles\personalroles.py:229
 msgid "Changed name of {user}'s personal role to {name}"
 msgstr "Название персональной роли {user} изменено на {name}"
 
