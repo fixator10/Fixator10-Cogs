@@ -95,7 +95,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.4.16"
+    __version__ = "2.4.17"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -141,6 +141,17 @@ class DataUtils(commands.Cog):
             em.add_field(
                 name=_("Avatar"),
                 value=f"[`{user.avatar}`]({user.avatar_url_as(static_format='png', size=4096)})",
+            )
+        if user.public_flags.value:
+            em.add_field(
+                name=_("Public flags"),
+                value="\n".join(
+                    [
+                        str(flag)[10:].replace("_", " ").capitalize()
+                        for flag in user.public_flags.all()
+                    ]
+                ),
+                inline=False,
             )
         em.set_image(url=user.avatar_url_as(static_format="png", size=4096))
         em.set_thumbnail(url=user.default_avatar_url)
