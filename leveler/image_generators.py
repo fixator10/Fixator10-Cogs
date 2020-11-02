@@ -710,7 +710,7 @@ class ImageGenerators(MixinMeta):
             mask = Image.new("L", (raw_length, raw_length), 0)
             draw_thumb = ImageDraw.Draw(mask)
             draw_thumb.ellipse((0, 0) + (raw_length, raw_length), fill=255, outline=0)
-            if num < len(sorted_badges[:9]):
+            if num < len(sorted_badges[:9]) and badges_images[num]:
                 pair = sorted_badges[num]
                 badge = pair[0]
                 border_color = badge["border_color"]
@@ -827,7 +827,7 @@ class ImageGenerators(MixinMeta):
         rank_background = BytesIO(image)
         rank_avatar = BytesIO()
         try:
-            await user.avatar_url_as(format=AVATAR_FORMAT).save(rank_avatar, seek_begin=True)
+            await user.avatar_url_as(format=AVATAR_FORMAT).save(rank_avatar)
         except discord.HTTPException:
             rank_avatar = f"{bundled_data_path(self)}/defaultavatar.png"
 
@@ -856,7 +856,7 @@ class ImageGenerators(MixinMeta):
         level_background = BytesIO(image)
         level_avatar = BytesIO()
         try:
-            await user.avatar_url_as(format=AVATAR_FORMAT).save(level_avatar, seek_begin=True)
+            await user.avatar_url_as(format=AVATAR_FORMAT).save(level_avatar)
         except discord.HTTPException:
             level_avatar = f"{bundled_data_path(self)}/defaultavatar.png"
 
@@ -868,8 +868,7 @@ class ImageGenerators(MixinMeta):
     async def draw_profile(self, user, server):
         # get urls
         userinfo = await self.db.users.find_one({"user_id": str(user.id)})
-        await self._badge_convert_dict(userinfo)
-        userinfo = await self.db.users.find_one({"user_id": str(user.id)})
+        userinfo = await self._badge_convert_dict(userinfo)
         bg_url = userinfo["profile_background"]
 
         async with self.session.get(bg_url) as r:
@@ -877,8 +876,9 @@ class ImageGenerators(MixinMeta):
             profile_background = BytesIO(image)
         profile_avatar = BytesIO()
         try:
-            await user.avatar_url_as(format=AVATAR_FORMAT).save(profile_avatar, seek_begin=True)
+            await user.avatar_url_as(format=AVATAR_FORMAT).save(profile_avatar)
         except discord.HTTPException:
+            profile_avatar.close()
             profile_avatar = f"{bundled_data_path(self)}/defaultavatar.png"
 
         level = await self._find_level(userinfo["total_exp"])
@@ -900,6 +900,8 @@ class ImageGenerators(MixinMeta):
                 async with self.session.get(bg_color) as r:
                     image = await r.content.read()
                     badges_images.append(BytesIO(image))
+            else:
+                badges_images.append(None)
 
         file = await self.asyncify_thread(
             self.make_profile_image,
