@@ -132,10 +132,9 @@ class AdminUtils(commands.Cog):
         if not from_channel.permissions_for(ctx.me).move_members:
             await ctx.send(chat.error(_("I cant move users from that channel")))
             return
-        if to_channel:
-            if not to_channel.permissions_for(ctx.me).connect:
-                await ctx.send(chat.error(_("I cant move users to that channel")))
-                return
+        if to_channel and not to_channel.permissions_for(ctx.me).connect:
+            await ctx.send(chat.error(_("I cant move users to that channel")))
+            return
         async with ctx.typing():
             for member in from_channel.members:
                 try:
