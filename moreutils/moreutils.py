@@ -15,7 +15,8 @@ except ImportError:
     import json
 
 
-_ = Translator("MoreUtils", __file__)
+T_ = Translator("MoreUtils", __file__)
+_ = lambda s: s
 
 DISCORD_STATUS_NAMES = {
     "none": _("OK"),
@@ -23,6 +24,8 @@ DISCORD_STATUS_NAMES = {
     "major": _("Major problems"),
     "critical": _("Critical problems"),
 }
+
+_ = T_
 
 
 def rgb_to_cmyk(r, g, b):
@@ -56,7 +59,7 @@ def bool_emojify(bool_var: bool) -> str:
 class MoreUtils(commands.Cog):
     """Some (maybe) useful utils."""
 
-    __version__ = "2.0.13"
+    __version__ = "2.0.15"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -71,13 +74,14 @@ class MoreUtils(commands.Cog):
 
     @commands.command(name="thetime")
     async def _thetime(self, ctx):
-        """Send bot's current time"""
+        """Displays the current time of the server."""
         await ctx.send(datetime.datetime.now().strftime(_("%d.%m.%Y %H:%M:%S %Z")))
 
     @commands.command(aliases=["HEX", "hex", "colour"])
     @checks.bot_has_permissions(embed_links=True)
+    @commands.max_concurrency(1, commands.BucketType.user)
     async def color(self, ctx, *, color: discord.Color):
-        """Shows some info about provided color"""
+        """Shows some info about provided color."""
         colorrgb = color.to_rgb()
         colorhsv = colorsys.rgb_to_hsv(colorrgb[0], colorrgb[1], colorrgb[2])
         colorhls = colorsys.rgb_to_hls(colorrgb[0], colorrgb[1], colorrgb[2])
@@ -122,7 +126,7 @@ class MoreUtils(commands.Cog):
     async def someone(self, ctx, *, text: str = None):
         """Help I've fallen and I need @someone.
 
-        Discord 2018 April Fools"""
+        Discord 2018 April Fools."""
         smilies = [
             "¯\\_(ツ)_/¯",
             "(∩ ͡° ͜ʖ ͡°)⊃━☆ﾟ. o ･ ｡ﾟ",
@@ -148,6 +152,7 @@ class MoreUtils(commands.Cog):
 
     @commands.command(pass_context=True)
     @commands.cooldown(1, 10, commands.BucketType.user)
+    @commands.max_concurrency(1, commands.BucketType.user)
     async def discordstatus(self, ctx):
         """Get current discord status from discordstatus.com"""
         async with ctx.typing():
@@ -168,7 +173,9 @@ class MoreUtils(commands.Cog):
             if await ctx.embed_requested():
                 embed = discord.Embed(
                     title=_("Discord Status"),
-                    description=DISCORD_STATUS_NAMES.get(status["indicator"], status["indicator"]),
+                    description=_(
+                        DISCORD_STATUS_NAMES.get(status["indicator"], status["indicator"])
+                    ),
                     timestamp=datetime.datetime.fromisoformat(response["page"]["updated_at"])
                     .astimezone(datetime.timezone.utc)
                     .replace(tzinfo=None),  # make naive
@@ -183,6 +190,6 @@ class MoreUtils(commands.Cog):
                 await ctx.send(embed=embed)
             else:
                 await ctx.send(
-                    f"{DISCORD_STATUS_NAMES.get(status['indicator'], status['indicator'])}\n"
+                    f"{_(DISCORD_STATUS_NAMES.get(status['indicator'], status['indicator']))}\n"
                     f"{chat.box(tabulate([(c['name'], c['status'].capitalize().replace('_', ' ')) for c in components]))}"
                 )

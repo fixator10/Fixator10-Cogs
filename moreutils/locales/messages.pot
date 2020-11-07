@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-08-09 13:37+0400\n"
+"POT-Creation-Date: 2020-10-28 11:33+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,58 +11,66 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: redgettext 3.3\n"
 
-#: moreutils\moreutils.py:44
+#: moreutils\moreutils.py:21
+msgid "OK"
+msgstr ""
+
+#: moreutils\moreutils.py:22
+msgid "Minor problems"
+msgstr ""
+
+#: moreutils\moreutils.py:23
+msgid "Major problems"
+msgstr ""
+
+#: moreutils\moreutils.py:24
+msgid "Critical problems"
+msgstr ""
+
+#: moreutils\moreutils.py:57
 #, docstring
 msgid "Some (maybe) useful utils."
 msgstr ""
 
-#: moreutils\moreutils.py:61
+#: moreutils\moreutils.py:74
 #, docstring
-msgid "Send bot's current time"
+msgid "Displays the current time of the server."
 msgstr ""
 
-#: moreutils\moreutils.py:62
+#: moreutils\moreutils.py:75
 msgid "%d.%m.%Y %H:%M:%S %Z"
 msgstr ""
 
-#: moreutils\moreutils.py:67
+#: moreutils\moreutils.py:81
 #, docstring
-msgid "Shows some info about provided color"
+msgid "Shows some info about provided color."
 msgstr ""
 
 #: moreutils\moreutils.py:106
+msgid "Name: Loading...\n"
+msgstr ""
+
+#: moreutils\moreutils.py:118
+msgid "Name: {}\n"
+msgstr ""
+
+#: moreutils\moreutils.py:124
 #, docstring
 msgid ""
 "Help I've fallen and I need @someone.\n"
 "\n"
-"        Discord 2018 April Fools"
+"        Discord 2018 April Fools."
 msgstr ""
 
-#: moreutils\moreutils.py:135
+#: moreutils\moreutils.py:154
 #, docstring
-msgid "Get current discord status from status.discordapp.com"
+msgid "Get current discord status from discordstatus.com"
 msgstr ""
 
-#: moreutils\moreutils.py:144
-msgid "Unable to get data from https://status.discordapp.com: {}"
+#: moreutils\moreutils.py:164
+msgid "Unable to get data from https://discordstatus.com: {}"
 msgstr ""
 
-#: moreutils\moreutils.py:150
-msgid "OK"
-msgstr ""
-
-#: moreutils\moreutils.py:151
-msgid "Minor problems"
-msgstr ""
-
-#: moreutils\moreutils.py:152
-msgid "Major problems"
-msgstr ""
-
-#: moreutils\moreutils.py:153
-msgid "Critical problems"
-msgstr ""
-
-#: moreutils\moreutils.py:157
+#: moreutils\moreutils.py:172
 msgid "Discord Status"
 msgstr ""

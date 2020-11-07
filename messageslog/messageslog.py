@@ -6,7 +6,7 @@ from typing import Union
 import discord
 from redbot.core import checks, commands
 from redbot.core.config import Config
-from redbot.core.i18n import Translator, cog_i18n
+from redbot.core.i18n import Translator, cog_i18n, set_contextual_locales_from_guild
 from redbot.core.utils import AsyncIter
 from redbot.core.utils import chat_formatting as chat
 from redbot.core.utils.menus import DEFAULT_CONTROLS, menu
@@ -40,7 +40,7 @@ _ = Translator("MessagesLog", __file__)
 class MessagesLog(commands.Cog):
     """Log deleted and redacted messages to the defined channel"""
 
-    __version__ = "2.3.7"
+    __version__ = "2.3.8"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -249,6 +249,7 @@ class MessagesLog(commands.Cog):
             ]
         ):
             return
+        await set_contextual_locales_from_guild(self.bot, message.guild)
         embed = discord.Embed(
             title=_("Message deleted"),
             description=message.system_content or chat.inline(_("No text")),
@@ -299,6 +300,7 @@ class MessagesLog(commands.Cog):
             ]
         ):
             return
+        await set_contextual_locales_from_guild(self.bot, guild)
         embed = discord.Embed(
             title=_("Old message deleted"),
             timestamp=discord.utils.snowflake_time(payload.message_id),
@@ -335,6 +337,7 @@ class MessagesLog(commands.Cog):
             ]
         ):
             return
+        await set_contextual_locales_from_guild(self.bot, guild)
         save_bulk = await self.config.guild(guild).save_bulk()
         messages_dump = None
         if payload.cached_messages and save_bulk:
@@ -400,6 +403,7 @@ class MessagesLog(commands.Cog):
             ]
         ):
             return
+        await set_contextual_locales_from_guild(self.bot, before.guild)
         embed = discord.Embed(
             title=_("Message redacted"),
             description=before.content or chat.inline(_("No text")),

@@ -1,29 +1,31 @@
-#
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: fixator10-cogs\n"
 "POT-Creation-Date: 2020-10-28 11:33+0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2020-10-28 09:39\n"
+"Last-Translator: \n"
+"Language-Team: Spanish\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: redgettext 3.3\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: fixator10-cogs\n"
+"X-Crowdin-Project-ID: 387695\n"
+"X-Crowdin-Language: es-ES\n"
+"X-Crowdin-File: /V3/massthings/locales/messages.pot\n"
+"X-Crowdin-File-ID: 96\n"
+"Language: es_ES\n"
 
 #: massthings\massthings.py:20
 #, docstring
-msgid ""
-"Cog for doing things in bulk.\n"
-"\n"
+msgid "Cog for doing things in bulk.\n\n"
 "    May be against Discord API terms. Use with caution.\n"
 "    I'm not responsible for any aftermath of using this cog."
 msgstr ""
 
 #: massthings\massthings.py:39
-msgid ""
-"This command may abuse Discord API and therefore, ban you or bot's owner, "
-"are you sure that you want to proceed?"
+msgid "This command may abuse Discord API and therefore, ban you or bot's owner, are you sure that you want to proceed?"
 msgstr ""
 
 #: massthings\massthings.py:60
@@ -58,14 +60,12 @@ msgid "Steal all emoji provided in arguments"
 msgstr ""
 
 #: massthings\massthings.py:122
-msgid ""
-"You tried to add too many emojis, you can add only {} emojis more to this server\n"
+msgid "You tried to add too many emojis, you can add only {} emojis more to this server\n"
 "You tried to add {}."
 msgstr ""
 
 #: massthings\massthings.py:132
-msgid ""
-"You tried to add too many animated emojis, you can add only {} emojis more to this server.\n"
+msgid "You tried to add too many animated emojis, you can add only {} emojis more to this server.\n"
 "You tried to add {}."
 msgstr ""
 
@@ -74,22 +74,18 @@ msgid "Emoji steal"
 msgstr ""
 
 #: massthings\massthings.py:157
-msgid ""
-"Stealed emojis:\n"
+msgid "Stealed emojis:\n"
 "{}"
 msgstr ""
 
 #: massthings\massthings.py:170
 #, docstring
-msgid ""
-"Unban all users that banned by specified user\n"
-"\n"
+msgid "Unban all users that banned by specified user\n\n"
 "        Uses modlog data, since discord not saves author of ban."
 msgstr ""
 
 #: massthings\massthings.py:191 massthings\massthings.py:218
-msgid ""
-"Unbanned users:\n"
+msgid "Unbanned users:\n"
 "{}"
 msgstr ""
 
@@ -97,3 +93,4 @@ msgstr ""
 #, docstring
 msgid "Unban everyone from current guild"
 msgstr ""
+
