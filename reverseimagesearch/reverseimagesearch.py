@@ -57,7 +57,7 @@ TRACEMOE_MENU_CONTROLS = {**DEFAULT_CONTROLS, "\N{FILM FRAMES}": send_preview}
 class ReverseImageSearch(commands.Cog):
     """(Anime) Reverse Image Search"""
 
-    __version__ = "2.1.4"
+    __version__ = "2.1.5"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -81,6 +81,7 @@ class ReverseImageSearch(commands.Cog):
 
     @commands.group(invoke_without_command=True)
     @commands.cooldown(1, 30, commands.BucketType.user)
+    @commands.is_nsfw()
     async def saucenao(self, ctx, image: ImageFinder = None):
         """Reverse search image via SauceNAO"""
         if image is None:
