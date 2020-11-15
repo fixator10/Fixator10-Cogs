@@ -16,7 +16,14 @@ from redbot.core.utils.menus import DEFAULT_CONTROLS, menu
 
 from .minecraftplayer import MCPlayer
 
-_ = Translator("MinecraftData", __file__)
+try:
+    from redbot import json  # support of Draper's branch
+except ImportError:
+    import json
+
+
+T_ = Translator("MinecraftData", __file__)
+_ = lambda s: s
 
 SERVICE_STATUS = {
     "red": _("💔 **UNAVAILABLE**"),
@@ -24,17 +31,19 @@ SERVICE_STATUS = {
     "green": _("💚 **OK**"),
 }
 
+_ = T_
+
 
 @cog_i18n(_)
 class MinecraftData(commands.Cog):
     """Minecraft-Related data"""
 
-    __version__ = "2.0.2"
+    __version__ = "2.0.4"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
         self.bot = bot
-        self.session = aiohttp.ClientSession(loop=self.bot.loop)
+        self.session = aiohttp.ClientSession(json_serialize=json.dumps)
 
     def cog_unload(self):
         self.bot.loop.create_task(self.session.close())
@@ -203,7 +212,7 @@ class MinecraftData(commands.Cog):
             async with self.session.get(
                 f"http://textures.5zig.net/textures/2/{uuid}", raise_for_status=True
             ) as data:
-                response_data = await data.json(content_type=None)
+                response_data = await data.json(content_type=None, loads=json.loads)
             cape = response_data["cape"]
         except aiohttp.ClientResponseError as e:
             if e.status == 404:
@@ -230,7 +239,7 @@ class MinecraftData(commands.Cog):
             async with self.session.get(
                 f"http://textures.5zig.net/textures/2/{uuid}", raise_for_status=True
             ) as data:
-                response_data = await data.json(content_type=None)
+                response_data = await data.json(content_type=None, loads=json.loads)
             if "animatedCape" not in response_data:
                 await ctx.send(
                     chat.error(_("{} doesn't have animated 5zig cape")).format(player.name)
@@ -274,8 +283,12 @@ class MinecraftData(commands.Cog):
                 query = await self.bot.loop.run_in_executor(None, server.query)
             except (ConnectionResetError, OSError):
                 query = None
+        icon_file = None
         icon = (
-            discord.File(BytesIO(b64decode(status.favicon.split(",", 1)[1])), filename="icon.png")
+            discord.File(
+                icon_file := BytesIO(b64decode(status.favicon.split(",", 1)[1])),
+                filename="icon.png",
+            )
             if status.favicon
             else None
         )
@@ -317,6 +330,8 @@ class MinecraftData(commands.Cog):
                 # f"Plugins: {query.software.plugins}"
             )
         await ctx.send(file=icon, embed=embed)
+        if icon_file:
+            icon_file.close()
 
     @minecraft.command()
     @checks.bot_has_permissions(embed_links=True)
@@ -324,7 +339,7 @@ class MinecraftData(commands.Cog):
         """Get status of minecraft services"""
         try:
             async with self.session.get("https://status.mojang.com/check") as data:
-                data = await data.json()
+                data = await data.json(loads=json.loads)
             em = discord.Embed(
                 title=_("Status of minecraft services"),
                 timestamp=ctx.message.created_at,
@@ -332,7 +347,7 @@ class MinecraftData(commands.Cog):
             )
             for service in data:
                 for entry, status in service.items():
-                    em.add_field(name=entry, value=SERVICE_STATUS.get(status, status))
+                    em.add_field(name=entry, value=_(SERVICE_STATUS.get(status, status)))
             await ctx.send(embed=em)
         except Exception as e:
             await ctx.send(
@@ -351,7 +366,7 @@ class MinecraftData(commands.Cog):
             async with self.session.get(
                 "https://api.mojang.com/user/profiles/{}/names".format(uuid)
             ) as data:
-                data_history = await data.json()
+                data_history = await data.json(loads=json.loads)
             for nick in data_history:
                 try:
                     nick["changedToAt"] = datetime.fromtimestamp(

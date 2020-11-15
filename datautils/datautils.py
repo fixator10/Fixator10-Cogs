@@ -19,11 +19,12 @@ def bool_emojify(bool_var: bool) -> str:
     return "✅" if bool_var else "❌"
 
 
-_ = Translator("DataUtils", __file__)
+T_ = Translator("DataUtils", __file__)
+_ = lambda s: s
 
 TWEMOJI_URL = "https://twemoji.maxcdn.com/v/latest/72x72"
 APP_ICON_URL = "https://cdn.discordapp.com/app-icons/{app_id}/{icon_hash}.png"
-NON_ESCAPEABLE_CHARACTERS = string.ascii_letters + string.digits
+NON_ESCAPABLE_CHARACTERS = string.ascii_letters + string.digits
 
 GUILD_FEATURES = {
     "VIP_REGIONS": _("384kbps voice bitrate"),
@@ -33,9 +34,8 @@ GUILD_FEATURES = {
     "PARTNERED": _("Discord Partner"),
     "MORE_EMOJI": _("Extended emoji limit"),  # Non-boosted?
     "DISCOVERABLE": _("Shows in Server Discovery{discovery}"),
-    "FEATURABLE": _('Can be in "Featured" section of Server Discovery'),
+    # "FEATURABLE": _('Can be in "Featured" section of Server Discovery'),
     "COMMERCE": _("Store channels"),
-    # "PUBLIC": _("Can be joined without an invite"),
     "NEWS": _("News channels"),
     "BANNER": _("Banner{banner}"),
     "ANIMATED_ICON": _("Animated icon"),
@@ -43,6 +43,16 @@ GUILD_FEATURES = {
     "PUBLIC_DISABLED": _("Cannot be public"),
     "ENABLED_DISCOVERABLE_BEFORE": _("Was in Server Discovery"),
     "COMMUNITY": _("Community server"),
+    # Docs from https://github.com/vDelite/DiscordLists:
+    "PREVIEW_ENABLED": _('Preview enabled ("Lurkable")'),
+    "MEMBER_VERIFICATION_GATE_ENABLED": _("Member verification gate enabled"),
+    "MEMBER_LIST_DISABLED": _("Member list disabled"),
+    # im honestly idk what the fuck that shit means, and discord doesnt provides much docs,
+    # so if you see that on your server while using my cog - idk what the fuck is that and how it got there,
+    # ask discord to write fucking docs already
+    "FORCE_RELAY": _(
+        "Shards connections to the guild to different nodes that relay information between each other."
+    ),
 }
 
 ACTIVITY_TYPES = {
@@ -60,6 +70,7 @@ CHANNEL_TYPE_EMOJIS = {
     discord.ChannelType.private: "\N{BUST IN SILHOUETTE}",
     discord.ChannelType.group: "\N{BUSTS IN SILHOUETTE}",
 }
+_ = T_
 
 
 async def get_twemoji(emoji: str):
@@ -84,7 +95,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.4.9"
+    __version__ = "2.4.17"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -131,6 +142,17 @@ class DataUtils(commands.Cog):
                 name=_("Avatar"),
                 value=f"[`{user.avatar}`]({user.avatar_url_as(static_format='png', size=4096)})",
             )
+        if user.public_flags.value:
+            em.add_field(
+                name=_("Public flags"),
+                value="\n".join(
+                    [
+                        str(flag)[10:].replace("_", " ").capitalize()
+                        for flag in user.public_flags.all()
+                    ]
+                ),
+                inline=False,
+            )
         em.set_image(url=user.avatar_url_as(static_format="png", size=4096))
         em.set_thumbnail(url=user.default_avatar_url)
         em.set_footer(text=_("Created at"))
@@ -176,7 +198,7 @@ class DataUtils(commands.Cog):
             if guild.features:
                 em.add_field(
                     name=_("Features"),
-                    value="\n".join(GUILD_FEATURES.get(f, f) for f in guild.features).format(
+                    value="\n".join(_(GUILD_FEATURES.get(f, f)) for f in guild.features).format(
                         banner=guild.banner and f" [🔗]({guild.banner_url_as(format='png')})" or "",
                         splash=guild.splash and f" [🔗]({guild.splash_url_as(format='png')})" or "",
                         discovery=getattr(guild, "discovery_splash", None)
@@ -220,7 +242,7 @@ class DataUtils(commands.Cog):
         em.add_field(name=_("Joined server"), value=member.joined_at.strftime(self.TIME_FORMAT))
         em.add_field(name="ID", value=member.id)
         em.add_field(
-            name=_("Has existed since"),
+            name=_("Exists since"),
             value=member.created_at.strftime(self.TIME_FORMAT),
         )
         if member.color.value:
@@ -301,7 +323,7 @@ class DataUtils(commands.Cog):
         )
         em.add_field(name=_("Name"), value=chat.escape(server.name, formatting=True))
         em.add_field(name=_("Server ID"), value=server.id)
-        em.add_field(name=_("Existed since"), value=server.created_at.strftime(self.TIME_FORMAT))
+        em.add_field(name=_("Exists since"), value=server.created_at.strftime(self.TIME_FORMAT))
         em.add_field(name=_("Region"), value=server.region)
         if server.preferred_locale:
             em.add_field(name=_("Discovery language"), value=server.preferred_locale)
@@ -403,7 +425,7 @@ class DataUtils(commands.Cog):
         if server.features:
             em.add_field(
                 name=_("Features"),
-                value="\n".join(GUILD_FEATURES.get(f, f) for f in server.features).format(
+                value="\n".join(_(GUILD_FEATURES.get(f, f)) for f in server.features).format(
                     banner=server.banner and f" [🔗]({server.banner_url_as(format='png')})" or "",
                     splash=server.splash and f" [🔗]({server.splash_url_as(format='png')})" or "",
                     discovery=server.discovery_splash
@@ -486,7 +508,7 @@ class DataUtils(commands.Cog):
             value=CHANNEL_TYPE_EMOJIS.get(channel.type, str(channel.type)),
         )
         em.add_field(
-            name=_("Has existed since"),
+            name=_("Exists since"),
             value=channel.created_at.strftime(self.TIME_FORMAT),
         )
         em.add_field(
@@ -597,7 +619,7 @@ class DataUtils(commands.Cog):
             ),
         )
         em.add_field(
-            name=_("Has existed since"),
+            name=_("Exists since"),
             value=role.created_at.strftime(self.TIME_FORMAT),
         )
         em.add_field(name=_("Hoist"), value=bool_emojify(role.hoist))
@@ -715,7 +737,9 @@ class DataUtils(commands.Cog):
         """Make embed with info about emoji"""
         em = discord.Embed(
             title=isinstance(emoji, str)
-            and "\n".join(map(unicodedata.name, emoji))
+            and "\n".join(
+                map(lambda c: unicodedata.name(c, _("[Unable to resolve unicode name]")), emoji)
+            )
             or chat.escape(emoji.name, formatting=True),
             color=await ctx.embed_color(),
         )
@@ -724,7 +748,7 @@ class DataUtils(commands.Cog):
             em.add_field(
                 name=_("Unicode character"),
                 value="\n".join(
-                    f"\\{c}" if c not in NON_ESCAPEABLE_CHARACTERS else c for c in emoji
+                    f"\\{c}" if c not in NON_ESCAPABLE_CHARACTERS else c for c in emoji
                 ),
             )
             em.add_field(
@@ -738,7 +762,7 @@ class DataUtils(commands.Cog):
             em.set_image(url=emoji.url)
         if isinstance(emoji, discord.Emoji):
             em.add_field(
-                name=_("Has existed since"),
+                name=_("Exists since"),
                 value=emoji.created_at.strftime(self.TIME_FORMAT),
             )
             em.add_field(name=_('":" required'), value=bool_emojify(emoji.require_colons))
@@ -754,7 +778,7 @@ class DataUtils(commands.Cog):
                 )
         elif isinstance(emoji, discord.PartialEmoji):
             em.add_field(
-                name=_("Has existed since"),
+                name=_("Exists since"),
                 value=discord.utils.snowflake_time(emoji.id).strftime(self.TIME_FORMAT),
             )
             em.add_field(name=_("Custom emoji"), value=bool_emojify(emoji.is_custom_emoji()))
@@ -807,7 +831,7 @@ class DataUtils(commands.Cog):
             party_size = activity.party.get("size")
             party_size = f" ({party_size[0]}/{party_size[1]})" if party_size else ""
             em = discord.Embed(
-                title=f"{ACTIVITY_TYPES.get(activity.type, activity.type)} {activity.name}",
+                title=f"{_(ACTIVITY_TYPES.get(activity.type, activity.type))} {activity.name}",
                 description=f"{activity.details and activity.details or ''}\n"
                 f"{activity.state and activity.state or ''}{party_size}",
                 color=await ctx.embed_color(),

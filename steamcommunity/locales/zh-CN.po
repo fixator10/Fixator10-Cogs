@@ -1,233 +1,294 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fixator10-cogs\n"
-"POT-Creation-Date: 2020-02-07 15:35+0400\n"
-"PO-Revision-Date: 2020-02-07 20:09\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2020-10-28 11:33+0400\n"
+"PO-Revision-Date: 2020-10-28 09:38\n"
+"Last-Translator: \n"
 "Language-Team: Chinese Simplified\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: redgettext 3.1\n"
+"Generated-By: redgettext 3.3\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Crowdin-Project: fixator10-cogs\n"
+"X-Crowdin-Project-ID: 387695\n"
 "X-Crowdin-Language: zh-CN\n"
 "X-Crowdin-File: /V3/steamcommunity/locales/messages.pot\n"
+"X-Crowdin-File-ID: 75\n"
 "Language: zh_CN\n"
 
-#: steamcommunity\steamcommunity.py:37 steamcommunity\steamcommunity.py:66
+#: steamcommunity\steamcommunity.py:75 steamcommunity\steamcommunity.py:102
 #, docstring
 msgid "SteamCommunity commands"
 msgstr ""
 
-#: steamcommunity\steamcommunity.py:73
+#: steamcommunity\steamcommunity.py:108
 #, docstring
 msgid "Set API key for Steam Web API"
 msgstr ""
 
-#: steamcommunity\steamcommunity.py:78
-msgid "To get Steam Web API key:\\n1. Login to your Steam account\\n2. Visit [Register Steam Web API Key](https://steamcommunity.com/dev/apikey) page\\n3. Enter any domain name (e.g. `localhost`)\\n4. You will now see \\\"Key\\\" field\\n5. Use `{}set api steam web <your_apikey>`\\nNote: These tokens are sensitive and should only be used in a private channel\\nor in DM with the bot."
+#: steamcommunity\steamcommunity.py:109
+msgid "To get Steam Web API key:\n"
+"1. Login to your Steam account\n"
+"2. Visit [Register Steam Web API Key](https://steamcommunity.com/dev/apikey) page\n"
+"3. Enter any domain name (e.g. `localhost`)\n"
+"4. You will now see \"Key\" field\n"
+"5. Use `{}set api steam web <your_apikey>`\n"
+"Note: These tokens are sensitive and should only be used in a private channel\n"
+"or in DM with the bot."
 msgstr ""
 
-#: steamcommunity\steamcommunity.py:95
+#: steamcommunity\steamcommunity.py:126
 #, docstring
 msgid "Get steam user's steamcommunity profile"
 msgstr ""
 
-#: steamcommunity\steamcommunity.py:104
+#: steamcommunity\steamcommunity.py:137
 msgid "In game: [{}](http://store.steampowered.com/app/{})"
 msgstr ""
 
-#: steamcommunity\steamcommunity.py:108
+#: steamcommunity\steamcommunity.py:141
 msgid " on server {}"
 msgstr ""
 
-#: steamcommunity\steamcommunity.py:110
-msgid "\\nFamily Shared by [{}]({})"
-msgstr ""
-
-#: steamcommunity\steamcommunity.py:114
-msgid "Real name"
-msgstr ""
-
-#: steamcommunity\steamcommunity.py:115
-msgid "Level"
-msgstr ""
-
-#: steamcommunity\steamcommunity.py:118
-msgid "Country"
-msgstr ""
-
-#: steamcommunity\steamcommunity.py:120
-msgid "Visibility"
-msgstr ""
-
-#: steamcommunity\steamcommunity.py:123
-msgid "Created at"
-msgstr ""
-
-#: steamcommunity\steamcommunity.py:125
-msgid "%d.%m.%Y %H:%M:%S"
-msgstr ""
-
-#: steamcommunity\steamcommunity.py:133
-msgid "Days since last ban: {}"
-msgstr ""
-
-#: steamcommunity\steamcommunity.py:135
-msgid "Has one or more bans:"
-msgstr ""
-
-#: steamcommunity\steamcommunity.py:137
-msgid "No bans on record"
-msgstr ""
-
-#: steamcommunity\steamcommunity.py:138
-msgid "🛡 Bans"
-msgstr ""
-
-#: steamcommunity\steamcommunity.py:140
-msgid "Community ban"
-msgstr ""
-
 #: steamcommunity\steamcommunity.py:143
-msgid "Economy ban"
+msgid "\n"
+"Family Shared by [{}]({})"
 msgstr ""
 
 #: steamcommunity\steamcommunity.py:147
-msgid "VAC bans"
+msgid "Real name"
 msgstr ""
 
 #: steamcommunity\steamcommunity.py:148
-msgid "{} VAC bans"
+msgid "Level"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:150
+msgid "Country"
 msgstr ""
 
 #: steamcommunity\steamcommunity.py:151
+msgid "Visibility"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:154
+msgid "Created at"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:156
+msgid "%d.%m.%Y %H:%M:%S"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:162
+msgid "Days since last ban: {}"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:164
+msgid "Has one or more bans:"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:166
+msgid "No bans on record"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:167
+msgid "🛡 Bans"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:168
+msgid "Community ban"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:170
+msgid "Economy ban"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:174
+msgid "VAC bans"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:175
+msgid "{} VAC bans"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:178
 msgid "Game bans"
 msgstr ""
 
-#: steamcommunity\steamcommunity.py:152
+#: steamcommunity\steamcommunity.py:179
 msgid "{} game bans"
 msgstr ""
 
-#: steamcommunity\steamcommunity.py:158
-msgid "Powered by Steam • Last seen on"
+#: steamcommunity\steamcommunity.py:182
+msgid "Powered by Steam"
 msgstr ""
 
-#: steamcommunity\steamcommunity.py:165
+#: steamcommunity\steamcommunity.py:184
+msgid "Last seen on"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:196
+#, docstring
+msgid "Get status of steam services"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:206
+msgid "Unable to get data from steamstat.us: {} ({})"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:213
+msgid "Unable to get data from steamstat.us: {}"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:217
+msgid "Steam Status"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:222
+msgid "**Online**: {}\n"
+"**In-game**: {}\n"
+"**Store**: {}\n"
+"**Community**: {}\n"
+"**Web API**: {}\n"
+"**Steam Connection Managers**: {}\n"
+"**SteamDB.info database**: {}"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:240
+msgid "Games"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:241
+msgid "**TF2 Game Coordinator**: {}\n"
+"**Dota 2 Game Coordinator**: {}\n"
+"**Underlords Game Coordinator**: {}\n"
+"**Artifact Game Coordinator**: {}\n"
+"**CS:GO Game Coordinator**: {}\n"
+"**CS:GO Sessions Logon**: {}\n"
+"**CS:GO Player Inventories**: {}\n"
+"**CS:GO Matchmaking Scheduler**: {}\n"
+msgstr ""
+
+#: steamcommunity\steamcommunity.py:273
 #, docstring
 msgid "Get info about a gameserver"
 msgstr ""
 
-#: steamcommunity\steamcommunity.py:175
+#: steamcommunity\steamcommunity.py:283
 msgid "The specified domain is not valid: {}"
 msgstr ""
 
-#: steamcommunity\steamcommunity.py:198
+#: steamcommunity\steamcommunity.py:305
 msgid "Could not fetch Server or the Server is not on the Steam masterlist"
 msgstr ""
 
-#: steamcommunity\steamcommunity.py:205
+#: steamcommunity\steamcommunity.py:310
 msgid "An Error has been occurred: {}"
 msgstr ""
 
-#: steamcommunity\steamcommunity.py:232
+#: steamcommunity\steamcommunity.py:337
 msgid "Game"
 msgstr ""
 
-#: steamcommunity\steamcommunity.py:235
+#: steamcommunity\steamcommunity.py:340
 msgid "Gamemode"
 msgstr ""
 
-#: steamcommunity\steamcommunity.py:236
+#: steamcommunity\steamcommunity.py:341
 msgid "Server name"
 msgstr ""
 
-#: steamcommunity\steamcommunity.py:237
+#: steamcommunity\steamcommunity.py:342
 msgid "Map"
 msgstr ""
 
-#: steamcommunity\steamcommunity.py:239
+#: steamcommunity\steamcommunity.py:344
 msgid "Operating System"
 msgstr ""
 
-#: steamcommunity\steamcommunity.py:240
+#: steamcommunity\steamcommunity.py:345
 msgid "Server type"
 msgstr ""
 
-#: steamcommunity\steamcommunity.py:241
+#: steamcommunity\steamcommunity.py:346
 msgid "Version"
 msgstr ""
 
-#: steamcommunity\steamcommunity.py:244
+#: steamcommunity\steamcommunity.py:349
 msgid "Password"
 msgstr ""
 
-#: steamcommunity\steamcommunity.py:249 steamcommunity\steamcommunity.py:254
+#: steamcommunity\steamcommunity.py:354 steamcommunity\steamcommunity.py:358
 msgid "Players"
 msgstr ""
 
-#: steamcommunity\steamcommunity.py:250
-msgid "{}/{}\\nBots: {}"
+#: steamcommunity\steamcommunity.py:355
+msgid "{}/{}\n"
+"Bots: {}"
 msgstr ""
 
-#: steamcommunity\steamuser.py:23
+#: steamcommunity\steamuser.py:22
 msgid "Private"
 msgstr ""
 
-#: steamcommunity\steamuser.py:24
+#: steamcommunity\steamuser.py:23
 msgid "Friends only"
 msgstr ""
 
-#: steamcommunity\steamuser.py:25 steamcommunity\steamuser.py:27
+#: steamcommunity\steamuser.py:24 steamcommunity\steamuser.py:26
 msgid "Public"
 msgstr ""
 
-#: steamcommunity\steamuser.py:26
+#: steamcommunity\steamuser.py:25
 msgid "Users only"
 msgstr ""
 
-#: steamcommunity\steamuser.py:90
+#: steamcommunity\steamuser.py:80
 msgid "ApiKey not set or incorrect."
 msgstr ""
 
-#: steamcommunity\steamuser.py:101
+#: steamcommunity\steamuser.py:91
 msgid "Incorrect SteamID32 provided."
 msgstr ""
 
-#: steamcommunity\steamuser.py:105
+#: steamcommunity\steamuser.py:97
+msgid "Unable to resolve {} into SteamID. Check your input or try again later."
+msgstr ""
+
+#: steamcommunity\steamuser.py:103
 msgid "User with SteamID {} not found."
 msgstr ""
 
-#: steamcommunity\steamuser.py:110
+#: steamcommunity\steamuser.py:108
 msgid "Unable to get profile for {} ({}). Check your input or try again later."
 msgstr ""
 
-#: steamcommunity\steamuser.py:121
+#: steamcommunity\steamuser.py:118
 msgid "Offline"
 msgstr ""
 
-#: steamcommunity\steamuser.py:122
+#: steamcommunity\steamuser.py:119
 msgid "Online"
 msgstr ""
 
-#: steamcommunity\steamuser.py:123
+#: steamcommunity\steamuser.py:120
 msgid "Busy"
 msgstr ""
 
-#: steamcommunity\steamuser.py:124
+#: steamcommunity\steamuser.py:121
 msgid "Away"
 msgstr ""
 
-#: steamcommunity\steamuser.py:125
+#: steamcommunity\steamuser.py:122
 msgid "Snooze"
 msgstr ""
 
-#: steamcommunity\steamuser.py:126
+#: steamcommunity\steamuser.py:123
 msgid "Looking to trade"
 msgstr ""
 
-#: steamcommunity\steamuser.py:127
+#: steamcommunity\steamuser.py:124
 msgid "Looking to play"
 msgstr ""
 

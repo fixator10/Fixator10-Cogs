@@ -1,131 +1,122 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fixator10-cogs\n"
-"POT-Creation-Date: 2020-02-07 15:35+0400\n"
-"PO-Revision-Date: 2020-02-07 11:59\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2020-10-28 11:33+0400\n"
+"PO-Revision-Date: 2020-10-28 09:37\n"
+"Last-Translator: \n"
 "Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: redgettext 3.1\n"
+"Generated-By: redgettext 3.3\n"
 "Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Crowdin-Project: fixator10-cogs\n"
+"X-Crowdin-Project-ID: 387695\n"
 "X-Crowdin-Language: ru\n"
 "X-Crowdin-File: /V3/translators/locales/messages.pot\n"
+"X-Crowdin-File-ID: 77\n"
 "Language: ru_RU\n"
 
-#: translators\translators.py:43
+#: translators\translators.py:49
 #, docstring
-msgid "Set API key for Yandex.Translate"
-msgstr "Установить ключ"
+msgid "Useful (and not) translators"
+msgstr "Полезные (и нет) переводчики"
 
-#: translators\translators.py:44
-msgid "To get Yandex.Translate API key:\\n1. Login to your Yandex account\\n1.1. Visit [API keys](https://translate.yandex.com/developers/keys) page\\n2. Press `Create a new key`\\n3. Enter description for key\\n4. Copy `trnsl.*` key\\n5. Use `{}set api yandex translate <your_apikey>`"
-msgstr ""
-
-#: translators\translators.py:58
+#: translators\translators.py:66
 #, docstring
-msgid "Translate text via Yandex\\n\\n        Language may be just \\\"ru\\\" (target language to translate)\\n        or \\\"en-ru\\\" (original text's language - target language)"
-msgstr ""
+msgid "Say something via Google Translate\n\n"
+"        lang arg must be two-letters google-translate language code\n"
+"        Not all languages support tts\n"
+"        If text contains more than 200 symbols, it will be cut"
+msgstr "Скажите что-то через Google Translate\n\n"
+"        Аргумент lang должен быть двух-буквенным обозначением языка Google Translate\n"
+"        Не все языки поддерживают TTS\n"
+"        Если текст содержит >200 символов, он будет обрезан"
 
-#: translators\translators.py:72
-msgid "This command requires valid API key, check {}ytapikey to get more information"
-msgstr "Эта команда требует API ключа, используйте {}ytapikey для получения большей информации"
-
-#: translators\translators.py:80
-msgid "An error has been occurred: Language {} is not supported or incorrect, check your formatting and try again"
-msgstr "Произошла ошибка: Язык {} не поддерживается или неверен, проверьте форматирование и попробуйте снова"
-
-#: translators\translators.py:90
-msgid "An error has been occurred: Text that you provided is too big to translate"
-msgstr "Произошла ошибка: Текст, который вы предоставили слишком большой для перевода"
-
-#: translators\translators.py:98
-msgid "API key is blocked. Bot owner needs to get new api key or unlock current."
-msgstr "Ключ API заблокирован. Владелец бота должен получить новый ключ или разблокировать текущий."
-
-#: translators\translators.py:105
-msgid "Daily requests limit reached. Try again later."
-msgstr "Достигнут лимит суточных запросов. Попробуйте позже."
-
-#: translators\translators.py:110
-msgid "An error has been occurred: Yandex.Translate is unable to translate your text"
-msgstr "Произошла ошибка: Яндекс.Переводчик не может перевести ваш текст"
-
-#: translators\translators.py:116
-msgid "An error has been occurred: {}"
-msgstr "Произошла ошибка: {}"
-
-#: translators\translators.py:123
-msgid "Translated via Yandex.Translate"
-msgstr "Переведено сервисом «Яндекс.Переводчик»"
-
-#: translators\translators.py:131
-#, docstring
-msgid "Say something via Google Translate\\n\\n        lang arg must be two-letters google-translate language code\\n        Not all languages support tts\\n        If text contains more than 200 symbols, it will be cut"
-msgstr ""
-
-#: translators\translators.py:149
+#: translators\translators.py:84
 msgid "Language {} is not supported or incorrect"
 msgstr "Язык {} не поддерживается или неверен"
 
-#: translators\translators.py:155
+#: translators\translators.py:88
 msgid "Unable to get data from Google Translate TTS: {}"
 msgstr "Невозможно получить информацию от переводчика Google: {}"
 
-#: translators\translators.py:167
+#: translators\translators.py:98
 #, docstring
-msgid "Translates text (cyrillic/latin) to \\\"eciho\\\"\\n\\n        eciho - language created by Фражуз#2170 (255682413445906433)\\n\\n        This is unusable shit, i know, but whatever"
-msgstr ""
+msgid "Translates text (cyrillic/latin) to \"eciho\"\n\n"
+"        eciho - language created by Фражуз#2170 (255682413445906433)\n\n"
+"        This is unusable shit, i know, but whatever"
+msgstr "Переводит текст (кириллицу/латиницу) в \"ецихо\"\n\n"
+"        ецихо - язык созданный Фражуз#2170 (255682413445906433)\n\n"
+"        Бесполезное дерьмо, но кого волнует"
 
-#: translators\translators.py:193
+#: translators\translators.py:124
 #, docstring
-msgid "Flips text upside-down\\n\\n        Based on https://unicode-table.com/en/tools/flip/"
-msgstr ""
+msgid "Flips text upside-down\n\n"
+"        Based on https://unicode-table.com/en/tools/flip/"
+msgstr "Переворачивает текст верх ногами\n\n"
+"        Основано на https://unicode-table.com/ru/tools/flip/"
 
-#: translators\translators.py:210
+#: translators\translators.py:141
 #, docstring
 msgid "Switches text to Ｆｕｌｌ－ｗｉｄｔｈ　ｃｈａｒａｃｔｅｒｓ"
 msgstr "Переводит текст в Ｆｕｌｌ－ｗｉｄｔｈ　ｃｈａｒａｃｔｅｒｓ"
 
-#: translators\translators.py:227
+#: translators\translators.py:154
 #, docstring
 msgid "Leet (1337) translation commands"
 msgstr "Команды перевода в Leet (1337)"
 
-#: translators\translators.py:232
+#: translators\translators.py:159
 #, docstring
 msgid "Translates provided text to 1337"
 msgstr "Переводит указанный текст в 1337"
 
-#: translators\translators.py:268
+#: translators\translators.py:195
 #, docstring
 msgid "Translate cyrillic to 1337"
 msgstr "Переводит кириллицу в 1337"
 
-#: translators\translators.py:312
+#: translators\translators.py:239
 #, docstring
 msgid "Base64 text converter"
 msgstr "Конвертер текста в/из Base64"
 
-#: translators\translators.py:317
+#: translators\translators.py:244
 #, docstring
 msgid "Encode text to Base64"
 msgstr "Закодировать текст в Base64"
 
-#: translators\translators.py:326
+#: translators\translators.py:255
 #, docstring
 msgid "Decode text from Base64"
 msgstr "Раскодировать текст из Base64"
 
-#: translators\translators.py:339
+#: translators\translators.py:263
+msgid "Invalid Base64 string provided"
+msgstr "Указана неверная строка Base64"
+
+#: translators\translators.py:270
 #, docstring
 msgid "Emojify text"
-msgstr "Преобразовать текст в emoji"
+msgstr "Преобразовать текст в эмодзи"
 
-#: translators\translators.py:366
+#: translators\translators.py:297
 #, docstring
-msgid "Encode text to url-like format\\n        ('abc def') -> 'abc%20def'"
-msgstr ""
+msgid "Encode or decode text in URL-format (\"%20\"-format)"
+msgstr "Преобразовать текст из/в URL-формат (\"%20\"-формат)"
+
+#: translators\translators.py:302
+#, docstring
+msgid "Encode text to url-like format\n"
+"        'abc def' -> 'abc%20def'"
+msgstr "Преобразовать текст в формат URL\n"
+"        'abc def' -> 'abc%20def'"
+
+#: translators\translators.py:313
+#, docstring
+msgid "Decode text from url-like format\n"
+"        'abc%20def' -> 'abc def'"
+msgstr "Преобразовать текст из формата URL\n"
+"        'abc%20def' -> 'abc def'"
 

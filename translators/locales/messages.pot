@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-08-09 13:37+0400\n"
+"POT-Creation-Date: 2020-10-28 11:33+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,77 +11,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: redgettext 3.3\n"
 
-#: translators\translators.py:32
+#: translators\translators.py:49
 #, docstring
 msgid "Useful (and not) translators"
 msgstr ""
 
-#: translators\translators.py:50
-#, docstring
-msgid "Set API key for Yandex.Translate"
-msgstr ""
-
-#: translators\translators.py:51
-msgid ""
-"To get Yandex.Translate API key:\n"
-"1. Login to your Yandex account\n"
-"1.1. Visit [API keys](https://translate.yandex.com/developers/keys) page\n"
-"2. Press `Create a new key`\n"
-"3. Enter description for key\n"
-"4. Copy `trnsl.*` key\n"
-"5. Use `{}set api yandex translate <your_apikey>`"
-msgstr ""
-
-#: translators\translators.py:65
-#, docstring
-msgid ""
-"Translate text via Yandex\n"
-"\n"
-"        Language may be just \"ru\" (target language to translate)\n"
-"        or \"en-ru\" (original text's language - target language)"
-msgstr ""
-
-#: translators\translators.py:78
-msgid ""
-"This command requires valid API key, check {}ytapikey to get more "
-"information"
-msgstr ""
-
-#: translators\translators.py:86
-msgid ""
-"An error has been occurred: Language {} is not supported or incorrect, check"
-" your formatting and try again"
-msgstr ""
-
-#: translators\translators.py:96
-msgid ""
-"An error has been occurred: Text that you provided is too big to translate"
-msgstr ""
-
-#: translators\translators.py:102
-msgid ""
-"API key is blocked. Bot owner needs to get new api key or unlock current."
-msgstr ""
-
-#: translators\translators.py:106
-msgid "Daily requests limit reached. Try again later."
-msgstr ""
-
-#: translators\translators.py:110
-msgid ""
-"An error has been occurred: Yandex.Translate is unable to translate your "
-"text"
-msgstr ""
-
-#: translators\translators.py:116
-msgid "An error has been occurred: {}"
-msgstr ""
-
-#: translators\translators.py:123
-msgid "Translated via Yandex.Translate"
-msgstr ""
-
-#: translators\translators.py:131
+#: translators\translators.py:66
 #, docstring
 msgid ""
 "Say something via Google Translate\n"
@@ -91,15 +26,15 @@ msgid ""
 "        If text contains more than 200 symbols, it will be cut"
 msgstr ""
 
-#: translators\translators.py:149
+#: translators\translators.py:84
 msgid "Language {} is not supported or incorrect"
 msgstr ""
 
-#: translators\translators.py:153
+#: translators\translators.py:88
 msgid "Unable to get data from Google Translate TTS: {}"
 msgstr ""
 
-#: translators\translators.py:163
+#: translators\translators.py:98
 #, docstring
 msgid ""
 "Translates text (cyrillic/latin) to \"eciho\"\n"
@@ -109,7 +44,7 @@ msgid ""
 "        This is unusable shit, i know, but whatever"
 msgstr ""
 
-#: translators\translators.py:189
+#: translators\translators.py:124
 #, docstring
 msgid ""
 "Flips text upside-down\n"
@@ -117,63 +52,63 @@ msgid ""
 "        Based on https://unicode-table.com/en/tools/flip/"
 msgstr ""
 
-#: translators\translators.py:206
+#: translators\translators.py:141
 #, docstring
 msgid "Switches text to Ｆｕｌｌ－ｗｉｄｔｈ　ｃｈａｒａｃｔｅｒｓ"
 msgstr ""
 
-#: translators\translators.py:219
+#: translators\translators.py:154
 #, docstring
 msgid "Leet (1337) translation commands"
 msgstr ""
 
-#: translators\translators.py:224
+#: translators\translators.py:159
 #, docstring
 msgid "Translates provided text to 1337"
 msgstr ""
 
-#: translators\translators.py:260
+#: translators\translators.py:195
 #, docstring
 msgid "Translate cyrillic to 1337"
 msgstr ""
 
-#: translators\translators.py:304
+#: translators\translators.py:239
 #, docstring
 msgid "Base64 text converter"
 msgstr ""
 
-#: translators\translators.py:309
+#: translators\translators.py:244
 #, docstring
 msgid "Encode text to Base64"
 msgstr ""
 
-#: translators\translators.py:320
+#: translators\translators.py:255
 #, docstring
 msgid "Decode text from Base64"
 msgstr ""
 
-#: translators\translators.py:328
+#: translators\translators.py:263
 msgid "Invalid Base64 string provided"
 msgstr ""
 
-#: translators\translators.py:336
+#: translators\translators.py:270
 #, docstring
 msgid "Emojify text"
 msgstr ""
 
-#: translators\translators.py:363
+#: translators\translators.py:297
 #, docstring
 msgid "Encode or decode text in URL-format (\"%20\"-format)"
 msgstr ""
 
-#: translators\translators.py:368
+#: translators\translators.py:302
 #, docstring
 msgid ""
 "Encode text to url-like format\n"
 "        'abc def' -> 'abc%20def'"
 msgstr ""
 
-#: translators\translators.py:379
+#: translators\translators.py:313
 #, docstring
 msgid ""
 "Decode text from url-like format\n"

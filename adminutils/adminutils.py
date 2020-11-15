@@ -11,22 +11,26 @@ from redbot.core.utils import chat_formatting as chat
 from redbot.core.utils.mod import get_audit_reason
 from redbot.core.utils.predicates import MessagePredicate
 
+try:
+    from redbot import json  # support of Draper's branch
+except ImportError:
+    import json
+
 _ = Translator("AdminUtils", __file__)
 
-
-EMOJI_RE = re.compile(r"(<(a)?:[a-zA-Z0-9\_]+:([0-9]+)>)")
+EMOJI_RE = re.compile(r"(<(a)?:[a-zA-Z0-9_]+:([0-9]+)>)")
 
 
 @cog_i18n(_)
 class AdminUtils(commands.Cog):
     """Useful commands for server administrators."""
 
-    __version__ = "2.5.1"
+    __version__ = "2.5.5"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
         self.bot = bot
-        self.session = aiohttp.ClientSession(loop=self.bot.loop)
+        self.session = aiohttp.ClientSession(json_serialize=json.dumps)
 
     def cog_unload(self):
         self.bot.loop.create_task(self.session.close())
@@ -114,7 +118,7 @@ class AdminUtils(commands.Cog):
     @checks.admin_or_permissions(move_members=True)
     @commands.bot_has_guild_permissions(move_members=True)
     async def massmove(
-        self, ctx, from_channel: discord.VoiceChannel, to_channel: discord.VoiceChannel
+        self, ctx, from_channel: discord.VoiceChannel, to_channel: discord.VoiceChannel = None
     ):
         """Move all members from one voice channel to another
 
@@ -128,7 +132,7 @@ class AdminUtils(commands.Cog):
         if not from_channel.permissions_for(ctx.me).move_members:
             await ctx.send(chat.error(_("I cant move users from that channel")))
             return
-        if not to_channel.permissions_for(ctx.me).connect:
+        if to_channel and not to_channel.permissions_for(ctx.me).connect:
             await ctx.send(chat.error(_("I cant move users to that channel")))
             return
         async with ctx.typing():

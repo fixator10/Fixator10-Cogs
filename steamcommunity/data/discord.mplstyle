@@ -1,0 +1,14 @@
+# based on dark_background:
+# https://github.com/matplotlib/matplotlib/blob/master/lib/matplotlib/mpl-data/stylelib/dark_background.mplstyle
+# using discord branding colors
+# https://discord.com/branding
+# minimized for steamcommunity cog, may look like shit for another purposes
+text.color: 99AAB5
+axes.facecolor: 2C2F33
+axes.edgecolor: 99AAB5
+axes.labelcolor: 99AAB5
+axes.prop_cycle: cycler('color', ['7289DA'])
+xtick.color: 99AAB5
+ytick.color: 99AAB5
+grid.color: 99AAB5
+savefig.facecolor: 2C2F33

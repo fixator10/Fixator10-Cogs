@@ -8,8 +8,11 @@
   "min_bot_version": "3.4.0",
   "tags": [
     "translation",
-    "yandex",
-    "translate"
+    "translate",
+    "encode",
+    "decode",
+    "encoding"
   ],
-  "end_user_data_statement": "This cog does not persistently store data or metadata about users."
+  "end_user_data_statement": "This cog does not persistently store data or metadata about users.",
+  "requirements": ["pybase64"]
 }

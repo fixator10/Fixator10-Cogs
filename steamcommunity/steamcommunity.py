@@ -3,6 +3,7 @@ from contextlib import suppress
 from datetime import datetime
 from functools import partial
 from io import BytesIO
+from os import path
 from socket import gethostbyname_ex
 from warnings import filterwarnings
 
@@ -10,17 +11,22 @@ import aiohttp
 import discord
 import valve.source.a2s
 from redbot.core import checks, commands
+from redbot.core.data_manager import bundled_data_path
 from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils import chat_formatting as chat
 from valve.steam.api import interface
 
 with suppress(Exception):
-    import matplotlib.pyplot as plt
-    import matplotlib.units as munits
-    import matplotlib.dates as mdates
+    from matplotlib import pyplot, units as munits, dates as mdates, use as mpluse
     import numpy as np
 
 from .steamuser import SteamUser
+
+try:
+    from redbot import json  # support of Draper's branch
+except ImportError:
+    import json
+
 
 LOAD_INDICATORS = ["\N{GREEN HEART}", "\N{YELLOW HEART}", "\N{BROKEN HEART}"]
 
@@ -59,50 +65,6 @@ async def find_service(services: dict, service: str):
     return Service("", "", "", "")
 
 
-def gen_steam_cm_graph(graphdata: dict):
-    """Make an graph for connection managers"""
-    formats = [
-        "%y",  # ticks are mostly years
-        "%b",  # ticks are mostly months
-        "%d",  # ticks are mostly days
-        "%H:%M",  # hrs
-        "%H:%M",  # min
-        "%S.%f",  # secs
-    ]
-    zero_formats = [""] + formats[:-1]
-    zero_formats[3] = "%d-%b"
-    offset_formats = [
-        "",
-        "%Y",
-        "%b %Y",
-        "%d %b %Y",
-        "%d %b %Y",
-        "%d %b %Y %H:%M",
-    ]
-
-    converter = mdates.ConciseDateConverter(
-        formats=formats, zero_formats=zero_formats, offset_formats=offset_formats
-    )
-    munits.registry[datetime] = converter
-    cur = graphdata["start"]
-    x = []
-    for i in range(0, len(graphdata["data"])):
-        cur += graphdata["step"]
-        x.append(cur)
-    x = [datetime.utcfromtimestamp(_x / 1000) for _x in x]
-    y = graphdata["data"]
-    fig, ax = plt.subplots()
-    ax.plot(x, y)
-    ax.set_ylim(bottom=0)
-    ax.grid()
-    ax.set(xlabel="Date", ylabel="%", title="Steam Connection Managers")
-    ax.set_yticks(np.arange(0, 100, 5))
-    graphfile = BytesIO()
-    fig.savefig(graphfile)
-    graphfile.seek(0)
-    return graphfile
-
-
 _ = Translator("SteamCommunity", __file__)
 
 filterwarnings("ignore", category=FutureWarning, module=r"valve.")
@@ -112,13 +74,13 @@ filterwarnings("ignore", category=FutureWarning, module=r"valve.")
 class SteamCommunity(commands.Cog):
     """SteamCommunity commands"""
 
-    __version__ = "2.1.7"
+    __version__ = "2.1.11"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
         self.bot = bot
         self.steam = None
-        self.session = aiohttp.ClientSession(loop=self.bot.loop)
+        self.session = aiohttp.ClientSession(json_serialize=json.dumps)
 
     def cog_unload(self):
         self.bot.loop.create_task(self.session.close())
@@ -229,6 +191,7 @@ class SteamCommunity(commands.Cog):
     @steamcommunity.command(name="status")
     @commands.cooldown(1, 45, commands.BucketType.guild)
     @commands.bot_has_permissions(embed_links=True)
+    @commands.max_concurrency(1, commands.BucketType.user)
     async def steamstatus(self, ctx):
         """Get status of steam services"""
         async with ctx.typing():
@@ -236,7 +199,7 @@ class SteamCommunity(commands.Cog):
                 async with self.session.get(
                     "https://crowbar.steamstat.us/gravity.json", raise_for_status=True
                 ) as gravity:
-                    data = await gravity.json()
+                    data = await gravity.json(loads=json.loads)
             except aiohttp.ClientResponseError as e:
                 await ctx.send(
                     chat.error(
@@ -296,8 +259,8 @@ class SteamCommunity(commands.Cog):
             ),
         )
         graph_file = None
-        if all(lib in globals().keys() for lib in ["plt", "np"]):
-            graph_file = await self.asyncify(gen_steam_cm_graph, graph)
+        if all(lib in globals().keys() for lib in ["pyplot", "np"]):
+            graph_file = await self.asyncify(self.gen_steam_cm_graph, graph)
             graph_file = discord.File(graph_file, filename="CMgraph.png")
             em.set_image(url="attachment://CMgraph.png")
         # TODO: Regions?
@@ -400,3 +363,47 @@ class SteamCommunity(commands.Cog):
     async def on_red_api_tokens_update(self, service_name, api_tokens):
         if service_name == "steam":
             self.steam = await self.asyncify(interface.API, key=api_tokens.get("web"))
+
+    def gen_steam_cm_graph(self, graphdata: dict):
+        """Make an graph for connection managers"""
+        mpluse("Agg")
+        formats = [
+            "%y",  # ticks are mostly years
+            "%b",  # ticks are mostly months
+            "%d",  # ticks are mostly days
+            "%H:%M",  # hrs
+            "%H:%M",  # min
+            "%S.%f",  # secs
+        ]
+        zero_formats = [""] + formats[:-1]
+        zero_formats[3] = "%d-%b"
+        offset_formats = [
+            "",
+            "%Y",
+            "%b %Y",
+            "%d %b %Y",
+            "%d %b %Y",
+            "%d %b %Y %H:%M",
+        ]
+        munits.registry[datetime] = mdates.ConciseDateConverter(
+            formats=formats, zero_formats=zero_formats, offset_formats=offset_formats
+        )
+        cur = graphdata["start"]
+        x = []
+        for i in range(0, len(graphdata["data"])):
+            cur += graphdata["step"]
+            x.append(cur)
+        x = [datetime.utcfromtimestamp(_x / 1000) for _x in x]
+        y = graphdata["data"]
+        graphfile = BytesIO()
+        with pyplot.style.context(path.join(bundled_data_path(self), "discord.mplstyle")):
+            fig, ax = pyplot.subplots()
+            ax.plot(x, y)
+            ax.set_ylim(bottom=0)
+            ax.grid()
+            ax.set(xlabel="Date", ylabel="%", title="Steam Connection Managers")
+            ax.set_yticks(np.arange(0, 100, 5))
+            fig.savefig(graphfile)
+            pyplot.close(fig)
+        graphfile.seek(0)
+        return graphfile

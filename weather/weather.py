@@ -14,6 +14,11 @@ from redbot.core.utils.menus import DEFAULT_CONTROLS, menu
 from requests.exceptions import ConnectionError as RequestsConnectionError
 from requests.exceptions import HTTPError, Timeout
 
+try:
+    from redbot import json  # support of Draper's branch
+except ImportError:
+    import json
+
 FORECASTIO_SUPPORTED_LANGS = [
     "ar",
     "az",
@@ -69,8 +74,6 @@ FORECASTIO_SUPPORTED_LANGS = [
     "zh-tw",
 ]
 
-_ = Translator("Weather", __file__)
-
 WEATHER_STATES = {
     "clear-day": "\N{Black Sun with Rays}",
     "clear-night": "\N{Night with Stars}",
@@ -86,6 +89,9 @@ WEATHER_STATES = {
 
 # Emoji that will be used for "unknown" strings
 UNKNOWN_EMOJI = "\N{White Question Mark Ornament}"
+
+T_ = Translator("Weather", __file__)
+_ = lambda s: s
 
 UNITS = {
     "si": {
@@ -124,12 +130,14 @@ UNITS = {
 
 PRECIP_TYPE_I18N = {"rain": _("Rain"), "snow": _("Snow"), "sleet": _("Sleet")}
 
+_ = T_
+
 
 @cog_i18n(_)
 class Weather(commands.Cog):
     """Weather forecast"""
 
-    __version__ = "2.0.3"
+    __version__ = "2.0.5"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -138,7 +146,7 @@ class Weather(commands.Cog):
         default_guild = {"units": "si"}
         self.config.register_guild(**default_guild)
         self.session = aiohttp.ClientSession(
-            loop=self.bot.loop,
+            json_serialize=json.dumps,
             raise_for_status=True,
         )
 
@@ -256,7 +264,7 @@ class Weather(commands.Cog):
                         "User-Agent": f"Red-DiscordBot/{redbot_ver} Fixator10-Cogs/Weather/{self.__version__}",
                     },
                 ) as r:
-                    location = await r.json()
+                    location = await r.json(loads=json.loads)
             except aiohttp.ClientResponseError as e:
                 await ctx.send(
                     chat.error(
@@ -360,7 +368,7 @@ class Weather(commands.Cog):
             )
             + (
                 preciptype
-                and _("\nType: {}").format(PRECIP_TYPE_I18N.get(preciptype, preciptype))
+                and _("\nType: {}").format(_(PRECIP_TYPE_I18N.get(preciptype, preciptype)))
                 or ""
             ),
         )
@@ -381,7 +389,7 @@ class Weather(commands.Cog):
                         "User-Agent": f"Red-DiscordBot/{redbot_ver} Fixator10-Cogs/Weather/{self.__version__}",
                     },
                 ) as r:
-                    location = await r.json()
+                    location = await r.json(loads=json.loads)
             except aiohttp.ClientResponseError as e:
                 await ctx.send(
                     chat.error(
@@ -503,7 +511,7 @@ class Weather(commands.Cog):
                 )
                 + (
                     preciptype
-                    and _("\nType: {}").format(PRECIP_TYPE_I18N.get(preciptype, preciptype))
+                    and _("\nType: {}").format(_(PRECIP_TYPE_I18N.get(preciptype, preciptype)))
                     or ""
                 )
                 + (
@@ -529,14 +537,16 @@ class Weather(commands.Cog):
     async def get_localized_units(self, ctx: commands.Context, units_type: str):
         """Get translated contextual units for type"""
         if not ctx.guild:
-            return UNITS.get(await self.config.user(ctx.author).units(), UNITS["si"]).get(
-                units_type, "?"
+            return _(
+                UNITS.get(await self.config.user(ctx.author).units(), UNITS["si"]).get(
+                    units_type, "?"
+                )
             )
         current_system = (
             await self.config.user(ctx.author).units()
             or await self.config.guild(ctx.guild).units()
         )
-        return UNITS.get(current_system, {}).get(units_type, "?")
+        return _(UNITS.get(current_system, {}).get(units_type, "?"))
 
     async def get_lang(self):
         """Get language for forecastio, based on current's bot language"""

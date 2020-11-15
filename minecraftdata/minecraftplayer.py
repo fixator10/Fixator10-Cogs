@@ -4,6 +4,11 @@ from aiohttp import ClientResponseError, ContentTypeError
 from redbot.core.commands import BadArgument
 from redbot.core.i18n import Translator
 
+try:
+    from redbot import json  # support of Draper's branch
+except ImportError:
+    import json
+
 _ = Translator("MinecraftData", __file__)
 
 
@@ -23,7 +28,7 @@ class MCPlayer:
                 f"https://api.mojang.com/users/profiles/minecraft/{argument}",
                 raise_for_status=True,
             ) as data:
-                response_data = await data.json()
+                response_data = await data.json(loads=json.loads)
         except ContentTypeError:
             response_data = None
         except ClientResponseError as e:
