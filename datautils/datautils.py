@@ -58,7 +58,8 @@ GUILD_FEATURES = {
 ACTIVITY_TYPES = {
     discord.ActivityType.playing: _("Playing"),
     discord.ActivityType.watching: _("Watching"),
-    discord.ActivityType.listening: _("Listening"),
+    discord.ActivityType.listening: _("Listening to"),
+    discord.ActivityType.competing: _("Competing in"),
 }
 
 CHANNEL_TYPE_EMOJIS = {
@@ -95,7 +96,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.4.17"
+    __version__ = "2.4.18"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
