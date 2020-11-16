@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fixator10-cogs\n"
 "POT-Creation-Date: 2020-11-14 17:14+0400\n"
-"PO-Revision-Date: 2020-11-14 18:10\n"
+"PO-Revision-Date: 2020-11-15 18:25\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
@@ -35,7 +35,7 @@ msgstr "Невозможно отправить видео-предпросмо�
 
 #: reverseimagesearch\reverseimagesearch.py:75
 msgid "You can't use this command in a non-NSFW channel!"
-msgstr ""
+msgstr "Эту команду нельзя использовать вне NSFW каналов!"
 
 #: reverseimagesearch\reverseimagesearch.py:84
 #, docstring
