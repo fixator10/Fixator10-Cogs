@@ -48,7 +48,7 @@ EMOJIFY_CHARS = {
 class Translators(commands.Cog):
     """Useful (and not) translators"""
 
-    __version__ = "2.2.2"
+    __version__ = "2.2.3"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -62,7 +62,9 @@ class Translators(commands.Cog):
         return
 
     @commands.command()
-    async def googlesay(self, ctx, lang: str, *, text: str):
+    async def googlesay(
+        self, ctx, lang: str, *, text: commands.clean_content(fix_channel_mentions=True)
+    ):
         """Say something via Google Translate
 
         lang arg must be two-letters google-translate language code
@@ -94,7 +96,7 @@ class Translators(commands.Cog):
         speechfile.close()
 
     @commands.command(aliases=["ецихо"])
-    async def eciho(self, ctx, *, text: str):
+    async def eciho(self, ctx, *, text: commands.clean_content(fix_channel_mentions=True)):
         """Translates text (cyrillic/latin) to "eciho"
 
         eciho - language created by Фражуз#2170 (255682413445906433)
@@ -117,10 +119,10 @@ class Translators(commands.Cog):
         tran = tran.upper()
         table = str.maketrans(char, tran)
         text = text.translate(table)
-        await ctx.send(text)
+        await ctx.send(text, allowed_mentions=discord.AllowedMentions.none())
 
     @commands.command()
-    async def fliptext(self, ctx, *, text: str):
+    async def fliptext(self, ctx, *, text: commands.clean_content(fix_channel_mentions=True)):
         """Flips text upside-down
 
         Based on https://unicode-table.com/en/tools/flip/"""
@@ -137,7 +139,7 @@ class Translators(commands.Cog):
         await ctx.send(result)
 
     @commands.command()
-    async def fullwidth(self, ctx, *, text: str):
+    async def fullwidth(self, ctx, *, text: commands.clean_content(fix_channel_mentions=True)):
         """Switches text to Ｆｕｌｌ－ｗｉｄｔｈ　ｃｈａｒａｃｔｅｒｓ"""
         halfwidth = "qwertyuiopasdfghjklzxcvbnm1234567890!?@#$%^&*()_+-=<>.,/;:'\"[]{}|\\`~ "
         fullwidth = "ｑｗｅｒｔｙｕｉｏｐａｓｄｆｇｈｊｋｌｚｘｃｖｂｎｍ１２３４５６７８９０！？＠＃＄％＾＆＊（）＿＋－＝＜＞．，／；：＇＂［］｛｝｜＼｀～　"
@@ -155,7 +157,7 @@ class Translators(commands.Cog):
         pass
 
     @leet.command(name="leet", aliases=["1337"])
-    async def _leet(self, ctx, *, text: str):
+    async def _leet(self, ctx, *, text: commands.clean_content(fix_channel_mentions=True)):
         """Translates provided text to 1337"""
         text = text.upper()
         dic = {
@@ -191,7 +193,7 @@ class Translators(commands.Cog):
         await ctx.send(chat.box(result))
 
     @leet.command(aliases=["russian", "cyrillic"])
-    async def cs(self, ctx, *, text: str):
+    async def cs(self, ctx, *, text: commands.clean_content(fix_channel_mentions=True)):
         """Translate cyrillic to 1337"""
         text = text.upper()
         dic_cs = {
@@ -266,7 +268,7 @@ class Translators(commands.Cog):
         await ctx.send(chat.box(result))
 
     @commands.command()
-    async def emojify(self, ctx, *, message: str):
+    async def emojify(self, ctx, *, message: commands.clean_content(fix_channel_mentions=True)):
         """Emojify text"""
         table = str.maketrans("".join(EMOJIFY_CHARS.keys()), "".join(EMOJIFY_CHARS.values()))
         message = message.translate(table)
@@ -289,7 +291,7 @@ class Translators(commands.Cog):
         )
         await ctx.send(
             message,
-            allowed_mentions=discord.AllowedMentions(everyone=False, users=False, roles=False),
+            allowed_mentions=discord.AllowedMentions.none(),
         )
 
     @commands.group()
