@@ -1,0 +1,31 @@
+name: Update translations
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  synchronize-with-crowdin:
+    runs-on: ubuntu-latest
+
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Update translations
+      uses: crowdin/github-action@1.0.13
+      with:
+        upload_translations: true
+        download_translations: true
+        localization_branch_name: l18n_V3
+        create_pull_request: true
+        pull_request_title: 'Update translations from Crowdin'
+        pull_request_body: 'Merge this to add changes from Crowdin to this repo.'
+        pull_request_labels: 'crowdin'
+        config: '/crowdin.yml'
+        dryrun_action: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
+        CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
