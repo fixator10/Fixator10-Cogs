@@ -30,7 +30,6 @@ jobs:
         pull_request_body: 'Merge this to add changes from Crowdin to this repo.'
         pull_request_labels: 'crowdin'
         config: crowdin.yml
-        dryrun_action: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
