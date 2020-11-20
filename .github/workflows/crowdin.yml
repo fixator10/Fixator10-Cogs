@@ -24,6 +24,7 @@ jobs:
         commit_message: '[automated] update translations from Crowdin' 
         push_translations: true
         localization_branch_name: V3_i18n
+        crowdin_branch_name: V3
         create_pull_request: true
         pull_request_title: 'Update translations from Crowdin'
         pull_request_body: 'Merge this to add changes from Crowdin to this repo.'
