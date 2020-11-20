@@ -1,0 +1,40 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: fixator10-cogs\n"
+"POT-Creation-Date: 2020-10-28 11:33+0400\n"
+"PO-Revision-Date: 2020-11-20 10:07\n"
+"Last-Translator: \n"
+"Language-Team: Czech\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: redgettext 3.3\n"
+"Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
+"X-Crowdin-Project: fixator10-cogs\n"
+"X-Crowdin-Project-ID: 387695\n"
+"X-Crowdin-Language: cs\n"
+"X-Crowdin-File: /V3/godvilledata/locales/messages.pot\n"
+"X-Crowdin-File-ID: 89\n"
+"Language: cs_CZ\n"
+
+#: godvilledata\godvilledata.py:74
+#, docstring
+msgid "Get data about godville.net (Russian) god by name"
+msgstr ""
+
+#: godvilledata\godvilledata.py:192
+#, docstring
+msgid "Get data about godvillegame.com (Global) god by name"
+msgstr ""
+
+#: godvilledata\godvilledata.py:310
+#, docstring
+msgid "Set apikey for your character.\n\n"
+"        Only one character per user"
+msgstr ""
+
+#: godvilledata\godvilledata.py:319
+#, docstring
+msgid "Remove your apikey and godname from bot's data"
+msgstr ""
+

@@ -1,0 +1,170 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: fixator10-cogs\n"
+"POT-Creation-Date: 2020-10-28 11:33+0400\n"
+"PO-Revision-Date: 2020-11-20 10:07\n"
+"Last-Translator: \n"
+"Language-Team: Serbian (Cyrillic)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: redgettext 3.3\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Crowdin-Project: fixator10-cogs\n"
+"X-Crowdin-Project-ID: 387695\n"
+"X-Crowdin-Language: sr\n"
+"X-Crowdin-File: /V3/adminutils/locales/messages.pot\n"
+"X-Crowdin-File-ID: 57\n"
+"Language: sr_SP\n"
+
+#: adminutils\adminutils.py:26
+#, docstring
+msgid "Useful commands for server administrators."
+msgstr ""
+
+#: adminutils\adminutils.py:46
+#, docstring
+msgid "Cleanup inactive server members"
+msgstr ""
+
+#: adminutils\adminutils.py:50
+msgid "Due to Discord Restrictions, you cannot use more than 30 days for that cmd."
+msgstr ""
+
+#: adminutils\adminutils.py:57
+msgid "\"days\" arg cannot be less than 1..."
+msgstr ""
+
+#: adminutils\adminutils.py:62
+msgid "\n"
+"Including members in roles: {}\n"
+msgstr ""
+
+#: adminutils\adminutils.py:67
+msgid "You about to kick **{to_kick}** inactive for **{days}** days members from this server. {roles}Are you sure?\n"
+"To agree, type \"yes\""
+msgstr ""
+
+#: adminutils\adminutils.py:83
+msgid "**{removed}**/**{all}** inactive members removed.\n"
+"(They was inactive for **{days}** days)"
+msgstr ""
+
+#: adminutils\adminutils.py:90
+msgid "Inactive members cleanup canceled."
+msgstr ""
+
+#: adminutils\adminutils.py:97
+#, docstring
+msgid "Change server's voice region to random and back\n\n"
+"        Useful to reinitate all voice connections"
+msgstr ""
+
+#: adminutils\adminutils.py:111
+msgid "Voice restart"
+msgstr ""
+
+#: adminutils\adminutils.py:123
+#, docstring
+msgid "Move all members from one voice channel to another\n\n"
+"        Use double quotes if channel name has spaces"
+msgstr ""
+
+#: adminutils\adminutils.py:129
+msgid "There is no users in channel {}."
+msgstr ""
+
+#: adminutils\adminutils.py:133
+msgid "I cant move users from that channel"
+msgstr ""
+
+#: adminutils\adminutils.py:136
+msgid "I cant move users to that channel"
+msgstr ""
+
+#: adminutils\adminutils.py:142
+msgid "Massmove"
+msgstr ""
+
+#: adminutils\adminutils.py:147
+msgid "Finished moving users. {} members could not be moved."
+msgstr ""
+
+#: adminutils\adminutils.py:154
+#, docstring
+msgid "Manage emoji"
+msgstr ""
+
+#: adminutils\adminutils.py:159
+#, docstring
+msgid "Create custom emoji\n\n"
+"        Use double quotes if role name has spaces\n\n"
+"        Examples:\n"
+"            `[p]emoji add Example https://example.com/image.png`\n"
+"            `[p]emoji add RoleBased https://example.com/image.png EmojiRole \"Test image\"`\n"
+"        "
+msgstr ""
+
+#: adminutils\adminutils.py:171
+msgid "Unable to get emoji from provided url: {}"
+msgstr ""
+
+#: adminutils\adminutils.py:180 adminutils\adminutils.py:223
+msgid "Restricted to roles: {}"
+msgstr ""
+
+#: adminutils\adminutils.py:188
+msgid "This image type is unsupported, or link is incorrect"
+msgstr ""
+
+#: adminutils\adminutils.py:190
+msgid "An error occured on adding an emoji: {}"
+msgstr ""
+
+#: adminutils\adminutils.py:196
+#, docstring
+msgid "\n"
+"        Add an emoji from a specified message\n"
+"        Use double quotes if role name has spaces\n\n"
+"        Examples:\n"
+"            `[p]emoji message Example 162379234070467641`\n"
+"            `[p]emoji message RoleBased 162379234070467641 EmojiRole`\n"
+"        "
+msgstr ""
+
+#: adminutils\adminutils.py:208
+msgid "No emojis found specified message."
+msgstr ""
+
+#: adminutils\adminutils.py:233
+msgid "This image type is not supported anymore or Discord returned incorrect data. Try again later."
+msgstr ""
+
+#: adminutils\adminutils.py:239
+msgid "An error occurred on adding an emoji: {}"
+msgstr ""
+
+#: adminutils\adminutils.py:243
+#, docstring
+msgid "Rename emoji and restrict to certain roles\n"
+"        Only this roles will be able to use this emoji\n\n"
+"        Use double quotes if role name has spaces\n\n"
+"        Examples:\n"
+"            `[p]emoji rename emoji NewEmojiName`\n"
+"            `[p]emoji rename emoji NewEmojiName Administrator \"Allowed role\"`\n"
+"        "
+msgstr ""
+
+#: adminutils\adminutils.py:261
+msgid "Restricted to roles: "
+msgstr ""
+
+#: adminutils\adminutils.py:269
+msgid "I can't edit this emoji"
+msgstr ""
+
+#: adminutils\adminutils.py:274
+#, docstring
+msgid "Remove emoji from server"
+msgstr ""
+

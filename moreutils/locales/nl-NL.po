@@ -1,0 +1,81 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: fixator10-cogs\n"
+"POT-Creation-Date: 2020-10-28 11:33+0400\n"
+"PO-Revision-Date: 2020-11-20 10:07\n"
+"Last-Translator: \n"
+"Language-Team: Dutch\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: redgettext 3.3\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Crowdin-Project: fixator10-cogs\n"
+"X-Crowdin-Project-ID: 387695\n"
+"X-Crowdin-Language: nl\n"
+"X-Crowdin-File: /V3/moreutils/locales/messages.pot\n"
+"X-Crowdin-File-ID: 67\n"
+"Language: nl_NL\n"
+
+#: moreutils\moreutils.py:21
+msgid "OK"
+msgstr ""
+
+#: moreutils\moreutils.py:22
+msgid "Minor problems"
+msgstr ""
+
+#: moreutils\moreutils.py:23
+msgid "Major problems"
+msgstr ""
+
+#: moreutils\moreutils.py:24
+msgid "Critical problems"
+msgstr ""
+
+#: moreutils\moreutils.py:57
+#, docstring
+msgid "Some (maybe) useful utils."
+msgstr ""
+
+#: moreutils\moreutils.py:74
+#, docstring
+msgid "Displays the current time of the server."
+msgstr ""
+
+#: moreutils\moreutils.py:75
+msgid "%d.%m.%Y %H:%M:%S %Z"
+msgstr ""
+
+#: moreutils\moreutils.py:81
+#, docstring
+msgid "Shows some info about provided color."
+msgstr ""
+
+#: moreutils\moreutils.py:106
+msgid "Name: Loading...\n"
+msgstr ""
+
+#: moreutils\moreutils.py:118
+msgid "Name: {}\n"
+msgstr ""
+
+#: moreutils\moreutils.py:124
+#, docstring
+msgid "Help I've fallen and I need @someone.\n\n"
+"        Discord 2018 April Fools."
+msgstr ""
+
+#: moreutils\moreutils.py:154
+#, docstring
+msgid "Get current discord status from discordstatus.com"
+msgstr ""
+
+#: moreutils\moreutils.py:164
+msgid "Unable to get data from https://discordstatus.com: {}"
+msgstr ""
+
+#: moreutils\moreutils.py:172
+msgid "Discord Status"
+msgstr ""
+
