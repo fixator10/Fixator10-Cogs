@@ -21,7 +21,9 @@ jobs:
       uses: crowdin/github-action@1.0.13
       with:
         download_translations: true
-        localization_branch_name: l18n_V3
+        commit_message: '[automated] update translations from Crowdin' 
+        push_translations: true
+        localization_branch_name: V3_i18n
         create_pull_request: true
         pull_request_title: 'Update translations from Crowdin'
         pull_request_body: 'Merge this to add changes from Crowdin to this repo.'
