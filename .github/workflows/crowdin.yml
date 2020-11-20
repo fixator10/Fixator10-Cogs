@@ -2,7 +2,7 @@ name: Update translations
 
 on:
   push:
-    branches: [ master ]
+    branches: [ V3 ]
 
 jobs:
   synchronize-with-crowdin:
