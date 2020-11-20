@@ -62,7 +62,7 @@ def nsfwcheck():
     # https://github.com/PredaaA/predacogs/blob/9bd61dc494010829d4fecd9d550339aa58a412d3/nsfw/core.py#L206
 
     async def predicate(ctx: commands.Context):
-        if not ctx.guild or ctx.channel.is_nsfw() or ctx.invoked_with == "help":
+        if not ctx.guild or ctx.channel.is_nsfw() or ctx.invoked_with == "help" or ctx.invoked_subcommand:
             return True
         if ctx.invoked_with not in [k for k in ctx.bot.all_commands]:
             # For this weird issue with last version of discord.py (1.2.3) with non-existing commands.
@@ -83,7 +83,7 @@ def nsfwcheck():
 class ReverseImageSearch(commands.Cog):
     """(Anime) Reverse Image Search"""
 
-    __version__ = "2.1.6"
+    __version__ = "2.1.7"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -109,7 +109,7 @@ class ReverseImageSearch(commands.Cog):
     @commands.cooldown(1, 30, commands.BucketType.user)
     @nsfwcheck()
     async def saucenao(self, ctx, image: ImageFinder = None):
-        """Reverse search image via SauceNAO"""
+        """[NSFW] Reverse search image via SauceNAO"""
         if image is None:
             try:
                 image = await ImageFinder().search_for_images(ctx)
