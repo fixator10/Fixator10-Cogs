@@ -48,7 +48,7 @@ EMOJIFY_CHARS = {
 class Translators(commands.Cog):
     """Useful (and not) translators"""
 
-    __version__ = "2.2.3"
+    __version__ = "2.2.4"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -126,8 +126,9 @@ class Translators(commands.Cog):
         """Flips text upside-down
 
         Based on https://unicode-table.com/en/tools/flip/"""
-        up = "abcdefghijklmnopqrstuvwxyzабвгдежзиклмнопрстуфхцчшщъьэя.,!?()"
-        down = "ɐqɔpǝɟƃɥıɾʞlɯuodᕹɹsʇnʌʍxʎzɐƍʚɹɓǝжεиʞvwноudɔɯʎȸхǹҺmmqqєʁ˙‘¡¿)("
+        # https://s.unicode-table.com/static/js/tools/Flip.js
+        up = "abcdefghijklmnopqrstuvwxyzабвгдежзиклмнопрстуфхцчшщъьэя.,!?()[]{}_‿⁅∴"
+        down = "ɐqɔpǝɟƃɥıɾʞlɯuodᕹɹsʇnʌʍxʎzɐƍʚɹɓǝжεиʞvwноudɔɯʎȸхǹҺmmqqєʁ˙‘¡¿)(][}{‾⁀⁆∵"
         text = text.casefold()
         char = up + down
         tran = down + up
