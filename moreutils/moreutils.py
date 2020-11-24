@@ -59,7 +59,7 @@ def bool_emojify(bool_var: bool) -> str:
 class MoreUtils(commands.Cog):
     """Some (maybe) useful utils."""
 
-    __version__ = "2.0.15"
+    __version__ = "2.0.16"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -111,14 +111,21 @@ class MoreUtils(commands.Cog):
             colour=color,
             timestamp=ctx.message.created_at,
         )
+        # CAUTION: That can fail soon
         em.set_thumbnail(url=f"https://api.alexflipnote.dev/color/image/{str(color)[1:]}")
         em.set_image(url=f"https://api.alexflipnote.dev/color/image/gradient/{str(color)[1:]}")
         m = await ctx.send(embed=em)
         async with self.session.get(
-            f"https://api.alexflipnote.dev/color/{str(color)[1:]}"
+            "https://www.thecolorapi.com/id", params={"hex": str(color)[1:]}
         ) as data:
-            color_name = (await data.json(loads=json.loads)).get("name", "?")
-        em.description = _("Name: {}\n").format(color_name) + colors_text
+            color_response = await data.json(loads=json.loads)
+            em.description = (
+                _("Name: {} ({})\n").format(
+                    color_response.get("name", {}).get("value", "?"),
+                    color_response.get("name", {}).get("closest_named_hex", "?"),
+                )
+                + colors_text
+            )
         await m.edit(embed=em)
 
     @commands.guild_only()
