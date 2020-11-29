@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fixator10-cogs\n"
-"POT-Creation-Date: 2020-10-28 11:33+0400\n"
-"PO-Revision-Date: 2020-11-20 09:47\n"
+"POT-Creation-Date: 2020-11-25 16:55+0400\n"
+"PO-Revision-Date: 2020-11-29 00:49\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
@@ -17,66 +17,66 @@ msgstr ""
 "X-Crowdin-File-ID: 67\n"
 "Language: ru_RU\n"
 
-#: moreutils\moreutils.py:21
+#: moreutils\moreutils.py:22
 msgid "OK"
 msgstr "ОК"
 
-#: moreutils\moreutils.py:22
+#: moreutils\moreutils.py:23
 msgid "Minor problems"
 msgstr "Небольшие проблемы"
 
-#: moreutils\moreutils.py:23
+#: moreutils\moreutils.py:24
 msgid "Major problems"
 msgstr "Большие проблемы"
 
-#: moreutils\moreutils.py:24
+#: moreutils\moreutils.py:25
 msgid "Critical problems"
 msgstr "Критические проблемы"
 
-#: moreutils\moreutils.py:57
+#: moreutils\moreutils.py:60
 #, docstring
 msgid "Some (maybe) useful utils."
 msgstr "Некоторые (возможно) полезные утилиты."
 
-#: moreutils\moreutils.py:74
+#: moreutils\moreutils.py:77
 #, docstring
 msgid "Displays the current time of the server."
 msgstr "Показывает текущее время сервера."
 
-#: moreutils\moreutils.py:75
+#: moreutils\moreutils.py:78
 msgid "%d.%m.%Y %H:%M:%S %Z"
 msgstr ""
 
-#: moreutils\moreutils.py:81
+#: moreutils\moreutils.py:84
 #, docstring
 msgid "Shows some info about provided color."
 msgstr "Показывает некоторую информацию о предоставленном цвете."
 
-#: moreutils\moreutils.py:106
+#: moreutils\moreutils.py:109
 msgid "Name: Loading...\n"
 msgstr "Название: Загрузка...\n"
 
-#: moreutils\moreutils.py:118
-msgid "Name: {}\n"
-msgstr "Название: {}\n"
+#: moreutils\moreutils.py:123
+msgid "Name: {} ({})\n"
+msgstr "Название: {} ({})\n"
 
-#: moreutils\moreutils.py:124
+#: moreutils\moreutils.py:134
 #, docstring
 msgid "Help I've fallen and I need @someone.\n\n"
 "        Discord 2018 April Fools."
 msgstr "Позовите @кого-нибудь, я упал.\n\n"
 "        Первоапрельская шутка Discord 2018."
 
-#: moreutils\moreutils.py:154
+#: moreutils\moreutils.py:164
 #, docstring
 msgid "Get current discord status from discordstatus.com"
 msgstr "Получить текущее состояние Discord со страницы discordstatus.com"
 
-#: moreutils\moreutils.py:164
+#: moreutils\moreutils.py:174
 msgid "Unable to get data from https://discordstatus.com: {}"
 msgstr "Невозможно получить информацию от https://discordstatus.com: {}"
 
-#: moreutils\moreutils.py:172
+#: moreutils\moreutils.py:182
 msgid "Discord Status"
 msgstr "Статус Discord"
 
