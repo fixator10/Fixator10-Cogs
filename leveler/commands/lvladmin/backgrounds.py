@@ -11,13 +11,13 @@ class Backgrounds(MixinMeta):
     lvladmin = getattr(LevelAdminBaseCMD, "lvladmin")
 
     @lvladmin.group(name="bg")
+    @commands.is_owner()
+    @commands.guild_only()
     async def lvladminbg(self, ctx):
         """Admin background configuration"""
         pass
 
-    @commands.is_owner()
     @lvladminbg.command()
-    @commands.guild_only()
     async def addprofilebg(self, ctx, name: str, url: str):
         """Add a profile background.
 
@@ -32,9 +32,7 @@ class Backgrounds(MixinMeta):
                 backgrounds["profile"][name] = url
             await ctx.send("**New profile background (`{}`) added.**".format(name))
 
-    @commands.is_owner()
     @lvladminbg.command()
-    @commands.guild_only()
     async def addrankbg(self, ctx, name: str, url: str):
         """Add a rank background.
 
@@ -49,9 +47,7 @@ class Backgrounds(MixinMeta):
                 backgrounds["rank"][name] = url
             await ctx.send("**New rank background (`{}`) added.**".format(name))
 
-    @commands.is_owner()
     @lvladminbg.command()
-    @commands.guild_only()
     async def addlevelbg(self, ctx, name: str, url: str):
         """Add a level-up background.
 
@@ -66,9 +62,7 @@ class Backgrounds(MixinMeta):
                 backgrounds["levelup"][name] = url
             await ctx.send("**New level-up background (`{}`) added.**".format(name))
 
-    @commands.is_owner()
     @lvladminbg.command()
-    @commands.guild_only()
     async def setcustombg(self, ctx, bg_type: str, user_id: str, img_url: str):
         """Set one-time custom background
 
@@ -96,9 +90,7 @@ class Backgrounds(MixinMeta):
         )
         await ctx.send("**User {} custom {} background set.**".format(user_id, bg_type))
 
-    @commands.is_owner()
     @lvladminbg.command()
-    @commands.guild_only()
     async def delprofilebg(self, ctx, name: str):
         """Delete a profile background."""
         bgs = await self.config.backgrounds()
@@ -108,9 +100,7 @@ class Backgrounds(MixinMeta):
         else:
             await ctx.send("**That profile background name doesn't exist.**")
 
-    @commands.is_owner()
     @lvladminbg.command()
-    @commands.guild_only()
     async def delrankbg(self, ctx, name: str):
         """Delete a rank background."""
         bgs = await self.config.backgrounds()
@@ -120,9 +110,7 @@ class Backgrounds(MixinMeta):
         else:
             await ctx.send("**That rank background name doesn't exist.**")
 
-    @commands.is_owner()
     @lvladminbg.command()
-    @commands.guild_only()
     async def dellevelbg(self, ctx, name: str):
         """Delete a level background."""
         bgs = await self.config.backgrounds()
