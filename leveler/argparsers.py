@@ -21,4 +21,7 @@ class TopParser(commands.Converter):
         parser.add_argument("-g", "--global", dest="global_top", action="store_true")
         parser.add_argument("-r", "--rep", action="store_true")
         parser.add_argument("-s", "--server", "--guild", type=str, nargs="*")
-        return parser.parse_args(split(argument))
+        try:
+            return parser.parse_args(split(argument))
+        except ValueError as e:
+            raise commands.BadArgument(*e.args)
