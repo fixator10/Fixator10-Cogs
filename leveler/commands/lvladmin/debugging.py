@@ -33,7 +33,10 @@ class Debugging(MixinMeta):
                     [
                         ("pymongo version", pymongoversion),
                         ("motor version", motorversion),
-                        ("Mongo DB version", (await self.client.server_info()).get("version", "?")),
+                        (
+                            "Mongo DB version",
+                            (await self.client.server_info()).get("version", "?"),
+                        ),
                         ("PIL version", pilfeatures.version("pil")),
                         (
                             "PIL features",

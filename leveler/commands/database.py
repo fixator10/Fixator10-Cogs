@@ -5,18 +5,19 @@ from tabulate import tabulate
 
 from ..abc import CompositeMetaClass, MixinMeta
 
-
 concurrency = commands.MaxConcurrency(1, per=commands.BucketType.default, wait=False)
 
 
 def levelerset_concurrency():
     """Custom concurrency pool for levelerset commands"""
+
     def decorator(func):
         if isinstance(func, commands.Command):
             func._max_concurrency = concurrency
         else:
             func.__commands_max_concurrency__ = concurrency
         return func
+
     return decorator
 
 
