@@ -96,7 +96,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.4.18"
+    __version__ = "2.4.19"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -257,7 +257,7 @@ class DataUtils(commands.Cog):
         em.add_field(name=_("System?"), value=bool_emojify(member.system))
         em.add_field(
             name=_("Server permissions"),
-            value="[{0}](https://fixator10.ru/permissions-calculator/?v={0})".format(
+            value="[{0}](https://cogs.fixator10.ru/permissions-calculator/?v={0})".format(
                 member.guild_permissions.value
             ),
         )
@@ -615,7 +615,7 @@ class DataUtils(commands.Cog):
         em.add_field(name=_("ID"), value=role.id)
         em.add_field(
             name=_("Permissions"),
-            value="[{0}](https://fixator10.ru/permissions-calculator/?v={0})".format(
+            value="[{0}](https://cogs.fixator10.ru/permissions-calculator/?v={0})".format(
                 role.permissions.value
             ),
         )
