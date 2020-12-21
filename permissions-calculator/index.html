@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html ng-app="permissionsCalc">
+
+<head>
+    <title>Discord Permissions Calculator</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+    <link rel="stylesheet" href="assets/css/main.css">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta name="og:title" content="Discord Permissions Calculator" />
+    <meta name="og:type" content="website" />
+    <meta name="og:description" content="A permissions calculator for Discord." />
+    <meta name="description" content="A permissions calculator for Discord." />
+    <meta name="author" content="FiniteReality" />
+
+    <base href="/permissions-calculator/" />
+</head>
+
+<body theme theme-dark="grey-text text-lighten-4 theme-dark" theme-light="grey-text text-darken-2 theme-light">
+    <header>
+        <nav class="indigo lighten-2">
+            <div class="nav-wrapper container">
+                <a href="#" class="brand-logo hide-on-small-only">Discord Permissions Calculator</a>
+                <a href="#" class="brand-logo hide-on-med-and-up">Discord Permissions</a>
+                <a data-activates="nav-small" class="button-collapse"><i class="material-icons">menu</i></a>
+                <ul id="nav-large" class="right hide-on-med-and-down">
+                    <li><a class="dropdown-button" data-activates="theme-large">Theme<i
+                                class="material-icons right">arrow_drop_down</i></a></li>
+                </ul>
+                <ul class="side-nav" id="nav-small">
+                    <li><a class="subheader">Theme</a></li>
+                    <li><a class="waves-effect" theme-set="Light">Light</a></li>
+                    <li><a class="waves-effect" theme-set="Dark">Dark</a></li>
+                </ul>
+            </div>
+        </nav>
+        <ul id="theme-large" class="dropdown-content">
+            <li><a class="waves-effect grey-text text-darken-3" theme-set="Light">Light</a></li>
+            <li><a class="waves-effect grey-text text-darken-3" theme-set="Dark">Dark</a></li>
+        </ul>
+    </header>
+    <main>
+        <section class="container" ng-controller="calc">
+            <div class="row">
+                <h3>Permissions: {{calculatePermissions()}}</h3>
+                <code ng-bind-template="{{calculatePermissions()}} = {{calculateExplanation()}}">0 = 0x0</code>
+            </div>
+            <div class="row">
+                <div class="col s12 m6 l4" ng-repeat="permscope in permissions">
+                    <h5 ng-bind-template="{{permscope.name}} Permissions">Unknown Permissions</h5>
+                    <ul>
+                        <li ng-repeat="perm in permscope.permissions">
+                            <input type="checkbox" class="filled-in" ng-model="perm.active"
+                                ng-change="disableActive(permscope)" id="role_{{perm.id}}" disabled /> <label
+                                for="role_{{perm.id}}" ng-bind="perm.name"
+                                ng-class="{'amber-text': !perm.auto, 'text-darken-4': !perm.auto}">Permission</label>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12">
+                    <p>
+                        Permissions highlighted in orange may require <a
+                            href="https://discordapp.com/developers/docs/topics/oauth2#twofactor-authentication-requirement">two
+                            factor authentication</a> enabled.
+                    </p>
+                    <p>
+                        View Channel and Read Messages are synonymous; they are both the same permission.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer class="page-footer indigo lighten-2">
+        <div class="footer-copyright">
+            <div class="container">
+                This is copy of <a href="https://github.com/FiniteReality/permissions-calculator"
+                    style="color:white">Discord Permissions
+                    Calculator by FiniteReality</a>, hosted by Fixator10 for <a
+                    href="https://github.com/Fixator10/Fixator10-Cogs" style="color:white">Fixator10-Cogs</a>
+            </div>
+        </div>
+    </footer>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+    <!-- apparently I should use react instead of angular? hell no, react is ugly. -->
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <script type="text/javascript" src="assets/js/themes.js"></script>
+    <script type="text/javascript" src="assets/js/permissions.js"></script>
+</body>
+
+</html>
