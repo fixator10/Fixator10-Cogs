@@ -1192,7 +1192,7 @@ class Leveler(commands.Cog):
         pass
 
     @checks.admin_or_permissions(manage_guild=True)
-    @lvladmin.group()
+    @lvladmin.command()
     async def overview(self, ctx):
         """A list of settings."""
 

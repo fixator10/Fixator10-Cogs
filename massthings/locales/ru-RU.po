@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fixator10-cogs\n"
-"POT-Creation-Date: 2020-10-28 11:33+0400\n"
-"PO-Revision-Date: 2020-10-28 09:37\n"
+"POT-Creation-Date: 2020-11-20 15:03+0400\n"
+"PO-Revision-Date: 2020-11-29 00:49\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
@@ -21,76 +21,83 @@ msgstr ""
 #, docstring
 msgid "Cog for doing things in bulk.\n\n"
 "    May be against Discord API terms. Use with caution.\n"
-"    I'm not responsible for any aftermath of using this cog."
-msgstr ""
+"    Cog author is not responsible for any aftermath of using this cog."
+msgstr "Модуль на массовые действия.\n\n"
+"    Может быть против условий использования Discord API. Используйте с осторожностью.\n"
+"    Автор модуля не ответственен за любые последствия использования данного модуля."
 
 #: massthings\massthings.py:39
 msgid "This command may abuse Discord API and therefore, ban you or bot's owner, are you sure that you want to proceed?"
-msgstr ""
+msgstr "Эта команда может злоупотреблять Discord API и, следовательно, заблокировать доступ вам или владельцу бота, вы уверены что хотите продолжить?"
 
 #: massthings\massthings.py:60
 #, docstring
 msgid "Mass nicknames everyone on the server"
-msgstr ""
+msgstr "Массово устанавливает ники всем на сервере"
 
 #: massthings\massthings.py:68
 msgid "Massnick"
-msgstr ""
+msgstr "Массовая установка ников"
 
 #: massthings\massthings.py:75
 msgid "Finished nicknaming server. {} nicknames could not be completed."
-msgstr ""
+msgstr "Изменение никнеймов завершено. {} никнеймов не удалось изменить."
 
 #: massthings\massthings.py:84
 #, docstring
 msgid "Resets nicknames on the server"
-msgstr ""
+msgstr "Сбрасывает никнеймы на сервере"
 
 #: massthings\massthings.py:91
 msgid "Reset nicks"
-msgstr ""
+msgstr "Сброс никнеймов"
 
 #: massthings\massthings.py:98
 msgid "Finished resetting server nicknames. Unable to reset {} nicknames."
-msgstr ""
+msgstr "Сброс серверных никнеймов завершен. {} никнеймов не удалось сбросить."
 
 #: massthings\massthings.py:110
 #, docstring
 msgid "Steal all emoji provided in arguments"
-msgstr ""
+msgstr "Украсть все эмодзи указанные в качестве аргументов"
 
 #: massthings\massthings.py:122
 msgid "You tried to add too many emojis, you can add only {} emojis more to this server\n"
 "You tried to add {}."
-msgstr ""
+msgstr "Вы попытались добавить слишком много эмодзи, вы можете добавить только {} эмодзи на этот сервер.\n"
+"Вы попытались добавить {}."
 
 #: massthings\massthings.py:132
 msgid "You tried to add too many animated emojis, you can add only {} emojis more to this server.\n"
 "You tried to add {}."
-msgstr ""
+msgstr "Вы попытались добавить слишком много анимированных эмодзи, вы можете добавить только {} эмодзи на этот сервер.\n"
+"Вы попытались добавить {}."
 
 #: massthings\massthings.py:146
 msgid "Emoji steal"
-msgstr ""
+msgstr "Украсть эмодзи"
 
 #: massthings\massthings.py:157
 msgid "Stealed emojis:\n"
 "{}"
-msgstr ""
+msgstr "Украдено эмодзи:\n"
+"{}"
 
 #: massthings\massthings.py:170
 #, docstring
 msgid "Unban all users that banned by specified user\n\n"
 "        Uses modlog data, since discord not saves author of ban."
-msgstr ""
+msgstr "Разбанить всех пользователей, которые были забанены указанным пользователем\n\n"
+"        Использует данные журнала модерации, так как Discord не сохраняет автора бана."
 
 #: massthings\massthings.py:191 massthings\massthings.py:218
 msgid "Unbanned users:\n"
 "{}"
-msgstr ""
+msgstr "Разбанено пользователей:\n"
+"{}"
 
 #: massthings\massthings.py:201
 #, docstring
 msgid "Unban everyone from current guild"
-msgstr ""
+msgstr "Разбанить всех на этом сервере"
 
