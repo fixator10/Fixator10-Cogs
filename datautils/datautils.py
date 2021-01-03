@@ -96,7 +96,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.4.16"
+    __version__ = "2.4.17"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -486,9 +486,7 @@ class DataUtils(commands.Cog):
         self,
         ctx,
         *,
-        channel: Union[
-            discord.TextChannel, discord.VoiceChannel, discord.CategoryChannel, None
-        ] = None,
+        channel: Union[discord.TextChannel, discord.VoiceChannel, discord.CategoryChannel] = None,
     ):
         """Get info about channel"""
         if channel is None:
