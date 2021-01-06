@@ -54,7 +54,7 @@ class Users(MixinMeta):
     @commands.is_owner()
     @lvladmin.command()
     @commands.guild_only()
-    async def setlevel(self, ctx, user: discord.User, level: int):
+    async def setlevel(self, ctx, user: discord.Member, level: int):
         """Set a user's level manually."""
         server = ctx.guild
         channel = ctx.channel
