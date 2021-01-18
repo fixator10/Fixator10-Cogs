@@ -3,9 +3,9 @@ import time
 import discord
 from redbot.core import commands
 from redbot.core.utils import chat_formatting as chat
-from redbot.core.utils.menus import DEFAULT_CONTROLS, menu
 
 from ..abc import CompositeMetaClass, MixinMeta
+from ..menus.backgrounds import BackgroundMenu, BackgroundPager
 
 
 class Other(MixinMeta, metaclass=CompositeMetaClass):
@@ -61,48 +61,18 @@ class Other(MixinMeta, metaclass=CompositeMetaClass):
                 )
             )
 
-    @commands.command(name="backgrounds", usage="<profile|rank|levelup>")
+    @commands.command(name="backgrounds", usage="[profile|rank|levelup]")
     @commands.guild_only()
-    async def list_backgrounds(self, ctx, bg_type: str):
+    async def list_backgrounds(self, ctx, bg_type: str = "profile"):
         """Gives a list of backgrounds."""
         backgrounds = await self.config.backgrounds()
-
-        em = discord.Embed(colour=await ctx.embed_color())
-        if bg_type.lower() == "profile":
-            em.set_author(
-                name="Profile Backgrounds for {}".format(self.bot.user.name),
-                icon_url=self.bot.user.avatar_url,
-            )
-            bg_key = "profile"
-        elif bg_type.lower() == "rank":
-            em.set_author(
-                name="Rank Backgrounds for {}".format(self.bot.user.name),
-                icon_url=self.bot.user.avatar_url,
-            )
-            bg_key = "rank"
-        elif bg_type.lower() == "levelup":
-            em.set_author(
-                name="Level Up Backgrounds for {}".format(self.bot.user.name),
-                icon_url=self.bot.user.avatar_url,
-            )
-            bg_key = "levelup"
-        else:
-            bg_key = None
-
-        if bg_key:
-            embeds = []
-            total = len(backgrounds[bg_key])
-            cnt = 1
-            for bg in sorted(backgrounds[bg_key].keys()):
-                em = discord.Embed(
-                    title=bg,
-                    color=await ctx.embed_color(),
-                    url=backgrounds[bg_key][bg],
-                    description=f"Background {cnt}/{total}",
+        pages = {t: BackgroundPager(tuple(backgrounds[t].items())) for t in backgrounds}
+        bg_type = bg_type.casefold()
+        if bg_type not in pages:
+            await ctx.send(
+                chat.error("Unknown background type. It should be one of: {}.").format(
+                    chat.humanize_list(tuple(pages.keys()), style="or")
                 )
-                em.set_image(url=backgrounds[bg_key][bg])
-                embeds.append(em)
-                cnt += 1
-            await menu(ctx, embeds, DEFAULT_CONTROLS)
-        else:
-            await ctx.send("**Invalid background type. Must be `profile`, `rank` or `levelup`.**")
+            )
+            return
+        await BackgroundMenu(pages, bg_type).start(ctx)
