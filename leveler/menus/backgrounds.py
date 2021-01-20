@@ -35,17 +35,21 @@ class BackgroundMenu(menus.MenuPages, inherit_buttons=False):
     def should_add_reactions(self):
         return True
 
+    async def set_source(self, bg_type):
+        self.bg_type = bg_type
+        await self.change_source(self.sources[bg_type])
+
     @menus.button("\N{RECEIPT}", position=menus.First(0))
     async def switch_profile(self, payload):
-        await self.change_source(self.sources["profile"])
+        await self.set_source("profile")
 
     @menus.button("\N{CARD INDEX}", position=menus.First(1))
     async def switch_rank(self, payload):
-        await self.change_source(self.sources["rank"])
+        await self.set_source("rank")
 
     @menus.button("\N{SQUARED UP WITH EXCLAMATION MARK}", position=menus.First(2))
     async def switch_levelup(self, payload):
-        await self.change_source(self.sources["levelup"])
+        await self.set_source("levelup")
 
     @menus.button(
         "\N{BLACK LEFT-POINTING DOUBLE TRIANGLE WITH VERTICAL BAR}\ufe0f",
