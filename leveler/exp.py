@@ -73,6 +73,7 @@ class XP(MixinMeta):
             )
         except Exception as exc:
             self.log.error(f"Unable to process xp for {user.id}: {exc}")
+            return
         required = await self._required_exp(userinfo["servers"][str(server.id)]["level"])
         # FIXME: Sometimes this creates discrepancy in global total_exp and xp for all servers
         # If this happens again, some sort of debug is needed here
@@ -196,7 +197,7 @@ class XP(MixinMeta):
                     file = discord.File(levelup, filename="levelup.png")
                     await channel.send(
                         "**{} just gained a level{}!**".format(name, server_identifier),
-                        files=[file],  # FIXME: file enables mention for some reason
+                        file=file,
                         allowed_mentions=discord.AllowedMentions(
                             users=await self.config.mention()
                         ),

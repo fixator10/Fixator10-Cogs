@@ -32,7 +32,7 @@ class Profiles(MixinMeta, metaclass=CompositeMetaClass):
                 file = discord.File(profile, filename="profile.png")
                 await channel.send(
                     "**User profile for {}**".format(user.mention),
-                    files=[file],  # FIXME: file enables mention for some reason
+                    file=file,
                     allowed_mentions=discord.AllowedMentions(users=await self.config.mention()),
                 )
             profile.close()
@@ -94,7 +94,7 @@ class Profiles(MixinMeta, metaclass=CompositeMetaClass):
                 file = discord.File(rank, filename="rank.png")
                 await channel.send(
                     "**Ranking & Statistics for {}**".format(user.mention),
-                    files=[file],  # FIXME: file enables mention for some reason
+                    file=file,
                     allowed_mentions=discord.AllowedMentions(users=await self.config.mention()),
                 )
             rank.close()
