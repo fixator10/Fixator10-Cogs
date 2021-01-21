@@ -34,7 +34,7 @@ GUILD_FEATURES = {
     "PARTNERED": _("Discord Partner"),
     "MORE_EMOJI": _("Extended emoji limit"),  # Non-boosted?
     "DISCOVERABLE": _("Shows in Server Discovery{discovery}"),
-    # "FEATURABLE": _('Can be in "Featured" section of Server Discovery'),
+    "FEATURABLE": _('Can be in "Featured" section of Server Discovery'),
     "COMMERCE": _("Store channels"),
     "NEWS": _("News channels"),
     "BANNER": _("Banner{banner}"),
@@ -58,7 +58,8 @@ GUILD_FEATURES = {
 ACTIVITY_TYPES = {
     discord.ActivityType.playing: _("Playing"),
     discord.ActivityType.watching: _("Watching"),
-    discord.ActivityType.listening: _("Listening"),
+    discord.ActivityType.listening: _("Listening to"),
+    discord.ActivityType.competing: _("Competing in"),
 }
 
 CHANNEL_TYPE_EMOJIS = {
@@ -256,7 +257,7 @@ class DataUtils(commands.Cog):
         em.add_field(name=_("System?"), value=bool_emojify(member.system))
         em.add_field(
             name=_("Server permissions"),
-            value="[{0}](https://fixator10.ru/permissions-calculator/?v={0})".format(
+            value="[{0}](https://cogs.fixator10.ru/permissions-calculator/?v={0})".format(
                 member.guild_permissions.value
             ),
         )
@@ -485,9 +486,7 @@ class DataUtils(commands.Cog):
         self,
         ctx,
         *,
-        channel: Union[
-            discord.TextChannel, discord.VoiceChannel, discord.CategoryChannel, None
-        ] = None,
+        channel: Union[discord.TextChannel, discord.VoiceChannel, discord.CategoryChannel] = None,
     ):
         """Get info about channel"""
         if channel is None:
@@ -614,7 +613,7 @@ class DataUtils(commands.Cog):
         em.add_field(name=_("ID"), value=role.id)
         em.add_field(
             name=_("Permissions"),
-            value="[{0}](https://fixator10.ru/permissions-calculator/?v={0})".format(
+            value="[{0}](https://cogs.fixator10.ru/permissions-calculator/?v={0})".format(
                 role.permissions.value
             ),
         )

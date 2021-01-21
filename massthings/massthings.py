@@ -20,7 +20,7 @@ class MassThings(commands.Cog, command_attrs={"hidden": True}):
     """Cog for doing things in bulk.
 
     May be against Discord API terms. Use with caution.
-    I'm not responsible for any aftermath of using this cog."""
+    Cog author is not responsible for any aftermath of using this cog."""
 
     __version__ = "1.1.0"
 

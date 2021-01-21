@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-10-28 11:33+0400\n"
+"POT-Creation-Date: 2020-11-25 16:55+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11,50 +11,50 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: redgettext 3.3\n"
 
-#: moreutils\moreutils.py:21
+#: moreutils\moreutils.py:22
 msgid "OK"
 msgstr ""
 
-#: moreutils\moreutils.py:22
+#: moreutils\moreutils.py:23
 msgid "Minor problems"
 msgstr ""
 
-#: moreutils\moreutils.py:23
+#: moreutils\moreutils.py:24
 msgid "Major problems"
 msgstr ""
 
-#: moreutils\moreutils.py:24
+#: moreutils\moreutils.py:25
 msgid "Critical problems"
 msgstr ""
 
-#: moreutils\moreutils.py:57
+#: moreutils\moreutils.py:60
 #, docstring
 msgid "Some (maybe) useful utils."
 msgstr ""
 
-#: moreutils\moreutils.py:74
+#: moreutils\moreutils.py:77
 #, docstring
 msgid "Displays the current time of the server."
 msgstr ""
 
-#: moreutils\moreutils.py:75
+#: moreutils\moreutils.py:78
 msgid "%d.%m.%Y %H:%M:%S %Z"
 msgstr ""
 
-#: moreutils\moreutils.py:81
+#: moreutils\moreutils.py:84
 #, docstring
 msgid "Shows some info about provided color."
 msgstr ""
 
-#: moreutils\moreutils.py:106
+#: moreutils\moreutils.py:109
 msgid "Name: Loading...\n"
 msgstr ""
 
-#: moreutils\moreutils.py:118
-msgid "Name: {}\n"
+#: moreutils\moreutils.py:123
+msgid "Name: {} ({})\n"
 msgstr ""
 
-#: moreutils\moreutils.py:124
+#: moreutils\moreutils.py:134
 #, docstring
 msgid ""
 "Help I've fallen and I need @someone.\n"
@@ -62,15 +62,15 @@ msgid ""
 "        Discord 2018 April Fools."
 msgstr ""
 
-#: moreutils\moreutils.py:154
+#: moreutils\moreutils.py:164
 #, docstring
 msgid "Get current discord status from discordstatus.com"
 msgstr ""
 
-#: moreutils\moreutils.py:164
+#: moreutils\moreutils.py:174
 msgid "Unable to get data from https://discordstatus.com: {}"
 msgstr ""
 
-#: moreutils\moreutils.py:172
+#: moreutils\moreutils.py:182
 msgid "Discord Status"
 msgstr ""
