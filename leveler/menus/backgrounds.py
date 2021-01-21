@@ -1,5 +1,4 @@
 import discord
-from redbot.core.utils import chat_formatting as chat
 from redbot.vendored.discord.ext import menus
 
 
