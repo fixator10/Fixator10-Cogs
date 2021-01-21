@@ -62,12 +62,18 @@ class BackgroundMenu(menus.MenuPages, inherit_buttons=False):
     @menus.button("\N{BLACK LEFT-POINTING TRIANGLE}\ufe0f", position=menus.First(4))
     async def go_to_previous_page(self, payload):
         """go to the previous page"""
-        await self.show_checked_page(self.current_page - 1)
+        if self.current_page == 0:
+            await self.show_page(self._source.get_max_pages() - 1)
+        else:
+            await self.show_checked_page(self.current_page - 1)
 
     @menus.button("\N{BLACK RIGHT-POINTING TRIANGLE}\ufe0f", position=menus.Last(0))
     async def go_to_next_page(self, payload):
         """go to the next page"""
-        await self.show_checked_page(self.current_page + 1)
+        if self.current_page == self._source.get_max_pages() - 1:
+            await self.show_page(0)
+        else:
+            await self.show_checked_page(self.current_page + 1)
 
     @menus.button(
         "\N{BLACK RIGHT-POINTING DOUBLE TRIANGLE WITH VERTICAL BAR}\ufe0f",
