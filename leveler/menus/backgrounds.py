@@ -101,10 +101,9 @@ class BackgroundPager(menus.ListPageSource):
             description=f"{menu.bg_type.capitalize()} background {menu.current_page+1}/{self.get_max_pages()}",
         )
         em.set_footer(
-            text="Legend:\n"
-            "\N{RECEIPT} - Profile\n"
-            "\N{CARD INDEX} - Rank\n"
-            "\N{SQUARED UP WITH EXCLAMATION MARK} - Levelup"
+            text="Legend: \N{RECEIPT} - Profile | "
+                 "\N{CARD INDEX} - Rank | "
+                 "\N{SQUARED UP WITH EXCLAMATION MARK} - Levelup"
         )
         em.set_image(url=url)
         return em
