@@ -102,8 +102,8 @@ class BackgroundPager(menus.ListPageSource):
         )
         em.set_footer(
             text="Legend: \N{RECEIPT} - Profile | "
-                 "\N{CARD INDEX} - Rank | "
-                 "\N{SQUARED UP WITH EXCLAMATION MARK} - Levelup"
+            "\N{CARD INDEX} - Rank | "
+            "\N{SQUARED UP WITH EXCLAMATION MARK} - Levelup"
         )
         em.set_image(url=url)
         return em
