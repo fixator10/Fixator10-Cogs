@@ -205,9 +205,7 @@ class Settings(MixinMeta):
             )
         else:
             await self.config.allow_global_top.set(True)
-            await ctx.send(
-                "`--global` argument is now available to everyone.".format(server.name)
-            )
+            await ctx.send("`--global` argument is now available to everyone.".format(server.name))
 
     @lvladmin.command()
     @commands.is_owner()

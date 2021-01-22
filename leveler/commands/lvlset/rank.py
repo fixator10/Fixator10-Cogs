@@ -86,9 +86,7 @@ class Rank(MixinMeta):
         elif isinstance(color, discord.Color):
             set_color = [color.r, color.g, color.b, default_a]
         else:
-            await ctx.send(
-                "Not a valid color. Must be `default`, `HEX color`, `white or `auto`."
-            )
+            await ctx.send("Not a valid color. Must be `default`, `HEX color`, `white or `auto`.")
             return
 
         if section == "all":

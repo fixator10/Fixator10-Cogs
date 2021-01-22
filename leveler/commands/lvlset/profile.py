@@ -52,9 +52,7 @@ class Profile(MixinMeta):
         elif section == "all":
             section_name = "all"
         else:
-            await ctx.send(
-                "Not a valid section. Must be `rep`, `exp`, `badge`, `info` or `all`."
-            )
+            await ctx.send("Not a valid section. Must be `rep`, `exp`, `badge`, `info` or `all`.")
             return
 
         # get correct color choice
@@ -201,7 +199,5 @@ class Profile(MixinMeta):
             await ctx.send("Your info section has been succesfully set!")
         else:
             await ctx.send(
-                "Your description has too many characters! Must be {} or less.".format(
-                    max_char
-                )
+                "Your description has too many characters! Must be {} or less.".format(max_char)
             )

@@ -63,9 +63,7 @@ class Roles(MixinMeta):
                 "Will also remove `{}` role.".format(add_role, level, remove_role)
             )
         else:
-            await ctx.send(
-                "The `{}` role has been linked to level `{}`".format(add_role, level)
-            )
+            await ctx.send("The `{}` role has been linked to level `{}`".format(add_role, level))
 
     @commands.mod_or_permissions(manage_roles=True)
     @role.command(name="unlink", usage="<role>")

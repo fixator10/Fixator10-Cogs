@@ -224,9 +224,7 @@ class Badge(MixinMeta):
             {"user_id": str(user.id)}, {"$set": {"badges": userinfo["badges"]}}
         )
         await ctx.send(
-            "{} has just given {} the `{}` badge!".format(
-                org_user.mention, user.mention, name
-            ),
+            "{} has just given {} the `{}` badge!".format(org_user.mention, user.mention, name),
             allowed_mentions=discord.AllowedMentions(users=await self.config.mention()),
         )
 
@@ -303,9 +301,7 @@ class Badge(MixinMeta):
                 {"server_id": str(server.id)},
                 {"$set": {"badges": server_linked_badges["badges"]}},
             )
-        await ctx.send(
-            "The `{}` badge has been linked to level `{}`".format(badge_name, level)
-        )
+        await ctx.send("The `{}` badge has been linked to level `{}`".format(badge_name, level))
 
     @commands.admin_or_permissions(manage_roles=True)
     @badge.command(name="unlink")

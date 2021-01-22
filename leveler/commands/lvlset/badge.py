@@ -87,8 +87,12 @@ class Badge(MixinMeta, ABC):
                             {"user_id": userinfo["user_id"]},
                             {"$set": {"badges": userinfo["badges"]}},
                         )
-                        await ctx.send("`{}` has been obtained.\n"
-                                       "You can set it on your profile by using `{}badge set`.".format(name, ctx.clean_prefix))
+                        await ctx.send(
+                            "`{}` has been obtained.\n"
+                            "You can set it on your profile by using `{}badge set`.".format(
+                                name, ctx.clean_prefix
+                            )
+                        )
                     else:
                         await ctx.send(
                             "{}, you are about to buy the `{}` badge for `{}`. Confirm by typing `yes`.".format(
