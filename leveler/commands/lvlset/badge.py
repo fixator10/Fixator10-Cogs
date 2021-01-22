@@ -22,9 +22,9 @@ class Badge(MixinMeta, ABC):
     async def lvlset_badge(self, ctx):
         """Badge Configuration Options."""
 
-    @lvlset_badge.command()
+    @lvlset_badge.command(name="available", aliases=["shop"])
     @commands.guild_only()
-    async def available(self, ctx, global_badges: bool = False):
+    async def badges_available(self, ctx, global_badges: bool = False):
         """Get a list of available badges."""
         server = ctx.guild
         if global_badges:
@@ -61,9 +61,9 @@ class Badge(MixinMeta, ABC):
         else:
             await ctx.send(chat.info("You have no badges."))
 
-    @lvlset_badge.command()
+    @lvlset_badge.command(name="buy")
     @commands.guild_only()
-    async def buybadge(self, ctx, is_global: Optional[bool], *, name: str):
+    async def buy_badge(self, ctx, is_global: Optional[bool], *, name: str):
         """Buy a badge."""
         user = ctx.author
         server = ctx.guild
