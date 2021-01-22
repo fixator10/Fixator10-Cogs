@@ -89,7 +89,7 @@ class Badge(MixinMeta, ABC):
                         )
                         await ctx.send(
                             "`{}` has been obtained.\n"
-                            "You can set it on your profile by using `{}badge set`.".format(
+                            "You can set it on your profile by using `{}lvlset badge set`.".format(
                                 name, ctx.clean_prefix
                             )
                         )
@@ -121,7 +121,7 @@ class Badge(MixinMeta, ABC):
                             )
                             await ctx.send(
                                 "You have bought the `{}` badge for `{}`.\n"
-                                "You can set it on your profile by using `{}badge set`.".format(
+                                "You can set it on your profile by using `{}lvlset badge set`.".format(
                                     name, badge_info["price"], ctx.clean_prefix
                                 )
                             )
