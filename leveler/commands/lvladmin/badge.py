@@ -229,7 +229,7 @@ class Badge(MixinMeta):
             {"user_id": str(user.id)}, {"$set": {"badges": userinfo["badges"]}}
         )
         await ctx.send(
-            "**{} has just given `{}` the `{}` badge!**".format(
+            "**{} has just given {} the `{}` badge!**".format(
                 org_user.mention, user.mention, name
             ),
             allowed_mentions=discord.AllowedMentions(users=await self.config.mention()),
