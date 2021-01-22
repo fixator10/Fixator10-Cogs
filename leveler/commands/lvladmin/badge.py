@@ -206,10 +206,10 @@ class Badge(MixinMeta):
         userinfo = await self.db.users.find_one({"user_id": str(user.id)})
         userinfo = await self._badge_convert_dict(userinfo)
 
-        badges = (await self.db.badges.find_one({"server_id": str(server.id)})).get("badges", {})
+        serverbadges = await self.db.badges.find_one({"server_id": str(server.id)})
         badge_name = "{}_{}".format(name, server.id)
 
-        if not badges or name not in badges:
+        if not serverbadges or name not in (badges := serverbadges["badges"]):
             await ctx.send("That badge doesn't exist in this server!")
             return
         if badge_name in badges.keys():
@@ -242,10 +242,10 @@ class Badge(MixinMeta):
         userinfo = await self.db.users.find_one({"user_id": str(user.id)})
         userinfo = await self._badge_convert_dict(userinfo)
 
-        badges = (await self.db.badges.find_one({"server_id": str(server.id)})).get("badges", {})
+        serverbadges = await self.db.badges.find_one({"server_id": str(server.id)})
         badge_name = "{}_{}".format(name, server.id)
 
-        if name not in badges:
+        if not serverbadges or name not in serverbadges["badges"]:
             await ctx.send("That badge doesn't exist in this server!")
         elif badge_name not in userinfo["badges"]:
             await ctx.send(
@@ -277,13 +277,9 @@ class Badge(MixinMeta):
 
         Indicate the badge's name and the level."""
         server = ctx.guild
-        badges = (await self.db.badges.find_one({"server_id": str(server.id)})).get("badges", {})
+        serverbadges = await self.db.badges.find_one({"server_id": str(server.id)})
 
-        if not badges:
-            await ctx.send("This server does not have any badges!")
-            return
-
-        if badge_name not in badges.keys():
+        if not serverbadges or badge_name not in serverbadges["badges"]:
             await ctx.send("Please make sure the `{}` badge exists!".format(badge_name))
             return
         server_linked_badges = await self.db.badgelinks.find_one({"server_id": str(server.id)})
@@ -309,17 +305,16 @@ class Badge(MixinMeta):
         server = ctx.guild
 
         server_linked_badges = await self.db.badgelinks.find_one({"server_id": str(server.id)})
-        badge_links = server_linked_badges["badges"]
 
-        if badge_name in badge_links.keys():
+        if server_linked_badges and badge_name in (badge_links := server_linked_badges["badges"].keys()):
+            del badge_links[badge_name]
+            await self.db.badgelinks.update_one(
+                {"server_id": str(server.id)}, {"$set": {"badges": badge_links}}
+            )
             await ctx.send(
                 "Badge/Level association `{}`/`{}` removed.".format(
                     badge_name, badge_links[badge_name]
                 )
-            )
-            del badge_links[badge_name]
-            await self.db.badgelinks.update_one(
-                {"server_id": str(server.id)}, {"$set": {"badges": badge_links}}
             )
         else:
             await ctx.send("The `{}` badge is not linked to any levels!".format(badge_name))
