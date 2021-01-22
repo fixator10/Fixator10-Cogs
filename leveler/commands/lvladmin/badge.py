@@ -162,7 +162,7 @@ class Badge(MixinMeta):
             serverid = server.id
 
         serverbadges = await self.db.badges.find_one({"server_id": str(serverid)})
-        if name in serverbadges["badges"].keys():
+        if serverbadges and name in serverbadges["badges"].keys():
             del serverbadges["badges"][name]
             await self.db.badges.update_one(
                 {"server_id": serverbadges["server_id"]},
@@ -206,11 +206,10 @@ class Badge(MixinMeta):
         userinfo = await self.db.users.find_one({"user_id": str(user.id)})
         userinfo = await self._badge_convert_dict(userinfo)
 
-        serverbadges = await self.db.badges.find_one({"server_id": str(server.id)})
-        badges = serverbadges["badges"]
+        badges = (await self.db.badges.find_one({"server_id": str(server.id)})).get("badges", {})
         badge_name = "{}_{}".format(name, server.id)
 
-        if name not in badges:
+        if not badges or name not in badges:
             await ctx.send("That badge doesn't exist in this server!")
             return
         if badge_name in badges.keys():
@@ -243,8 +242,7 @@ class Badge(MixinMeta):
         userinfo = await self.db.users.find_one({"user_id": str(user.id)})
         userinfo = await self._badge_convert_dict(userinfo)
 
-        serverbadges = await self.db.badges.find_one({"server_id": str(server.id)})
-        badges = serverbadges["badges"]
+        badges = (await self.db.badges.find_one({"server_id": str(server.id)})).get("badges", {})
         badge_name = "{}_{}".format(name, server.id)
 
         if name not in badges:
@@ -279,13 +277,13 @@ class Badge(MixinMeta):
 
         Indicate the badge's name and the level."""
         server = ctx.guild
-        serverbadges = await self.db.badges.find_one({"server_id": str(server.id)})
+        badges = (await self.db.badges.find_one({"server_id": str(server.id)})).get("badges", {})
 
-        if serverbadges is None:
+        if not badges:
             await ctx.send("This server does not have any badges!")
             return
 
-        if badge_name not in serverbadges["badges"].keys():
+        if badge_name not in badges.keys():
             await ctx.send("Please make sure the `{}` badge exists!".format(badge_name))
             return
         server_linked_badges = await self.db.badgelinks.find_one({"server_id": str(server.id)})
