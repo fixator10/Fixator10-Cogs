@@ -78,7 +78,7 @@ class Badge(MixinMeta, ABC):
                 if "{}_{}".format(name, str(serverid)) not in userinfo["badges"].keys():
                     badge_info = server_badges[name]
                     if badge_info["price"] == -1:
-                        await ctx.send("**That badge is not purchasable.**")
+                        await ctx.send("That badge is not purchasable.")
                     elif badge_info["price"] == 0:
                         userinfo["badges"]["{}_{}".format(name, str(serverid))] = server_badges[
                             name
@@ -87,10 +87,11 @@ class Badge(MixinMeta, ABC):
                             {"user_id": userinfo["user_id"]},
                             {"$set": {"badges": userinfo["badges"]}},
                         )
-                        await ctx.send("**`{}` has been obtained.**".format(name))
+                        await ctx.send("`{}` has been obtained.\n"
+                                       "You can set it on your profile by using `{}badge set`.".format(name, ctx.clean_prefix))
                     else:
                         await ctx.send(
-                            "**{}, you are about to buy the `{}` badge for `{}`. Confirm by typing `yes`.**".format(
+                            "{}, you are about to buy the `{}` badge for `{}`. Confirm by typing `yes`.".format(
                                 user.mention, name, badge_info["price"]
                             ),
                             allowed_mentions=discord.AllowedMentions(
@@ -103,7 +104,7 @@ class Badge(MixinMeta, ABC):
                         except AsyncTimeoutError:
                             pass
                         if not pred.result:
-                            await ctx.send("**Purchase canceled.**")
+                            await ctx.send("Purchase canceled.")
                             return
                         if badge_info["price"] <= await bank.get_balance(user):
                             await bank.withdraw_credits(user, badge_info["price"])
@@ -115,28 +116,29 @@ class Badge(MixinMeta, ABC):
                                 {"$set": {"badges": userinfo["badges"]}},
                             )
                             await ctx.send(
-                                "**You have bought the `{}` badge for `{}`.**".format(
-                                    name, badge_info["price"]
+                                "You have bought the `{}` badge for `{}`.\n"
+                                "You can set it on your profile by using `{}badge set`.".format(
+                                    name, badge_info["price"], ctx.clean_prefix
                                 )
                             )
                         elif await bank.get_balance(user) < badge_info["price"]:
                             await ctx.send(
-                                "**Not enough money! Need `{}` more.**".format(
+                                "Not enough money! Need `{}` more.".format(
                                     badge_info["price"] - await bank.get_balance(user)
                                 )
                             )
                 else:
-                    await ctx.send("**{}, you already have this badge!**".format(user.name))
+                    await ctx.send("{}, you already have this badge!".format(user.name))
             else:
                 await ctx.send(
-                    "**The badge `{}` does not exist. Check `{}lvlset badge available`**".format(
+                    "The badge `{}` does not exist. Check `{}lvlset badge available`".format(
                         name, ctx.clean_prefix
                     )
                 )
         else:
             await ctx.send(
-                "**There are no badges to get! "
-                "You can try to buy global badge via `{}lvlset badge buy True {}`**".format(
+                "There are no badges to get! "
+                "You can try to buy global badge via `{}lvlset badge buy True {}`".format(
                     ctx.clean_prefix, name
                 )
             )
@@ -156,7 +158,7 @@ class Badge(MixinMeta, ABC):
         userinfo = await self._badge_convert_dict(userinfo)
 
         if priority_num < -1 or priority_num > 5000:
-            await ctx.send("**Invalid priority number! -1-5000**")
+            await ctx.send("Invalid priority number! -1-5000")
             return
 
         for badge in userinfo["badges"]:
@@ -167,10 +169,10 @@ class Badge(MixinMeta, ABC):
                     {"$set": {"badges": userinfo["badges"]}},
                 )
                 await ctx.send(
-                    "**The `{}` badge priority has been set to `{}`!**".format(
+                    "The `{}` badge priority has been set to `{}`!".format(
                         userinfo["badges"][badge]["badge_name"], priority_num
                     )
                 )
                 break
         else:
-            await ctx.send("**You don't have that badge!**")
+            await ctx.send("You don't have that badge!")

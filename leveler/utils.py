@@ -61,12 +61,12 @@ class Utils(MixinMeta):
         if bg_price != 0:
             if not await bank.can_spend(user, bg_price):
                 await ctx.send(
-                    f"**Insufficient funds. Backgrounds changes cost: "
-                    f"{bg_price}{(await bank.get_currency_name(server))[0]}**"
+                    f"Insufficient funds. Backgrounds changes cost: "
+                    f"{bg_price}{(await bank.get_currency_name(server))[0]}"
                 )
                 return False
             await ctx.send(
-                "**{}, you are about to buy a background for `{}`. Confirm by typing `yes`.**".format(
+                "{}, you are about to buy a background for `{}`. Confirm by typing `yes`.".format(
                     user.mention, bg_price
                 ),
                 allowed_mentions=discord.AllowedMentions(users=await self.config.mention()),
@@ -77,7 +77,7 @@ class Utils(MixinMeta):
             except AsyncTimeoutError:
                 pass
             if not pred.result:
-                await ctx.send("**Purchase canceled.**")
+                await ctx.send("Purchase canceled.")
                 return False
             await bank.withdraw_credits(user, bg_price)
             return True

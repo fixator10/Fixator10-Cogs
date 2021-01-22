@@ -180,7 +180,7 @@ class XP(MixinMeta):
             if await self.config.guild(server).text_only():
                 async with channel.typing():
                     em = discord.Embed(
-                        description="**{} just gained a level{}! (LEVEL {})**".format(
+                        description="{} just gained a level{}! (LEVEL {})".format(
                             name, server_identifier, new_level
                         ),
                         colour=user.colour,
@@ -196,7 +196,7 @@ class XP(MixinMeta):
                     levelup = await self.draw_levelup(user, server)
                     file = discord.File(levelup, filename="levelup.png")
                     await channel.send(
-                        "**{} just gained a level{}!**".format(name, server_identifier),
+                        "{} just gained a level{}!".format(name, server_identifier),
                         file=file,
                         allowed_mentions=discord.AllowedMentions(
                             users=await self.config.mention()

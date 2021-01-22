@@ -31,7 +31,7 @@ class Profiles(MixinMeta, metaclass=CompositeMetaClass):
                 profile = await self.draw_profile(user, server)
                 file = discord.File(profile, filename="profile.png")
                 await channel.send(
-                    "**User profile for {}**".format(user.mention),
+                    "User profile for {}".format(user.mention),
                     file=file,
                     allowed_mentions=discord.AllowedMentions(users=await self.config.mention()),
                 )
@@ -93,7 +93,7 @@ class Profiles(MixinMeta, metaclass=CompositeMetaClass):
                 rank = await self.draw_rank(user, server)
                 file = discord.File(rank, filename="rank.png")
                 await channel.send(
-                    "**Ranking & Statistics for {}**".format(user.mention),
+                    "Ranking & Statistics for {}".format(user.mention),
                     file=file,
                     allowed_mentions=discord.AllowedMentions(users=await self.config.mention()),
                 )

@@ -38,7 +38,7 @@ class Rank(MixinMeta):
         default_a = 200
 
         if await self.config.guild(ctx.guild).text_only():
-            await ctx.send("**Text-only commands allowed.**")
+            await ctx.send("Text-only commands allowed.")
             return
 
         # get correct section for db query
@@ -49,13 +49,13 @@ class Rank(MixinMeta):
         elif section == "all":
             section_name = "all"
         else:
-            await ctx.send("**Not a valid section. Must be `exp`, `info` or `all`**")
+            await ctx.send("Not a valid section. Must be `exp`, `info` or `all`")
             return
 
         # get correct color choice
         if color == "auto":
             if not all(lib in globals().keys() for lib in ["numpy", "cluster"]):
-                await ctx.send("**Missing required package. Autocolor feature unavailable**")
+                await ctx.send("Missing required package. Autocolor feature unavailable")
                 return
             if section == "exp":
                 color_ranks = [random.randint(2, 3)]
@@ -87,7 +87,7 @@ class Rank(MixinMeta):
             set_color = [color.r, color.g, color.b, default_a]
         else:
             await ctx.send(
-                "**Not a valid color. Must be `default`, `HEX color`, `white or `auto`.**"
+                "Not a valid color. Must be `default`, `HEX color`, `white or `auto`."
             )
             return
 
@@ -122,12 +122,12 @@ class Rank(MixinMeta):
                         }
                     },
                 )
-            await ctx.send("**Colors for rank set.**")
+            await ctx.send("Colors for rank set.")
         else:
             await self.db.users.update_one(
                 {"user_id": str(user.id)}, {"$set": {section_name: set_color[0]}}
             )
-            await ctx.send("**Color for rank {} set.**".format(section))
+            await ctx.send("Color for rank {} set.".format(section))
 
     @rankset.command(name="bg")
     @commands.guild_only()
@@ -137,7 +137,7 @@ class Rank(MixinMeta):
         backgrounds = await self.config.backgrounds()
 
         if await self.config.guild(ctx.guild).text_only():
-            await ctx.send("**Text-only commands allowed.**")
+            await ctx.send("Text-only commands allowed.")
             return
 
         if image_name in backgrounds["rank"].keys():
@@ -146,7 +146,7 @@ class Rank(MixinMeta):
                     {"user_id": str(user.id)},
                     {"$set": {"rank_background": backgrounds["rank"][image_name]}},
                 )
-                await ctx.send("**Your new rank background has been succesfully set!**")
+                await ctx.send("Your new rank background has been succesfully set!")
         else:
             await ctx.send(
                 f"That is not a valid background. See available backgrounds at `{ctx.clean_prefix}backgrounds rank`."

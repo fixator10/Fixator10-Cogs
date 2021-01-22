@@ -30,11 +30,11 @@ class Economy(MixinMeta):
         server = ctx.guild
 
         if currency < 0 or currency > 1000:
-            await ctx.send("**Please enter a valid number between 0 and 1000.**")
+            await ctx.send("Please enter a valid number between 0 and 1000.")
             return
 
         await self.config.guild(server).msg_credits.set(currency)
-        await ctx.send("**Credits per message logged set to `{}`.**".format(currency))
+        await ctx.send("Credits per message logged set to `{}`.".format(currency))
 
     @commands.is_owner()
     @lvladmin.command()
@@ -43,7 +43,7 @@ class Economy(MixinMeta):
     async def setprice(self, ctx, price: int):
         """Set a price for background changes."""
         if price < 0:
-            await ctx.send("**That is not a valid background price.**")
+            await ctx.send("That is not a valid background price.")
         else:
             await self.config.bg_price.set(price)
-            await ctx.send(f"**Background price set to: `{price}`!**")
+            await ctx.send(f"Background price set to: `{price}`!")

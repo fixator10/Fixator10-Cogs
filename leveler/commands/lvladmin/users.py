@@ -64,7 +64,7 @@ class Users(MixinMeta):
         userinfo = await self.db.users.find_one({"user_id": str(user.id)})
 
         if level < 0:
-            await ctx.send("**Please enter a positive number.**")
+            await ctx.send("Please enter a positive number.")
             return
 
         # get rid of old level exp
@@ -91,7 +91,7 @@ class Users(MixinMeta):
             },
         )
         await ctx.send(
-            "**{}'s Level has been set to `{}`.**".format(user.mention, level),
+            "{}'s Level has been set to `{}`.".format(user.mention, level),
             allowed_mentions=discord.AllowedMentions(users=await self.config.mention()),
         )
         await self._handle_levelup(user, userinfo, server, channel)

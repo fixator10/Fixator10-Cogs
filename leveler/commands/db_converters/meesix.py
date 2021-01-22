@@ -25,7 +25,7 @@ class MeeSix(MixinMeta):
         This command must be run in a channel in the guild to be converted."""
         if await self.config.guild(ctx.guild).mentions():
             msg = (
-                "**{}, levelup mentions are on in this server.**\n"
+                "{}, levelup mentions are on in this server.\n"
                 "The bot will ping every user that will be leveled up through this process if you continue.\n"
                 "Reply with `yes` if you want this conversion to continue.\n"
                 "If not, reply with `no` and then run `{}lvladmin mention` "
@@ -36,9 +36,9 @@ class MeeSix(MixinMeta):
             try:
                 await self.bot.wait_for("message", check=pred, timeout=15)
             except TimeoutError:
-                return await ctx.send("**Timed out waiting for a response.**")
+                return await ctx.send("Timed out waiting for a response.")
             if pred.result is False:
-                return await ctx.send("**Command cancelled.**")
+                return await ctx.send("Command cancelled.")
         failed = 0
         async for i in AsyncIter(range(pages)):
             async with self.session.get(
@@ -114,7 +114,7 @@ class MeeSix(MixinMeta):
 
             role_obj = ctx.guild.get_role(role_id)
             if role_obj is None:
-                await ctx.send("**Please make sure the `{}` roles exist!**".format(role_name))
+                await ctx.send("Please make sure the `{}` roles exist!".format(role_name))
             else:
                 server_roles = await self.db.roles.find_one({"server_id": str(server.id)})
                 if not server_roles:
@@ -134,5 +134,5 @@ class MeeSix(MixinMeta):
                     )
 
                 await ctx.send(
-                    "**The `{}` role has been linked to level `{}`**".format(role_name, level)
+                    "The `{}` role has been linked to level `{}`".format(role_name, level)
                 )

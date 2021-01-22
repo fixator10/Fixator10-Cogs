@@ -48,7 +48,7 @@ class DefaultImageGeneratorsUtils(MixinMeta):
     # uses k-means algorithm to find color from bg, rank is abundance of color, descending
     async def _auto_color(self, ctx, url: str, ranks):
         phrases = ["Calculating colors..."]  # in case I want more
-        await ctx.send("**{}**".format(random.choice(phrases)))
+        await ctx.send("{}".format(random.choice(phrases)))
         clusters = 10
 
         async with self.session.get(url) as r:

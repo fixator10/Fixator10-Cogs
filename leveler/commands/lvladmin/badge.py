@@ -55,7 +55,7 @@ class Badge(MixinMeta):
             pass
         elif members < required_members:
             await ctx.send(
-                "**You may only add badges in servers with {}+ non-bot members**".format(
+                "You may only add badges in servers with {}+ non-bot members".format(
                     required_members
                 )
             )
@@ -69,19 +69,19 @@ class Badge(MixinMeta):
             servername = server.name
 
         if "." in name:
-            await ctx.send("**Name cannot contain `.`**")
+            await ctx.send("Name cannot contain `.`")
             return
 
         if not await self._valid_image_url(bg_img):
-            await ctx.send("**Background is not valid. Enter HEX color or image URL!**")
+            await ctx.send("Background is not valid. Enter HEX color or image URL!")
             return
 
         if price < -1:
-            await ctx.send("**Price is not valid!**")
+            await ctx.send("Price is not valid!")
             return
 
         if len(description.split(" ")) > 40:
-            await ctx.send("**Description is too long! Must be 40 or less.**")
+            await ctx.send("Description is too long! Must be 40 or less.")
             return
 
         badges = await self.db.badges.find_one({"server_id": str(serverid)})
@@ -106,7 +106,7 @@ class Badge(MixinMeta):
             await self.db.badges.update_one(
                 {"server_id": str(serverid)}, {"$set": {"badges": badges["badges"]}}
             )
-            await ctx.send("**`{}` Badge added in `{}` server.**".format(name, servername))
+            await ctx.send("`{}` Badge added in `{}` server.".format(name, servername))
         else:
             # update badge in the server
             badges["badges"][name] = new_badge
@@ -133,7 +133,7 @@ class Badge(MixinMeta):
                         )
                 except Exception as exc:
                     self.log.error(f"Unable to update badge {name} for {user['user_id']}: {exc}")
-            await ctx.send("**The `{}` badge has been updated**".format(name))
+            await ctx.send("The `{}` badge has been updated".format(name))
 
     @commands.is_owner()
     @badge.command()
@@ -142,11 +142,11 @@ class Badge(MixinMeta):
         """Define if badge must be circles or bars."""
         valid_types = ["circles", "bars"]
         if name.lower() not in valid_types:
-            await ctx.send("**That is not a valid badge type!**")
+            await ctx.send("That is not a valid badge type!")
             return
 
         await self.config.badge_type.set(name.lower())
-        await ctx.send("**Badge type set to `{}`**".format(name.lower()))
+        await ctx.send("Badge type set to `{}`".format(name.lower()))
 
     @commands.mod_or_permissions(manage_roles=True)
     @badge.command(name="delete")
@@ -186,9 +186,9 @@ class Badge(MixinMeta):
                             f"Unable to delete badge {name} from {user_info_temp['user_id']}: {exc}"
                         )
 
-            await ctx.send("**The `{}` badge has been removed.**".format(name))
+            await ctx.send("The `{}` badge has been removed.".format(name))
         else:
-            await ctx.send("**That badge does not exist.**")
+            await ctx.send("That badge does not exist.")
 
     @commands.mod_or_permissions(manage_roles=True)
     @badge.command()
@@ -211,11 +211,11 @@ class Badge(MixinMeta):
         badge_name = "{}_{}".format(name, server.id)
 
         if name not in badges:
-            await ctx.send("**That badge doesn't exist in this server!**")
+            await ctx.send("That badge doesn't exist in this server!")
             return
         if badge_name in badges.keys():
             await ctx.send(
-                "**{} already has that badge!**".format(user.mention),
+                "{} already has that badge!".format(user.mention),
                 allowed_mentions=discord.AllowedMentions(users=await self.config.mention()),
             )
             return
@@ -224,7 +224,7 @@ class Badge(MixinMeta):
             {"user_id": str(user.id)}, {"$set": {"badges": userinfo["badges"]}}
         )
         await ctx.send(
-            "**{} has just given {} the `{}` badge!**".format(
+            "{} has just given {} the `{}` badge!".format(
                 org_user.mention, user.mention, name
             ),
             allowed_mentions=discord.AllowedMentions(users=await self.config.mention()),
@@ -250,10 +250,10 @@ class Badge(MixinMeta):
         badge_name = "{}_{}".format(name, server.id)
 
         if name not in badges:
-            await ctx.send("**That badge doesn't exist in this server!**")
+            await ctx.send("That badge doesn't exist in this server!")
         elif badge_name not in userinfo["badges"]:
             await ctx.send(
-                "**{} does not have that badge!**".format(user.mention),
+                "{} does not have that badge!".format(user.mention),
                 allowed_mentions=discord.AllowedMentions(users=await self.config.mention()),
             )
         else:
@@ -263,7 +263,7 @@ class Badge(MixinMeta):
                     {"user_id": str(user.id)}, {"$set": {"badges": userinfo["badges"]}}
                 )
                 await ctx.send(
-                    "**{} has taken the `{}` badge from {}! :upside_down:**".format(
+                    "{} has taken the `{}` badge from {}! :upside_down:".format(
                         org_user.mention,
                         name,
                         user.mention,
@@ -271,7 +271,7 @@ class Badge(MixinMeta):
                     allowed_mentions=discord.AllowedMentions(users=await self.config.mention()),
                 )
             else:
-                await ctx.send("**You can't take away purchasable badges!**")
+                await ctx.send("You can't take away purchasable badges!")
 
     @commands.mod_or_permissions(manage_roles=True)
     @badge.command(name="link")
@@ -284,11 +284,11 @@ class Badge(MixinMeta):
         serverbadges = await self.db.badges.find_one({"server_id": str(server.id)})
 
         if serverbadges is None:
-            await ctx.send("**This server does not have any badges!**")
+            await ctx.send("This server does not have any badges!")
             return
 
         if badge_name not in serverbadges["badges"].keys():
-            await ctx.send("**Please make sure the `{}` badge exists!**".format(badge_name))
+            await ctx.send("Please make sure the `{}` badge exists!".format(badge_name))
             return
         server_linked_badges = await self.db.badgelinks.find_one({"server_id": str(server.id)})
         if not server_linked_badges:
@@ -304,7 +304,7 @@ class Badge(MixinMeta):
                 {"$set": {"badges": server_linked_badges["badges"]}},
             )
         await ctx.send(
-            "**The `{}` badge has been linked to level `{}`**".format(badge_name, level)
+            "The `{}` badge has been linked to level `{}`".format(badge_name, level)
         )
 
     @commands.admin_or_permissions(manage_roles=True)
@@ -319,7 +319,7 @@ class Badge(MixinMeta):
 
         if badge_name in badge_links.keys():
             await ctx.send(
-                "**Badge/Level association `{}`/`{}` removed.**".format(
+                "Badge/Level association `{}`/`{}` removed.".format(
                     badge_name, badge_links[badge_name]
                 )
             )
@@ -328,7 +328,7 @@ class Badge(MixinMeta):
                 {"server_id": str(server.id)}, {"$set": {"badges": badge_links}}
             )
         else:
-            await ctx.send("**The `{}` badge is not linked to any levels!**".format(badge_name))
+            await ctx.send("The `{}` badge is not linked to any levels!".format(badge_name))
 
     @commands.mod_or_permissions(manage_roles=True)
     @badge.command(name="listlinks")
@@ -348,9 +348,9 @@ class Badge(MixinMeta):
             badges = OrderedDict(server_badges["badges"])
             for k in sortorder:
                 badges.move_to_end(k)
-            msg = "**Badge** → Level\n"
+            msg = "Badge → Level\n"
             for badge in badges.keys():
-                msg += "**• {} →** {}\n".format(badge, badges[badge])
+                msg += "• {} → {}\n".format(badge, badges[badge])
 
         pages = list(chat.pagify(msg, page_length=2048))
         embeds = []

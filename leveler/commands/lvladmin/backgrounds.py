@@ -24,13 +24,13 @@ class Backgrounds(MixinMeta):
         The proportions must be 290px x 290px."""
         backgrounds = await self.config.backgrounds()
         if name in backgrounds["profile"].keys():
-            await ctx.send("**That profile background name already exists!**")
+            await ctx.send("That profile background name already exists!")
         elif not await self._valid_image_url(url):
-            await ctx.send("**That is not a valid image URL!**")
+            await ctx.send("That is not a valid image URL!")
         else:
             async with self.config.backgrounds() as backgrounds:
                 backgrounds["profile"][name] = url
-            await ctx.send("**New profile background (`{}`) added.**".format(name))
+            await ctx.send("New profile background (`{}`) added.".format(name))
 
     @lvladminbg.command()
     async def addrankbg(self, ctx, name: str, url: str):
@@ -39,13 +39,13 @@ class Backgrounds(MixinMeta):
         The proportions must be 360px x 100px."""
         backgrounds = await self.config.backgrounds()
         if name in backgrounds["profile"].keys():
-            await ctx.send("**That rank background name already exists!**")
+            await ctx.send("That rank background name already exists!")
         elif not await self._valid_image_url(url):
-            await ctx.send("**That is not a valid image URL!**")
+            await ctx.send("That is not a valid image URL!")
         else:
             async with self.config.backgrounds() as backgrounds:
                 backgrounds["rank"][name] = url
-            await ctx.send("**New rank background (`{}`) added.**".format(name))
+            await ctx.send("New rank background (`{}`) added.".format(name))
 
     @lvladminbg.command()
     async def addlevelbg(self, ctx, name: str, url: str):
@@ -54,13 +54,13 @@ class Backgrounds(MixinMeta):
         The proportions must be 175px x 65px."""
         backgrounds = await self.config.backgrounds()
         if name in backgrounds["levelup"].keys():
-            await ctx.send("**That level-up background name already exists!**")
+            await ctx.send("That level-up background name already exists!")
         elif not await self._valid_image_url(url):
-            await ctx.send("**That is not a valid image URL!**")
+            await ctx.send("That is not a valid image URL!")
         else:
             async with self.config.backgrounds() as backgrounds:
                 backgrounds["levelup"][name] = url
-            await ctx.send("**New level-up background (`{}`) added.**".format(name))
+            await ctx.send("New level-up background (`{}`) added.".format(name))
 
     @lvladminbg.command()
     async def setcustombg(self, ctx, bg_type: str, user_id: str, img_url: str):
@@ -71,24 +71,24 @@ class Backgrounds(MixinMeta):
         type_input = bg_type.lower()
 
         if type_input not in valid_types:
-            await ctx.send("**Please choose a valid type. Must be `profile`, `rank` or `levelup`.")
+            await ctx.send("Please choose a valid type. Must be `profile`, `rank` or `levelup`.")
             return
 
         # test if valid user_id
         userinfo = await self.db.users.find_one({"user_id": str(user_id)})
         if not userinfo:
-            await ctx.send("**That is not a valid user id!**")
+            await ctx.send("That is not a valid user id!")
             return
 
         if not await self._valid_image_url(img_url):
-            await ctx.send("**That is not a valid image URL!**")
+            await ctx.send("That is not a valid image URL!")
             return
 
         await self.db.users.update_one(
             {"user_id": str(user_id)},
             {"$set": {"{}_background".format(type_input): img_url}},
         )
-        await ctx.send("**User {} custom {} background set.**".format(user_id, bg_type))
+        await ctx.send("User {} custom {} background set.".format(user_id, bg_type))
 
     @lvladminbg.command()
     async def delprofilebg(self, ctx, name: str):
@@ -96,9 +96,9 @@ class Backgrounds(MixinMeta):
         bgs = await self.config.backgrounds()
         if name in bgs["profile"].keys():
             await self.config.clear_raw("backgrounds", "profile", name)
-            await ctx.send("**The profile background(`{}`) has been deleted.**".format(name))
+            await ctx.send("The profile background(`{}`) has been deleted.".format(name))
         else:
-            await ctx.send("**That profile background name doesn't exist.**")
+            await ctx.send("That profile background name doesn't exist.")
 
     @lvladminbg.command()
     async def delrankbg(self, ctx, name: str):
@@ -106,9 +106,9 @@ class Backgrounds(MixinMeta):
         bgs = await self.config.backgrounds()
         if name in bgs["rank"].keys():
             await self.config.clear_raw("backgrounds", "rank", name)
-            await ctx.send("**The rank background(`{}`) has been deleted.**".format(name))
+            await ctx.send("The rank background(`{}`) has been deleted.".format(name))
         else:
-            await ctx.send("**That rank background name doesn't exist.**")
+            await ctx.send("That rank background name doesn't exist.")
 
     @lvladminbg.command()
     async def dellevelbg(self, ctx, name: str):
@@ -116,6 +116,6 @@ class Backgrounds(MixinMeta):
         bgs = await self.config.backgrounds()
         if name in bgs["levelup"].keys():
             await self.config.clear_raw("backgrounds", "levelup", name)
-            await ctx.send("**The level-up background(`{}`) has been deleted.**".format(name))
+            await ctx.send("The level-up background(`{}`) has been deleted.".format(name))
         else:
-            await ctx.send("**That level-up background name doesn't exist.**")
+            await ctx.send("That level-up background name doesn't exist.")

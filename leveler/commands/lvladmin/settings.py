@@ -67,7 +67,7 @@ class Settings(MixinMeta):
         """Resets all reputation points from MonogoDB"""
         async with ctx.typing():
             await self.db.users.update_many({}, {"$set": {"rep": 0}})
-            await ctx.send("**All reputation points have been removed.**")
+            await ctx.send("All reputation points have been removed.")
 
     @lvladmin.command()
     @commands.guild_only()
@@ -83,17 +83,17 @@ class Settings(MixinMeta):
                 if server.get_channel(c)
             ]
             await ctx.send(
-                "**Ignored channels:** \n" + ("\n".join(channels) or "No ignored channels set")
+                "Ignored channels: \n" + ("\n".join(channels) or "No ignored channels set")
             )
             return
         if channel.id in await self.config.guild(server).ignored_channels():
             async with self.config.guild(server).ignored_channels() as channels:
                 channels.remove(channel.id)
-            await ctx.send(f"**Messages in {channel.mention} will give exp now.**")
+            await ctx.send(f"Messages in {channel.mention} will give exp now.")
         else:
             async with self.config.guild(server).ignored_channels() as channels:
                 channels.append(channel.id)
-            await ctx.send(f"**Messages in {channel.mention} will not give exp now.**")
+            await ctx.send(f"Messages in {channel.mention} will not give exp now.")
 
     @commands.is_owner()
     @lvladmin.command()
@@ -102,10 +102,10 @@ class Settings(MixinMeta):
         """Toggle mentions on messages."""
         if await self.config.mention():
             await self.config.mention.set(False)
-            await ctx.send("**Mentions disabled.**")
+            await ctx.send("Mentions disabled.")
         else:
             await self.config.mention.set(True)
-            await ctx.send("**Mentions enabled.**")
+            await ctx.send("Mentions enabled.")
 
     @lvladmin.command()
     @commands.guild_only()
@@ -114,10 +114,10 @@ class Settings(MixinMeta):
         server = ctx.guild
         if await self.config.guild(server).text_only():
             await self.config.guild(server).text_only.set(False)
-            await ctx.send("**Text-only messages disabled for `{}`.**".format(server.name))
+            await ctx.send("Text-only messages disabled for `{}`.".format(server.name))
         else:
             await self.config.guild(server).text_only.set(True)
-            await ctx.send("**Text-only messages enabled for `{}`.**".format(server.name))
+            await ctx.send("Text-only messages enabled for `{}`.".format(server.name))
 
     @lvladmin.command(name="alerts")
     @commands.guild_only()
@@ -127,10 +127,10 @@ class Settings(MixinMeta):
 
         if await self.config.guild(server).lvl_msg():
             await self.config.guild(server).lvl_msg.set(False)
-            await ctx.send("**Level-up alerts disabled for `{}`.**".format(server.name))
+            await ctx.send("Level-up alerts disabled for `{}`.".format(server.name))
         else:
             await self.config.guild(server).lvl_msg.set(True)
-            await ctx.send("**Level-up alerts enabled for `{}`.**".format(server.name))
+            await ctx.send("Level-up alerts enabled for `{}`.".format(server.name))
 
     @lvladmin.command(name="private")
     @commands.guild_only()
@@ -139,10 +139,10 @@ class Settings(MixinMeta):
         server = ctx.guild
         if await self.config.guild(server).private_lvl_message():
             await self.config.guild(server).private_lvl_message.set(False)
-            await ctx.send("**Private level-up alerts disabled for `{}`.**".format(server.name))
+            await ctx.send("Private level-up alerts disabled for `{}`.".format(server.name))
         else:
             await self.config.guild(server).private_lvl_message.set(True)
-            await ctx.send("**Private level-up alerts enabled for `{}`.**".format(server.name))
+            await ctx.send("Private level-up alerts enabled for `{}`.".format(server.name))
 
     @checks.is_owner()
     @lvladmin.command()
@@ -154,10 +154,10 @@ class Settings(MixinMeta):
         """
         if await self.config.rep_rotation():
             await self.config.rep_rotation.set(False)
-            await ctx.send("**Rep rotation is disabled.**")
+            await ctx.send("Rep rotation is disabled.")
         else:
             await self.config.rep_rotation.set(True)
-            await ctx.send("**Rep rotation is enabled.**")
+            await ctx.send("Rep rotation is enabled.")
 
     @lvladmin.command(aliases=["exp"])
     @commands.is_owner()
@@ -201,12 +201,12 @@ class Settings(MixinMeta):
         if await self.config.allow_global_top():
             await self.config.allow_global_top.set(False)
             await ctx.send(
-                "**`--global` argument is now available only to owner.**".format(server.name)
+                "`--global` argument is now available only to owner.".format(server.name)
             )
         else:
             await self.config.allow_global_top.set(True)
             await ctx.send(
-                "**`--global` argument is now available to everyone.**".format(server.name)
+                "`--global` argument is now available to everyone.".format(server.name)
             )
 
     @lvladmin.command()
@@ -219,12 +219,12 @@ class Settings(MixinMeta):
         if await self.config.global_levels():
             await self.config.global_levels.set(False)
             await ctx.send(
-                "**Levels will be not included in global leaderboard now.**".format(server.name)
+                "Levels will be not included in global leaderboard now.".format(server.name)
             )
         else:
             await self.config.global_levels.set(True)
             await ctx.send(
-                "**Levels will be included in global leaderboard now.**".format(server.name)
+                "Levels will be included in global leaderboard now.".format(server.name)
             )
 
     @lvladmin.command(name="lock")
@@ -238,7 +238,7 @@ class Settings(MixinMeta):
 
         if channel.id == await self.config.guild(server).lvl_msg_lock():
             await self.config.guild(server).lvl_msg_lock.set(None)
-            await ctx.send("**Level-up message lock disabled.**")
+            await ctx.send("Level-up message lock disabled.")
         else:
             await self.config.guild(server).lvl_msg_lock.set(channel.id)
-            await ctx.send("**Level-up messages locked to `#{}`**".format(channel.name))
+            await ctx.send("Level-up messages locked to `#{}`".format(channel.name))

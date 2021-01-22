@@ -35,20 +35,20 @@ class Levelup(MixinMeta):
         default_a = 200
 
         if await self.config.guild(ctx.guild).text_only():
-            await ctx.send("**Text-only commands allowed.**")
+            await ctx.send("Text-only commands allowed.")
             return
 
         # get correct section for db query
         if section == "info":
             section_name = "levelup_info_color"
         else:
-            await ctx.send("**Not a valid section. Must be `info`.**")
+            await ctx.send("Not a valid section. Must be `info`.")
             return
 
         # get correct color choice
         if color == "auto":
             if not all(lib in globals().keys() for lib in ["numpy", "cluster"]):
-                await ctx.send("**Missing required package. Autocolor feature unavailable**")
+                await ctx.send("Missing required package. Autocolor feature unavailable")
                 return
             if section == "info":
                 color_ranks = [random.randint(0, 1)]
@@ -63,13 +63,13 @@ class Levelup(MixinMeta):
         elif isinstance(color, discord.Color):
             set_color = [color.r, color.g, color.b, default_a]
         else:
-            await ctx.send("**Not a valid color. Must be `default` `HEX color` or `auto`.**")
+            await ctx.send("Not a valid color. Must be `default` `HEX color` or `auto`.")
             return
 
         await self.db.users.update_one(
             {"user_id": str(user.id)}, {"$set": {section_name: set_color[0]}}
         )
-        await ctx.send("**Color for level-up {} set.**".format(section))
+        await ctx.send("Color for level-up {} set.".format(section))
 
     @levelupset.command(name="bg")
     @commands.guild_only()
@@ -79,7 +79,7 @@ class Levelup(MixinMeta):
         backgrounds = await self.config.backgrounds()
 
         if await self.config.guild(ctx.guild).text_only():
-            await ctx.send("**Text-only commands allowed.**")
+            await ctx.send("Text-only commands allowed.")
             return
 
         if image_name in backgrounds["levelup"].keys():
@@ -88,7 +88,7 @@ class Levelup(MixinMeta):
                     {"user_id": str(user.id)},
                     {"$set": {"levelup_background": backgrounds["levelup"][image_name]}},
                 )
-                await ctx.send("**Your new level-up background has been succesfully set!**")
+                await ctx.send("Your new level-up background has been succesfully set!")
         else:
             await ctx.send(
                 f"That is not a valid background. See available backgrounds at `{ctx.clean_prefix}backgrounds levelup`."

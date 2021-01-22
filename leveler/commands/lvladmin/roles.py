@@ -59,12 +59,12 @@ class Roles(MixinMeta):
 
         if remove_role:
             await ctx.send(
-                "**The `{}` role has been linked to level `{}`. "
-                "Will also remove `{}` role.**".format(add_role, level, remove_role)
+                "The `{}` role has been linked to level `{}`. "
+                "Will also remove `{}` role.".format(add_role, level, remove_role)
             )
         else:
             await ctx.send(
-                "**The `{}` role has been linked to level `{}`**".format(add_role, level)
+                "The `{}` role has been linked to level `{}`".format(add_role, level)
             )
 
     @commands.mod_or_permissions(manage_roles=True)
@@ -82,7 +82,7 @@ class Roles(MixinMeta):
 
         if role_to_unlink in roles:
             await ctx.send(
-                "**Role/Level association `{}`/`{}` removed.**".format(
+                "Role/Level association `{}`/`{}` removed.".format(
                     role_to_unlink, roles[role_to_unlink]["level"]
                 )
             )
@@ -91,7 +91,7 @@ class Roles(MixinMeta):
                 {"server_id": str(server.id)}, {"$set": {"roles": roles}}
             )
         else:
-            await ctx.send("**The `{}` role is not linked to any levels!**".format(role_to_unlink))
+            await ctx.send("The `{}` role is not linked to any levels!".format(role_to_unlink))
 
     @commands.mod_or_permissions(manage_roles=True)
     @role.command(name="listlinks")
@@ -112,14 +112,14 @@ class Roles(MixinMeta):
             roles = OrderedDict(server_roles["roles"])
             for k in sortorder:
                 roles.move_to_end(k)
-            msg = "**Role** → Level\n"
+            msg = "Role → Level\n"
             for role in roles:
                 if roles[role]["remove_role"]:
-                    msg += "**• {} →** {} (Removes: {})\n".format(
+                    msg += "• {} → {} (Removes: {})\n".format(
                         role, roles[role]["level"], roles[role]["remove_role"]
                     )
                 else:
-                    msg += "**• {} →** {}\n".format(role, roles[role]["level"])
+                    msg += "• {} → {}\n".format(role, roles[role]["level"])
 
         pages = list(chat.pagify(msg, page_length=2048))
         embeds = []

@@ -24,13 +24,13 @@ class Other(MixinMeta, metaclass=CompositeMetaClass):
         curr_time = time.time()
 
         if user and user.id == org_user.id:
-            await ctx.send("**You can't give a rep to yourself!**")
+            await ctx.send("You can't give a rep to yourself!")
             return
         if user and user.bot:
-            await ctx.send("**You can't give a rep to a bot!**")
+            await ctx.send("You can't give a rep to a bot!")
             return
         if user and await self.config.rep_rotation() and user.id == org_userinfo.get("lastrep"):
-            await ctx.send("**You already gave a rep point to this user!**")
+            await ctx.send("You already gave a rep point to this user!")
             return
 
         delta = float(curr_time) - float(org_userinfo.get("rep_block", 0))
@@ -46,17 +46,17 @@ class Other(MixinMeta, metaclass=CompositeMetaClass):
                 {"user_id": str(user.id)}, {"$set": {"rep": userinfo["rep"] + 1}}
             )
             await ctx.send(
-                "**You have just given {} a reputation point!**".format(user.mention),
+                "You have just given {} a reputation point!".format(user.mention),
                 allowed_mentions=discord.AllowedMentions(users=await self.config.mention()),
             )
         else:
             # calulate time left
             seconds = 43200 - delta
             if seconds < 0:
-                await ctx.send("**You can give a rep!**")
+                await ctx.send("You can give a rep!")
                 return
             await ctx.send(
-                "**You need to wait {} until you can give reputation again!**".format(
+                "You need to wait {} until you can give reputation again!".format(
                     chat.humanize_timedelta(seconds=seconds)
                 )
             )

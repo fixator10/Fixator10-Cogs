@@ -37,7 +37,7 @@ class Profile(MixinMeta):
         default_a = 200
 
         if await self.config.guild(ctx.guild).text_only():
-            await ctx.send("**Text-only commands allowed.**")
+            await ctx.send("Text-only commands allowed.")
             return
 
         # get correct section for db query
@@ -53,14 +53,14 @@ class Profile(MixinMeta):
             section_name = "all"
         else:
             await ctx.send(
-                "**Not a valid section. Must be `rep`, `exp`, `badge`, `info` or `all`.**"
+                "Not a valid section. Must be `rep`, `exp`, `badge`, `info` or `all`."
             )
             return
 
         # get correct color choice
         if color == "auto":
             if not all(lib in globals().keys() for lib in ["numpy", "cluster"]):
-                await ctx.send("**Missing required package. Autocolor feature unavailable**")
+                await ctx.send("Missing required package. Autocolor feature unavailable")
                 return
             if section == "exp":
                 color_ranks = [random.randint(2, 3)]
@@ -102,7 +102,7 @@ class Profile(MixinMeta):
         elif isinstance(color, discord.Color):
             set_color = [color.r, color.g, color.b, default_a]
         else:
-            await ctx.send("**Not a valid color. Must be `default`, `HEX color` or `auto`.**")
+            await ctx.send("Not a valid color. Must be `default`, `HEX color` or `auto`.")
             return
 
         if section == "all":
@@ -142,12 +142,12 @@ class Profile(MixinMeta):
                         }
                     },
                 )
-            await ctx.send("**Colors for profile set.**")
+            await ctx.send("Colors for profile set.")
         else:
             await self.db.users.update_one(
                 {"user_id": str(user.id)}, {"$set": {section_name: set_color[0]}}
             )
-            await ctx.send("**Color for profile {} set.**".format(section))
+            await ctx.send("Color for profile {} set.".format(section))
 
     @profileset.command(name="bg")
     @commands.guild_only()
@@ -157,7 +157,7 @@ class Profile(MixinMeta):
         backgrounds = await self.config.backgrounds()
 
         if await self.config.guild(ctx.guild).text_only():
-            await ctx.send("**Text-only commands allowed.**")
+            await ctx.send("Text-only commands allowed.")
             return
 
         if image_name in backgrounds["profile"].keys():
@@ -166,7 +166,7 @@ class Profile(MixinMeta):
                     {"user_id": str(user.id)},
                     {"$set": {"profile_background": backgrounds["profile"][image_name]}},
                 )
-                await ctx.send("**Your new profile background has been succesfully set!**")
+                await ctx.send("Your new profile background has been succesfully set!")
         else:
             await ctx.send(
                 f"That is not a valid background. See available backgrounds at `{ctx.clean_prefix}backgrounds profile`."
@@ -183,10 +183,10 @@ class Profile(MixinMeta):
         if len(title) < max_char:
             userinfo["title"] = title
             await self.db.users.update_one({"user_id": str(user.id)}, {"$set": {"title": title}})
-            await ctx.send("**Your title has been succesfully set!**")
+            await ctx.send("Your title has been succesfully set!")
         else:
             await ctx.send(
-                "**Your title has too many characters! Must be {} or less.**".format(max_char)
+                "Your title has too many characters! Must be {} or less.".format(max_char)
             )
 
     @profileset.command()
@@ -198,10 +198,10 @@ class Profile(MixinMeta):
 
         if len(info) < max_char:
             await self.db.users.update_one({"user_id": str(user.id)}, {"$set": {"info": info}})
-            await ctx.send("**Your info section has been succesfully set!**")
+            await ctx.send("Your info section has been succesfully set!")
         else:
             await ctx.send(
-                "**Your description has too many characters! Must be {} or less.**".format(
+                "Your description has too many characters! Must be {} or less.".format(
                     max_char
                 )
             )
