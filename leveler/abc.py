@@ -1,8 +1,7 @@
 from abc import ABC, abstractmethod
 from io import BytesIO
 from logging import Logger
-from re import Match
-from typing import List, Optional
+from typing import List
 
 from aiohttp import ClientSession
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase

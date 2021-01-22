@@ -1,4 +1,3 @@
-import re
 from asyncio import TimeoutError as AsyncTimeoutError
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
 from functools import partial

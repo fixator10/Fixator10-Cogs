@@ -1,12 +1,6 @@
-import asyncio
-from contextlib import suppress
-
 import discord
 from redbot.core.bank import get_currency_name
-from redbot.core.utils import chat_formatting as chat
-from redbot.core.utils.predicates import MessagePredicate
 from redbot.vendored.discord.ext import menus
-from tabulate import tabulate
 
 
 class BadgeMenu(menus.MenuPages, inherit_buttons=False):
