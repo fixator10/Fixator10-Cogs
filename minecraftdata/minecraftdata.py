@@ -1,7 +1,5 @@
 import base64
-import io
 import re
-from base64 import b64decode
 from datetime import datetime, timezone
 from io import BytesIO
 
@@ -172,7 +170,7 @@ class MinecraftData(commands.Cog):
                     )
                 )
             return
-        cape = io.BytesIO(cape)
+        cape = BytesIO(cape)
         file = discord.File(cape, filename="{}.png".format(player))
         await ctx.send(file=file)
         cape.close()
@@ -226,7 +224,7 @@ class MinecraftData(commands.Cog):
                     )
                 )
             return
-        cape = io.BytesIO(base64.decodebytes(cape.encode()))
+        cape = BytesIO(base64.decodebytes(cape.encode()))
         file = discord.File(cape, filename="{}.png".format(player))
         await ctx.send(file=file)
         cape.close()
@@ -258,7 +256,7 @@ class MinecraftData(commands.Cog):
                     )
                 )
             return
-        cape = io.BytesIO(base64.decodebytes(cape.encode()))
+        cape = BytesIO(base64.decodebytes(cape.encode()))
         file = discord.File(cape, filename="{}.png".format(player))
         await ctx.send(file=file)
         cape.close()
@@ -286,7 +284,7 @@ class MinecraftData(commands.Cog):
         icon_file = None
         icon = (
             discord.File(
-                icon_file := BytesIO(b64decode(status.favicon.split(",", 1)[1])),
+                icon_file := BytesIO(base64.b64decode(status.favicon.split(",", 1)[1])),
                 filename="icon.png",
             )
             if status.favicon
