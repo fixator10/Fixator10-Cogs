@@ -51,10 +51,6 @@ class MixinMeta(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def _is_hex(self, color: str) -> Optional[Match]:
-        raise NotImplementedError
-
-    @abstractmethod
     def _truncate_text(self, text, max_length) -> str:
         raise NotImplementedError
 

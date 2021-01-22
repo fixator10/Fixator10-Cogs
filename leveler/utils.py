@@ -84,13 +84,6 @@ class Utils(MixinMeta):
             return True
         return True
 
-    async def _is_hex(self, color: str):
-        if color is not None and len(color) != 4 and len(color) != 7:
-            return False
-
-        reg_ex = r"^#(?:[0-9a-fA-F]{3}){1,2}$"
-        return re.search(reg_ex, str(color))
-
     def _truncate_text(self, text, max_length):
         if len(text) > max_length:
             return text[: max_length - 1] + "…"

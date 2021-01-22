@@ -1,4 +1,3 @@
-import operator
 from abc import ABC
 from asyncio import TimeoutError as AsyncTimeoutError
 from typing import Optional
@@ -6,10 +5,10 @@ from typing import Optional
 import discord
 from redbot.core import bank, commands
 from redbot.core.utils import chat_formatting as chat
-from redbot.core.utils.menus import DEFAULT_CONTROLS, menu
 from redbot.core.utils.predicates import MessagePredicate
 
 from leveler.abc import MixinMeta
+from leveler.menus.badges import AvailableBadgePager, BadgeMenu, OwnBadgePager
 
 from .basecmd import LevelSetBaseCMD
 
@@ -36,39 +35,14 @@ class Badge(MixinMeta, ABC):
             servername = server.name
             icon_url = server.icon_url
             serverid = server.id
-        em = discord.Embed(title="Badges available", colour=await ctx.embed_color())
-        em.set_author(name="{}".format(servername), icon_url=icon_url)
-        msg = ""
-        server_badge_info = await self.db.badges.find_one({"server_id": str(serverid)})
-        if server_badge_info and server_badge_info["badges"]:
-            server_badges = server_badge_info["badges"]
-            for badgename in server_badges:
-                badgeinfo = server_badges[badgename]
-                if badgeinfo["price"] == -1:
-                    price = "Non-purchasable"
-                elif badgeinfo["price"] == 0:
-                    price = "Free"
-                else:
-                    price = badgeinfo["price"]
-
-                msg += "**• {}** ({}) - {}\n".format(badgename, price, badgeinfo["description"])
+        server_badges = await self.db.badges.find_one({"server_id": str(serverid)})
+        if server_badges and (server_badges := server_badges["badges"]):
+            await BadgeMenu(
+                AvailableBadgePager(list(server_badges.values()), servername, serverid, icon_url),
+                can_buy=True,
+            ).start(ctx)
         else:
-            msg = "None"
-
-        pages = [
-            discord.Embed(
-                title="Badges available",
-                description=page,
-                colour=await ctx.embed_color(),
-            )
-            for page in chat.pagify(msg, page_length=2048)
-        ]
-        pagenum = 1
-        for page in pages:
-            page.set_author(name=servername, icon_url=icon_url)
-            page.set_footer(text="Page {}/{}".format(pagenum, len(pages)))
-            pagenum += 1
-        await menu(ctx, pages, DEFAULT_CONTROLS)
+            await ctx.send(chat.info("There is no badges available."))
 
     @lvlset_badge.command(name="list")
     @commands.guild_only()
@@ -82,46 +56,14 @@ class Badge(MixinMeta, ABC):
         userinfo = await self.db.users.find_one({"user_id": str(user.id)})
         userinfo = await self._badge_convert_dict(userinfo)
 
-        # sort
-        priority_badges = []
-        for badgename in userinfo["badges"].keys():
-            badge = userinfo["badges"][badgename]
-            priority_num = badge["priority_num"]
-            if priority_num != -1:
-                priority_badges.append((badge, priority_num))
-        sorted_badges = sorted(priority_badges, key=operator.itemgetter(1), reverse=True)
-
-        badge_ranks = ""
-        counter = 1
-        for badge, priority_num in sorted_badges[:12]:
-            badge_ranks += "**{}. {}** ({}) [{}] **—** {}\n".format(
-                counter,
-                badge["badge_name"],
-                badge["server_name"],
-                priority_num,
-                badge["description"],
-            )
-            counter += 1
-        if not badge_ranks:
-            badge_ranks = "None"
-
-        em = discord.Embed(colour=user.colour)
-
-        total_pages = len(list(chat.pagify(badge_ranks)))
-        embeds = []
-
-        counter = 1
-        for page in chat.pagify(badge_ranks, ["\n"]):
-            em.description = page
-            em.set_author(name="Badges for {}".format(user.name), icon_url=user.avatar_url)
-            em.set_footer(text="Page {} of {}".format(counter, total_pages))
-            embeds.append(em)
-            counter += 1
-        await menu(ctx, embeds, DEFAULT_CONTROLS)
+        if badges := userinfo["badges"]:
+            await BadgeMenu(OwnBadgePager(list(badges.values()), user)).start(ctx)
+        else:
+            await ctx.send(chat.info("You have no badges."))
 
     @lvlset_badge.command()
     @commands.guild_only()
-    async def buy(self, ctx, is_global: Optional[bool], *, name: str):
+    async def buybadge(self, ctx, is_global: Optional[bool], *, name: str):
         """Buy a badge."""
         user = ctx.author
         server = ctx.guild

@@ -29,7 +29,7 @@ class Badge(MixinMeta):
         name: str,
         is_global: Optional[bool],
         bg_img: str,
-        border_color: str,
+        border_color: discord.Color,
         price: int,
         *,
         description: str,
@@ -42,8 +42,7 @@ class Badge(MixinMeta):
         `bg_img`: Indicate the image of the badge. (Only URL supported)
         `border_color`: Indicate color of the badge's border. (HEX color)
         `price`: Indicate the badge's price. (Indicate `-1` and it won't be purchasable, `0` for free.)
-        `description`: Indicate a description for your badge.
-        eg: `[p]lvlset badge add Leveler [my_url] #b60047 0 My super badge!`"""
+        `description`: Indicate a description for your badge."""
 
         user = ctx.author
         server = ctx.guild
@@ -77,10 +76,6 @@ class Badge(MixinMeta):
             await ctx.send("**Background is not valid. Enter HEX color or image URL!**")
             return
 
-        if not await self._is_hex(border_color):
-            await ctx.send("**Border color is not valid!**")
-            return
-
         if price < -1:
             await ctx.send("**Price is not valid!**")
             return
@@ -99,7 +94,7 @@ class Badge(MixinMeta):
             "bg_img": bg_img,
             "price": price,
             "description": description,
-            "border_color": border_color,
+            "border_color": str(border_color),
             "server_id": str(serverid),
             "server_name": servername,
             "priority_num": 0,
