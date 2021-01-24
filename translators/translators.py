@@ -251,7 +251,9 @@ class Translators(commands.Cog):
             text = text.encode(encoding=encoding, errors="replace")
         except UnicodeError:
             await ctx.send(
-                chat.error(_("Unable to encode provided string to `{}` encoding.").format(encoding))
+                chat.error(
+                    _("Unable to encode provided string to `{}` encoding.").format(encoding)
+                )
             )
             return
         output = pybase64.standard_b64encode(text)
@@ -324,7 +326,9 @@ class Translators(commands.Cog):
             encoded_url = parse.quote(text, encoding=encoding, errors="replace")
         except UnicodeError:
             await ctx.send(
-                chat.error(_("Unable to encode provided string to `{}` encoding.").format(encoding))
+                chat.error(
+                    _("Unable to encode provided string to `{}` encoding.").format(encoding)
+                )
             )
             return
         await ctx.send(chat.box(encoded_url))
