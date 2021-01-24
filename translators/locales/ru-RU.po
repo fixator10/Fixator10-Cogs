@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fixator10-cogs\n"
-"POT-Creation-Date: 2020-10-28 11:33+0400\n"
+"POT-Creation-Date: 2021-01-24 12:11+0400\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
@@ -20,7 +20,7 @@ msgstr ""
 msgid "Useful (and not) translators"
 msgstr "Полезные (и нет) переводчики"
 
-#: translators\translators.py:66
+#: translators\translators.py:68
 #, docstring
 msgid "Say something via Google Translate\n\n"
 "        lang arg must be two-letters google-translate language code\n"
@@ -31,15 +31,15 @@ msgstr "Скажите что-то через Google Translate\n\n"
 "        Не все языки поддерживают TTS\n"
 "        Если текст содержит >200 символов, он будет обрезан"
 
-#: translators\translators.py:84
+#: translators\translators.py:86
 msgid "Language {} is not supported or incorrect"
 msgstr "Язык {} не поддерживается или неверен"
 
-#: translators\translators.py:88
+#: translators\translators.py:90
 msgid "Unable to get data from Google Translate TTS: {}"
 msgstr "Невозможно получить информацию от переводчика Google: {}"
 
-#: translators\translators.py:98
+#: translators\translators.py:100
 #, docstring
 msgid "Translates text (cyrillic/latin) to \"eciho\"\n\n"
 "        eciho - language created by Фражуз#2170 (255682413445906433)\n\n"
@@ -48,70 +48,78 @@ msgstr "Переводит текст (кириллицу/латиницу) в \
 "        ецихо - язык созданный Фражуз#2170 (255682413445906433)\n\n"
 "        Бесполезное дерьмо, но кого волнует"
 
-#: translators\translators.py:124
+#: translators\translators.py:126
 #, docstring
 msgid "Flips text upside-down\n\n"
 "        Based on https://unicode-table.com/en/tools/flip/"
 msgstr "Переворачивает текст верх ногами\n\n"
 "        Основано на https://unicode-table.com/ru/tools/flip/"
 
-#: translators\translators.py:141
+#: translators\translators.py:144
 #, docstring
 msgid "Switches text to Ｆｕｌｌ－ｗｉｄｔｈ　ｃｈａｒａｃｔｅｒｓ"
 msgstr "Переводит текст в Ｆｕｌｌ－ｗｉｄｔｈ　ｃｈａｒａｃｔｅｒｓ"
 
-#: translators\translators.py:154
+#: translators\translators.py:157
 #, docstring
 msgid "Leet (1337) translation commands"
 msgstr "Команды перевода в Leet (1337)"
 
-#: translators\translators.py:159
+#: translators\translators.py:162
 #, docstring
 msgid "Translates provided text to 1337"
 msgstr "Переводит указанный текст в 1337"
 
-#: translators\translators.py:195
+#: translators\translators.py:198
 #, docstring
 msgid "Translate cyrillic to 1337"
 msgstr "Переводит кириллицу в 1337"
 
-#: translators\translators.py:239
+#: translators\translators.py:242
 #, docstring
 msgid "Base64 text converter"
 msgstr "Конвертер текста в/из Base64"
 
-#: translators\translators.py:244
+#: translators\translators.py:247
 #, docstring
 msgid "Encode text to Base64"
 msgstr "Закодировать текст в Base64"
 
-#: translators\translators.py:255
+#: translators\translators.py:254 translators\translators.py:327
+msgid "Unable to encode provided string to `{}` encoding."
+msgstr "Невозможно закодировать указанную строку в кодировку `{}`."
+
+#: translators\translators.py:264
 #, docstring
 msgid "Decode text from Base64"
-msgstr "Раскодировать текст из Base64"
+msgstr "Расшифровать текст из Base64"
 
-#: translators\translators.py:263
+#: translators\translators.py:272
 msgid "Invalid Base64 string provided"
 msgstr "Указана неверная строка Base64"
 
-#: translators\translators.py:270
+#: translators\translators.py:279 translators\translators.py:345
+msgid "Unable to decode provided string from `{}` encoding."
+msgstr "Невозможно расшифровать указанную строку из кодировки `{}`."
+
+#: translators\translators.py:287
 #, docstring
 msgid "Emojify text"
 msgstr "Преобразовать текст в эмодзи"
 
-#: translators\translators.py:297
+#: translators\translators.py:314
 #, docstring
 msgid "Encode or decode text in URL-format (\"%20\"-format)"
 msgstr "Преобразовать текст из/в URL-формат (\"%20\"-формат)"
 
-#: translators\translators.py:302
+#: translators\translators.py:319
 #, docstring
 msgid "Encode text to url-like format\n"
 "        'abc def' -> 'abc%20def'"
 msgstr "Преобразовать текст в формат URL\n"
 "        'abc def' -> 'abc%20def'"
 
-#: translators\translators.py:313
+#: translators\translators.py:336
 #, docstring
 msgid "Decode text from url-like format\n"
 "        'abc%20def' -> 'abc def'"
