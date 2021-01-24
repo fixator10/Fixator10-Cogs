@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-01-24 11:53+0400\n"
+"POT-Creation-Date: 2021-01-24 12:11+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -82,41 +82,41 @@ msgstr ""
 msgid "Encode text to Base64"
 msgstr ""
 
-#: translators\translators.py:253
-msgid "Unable to encode provided text to {} encoding."
+#: translators\translators.py:254 translators\translators.py:327
+msgid "Unable to encode provided string to `{}` encoding."
 msgstr ""
 
-#: translators\translators.py:262
+#: translators\translators.py:264
 #, docstring
 msgid "Decode text from Base64"
 msgstr ""
 
-#: translators\translators.py:270
+#: translators\translators.py:272
 msgid "Invalid Base64 string provided"
 msgstr ""
 
-#: translators\translators.py:273
-msgid "Unable to decode provided string from {} encoding."
+#: translators\translators.py:279 translators\translators.py:345
+msgid "Unable to decode provided string from `{}` encoding."
 msgstr ""
 
-#: translators\translators.py:280
+#: translators\translators.py:287
 #, docstring
 msgid "Emojify text"
 msgstr ""
 
-#: translators\translators.py:307
+#: translators\translators.py:314
 #, docstring
 msgid "Encode or decode text in URL-format (\"%20\"-format)"
 msgstr ""
 
-#: translators\translators.py:312
+#: translators\translators.py:319
 #, docstring
 msgid ""
 "Encode text to url-like format\n"
 "        'abc def' -> 'abc%20def'"
 msgstr ""
 
-#: translators\translators.py:323
+#: translators\translators.py:336
 #, docstring
 msgid ""
 "Decode text from url-like format\n"
