@@ -48,7 +48,7 @@ EMOJIFY_CHARS = {
 class Translators(commands.Cog):
     """Useful (and not) translators"""
 
-    __version__ = "2.2.4"
+    __version__ = "2.2.5"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -247,7 +247,11 @@ class Translators(commands.Cog):
         """Encode text to Base64"""
         if not encoding:
             encoding = "utf-8"
-        text = text.encode(encoding=encoding, errors="replace")
+        try:
+            text = text.encode(encoding=encoding, errors="replace")
+        except UnicodeError:
+            await ctx.send(chat.error(_("Unable to encode provided text to {} encoding.").format(encoding)))
+            return
         output = pybase64.standard_b64encode(text)
         result = output.decode()
         for page in chat.pagify(result):
@@ -264,6 +268,9 @@ class Translators(commands.Cog):
             decoded = pybase64.standard_b64decode(encoded)
         except binasciiError:
             await ctx.send(chat.error(_("Invalid Base64 string provided")))
+            return
+        except UnicodeError:
+            await ctx.send(chat.error(_("Unable to decode provided string from {} encoding.").format(encoding)))
             return
         result = decoded.decode(encoding=encoding, errors="replace")
         await ctx.send(chat.box(result))

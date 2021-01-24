@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2020-10-28 11:33+0400\n"
+"POT-Creation-Date: 2021-01-24 11:53+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,7 +16,7 @@ msgstr ""
 msgid "Useful (and not) translators"
 msgstr ""
 
-#: translators\translators.py:66
+#: translators\translators.py:68
 #, docstring
 msgid ""
 "Say something via Google Translate\n"
@@ -26,15 +26,15 @@ msgid ""
 "        If text contains more than 200 symbols, it will be cut"
 msgstr ""
 
-#: translators\translators.py:84
+#: translators\translators.py:86
 msgid "Language {} is not supported or incorrect"
 msgstr ""
 
-#: translators\translators.py:88
+#: translators\translators.py:90
 msgid "Unable to get data from Google Translate TTS: {}"
 msgstr ""
 
-#: translators\translators.py:98
+#: translators\translators.py:100
 #, docstring
 msgid ""
 "Translates text (cyrillic/latin) to \"eciho\"\n"
@@ -44,7 +44,7 @@ msgid ""
 "        This is unusable shit, i know, but whatever"
 msgstr ""
 
-#: translators\translators.py:124
+#: translators\translators.py:126
 #, docstring
 msgid ""
 "Flips text upside-down\n"
@@ -52,63 +52,71 @@ msgid ""
 "        Based on https://unicode-table.com/en/tools/flip/"
 msgstr ""
 
-#: translators\translators.py:141
+#: translators\translators.py:144
 #, docstring
 msgid "Switches text to Ｆｕｌｌ－ｗｉｄｔｈ　ｃｈａｒａｃｔｅｒｓ"
 msgstr ""
 
-#: translators\translators.py:154
+#: translators\translators.py:157
 #, docstring
 msgid "Leet (1337) translation commands"
 msgstr ""
 
-#: translators\translators.py:159
+#: translators\translators.py:162
 #, docstring
 msgid "Translates provided text to 1337"
 msgstr ""
 
-#: translators\translators.py:195
+#: translators\translators.py:198
 #, docstring
 msgid "Translate cyrillic to 1337"
 msgstr ""
 
-#: translators\translators.py:239
+#: translators\translators.py:242
 #, docstring
 msgid "Base64 text converter"
 msgstr ""
 
-#: translators\translators.py:244
+#: translators\translators.py:247
 #, docstring
 msgid "Encode text to Base64"
 msgstr ""
 
-#: translators\translators.py:255
+#: translators\translators.py:253
+msgid "Unable to encode provided text to {} encoding."
+msgstr ""
+
+#: translators\translators.py:262
 #, docstring
 msgid "Decode text from Base64"
 msgstr ""
 
-#: translators\translators.py:263
+#: translators\translators.py:270
 msgid "Invalid Base64 string provided"
 msgstr ""
 
-#: translators\translators.py:270
+#: translators\translators.py:273
+msgid "Unable to decode provided string from {} encoding."
+msgstr ""
+
+#: translators\translators.py:280
 #, docstring
 msgid "Emojify text"
 msgstr ""
 
-#: translators\translators.py:297
+#: translators\translators.py:307
 #, docstring
 msgid "Encode or decode text in URL-format (\"%20\"-format)"
 msgstr ""
 
-#: translators\translators.py:302
+#: translators\translators.py:312
 #, docstring
 msgid ""
 "Encode text to url-like format\n"
 "        'abc def' -> 'abc%20def'"
 msgstr ""
 
-#: translators\translators.py:313
+#: translators\translators.py:323
 #, docstring
 msgid ""
 "Decode text from url-like format\n"
