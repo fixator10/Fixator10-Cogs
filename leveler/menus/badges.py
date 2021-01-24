@@ -20,7 +20,7 @@ class BadgeMenu(menus.MenuPages, inherit_buttons=False):
 
     async def start(self, ctx, *, channel=None, wait=False):
         if self.can_buy:
-            self.can_buy = await ctx.cog.buybadge.can_run(ctx, check_all_parents=True)
+            self.can_buy = await ctx.cog.buy_badge.can_run(ctx, check_all_parents=True)
         await super().start(ctx, channel=channel, wait=wait)
 
     def should_add_reactions(self):
