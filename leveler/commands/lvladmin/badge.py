@@ -132,7 +132,9 @@ class Badge(MixinMeta):
                             {"$set": {"badges": userbadges}},
                         )
                 except Exception as exc:
-                    self.log.error(f"Unable to update badge {name} for {user['user_id']}: {exc}")
+                    self.log.error(
+                        f"Unable to update badge {name} for {user['user_id']}", exc_info=exc
+                    )
             await ctx.send("The `{}` badge has been updated".format(name))
 
     @commands.is_owner()
@@ -183,7 +185,8 @@ class Badge(MixinMeta):
                             )
                     except Exception as exc:
                         self.log.error(
-                            f"Unable to delete badge {name} from {user_info_temp['user_id']}: {exc}"
+                            f"Unable to delete badge {name} from {user_info_temp['user_id']}",
+                            exc_info=exc,
                         )
 
             await ctx.send("The `{}` badge has been removed.".format(name))
@@ -306,7 +309,9 @@ class Badge(MixinMeta):
 
         server_linked_badges = await self.db.badgelinks.find_one({"server_id": str(server.id)})
 
-        if server_linked_badges and badge_name in (badge_links := server_linked_badges["badges"].keys()):
+        if server_linked_badges and badge_name in (
+            badge_links := server_linked_badges["badges"].keys()
+        ):
             del badge_links[badge_name]
             await self.db.badgelinks.update_one(
                 {"server_id": str(server.id)}, {"$set": {"badges": badge_links}}

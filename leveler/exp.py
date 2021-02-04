@@ -72,7 +72,7 @@ class XP(MixinMeta):
                 {"$set": {"total_exp": userinfo["total_exp"] + exp}},
             )
         except Exception as exc:
-            self.log.error(f"Unable to process xp for {user.id}: {exc}")
+            self.log.error(f"Unable to process xp for {user.id}", exc_info=exc)
             return
         required = await self._required_exp(userinfo["servers"][str(server.id)]["level"])
         # FIXME: Sometimes this creates discrepancy in global total_exp and xp for all servers

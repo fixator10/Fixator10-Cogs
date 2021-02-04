@@ -93,5 +93,5 @@ class MongoDB(MixinMeta):
                     },
                     upsert=True,
                 )
-        except AttributeError:
-            pass
+        except AttributeError as error:
+            self.log.error(f"Unable to create/update user {user.id}.", exc_info=error)

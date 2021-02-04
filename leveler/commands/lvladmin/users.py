@@ -61,6 +61,7 @@ class Users(MixinMeta):
         if user.bot:
             await ctx.send_help()
             return
+        await self._create_user(user, server)
         userinfo = await self.db.users.find_one({"user_id": str(user.id)})
 
         if level < 0:
