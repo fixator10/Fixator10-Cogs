@@ -48,7 +48,7 @@ EMOJIFY_CHARS = {
 class Translators(commands.Cog):
     """Useful (and not) translators"""
 
-    __version__ = "2.2.4"
+    __version__ = "2.2.6"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -247,7 +247,15 @@ class Translators(commands.Cog):
         """Encode text to Base64"""
         if not encoding:
             encoding = "utf-8"
-        text = text.encode(encoding=encoding, errors="replace")
+        try:
+            text = text.encode(encoding=encoding, errors="replace")
+        except UnicodeError:
+            await ctx.send(
+                chat.error(
+                    _("Unable to encode provided string to `{}` encoding.").format(encoding)
+                )
+            )
+            return
         output = pybase64.standard_b64encode(text)
         result = output.decode()
         for page in chat.pagify(result):
@@ -265,7 +273,15 @@ class Translators(commands.Cog):
         except binasciiError:
             await ctx.send(chat.error(_("Invalid Base64 string provided")))
             return
-        result = decoded.decode(encoding=encoding, errors="replace")
+        try:
+            result = decoded.decode(encoding=encoding, errors="replace")
+        except UnicodeError:
+            await ctx.send(
+                chat.error(
+                    _("Unable to decode provided string from `{}` encoding.").format(encoding)
+                )
+            )
+            return
         await ctx.send(chat.box(result))
 
     @commands.command()
@@ -306,7 +322,15 @@ class Translators(commands.Cog):
         'abc def' -> 'abc%20def'"""
         if not encoding:
             encoding = "utf-8"
-        encoded_url = parse.quote(text, encoding=encoding, errors="replace")
+        try:
+            encoded_url = parse.quote(text, encoding=encoding, errors="replace")
+        except UnicodeError:
+            await ctx.send(
+                chat.error(
+                    _("Unable to encode provided string to `{}` encoding.").format(encoding)
+                )
+            )
+            return
         await ctx.send(chat.box(encoded_url))
 
     @url.command(name="decode")
@@ -317,5 +341,13 @@ class Translators(commands.Cog):
         'abc%20def' -> 'abc def'"""
         if not encoding:
             encoding = "utf-8"
-        decoded_text = parse.unquote(url_formatted_text, encoding=encoding)
+        try:
+            decoded_text = parse.unquote(url_formatted_text, encoding=encoding)
+        except UnicodeError:
+            await ctx.send(
+                chat.error(
+                    _("Unable to decode provided string from `{}` encoding.").format(encoding)
+                )
+            )
+            return
         await ctx.send(chat.box(decoded_text))
