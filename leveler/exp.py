@@ -176,7 +176,8 @@ class XP(MixinMeta):
                                 {"$set": {"badges": userinfo_db["badges"]}},
                             )
         except Exception as exc:
-            await channel.send(f"Error. Badge was not given: {exc}")
+            self.log.error(f"Error on giving a badge.\nServer: {server}\nUser: {user}", exc_info=exc)
+            await channel.send("Error. Badge was not given.")
 
         if channel and await self.config.guild(server).lvl_msg():  # if lvl msg is enabled
             if await self.config.guild(server).text_only():
