@@ -137,6 +137,7 @@ class Profiles(MixinMeta, metaclass=CompositeMetaClass):
         total_server_exp += userinfo["servers"][str(server.id)]["current_exp"]
         msg += "Server Exp: {}\n".format(total_server_exp)
         msg += "Total Exp: {}\n".format(userinfo["total_exp"])
+        msg += "Shared servers data: {}\n".format(len(userinfo["servers"]))
         msg += "Info: {}\n".format(userinfo["info"])
         msg += "Profile background: {}\n".format(userinfo["profile_background"])
         msg += "Rank background: {}\n".format(userinfo["rank_background"])

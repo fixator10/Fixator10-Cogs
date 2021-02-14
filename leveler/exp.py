@@ -32,7 +32,9 @@ class XP(MixinMeta):
 
     @commands.Cog.listener("on_message_without_command")
     async def _handle_on_message(self, message):
-        await self.bot.wait_until_red_ready()  # just in case, lets see if that helps
+        await self.bot.wait_until_ready()
+        await self.bot.wait_until_red_ready()
+        # ^ another attempt
         if message.is_system():
             return
         if not self._db_ready:
