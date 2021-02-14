@@ -82,10 +82,8 @@ class MongoDB(MixinMeta):
                     upsert=True,
                 )
 
-            if (
-                server
-                and ("servers" not in userinfo)
-                or (str(server.id) not in userinfo["servers"])
+            if server and (
+                "servers" not in userinfo or str(server.id) not in userinfo["servers"]
             ):
                 await self.db.users.update_one(
                     {"user_id": str(user.id)},
