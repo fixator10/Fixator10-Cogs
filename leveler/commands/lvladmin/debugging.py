@@ -76,7 +76,13 @@ class Debugging(MixinMeta):
                 c[valid] += 1
                 if not valid:
                     invalid_users.append(
-                        (user["username"], user["user_id"], total_xp, user["total_exp"])
+                        (
+                            user["username"],
+                            user["user_id"],
+                            total_xp,
+                            user["total_exp"],
+                            user["total_exp"] - total_xp,
+                        )
                     )
         await ctx.send(chat.box(tabulate(c.most_common())))
         if invalid_users:
@@ -84,7 +90,7 @@ class Debugging(MixinMeta):
                 chat.pagify(
                     tabulate(
                         invalid_users,
-                        headers=["Username", "ID", "Calculated total XP", "Total XP"],
+                        headers=["Username", "ID", "Calculated total XP", "Total XP", "Diff"],
                     ),
                     page_length=1992,
                 ),
