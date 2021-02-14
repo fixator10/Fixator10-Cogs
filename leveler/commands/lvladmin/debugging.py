@@ -64,6 +64,7 @@ class Debugging(MixinMeta):
 
         Everything should be True. Otherwise there is malfunction somewhere in XP handling."""
         c = Counter()
+        invalid_users = []
         async with ctx.typing():
             async for user in self.db.users.find({}):
                 total_xp = 0
@@ -71,8 +72,24 @@ class Debugging(MixinMeta):
                     xp = await self._level_exp(user["servers"][server]["level"])
                     total_xp += xp
                     total_xp += user["servers"][server]["current_exp"]
-                c[total_xp == user["total_exp"]] += 1
+                valid = total_xp == user["total_exp"]
+                c[valid] += 1
+                if not valid:
+                    invalid_users.append(
+                        (user["username"], user["user_id"], total_xp, user["total_exp"])
+                    )
         await ctx.send(chat.box(tabulate(c.most_common())))
+        if invalid_users:
+            await ctx.send_interactive(
+                chat.pagify(
+                    tabulate(
+                        invalid_users,
+                        headers=["Username", "ID", "Calculated total XP", "Total XP"],
+                    ),
+                    page_length=1992,
+                ),
+                box_lang="",
+            )
 
     @db_integrity.command(name="fix")
     async def db_integrity_fix(self, ctx):
