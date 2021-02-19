@@ -1,6 +1,6 @@
 import random
-from typing import Union
 from sys import modules
+from typing import Union
 
 import discord
 from redbot.core import commands
