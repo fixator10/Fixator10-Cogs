@@ -58,7 +58,7 @@ class Profile(MixinMeta):
 
         # get correct color choice
         if color == "auto":
-            if not all(module in modules for module in ("numpy", "scipy")):
+            if not all(module in modules for module in ("numpy", "scipy.cluster")):
                 await ctx.send("Missing required package. Autocolor feature unavailable")
                 return
             if section == "exp":
