@@ -1,4 +1,5 @@
 import random
+from sys import modules
 from typing import Union
 
 import discord
@@ -57,7 +58,7 @@ class Profile(MixinMeta):
 
         # get correct color choice
         if color == "auto":
-            if not all(lib in globals().keys() for lib in ["numpy", "cluster"]):
+            if not all(module in modules for module in ("numpy", "scipy.cluster")):
                 await ctx.send("Missing required package. Autocolor feature unavailable")
                 return
             if section == "exp":
