@@ -128,10 +128,11 @@ class TopPager(menus.ListPageSource):
         msg += "\n"
         msg += table
         msg += "\n"
-        msg += "Your rank: {}".format(self.user[0]).rjust(table_width)
-        msg += "\n"
-        msg += "{}: {}".format(self.board_type, self.user[1]).rjust(table_width)
-        msg += "\n"
+        if self.user:
+            msg += "Your rank: {}".format(self.user[0]).rjust(table_width)
+            msg += "\n"
+            msg += "{}: {}".format(self.board_type, self.user[1]).rjust(table_width)
+            msg += "\n"
         embed = discord.Embed(color=await menu.ctx.embed_color(), description=chat.box(msg))
         embed.set_author(name=self.title, icon_url=self.icon_url)
         return embed
