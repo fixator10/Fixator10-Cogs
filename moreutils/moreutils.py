@@ -60,9 +60,9 @@ def rgb_to_hsv(r, g, b):
     r, g, b = r / 255.0, g / 255.0, b / 255.0
 
     # h, s, v = hue, saturation, value
-    cmax = max(r, g, b)  # maximum of r, g, b
-    cmin = min(r, g, b)  # minimum of r, g, b
-    diff = cmax - cmin   # diff of cmax and cmin.
+    cmax = max(r, g, b)
+    cmin = min(r, g, b)
+    diff = cmax - cmin
 
     # if cmax and cmax are equal then h = 0
     if cmax == cmin:
