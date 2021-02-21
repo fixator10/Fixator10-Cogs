@@ -123,12 +123,12 @@ class MoreUtils(commands.Cog):
     async def color(self, ctx, *, color: discord.Color):
         """Shows some info about provided color."""
         colorrgb = color.to_rgb()
-        r, g, b = [x / 255.0 for x in colorrgb]
-        colorhsv = rgb_to_hsv(colorrgb[0], colorrgb[1], colorrgb[2])
-        h, l, s = colorsys.rgb_to_hls(r, g, b)
+        rgb_coords = [x / 255 for x in colorrgb]
+        colorhsv = rgb_to_hsv(*colorrgb)
+        h, l, s = colorsys.rgb_to_hls(*rgb_coords)
         colorhls = (colorhsv[0], l * 100, s * 100)
-        coloryiq = colorsys.rgb_to_yiq(r, g, b)
-        colorcmyk = rgb_to_cmyk(colorrgb[0], colorrgb[1], colorrgb[2])
+        coloryiq = colorsys.rgb_to_yiq(*rgb_coords)
+        colorcmyk = rgb_to_cmyk(*colorrgb)
         colors_text = (
             "`HEX :` {}\n"
             "`RGB :` {}\n"
