@@ -4,6 +4,7 @@ from motor import version as motorversion
 from PIL import features as pilfeatures
 from pymongo import version as pymongoversion
 from redbot.core import commands
+from redbot.core.utils import AsyncIter
 from redbot.core.utils import chat_formatting as chat
 from tabulate import tabulate
 
@@ -54,7 +55,42 @@ class Debugging(MixinMeta):
             )
         )
 
-    @debug_commands.group(name="integrity")
+    @debug_commands.group(name="database", aliases=["db"])
+    async def db_commands(self, ctx):
+        """Database debug commands"""
+
+    @db_commands.command(name="duplicates", aliases=["dupes"])
+    async def db_duplicates(self, ctx):
+        """Show users that have more than one document in database"""
+        dupes = await self.db.users.aggregate(
+            [
+                {
+                    "$group": {
+                        "_id": "$user_id",
+                        "doc_ids": {"$addToSet": "$_id"},
+                        "count": {"$sum": 1},
+                    }
+                },
+                {"$match": {"count": {"$gt": 1}}},
+            ]
+        ).to_list(None)
+        if not dupes:
+            await ctx.send(chat.info("No duplicates found."))
+            return
+        async for u in AsyncIter(dupes):
+            u["doc_ids"] = "\n".join(map(str, u["doc_ids"]))
+        await ctx.send_interactive(
+            chat.pagify(
+                tabulate(
+                    dupes,
+                    headers={"_id": "User ID", "doc_ids": "DB document _id", "count": "Count"},
+                ),
+                page_length=1992,
+            ),
+            box_lang="",
+        )
+
+    @db_commands.group(name="integrity")
     async def db_integrity(self, ctx):
         """Database integrity commands."""
 
