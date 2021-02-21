@@ -99,7 +99,7 @@ def bool_emojify(bool_var: bool) -> str:
 class MoreUtils(commands.Cog):
     """Some (maybe) useful utils."""
 
-    __version__ = "2.0.17"
+    __version__ = "2.0.18"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -148,7 +148,7 @@ class MoreUtils(commands.Cog):
         )
         em = discord.Embed(
             title=str(color),
-            description=_("Name: Loading...\n") + colors_text,
+            description=_("`Name:` Loading...\n") + colors_text,
             url=f"http://www.color-hex.com/color/{str(color)[1:]}",
             colour=color,
             timestamp=ctx.message.created_at,
@@ -162,7 +162,7 @@ class MoreUtils(commands.Cog):
         ) as data:
             color_response = await data.json(loads=json.loads)
             em.description = (
-                _("Name: {} ({})\n").format(
+                _("`Name:` {} ({})\n").format(
                     color_response.get("name", {}).get("value", "?"),
                     color_response.get("name", {}).get("closest_named_hex", "?"),
                 )
