@@ -1,3 +1,5 @@
+from warnings import filterwarnings
+filterwarnings("ignore", category=DeprecationWarning, module=r"fontTools.")
 from .leveler import Leveler
 
 __red_end_user_data_statement__ = (
