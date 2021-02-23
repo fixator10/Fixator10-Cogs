@@ -1,4 +1,5 @@
 import random
+from sys import modules
 from typing import Union
 
 import discord
@@ -47,27 +48,24 @@ class Levelup(MixinMeta):
 
         # get correct color choice
         if color == "auto":
-            if not all(lib in globals().keys() for lib in ["numpy", "cluster"]):
+            if not all(module in modules for module in ("numpy", "scipy.cluster")):
                 await ctx.send("Missing required package. Autocolor feature unavailable")
                 return
             if section == "info":
                 color_ranks = [random.randint(0, 1)]
             hex_colors = await self._auto_color(ctx, userinfo["levelup_background"], color_ranks)
-            set_color = []
-            for hex_color in hex_colors:
-                color_temp = await self._hex_to_rgb(hex_color, default_a)
-                set_color.append(color_temp)
+            set_color = hex_colors[0]
         elif color == "default":
             if section == "info":
-                set_color = [default_info_color]
+                set_color = default_info_color
         elif isinstance(color, discord.Color):
-            set_color = [color.r, color.g, color.b, default_a]
+            set_color = (color.r, color.g, color.b, default_a)
         else:
             await ctx.send("Not a valid color. Must be `default` `HEX color` or `auto`.")
             return
 
         await self.db.users.update_one(
-            {"user_id": str(user.id)}, {"$set": {section_name: set_color[0]}}
+            {"user_id": str(user.id)}, {"$set": {section_name: set_color}}
         )
         await ctx.send("Color for level-up {} set.".format(section))
 
