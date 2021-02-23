@@ -65,17 +65,17 @@ class Rank(MixinMeta):
                 color_ranks = [random.randint(2, 3), random.randint(0, 1)]
 
             hex_colors = await self._auto_color(ctx, userinfo["rank_background"], color_ranks)
-            set_color = []
-            for hex_color in hex_colors:
-                color_temp = await self._hex_to_rgb(hex_color, default_a)
-                set_color.append(color_temp)
+            if section == "all":
+                set_color = [await self._hex_to_rgb(color, default_a) for color in hex_colors]
+            else:
+                set_color = hex_colors[0]
         elif color == "white":
-            set_color = [white_info_color]
+            set_color = white_info_color
         elif color == "default":
             if section == "exp":
-                set_color = [default_exp]
+                set_color = default_exp
             elif section == "info":
-                set_color = [default_info_color]
+                set_color = default_info_color
             elif section == "all":
                 set_color = [
                     default_exp,
@@ -84,7 +84,7 @@ class Rank(MixinMeta):
                     default_info_color,
                 ]
         elif isinstance(color, discord.Color):
-            set_color = [color.r, color.g, color.b, default_a]
+            set_color = (color.r, color.g, color.b, default_a)
         else:
             await ctx.send("Not a valid color. Must be `default`, `HEX color`, `white or `auto`.")
             return
@@ -123,7 +123,7 @@ class Rank(MixinMeta):
             await ctx.send("Colors for rank set.")
         else:
             await self.db.users.update_one(
-                {"user_id": str(user.id)}, {"$set": {section_name: set_color[0]}}
+                {"user_id": str(user.id)}, {"$set": {section_name: set_color}}
             )
             await ctx.send("Color for rank {} set.".format(section))
 
