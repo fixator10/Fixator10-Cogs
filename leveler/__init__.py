@@ -1,4 +1,5 @@
 from warnings import filterwarnings
+
 filterwarnings("ignore", category=DeprecationWarning, module=r"fontTools.")
 from .leveler import Leveler
 
