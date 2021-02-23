@@ -105,15 +105,15 @@ class Profile(MixinMeta):
             return
 
         if section == "all":
-            if len(set_color) == 1:
+            if isinstance(color, discord.Color):
                 await self.db.users.update_one(
                     {"user_id": str(user.id)},
                     {
                         "$set": {
-                            "profile_exp_color": set_color[0],
-                            "rep_color": set_color[0],
-                            "badge_col_color": set_color[0],
-                            "profile_info_color": set_color[0],
+                            "profile_exp_color": set_color,
+                            "rep_color": set_color,
+                            "badge_col_color": set_color,
+                            "profile_info_color": set_color,
                         }
                     },
                 )

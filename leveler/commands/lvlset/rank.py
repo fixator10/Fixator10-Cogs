@@ -90,13 +90,13 @@ class Rank(MixinMeta):
             return
 
         if section == "all":
-            if len(set_color) == 1:
+            if isinstance(color, discord.Color):
                 await self.db.users.update_one(
                     {"user_id": str(user.id)},
                     {
                         "$set": {
-                            "rank_exp_color": set_color[0],
-                            "rank_info_color": set_color[0],
+                            "rank_exp_color": set_color,
+                            "rank_info_color": set_color,
                         }
                     },
                 )
