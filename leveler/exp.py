@@ -32,25 +32,21 @@ class XP(MixinMeta):
 
     @commands.Cog.listener("on_message_without_command")
     async def _handle_on_message(self, message):
-        await self.bot.wait_until_ready()
-        await self.bot.wait_until_red_ready()
-        # ^ another attempt
         if message.is_system():
             return
         if not self._db_ready:
             return
         server = message.guild
         user = message.author
+        if not server or await self.bot.cog_disabled_in_guild(self, server):
+            return
+        if user.bot:
+            return
         xp = await self.config.xp()
         # creates user if doesn't exist, bots are not logged.
         await self._create_user(user, server)
         curr_time = time.time()
         userinfo = await self.db.users.find_one({"user_id": str(user.id)})
-
-        if not server or await self.bot.cog_disabled_in_guild(self, server):
-            return
-        if user.bot:
-            return
 
         if all(
             [
