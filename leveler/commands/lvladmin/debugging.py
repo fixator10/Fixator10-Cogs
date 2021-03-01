@@ -32,7 +32,7 @@ class Debugging(MixinMeta):
             chat.box(
                 tabulate(
                     [
-                        ("DB lock locked", self._db_lock),
+                        ("DB lock locked", self._db_lock.locked()),
                         ("pymongo version", pymongoversion),
                         ("motor version", motorversion),
                         (
