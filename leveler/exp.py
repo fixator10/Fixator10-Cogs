@@ -44,20 +44,23 @@ class XP(MixinMeta):
             return
         xp = await self.config.xp()
         # creates user if doesn't exist, bots are not logged.
+
         await self._create_user(user, server)
         curr_time = time.time()
-        userinfo = await self.db.users.find_one({"user_id": str(user.id)})
+        async with self._db_lock:
+            userinfo = await self.db.users.find_one({"user_id": str(user.id)})
 
-        if all(
-            [
-                float(curr_time) - float(userinfo.get("chat_block", 0)) >= 120,
-                len(message.content) > await self.config.message_length() or message.attachments,
-                message.content != userinfo.get("last_message"),
-                message.channel.id not in await self.config.guild(server).ignored_channels(),
-            ]
-        ):
-            await self._process_exp(message, userinfo, random.randint(xp[0], xp[1]))
-            await self._give_chat_credit(user, server)
+            if all(
+                [
+                    float(curr_time) - float(userinfo.get("chat_block", 0)) >= 120,
+                    len(message.content) > await self.config.message_length()
+                    or message.attachments,
+                    message.content != userinfo.get("last_message"),
+                    message.channel.id not in await self.config.guild(server).ignored_channels(),
+                ]
+            ):
+                await self._process_exp(message, userinfo, random.randint(xp[0], xp[1]))
+                await self._give_chat_credit(user, server)
 
     async def _process_exp(self, message, userinfo, exp: int):
         server = message.guild
@@ -76,7 +79,6 @@ class XP(MixinMeta):
         # FIXME: Sometimes this creates discrepancy in global total_exp and xp for all servers
         # If this happens again, some sort of debug is needed here
         # This happened again, end me pls
-        # Lets try Draper proposal here
         if userinfo["servers"][str(server.id)]["current_exp"] + exp >= required:
             # The actual issue may be somewhere here, but im bad at math, and not sure
             userinfo["servers"][str(server.id)]["level"] += 1

@@ -47,51 +47,54 @@ class MongoDB(MixinMeta):
             return
         if user.bot:
             return
-        try:
-            userinfo = await self.db.users.find_one({"user_id": str(user.id)})
-            backgrounds = await self.config.backgrounds()
-            if not userinfo:
-                new_account = {
-                    "user_id": str(user.id),
-                    "username": user.name,
-                    "servers": {},
-                    "total_exp": 0,
-                    "profile_background": backgrounds["profile"]["default"],
-                    "rank_background": backgrounds["rank"]["default"],
-                    "levelup_background": backgrounds["levelup"]["default"],
-                    "title": "",
-                    "info": "I am a mysterious person.",
-                    "rep": 0,
-                    "badges": {},
-                    "active_badges": {},
-                    "rep_color": [],
-                    "badge_col_color": [],
-                    "rep_block": 0,
-                    "chat_block": 0,
-                    "lastrep": 0,
-                    "last_message": "",
-                }
-                await self.db.users.insert_one(new_account)
+        async with self._db_lock:
+            try:
+                userinfo = await self.db.users.find_one({"user_id": str(user.id)})
+                backgrounds = await self.config.backgrounds()
+                if not userinfo:
+                    new_account = {
+                        "user_id": str(user.id),
+                        "username": user.name,
+                        "servers": {},
+                        "total_exp": 0,
+                        "profile_background": backgrounds["profile"]["default"],
+                        "rank_background": backgrounds["rank"]["default"],
+                        "levelup_background": backgrounds["levelup"]["default"],
+                        "title": "",
+                        "info": "I am a mysterious person.",
+                        "rep": 0,
+                        "badges": {},
+                        "active_badges": {},
+                        "rep_color": [],
+                        "badge_col_color": [],
+                        "rep_block": 0,
+                        "chat_block": 0,
+                        "lastrep": 0,
+                        "last_message": "",
+                    }
+                    await self.db.users.insert_one(new_account)
 
-            userinfo = await self.db.users.find_one({"user_id": str(user.id)})
+                userinfo = await self.db.users.find_one({"user_id": str(user.id)})
 
-            if "username" not in userinfo or userinfo["username"] != user.name:
-                await self.db.users.update_one(
-                    {"user_id": str(user.id)},
-                    {"$set": {"username": user.name}},
-                    upsert=True,
-                )
+                if "username" not in userinfo or userinfo["username"] != user.name:
+                    await self.db.users.update_one(
+                        {"user_id": str(user.id)},
+                        {"$set": {"username": user.name}},
+                        upsert=True,
+                    )
 
-            if server and ("servers" not in userinfo or str(server.id) not in userinfo["servers"]):
-                await self.db.users.update_one(
-                    {"user_id": str(user.id)},
-                    {
-                        "$set": {
-                            "servers.{}.level".format(server.id): 0,
-                            "servers.{}.current_exp".format(server.id): 0,
-                        }
-                    },
-                    upsert=True,
-                )
-        except AttributeError as error:
-            self.log.error(f"Unable to create/update user {user.id}.", exc_info=error)
+                if server and (
+                    "servers" not in userinfo or str(server.id) not in userinfo["servers"]
+                ):
+                    await self.db.users.update_one(
+                        {"user_id": str(user.id)},
+                        {
+                            "$set": {
+                                "servers.{}.level".format(server.id): 0,
+                                "servers.{}.current_exp".format(server.id): 0,
+                            }
+                        },
+                        upsert=True,
+                    )
+            except AttributeError as error:
+                self.log.error(f"Unable to create/update user {user.id}.", exc_info=error)

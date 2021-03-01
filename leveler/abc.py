@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from asyncio import Lock
 from io import BytesIO
 from logging import Logger
 from typing import List
@@ -21,6 +22,7 @@ class MixinMeta(ABC):
     config: Config
 
     _db_ready: bool
+    _db_lock: Lock
     client: AsyncIOMotorClient
     db: AsyncIOMotorDatabase
     session: ClientSession

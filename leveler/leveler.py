@@ -1,3 +1,4 @@
+import asyncio
 from logging import getLogger
 
 import aiohttp
@@ -89,6 +90,7 @@ class Leveler(
         self.config.register_guild(**default_guild)
 
         self._db_ready = False
+        self._db_lock = asyncio.Lock()
         self.client = None
         self.db = None
         self.session = aiohttp.ClientSession()
