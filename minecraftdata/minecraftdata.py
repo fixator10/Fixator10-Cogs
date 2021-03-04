@@ -36,7 +36,7 @@ _ = T_
 class MinecraftData(commands.Cog):
     """Minecraft-Related data"""
 
-    __version__ = "2.0.4"
+    __version__ = "2.0.5"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -198,8 +198,8 @@ class MinecraftData(commands.Cog):
                 )
             return
         em = discord.Embed(timestamp=ctx.message.created_at, color=await ctx.embed_color())
-        em.set_author(name=player.name, url=f"https://minecraftcapes.co.uk/getCape/{player.uuid}")
-        em.set_image(url=f"https://minecraftcapes.co.uk/getCape/{player.uuid}")
+        em.set_author(name=player.name, url=f"https://minecraftcapes.net/profile/{player.uuid}/cape")
+        em.set_image(url=f"https://minecraftcapes.net/profile/{player.uuid}/cape")
         await ctx.send(embed=em)
 
     @cape.group(aliases=["5zig"], invoke_without_command=True)
