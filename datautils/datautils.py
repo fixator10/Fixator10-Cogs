@@ -96,7 +96,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.4.18"
+    __version__ = "2.4.19"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -787,7 +787,7 @@ class DataUtils(commands.Cog):
         elif isinstance(emoji, discord.PartialEmoji):
             em.add_field(
                 name=_("Exists since"),
-                value=discord.utils.snowflake_time(emoji.id).strftime(self.TIME_FORMAT),
+                value=emoji.created_at.strftime(self.TIME_FORMAT),
             )
             em.add_field(name=_("Custom emoji"), value=bool_emojify(emoji.is_custom_emoji()))
             # em.add_field(
