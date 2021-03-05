@@ -36,7 +36,7 @@ _ = T_
 class MinecraftData(commands.Cog):
     """Minecraft-Related data"""
 
-    __version__ = "2.0.5"
+    __version__ = "2.0.6"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -198,7 +198,9 @@ class MinecraftData(commands.Cog):
                 )
             return
         em = discord.Embed(timestamp=ctx.message.created_at, color=await ctx.embed_color())
-        em.set_author(name=player.name, url=f"https://minecraftcapes.net/profile/{player.uuid}/cape")
+        em.set_author(
+            name=player.name, url=f"https://minecraftcapes.net/profile/{player.uuid}/cape"
+        )
         em.set_image(url=f"https://minecraftcapes.net/profile/{player.uuid}/cape")
         await ctx.send(embed=em)
 
@@ -267,20 +269,24 @@ class MinecraftData(commands.Cog):
     async def server(self, ctx, server_ip: str):
         """Get info about server"""
         try:
-            server = await self.bot.loop.run_in_executor(None, MinecraftServer.lookup, server_ip)
+            server: MinecraftServer = await self.bot.loop.run_in_executor(
+                None, MinecraftServer.lookup, server_ip
+            )
         except Exception as e:
             await ctx.send(chat.error(_("Unable to resolve IP: {}").format(e)))
             return
         async with ctx.channel.typing():
             try:
-                status = await self.bot.loop.run_in_executor(None, server.status)
+                status = await server.async_status()
             except OSError as e:
                 await ctx.send(chat.error(_("Unable to get server's status: {}").format(e)))
                 return
-            try:
-                query = await self.bot.loop.run_in_executor(None, server.query)
-            except (ConnectionResetError, OSError):
-                query = None
+            # TODO: Reimplement on async query in mcstatus
+            # NOTE: Possibly, make query optional
+            # try:
+            #     query = await server.async_query()
+            # except (ConnectionResetError, OSError):
+            #     query = None
         icon_file = None
         icon = (
             discord.File(
@@ -302,8 +308,7 @@ class MinecraftData(commands.Cog):
             name=_("Players"),
             value="{0.players.online}/{0.players.max}\n{1}".format(
                 status,
-                status.players.sample
-                and chat.box(
+                chat.box(
                     list(
                         chat.pagify(
                             await self.clear_mcformatting(
@@ -313,20 +318,21 @@ class MinecraftData(commands.Cog):
                         )
                     )[0]
                 )
-                or "",
+                if status.players.sample
+                else "",
             ),
         )
         embed.add_field(
             name=_("Version"),
             value=_("{}\nProtocol: {}").format(status.version.name, status.version.protocol),
         )
-        if query:
-            embed.add_field(name=_("World"), value=f"{query.map}")
-            embed.add_field(
-                name=_("Software"),
-                value=_("{}\nVersion: {}").format(query.software.brand, query.software.version)
-                # f"Plugins: {query.software.plugins}"
-            )
+        # if query:
+        #     embed.add_field(name=_("World"), value=f"{query.map}")
+        #     embed.add_field(
+        #         name=_("Software"),
+        #         value=_("{}\nVersion: {}").format(query.software.brand, query.software.version)
+        #         # f"Plugins: {query.software.plugins}"
+        #     )
         await ctx.send(file=icon, embed=embed)
         if icon_file:
             icon_file.close()
