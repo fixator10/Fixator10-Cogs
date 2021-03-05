@@ -96,7 +96,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.4.17"
+    __version__ = "2.4.18"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -435,6 +435,12 @@ class DataUtils(commands.Cog):
                 ),
                 inline=False,
             )
+        roles_str = _("**Everyone role:** {}").format(server.default_role)
+        if boost_role := server.premium_subscriber_role:
+            roles_str += "\n" + _("**Booster role:** {}").format(boost_role)
+        if bot_role := server.self_role:
+            roles_str += "\n" + _("**{} role:** {}").format(ctx.me.display_name, bot_role)
+        em.add_field(name=_("Roles"), value=roles_str, inline=False)
         if widget.invite_url:
             em.add_field(name=_("Widget's invite"), value=widget.invite_url)
         em.set_image(url=server.icon_url_as(static_format="png", size=4096))
@@ -621,11 +627,14 @@ class DataUtils(commands.Cog):
             name=_("Exists since"),
             value=role.created_at.strftime(self.TIME_FORMAT),
         )
-        em.add_field(name=_("Hoist"), value=bool_emojify(role.hoist))
+        em.add_field(name=_("Color"), value=role.colour)
         em.add_field(name=_("Members"), value=str(len(role.members)))
         em.add_field(name=_("Position"), value=role.position)
-        em.add_field(name=_("Color"), value=role.colour)
         em.add_field(name=_("Managed"), value=bool_emojify(role.managed))
+        em.add_field(name=_("Managed by bot"), value=bool_emojify(role.is_bot_managed()))
+        em.add_field(name=_("Managed by boosts"), value=bool_emojify(role.is_premium_subscriber()))
+        em.add_field(name=_("Managed by integration"), value=bool_emojify(role.is_integration()))
+        em.add_field(name=_("Hoist"), value=bool_emojify(role.hoist))
         em.add_field(name=_("Mentionable"), value=bool_emojify(role.mentionable))
         em.add_field(name=_("Mention"), value=role.mention + "\n`" + role.mention + "`")
         em.set_thumbnail(
