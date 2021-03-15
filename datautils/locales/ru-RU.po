@@ -405,7 +405,7 @@ msgstr "**Shard бота:** {shard}\n"
 
 #: datautils\datautils.py:438
 msgid "**Everyone role:** {}"
-msgstr "**Роль everyone**: {}"
+msgstr "**Роль everyone:** {}"
 
 #: datautils\datautils.py:440
 msgid "**Booster role:** {}"
@@ -413,7 +413,7 @@ msgstr "**Роль бустеров:** {}"
 
 #: datautils\datautils.py:442
 msgid "**{} role:** {}"
-msgstr "**Роль {}: {}**"
+msgstr "**Роль {}:** {}"
 
 #: datautils\datautils.py:454
 #, docstring
