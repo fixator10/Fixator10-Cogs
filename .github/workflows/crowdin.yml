@@ -21,7 +21,6 @@ jobs:
       uses: crowdin/github-action@1.0.20
       with:
         download_translations: true
-        skip_untranslated_files: true
         commit_message: '[automated] update translations from Crowdin' 
         push_translations: true
         localization_branch_name: V3_i18n
