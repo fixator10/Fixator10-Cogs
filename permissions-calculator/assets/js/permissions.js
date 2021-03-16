@@ -47,13 +47,13 @@ angular.module('permissionsCalc', ['themes'])
             if (provider === 'discord')
             {
                 if (!info.hasScope && info.hasCode)
-                    return `https://discordapp.com/oauth2/authorize/?permissions=${permissions}&scope=bot&client_id=${info.id}&response_type=code`;
+                    return `https://discord.com/oauth2/authorize/?permissions=${permissions}&scope=bot&client_id=${info.id}&response_type=code`;
                 else if(!info.hasScope)
-                    return `https://discordapp.com/oauth2/authorize/?permissions=${permissions}&scope=bot&client_id=${info.id}`;
+                    return `https://discord.com/oauth2/authorize/?permissions=${permissions}&scope=bot&client_id=${info.id}`;
                 else if (info.hasCode)
-                    return `https://discordapp.com/oauth2/authorize/?permissions=${permissions}&scope=${info.scope}&client_id=${info.id}&response_type=code`;
+                    return `https://discord.com/oauth2/authorize/?permissions=${permissions}&scope=${info.scope}&client_id=${info.id}&response_type=code`;
                 else
-                    return `https://discordapp.com/oauth2/authorize/?permissions=${permissions}&scope=${info.scope}&client_id=${info.id}`;
+                    return `https://discord.com/oauth2/authorize/?permissions=${permissions}&scope=${info.scope}&client_id=${info.id}`;
             }
             else if (provider === 'embed')
             {
@@ -145,29 +145,31 @@ angular.module('permissionsCalc', ['themes'])
                 name: 'Text',
                 active: false,
                 permissions: [
-                    {active: false, id: 'send_tts_messages',    name: 'Send TTS Messages',    value: 0x1000,  auto: true },
-                    {active: false, id: 'embed_links',          name: 'Embed Links',          value: 0x4000,  auto: true },
-                    {active: false, id: 'read_message_history', name: 'Read Message History', value: 0x10000, auto: true },
-                    {active: false, id: 'use_external_emojis',  name: 'Use External Emojis',  value: 0x40000, auto: true },
-                    {active: false, id: 'send_messages',        name: 'Send Messages',        value: 0x800,   auto: true },
-                    {active: false, id: 'manage_messaes',       name: 'Manage Messages',      value: 0x2000,  auto: false},
-                    {active: false, id: 'attach_files',         name: 'Attach Files',         value: 0x8000,  auto: true },
-                    {active: false, id: 'mention_everyone',     name: 'Mention Everyone',     value: 0x20000, auto: true },
-                    {active: false, id: 'add_reactions',        name: 'Add Reactions',        value: 0x40,    auto: true }
+                    {active: false, id: 'send_tts_messages',    name: 'Send TTS Messages',    value: 0x1000,     auto: true },
+                    {active: false, id: 'embed_links',          name: 'Embed Links',          value: 0x4000,     auto: true },
+                    {active: false, id: 'read_message_history', name: 'Read Message History', value: 0x10000,    auto: true },
+                    {active: false, id: 'use_external_emojis',  name: 'Use External Emojis',  value: 0x40000,    auto: true },
+                    {active: false, id: 'send_messages',        name: 'Send Messages',        value: 0x800,      auto: true },
+                    {active: false, id: 'manage_messaes',       name: 'Manage Messages',      value: 0x2000,     auto: false},
+                    {active: false, id: 'attach_files',         name: 'Attach Files',         value: 0x8000,     auto: true },
+                    {active: false, id: 'mention_everyone',     name: 'Mention Everyone',     value: 0x20000,    auto: true },
+                    {active: false, id: 'add_reactions',        name: 'Add Reactions',        value: 0x40,       auto: true },
+                    {active: false, id: 'use_slash_commands',   name: 'Use Slash Commands',   value: 0x80000000, auto: true }
                 ]
             },
             {
                 name: 'Voice',
                 active: false,
                 permissions: [
-                    {active: false, id: 'connect',            name: 'Connect',            value: 0x100000,  auto: true },
-                    {active: false, id: 'mute_members',       name: 'Mute Members',       value: 0x400000,  auto: true },
-                    {active: false, id: 'move_members',       name: 'Move Members',       value: 0x1000000, auto: true },
-                    {active: false, id: 'speak',              name: 'Speak',              value: 0x200000,  auto: true },
-                    {active: false, id: 'deafen_members',     name: 'Deafen Members',     value: 0x800000,  auto: true },
-                    {active: false, id: 'use_voice_activity', name: 'Use Voice Activity', value: 0x2000000, auto: true },
-                    {active: false, id: 'go_live',            name: 'Go Live',            value: 0x200,     auto: true },
-                    {active: false, id: 'priority_speaker',   name: 'Priority Speaker',   value: 0x100,     auto: true }
+                    {active: false, id: 'connect',            name: 'Connect',            value: 0x100000,    auto: true },
+                    {active: false, id: 'mute_members',       name: 'Mute Members',       value: 0x400000,    auto: true },
+                    {active: false, id: 'move_members',       name: 'Move Members',       value: 0x1000000,   auto: true },
+                    {active: false, id: 'speak',              name: 'Speak',              value: 0x200000,    auto: true },
+                    {active: false, id: 'deafen_members',     name: 'Deafen Members',     value: 0x800000,    auto: true },
+                    {active: false, id: 'use_voice_activity', name: 'Use Voice Activity', value: 0x2000000,   auto: true },
+                    {active: false, id: 'go_live',            name: 'Go Live',            value: 0x200,       auto: true },
+                    {active: false, id: 'priority_speaker',   name: 'Priority Speaker',   value: 0x100,       auto: true },
+                    {active: false, id: 'request_to_speak',   name: 'Request to Speak',   value: 0x100000000, auto: true }
                 ]
             }
         ];
