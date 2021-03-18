@@ -242,8 +242,8 @@ class PersonalRoles(commands.Cog):
         role = await self.config.member(member).role()
         if role:
             role = member.guild.get_role(role)
-            if role and member:
-                try:
-                    await member.add_roles(role, reason=_("Personal Role"))
-                except discord.Forbidden:
-                    pass
+        if role and member:
+            try:
+                await member.add_roles(role, reason=_("Personal Role"))
+            except discord.Forbidden:
+                pass

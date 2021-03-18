@@ -147,13 +147,12 @@ class DataUtils(commands.Cog):
             em.add_field(
                 name=_("Public flags"),
                 value="\n".join(
-                    [
-                        str(flag)[10:].replace("_", " ").capitalize()
-                        for flag in user.public_flags.all()
-                    ]
+                    str(flag)[10:].replace("_", " ").capitalize()
+                    for flag in user.public_flags.all()
                 ),
                 inline=False,
             )
+
         em.set_image(url=user.avatar_url_as(static_format="png", size=4096))
         em.set_thumbnail(url=user.default_avatar_url)
         em.set_footer(text=_("Created at"))
@@ -459,7 +458,7 @@ class DataUtils(commands.Cog):
             return
         banlist = await server.bans()
         if banlist:
-            banlisttext = "\n".join([f"{x.user} ({x.user.id})" for x in banlist])
+            banlisttext = "\n".join(f"{x.user} ({x.user.id})" for x in banlist)
             pages = [chat.box(page) for page in list(chat.pagify(banlisttext))]
             await menu(ctx, pages, DEFAULT_CONTROLS)
         else:
@@ -480,7 +479,7 @@ class DataUtils(commands.Cog):
             return
         invites = await server.invites()
         if invites:
-            inviteslist = "\n".join([f"{x} ({x.channel.name})" for x in invites])
+            inviteslist = "\n".join(f"{x} ({x.channel.name})" for x in invites)
             await menu(ctx, list(chat.pagify(inviteslist)), DEFAULT_CONTROLS)
         else:
             await ctx.send(_("There is no invites for this server"))
@@ -527,9 +526,11 @@ class DataUtils(commands.Cog):
         em.add_field(
             name=_("Changed roles permissions"),
             value=chat.escape(
-                "\n".join([str(x) for x in changed_roles]) or _("Not set"), formatting=True
+                "\n".join(str(x) for x in changed_roles) or _("Not set"),
+                formatting=True,
             ),
         )
+
         em.add_field(
             name=_("Mention"),
             value=f"{channel.mention}\n{chat.inline(channel.mention)}",
@@ -566,9 +567,12 @@ class DataUtils(commands.Cog):
         """Get all channels on server"""
         if server is None or not await self.bot.is_owner(ctx.author):
             server = ctx.guild
-        categories = "\n".join([x.name for x in server.categories]) or _("No categories")
-        text_channels = "\n".join([x.name for x in server.text_channels]) or _("No text channels")
-        voice_channels = "\n".join([x.name for x in server.voice_channels]) or _(
+        categories = "\n".join(x.name for x in server.categories) or _("No categories")
+        text_channels = "\n".join(x.name for x in server.text_channels) or _(
+            "No text channels"
+        )
+
+        voice_channels = "\n".join(x.name for x in server.voice_channels) or _(
             "No voice channels"
         )
         categories = list(chat.pagify(categories, page_length=2048))
@@ -654,10 +658,8 @@ class DataUtils(commands.Cog):
             discord.Embed(description=p, color=await ctx.embed_color())
             for p in chat.pagify("\n".join(memberslist), page_length=2048)
         ]
-        pagenum = 1
-        for page in pages:
+        for pagenum, page in enumerate(pages, start=1):
             page.set_footer(text=_("Page {}/{}").format(pagenum, len(pages)))
-            pagenum += 1
         await menu(ctx, pages, DEFAULT_CONTROLS)
 
     @commands.command(aliases=["listroles", "rolelist"])
@@ -732,10 +734,8 @@ class DataUtils(commands.Cog):
         if server is None or not await self.bot.is_owner(ctx.author):
             server = ctx.guild
         emojis = [await self.emoji_embed(ctx, emoji) for emoji in server.emojis]
-        pagenum = 1
-        for page in emojis:
+        for pagenum, page in enumerate(emojis, start=1):
             page.set_footer(text=_("Page {}/{}").format(pagenum, len(emojis)))
-            pagenum += 1
         if emojis:
             await menu(ctx, emojis, DEFAULT_CONTROLS)
         else:
@@ -781,9 +781,12 @@ class DataUtils(commands.Cog):
             if emoji.roles:
                 em.add_field(
                     name=_("Roles"),
-                    value=chat.escape("\n".join([x.name for x in emoji.roles]), formatting=True),
+                    value=chat.escape(
+                        "\n".join(x.name for x in emoji.roles), formatting=True
+                    ),
                     inline=False,
                 )
+
         elif isinstance(emoji, discord.PartialEmoji):
             em.add_field(
                 name=_("Exists since"),

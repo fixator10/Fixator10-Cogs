@@ -430,7 +430,7 @@ class Weather(commands.Cog):
                 return
         by_day = forecast.daily()
         pages = []
-        for i in range(0, 8):
+        for i in range(8):
             data = by_day.data[i]
             em = discord.Embed(
                 title=_("Weather in {}").format(

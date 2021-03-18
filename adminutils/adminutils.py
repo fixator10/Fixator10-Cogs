@@ -60,8 +60,9 @@ class AdminUtils(commands.Cog):
         pred = MessagePredicate.yes_or_no(ctx)
         if not ctx.assume_yes:
             roles_text = _("\nIncluding members in roles: {}\n").format(
-                ", ".join([r.mention for r in roles])
+                ", ".join(r.mention for r in roles)
             )
+
             await ctx.send(
                 chat.warning(
                     _(
@@ -76,8 +77,9 @@ class AdminUtils(commands.Cog):
                 pass
         if ctx.assume_yes or pred.result:
             cleanup = await ctx.guild.prune_members(
-                days=days, reason=get_audit_reason(ctx.author), roles=roles if roles else None
+                days=days, reason=get_audit_reason(ctx.author), roles=roles or None
             )
+
             await ctx.send(
                 chat.info(
                     _(
@@ -178,12 +180,13 @@ class AdminUtils(commands.Cog):
                 reason=get_audit_reason(
                     ctx.author,
                     _("Restricted to roles: {}").format(
-                        ", ".join([f"{role.name}" for role in roles])
+                        ", ".join(f"{role.name}" for role in roles)
                     )
                     if roles
                     else None,
                 ),
             )
+
         except discord.InvalidArgument:
             await ctx.send(chat.error(_("This image type is unsupported, or link is incorrect")))
         except discord.HTTPException as e:
@@ -221,12 +224,13 @@ class AdminUtils(commands.Cog):
                 reason=get_audit_reason(
                     ctx.author,
                     _("Restricted to roles: {}").format(
-                        ", ".join([f"{role.name}" for role in roles])
+                        ", ".join(f"{role.name}" for role in roles)
                     )
                     if roles
                     else None,
                 ),
             )
+
             await ctx.tick()
         except discord.InvalidArgument:
             await ctx.send(
@@ -259,12 +263,13 @@ class AdminUtils(commands.Cog):
                 reason=get_audit_reason(
                     ctx.author,
                     _("Restricted to roles: ").format(
-                        ", ".join([f"{role.name}" for role in roles])
+                        ", ".join(f"{role.name}" for role in roles)
                     )
                     if roles
                     else None,
                 ),
             )
+
         except discord.Forbidden:
             await ctx.send(chat.error(_("I can't edit this emoji")))
         await ctx.tick()

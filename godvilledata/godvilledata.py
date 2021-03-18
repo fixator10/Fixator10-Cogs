@@ -19,7 +19,7 @@ class GodConverter(commands.MemberConverter):
         """Get apikey by godname
         :param godname: name of god to get key
         :param game: type of account ("godville" or "godvillegame")"""
-        if not any(g == game for g in ["godville", "godvillegame"]):
+        if not game in ["godville", "godvillegame"]:
             raise ValueError(
                 f"{game} is not right type of account\n"
                 'only "godville" and "godvillegame" are supported'

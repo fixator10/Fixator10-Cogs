@@ -64,18 +64,23 @@ class MessagesLog(commands.Cog):
 
         Versions:
         1. Copy channel to channel types"""
-        if not await self.config.config_version() or await self.config.config_version() < 1:
-            log.info("Updating config from version 1 to version 2")
-            for guild, data in (await self.config.all_guilds()).items():
-                if data["channel"]:
-                    log.info(f"Updating config for guild {guild}")
-                    guild_config = self.config.guild_from_id(guild)
-                    await guild_config.delete_channel.set(data["channel"])
-                    await guild_config.edit_channel.set(data["channel"])
-                    await guild_config.bulk_delete_channel.set(data["channel"])
-                    await guild_config.channel.clear()
-            log.info("Config updated to version 1")
-            await self.config.config_version.set(1)
+        if (
+            await self.config.config_version()
+            and await self.config.config_version() >= 1
+        ):
+            return
+
+        log.info("Updating config from version 1 to version 2")
+        for guild, data in (await self.config.all_guilds()).items():
+            if data["channel"]:
+                log.info(f"Updating config for guild {guild}")
+                guild_config = self.config.guild_from_id(guild)
+                await guild_config.delete_channel.set(data["channel"])
+                await guild_config.edit_channel.set(data["channel"])
+                await guild_config.bulk_delete_channel.set(data["channel"])
+                await guild_config.channel.clear()
+        log.info("Config updated to version 1")
+        await self.config.config_version.set(1)
 
     async def red_delete_data_for_user(self, **kwargs):
         return
@@ -194,17 +199,21 @@ class MessagesLog(commands.Cog):
             if not any([users, channels, categories]):
                 await ctx.send(chat.info(_("Nothing is ignored")))
                 return
-            users_pages = []
-            channels_pages = []
-            categories_pages = []
-            for page in chat.pagify("\n".join(users), page_length=2048):
-                users_pages.append(discord.Embed(title=_("Ignored users"), description=page))
-            for page in chat.pagify("\n".join(channels), page_length=2048):
-                channels_pages.append(discord.Embed(title=_("Ignored channels"), description=page))
-            for page in chat.pagify("\n".join(categories), page_length=2048):
-                categories_pages.append(
-                    discord.Embed(title=_("Ignored categories"), description=page)
-                )
+            users_pages = [
+                discord.Embed(title=_("Ignored users"), description=page)
+                for page in chat.pagify("\n".join(users), page_length=2048)
+            ]
+
+            channels_pages = [
+                discord.Embed(title=_("Ignored channels"), description=page)
+                for page in chat.pagify("\n".join(channels), page_length=2048)
+            ]
+
+            categories_pages = [
+                discord.Embed(title=_("Ignored categories"), description=page)
+                for page in chat.pagify("\n".join(categories), page_length=2048)
+            ]
+
             pages = users_pages + channels_pages + categories_pages
             await menu(ctx, pages, DEFAULT_CONTROLS)
         else:
@@ -260,12 +269,13 @@ class MessagesLog(commands.Cog):
             embed.add_field(
                 name=_("Attachments"),
                 value="\n".join(
-                    [
-                        _("[{0.filename}]({0.url}) ([Cached]({0.proxy_url}))").format(a)
-                        for a in message.attachments
-                    ]
+                    _("[{0.filename}]({0.url}) ([Cached]({0.proxy_url}))").format(
+                        a
+                    )
+                    for a in message.attachments
                 ),
             )
+
         embed.set_author(name=message.author, icon_url=message.author.avatar_url)
         embed.set_footer(text=_("ID: {} • Sent at").format(message.id))
         embed.add_field(name=_("Channel"), value=message.channel.mention)
@@ -344,21 +354,20 @@ class MessagesLog(commands.Cog):
             n = "\n"
             messages_dump = chat.text_to_file(
                 "\n\n".join(
-                    [
-                        f"[{m.id}]\n"
-                        f"[Author]:     {m.author}\n"
-                        f"[Channel]:    {m.channel.name} ({m.channel.id})\n"
-                        f"[Created at]: {m.created_at}\n"
-                        f"[Content]:\n"
-                        f"{m.system_content}\n"
-                        f"[Embeds]:\n"
-                        f"{n.join([pformat(e.to_dict()) for e in m.embeds])}"
-                        async for m in AsyncIter(payload.cached_messages)
-                        if m.guild.id == guild.id
-                    ]
+                    f"[{m.id}]\n"
+                    f"[Author]:     {m.author}\n"
+                    f"[Channel]:    {m.channel.name} ({m.channel.id})\n"
+                    f"[Created at]: {m.created_at}\n"
+                    f"[Content]:\n"
+                    f"{m.system_content}\n"
+                    f"[Embeds]:\n"
+                    f"{n.join([pformat(e.to_dict()) for e in m.embeds])}"
+                    for m in AsyncIter(payload.cached_messages)
+                    if m.guild.id == guild.id
                 ),
                 filename=f"{guild.id}.txt",
             )
+
         embed = discord.Embed(
             title=_("Multiple messages deleted"),
             description=_("{} messages removed").format(len(payload.message_ids))
@@ -415,12 +424,13 @@ class MessagesLog(commands.Cog):
             embed.add_field(
                 name=_("Attachments"),
                 value="\n".join(
-                    [
-                        _("[{0.filename}]({0.url}) ([Cached]({0.proxy_url}))").format(a)
-                        for a in before.attachments
-                    ]
+                    _("[{0.filename}]({0.url}) ([Cached]({0.proxy_url}))").format(
+                        a
+                    )
+                    for a in before.attachments
                 ),
             )
+
         embed.set_author(name=before.author, icon_url=before.author.avatar_url)
         embed.set_footer(text=_("ID: {} • Sent at").format(before.id))
         try:

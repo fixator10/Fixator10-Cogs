@@ -148,16 +148,22 @@ class ReverseImageSearch(commands.Cog):
                 description="\n".join(
                     [
                         _("Similarity: {}%").format(entry.similarity),
-                        "\n".join([n for n in [entry.eng_name, entry.jp_name] if n]) or "",
-                        entry.part and _("Part/Episode: {}").format(entry.part) or "",
+                        "\n".join(n for n in [entry.eng_name, entry.jp_name] if n)
+                        or "",
+                        entry.part
+                        and _("Part/Episode: {}").format(entry.part)
+                        or "",
                         entry.year and _("Year: {}").format(entry.year) or "",
-                        entry.est_time and _("Est. Time: {}").format(entry.est_time) or "",
+                        entry.est_time
+                        and _("Est. Time: {}").format(entry.est_time)
+                        or "",
                     ]
                 ),
                 url=url,
                 color=await ctx.embed_colour(),
                 timestamp=entry.created_at or discord.Embed.Empty,
             )
+
             e.set_footer(
                 text=_("Via SauceNAO • Page {}/{}").format(page, search.results_returned),
                 icon_url="https://www.google.com/s2/favicons?domain=saucenao.com",
@@ -238,31 +244,33 @@ class ReverseImageSearch(commands.Cog):
             e = discord.Embed(
                 title=doc.title,
                 description="\n".join(
-                    [
-                        s
-                        for s in [
-                            _("Similarity: {:.2f}%").format(doc.similarity * 100),
-                            doc.title_native
-                            and "🇯🇵 " + _("Native title: {}").format(doc.title_native),
-                            doc.title_romaji
-                            and "🇯🇵 " + _("Romaji transcription: {}").format(doc.title_romaji),
-                            doc.title_chinese
-                            and "🇨🇳 " + _("Chinese title: {}").format(doc.title_chinese),
-                            doc.title_english
-                            and "🇺🇸 " + _("English title: {}").format(doc.title_english),
-                            _("Est. Time: {}").format(doc.time_str),
-                            _("Episode: {}").format(doc.episode),
-                            doc.synonyms
-                            and _("Also known as: {}").format(", ".join(doc.synonyms)),
-                        ]
-                        if s
+                    s
+                    for s in [
+                        _("Similarity: {:.2f}%").format(doc.similarity * 100),
+                        doc.title_native
+                        and "🇯🇵 " + _("Native title: {}").format(doc.title_native),
+                        doc.title_romaji
+                        and "🇯🇵 "
+                        + _("Romaji transcription: {}").format(doc.title_romaji),
+                        doc.title_chinese
+                        and "🇨🇳 "
+                        + _("Chinese title: {}").format(doc.title_chinese),
+                        doc.title_english
+                        and "🇺🇸 "
+                        + _("English title: {}").format(doc.title_english),
+                        _("Est. Time: {}").format(doc.time_str),
+                        _("Episode: {}").format(doc.episode),
+                        doc.synonyms
+                        and _("Also known as: {}").format(", ".join(doc.synonyms)),
                     ]
+                    if s
                 ),
                 url=doc.mal_id
                 and f"https://myanimelist.net/anime/{doc.mal_id}"
                 or f"https://anilist.co/anime/{doc.anilist_id}",
                 color=await ctx.embed_color(),
             )
+
             e.set_thumbnail(url=doc.thumbnail)
             e.set_footer(
                 text=_("Via WAIT (trace.moe) • Page {}/{}").format(page, len(search.docs)),

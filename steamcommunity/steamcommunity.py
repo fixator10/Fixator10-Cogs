@@ -37,9 +37,7 @@ def bool_emojify(bool_var: bool) -> str:
 
 def check_api(ctx):
     """Is API ready?"""
-    if "ISteamUser" in list(ctx.cog.steam._interfaces.keys()):
-        return True
-    return False
+    return "ISteamUser" in list(ctx.cog.steam._interfaces.keys())
 
 
 async def validate_ip(s):
@@ -390,7 +388,7 @@ class SteamCommunity(commands.Cog):
         )
         cur = graphdata["start"]
         x = []
-        for i in range(0, len(graphdata["data"])):
+        for _ in range(len(graphdata["data"])):
             cur += graphdata["step"]
             x.append(cur)
         x = [datetime.utcfromtimestamp(_x / 1000) for _x in x]

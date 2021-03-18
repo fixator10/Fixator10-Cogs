@@ -137,8 +137,9 @@ class Leveler(commands.Cog):
         config = await self.config.custom("MONGODB").all()
         try:
             self.client = AsyncIOMotorClient(
-                **{k: v for k, v in config.items() if not k == "db_name"}
+                **{k: v for k, v in config.items() if k != "db_name"}
             )
+
             await self.client.server_info()
             self.db = self.client[config["db_name"]]
             self._db_ready = True
@@ -373,9 +374,13 @@ class Leveler(commands.Cog):
                 async for userinfo in self.db.users.find({}):
                     try:
                         if "servers" in userinfo and str(server.id) in userinfo["servers"]:
-                            server_exp = 0
-                            for i in range(userinfo["servers"][str(server.id)]["level"]):
-                                server_exp += await self._required_exp(i)
+                            server_exp = sum(
+                                await self._required_exp(i)
+                                for i in range(
+                                    userinfo["servers"][str(server.id)]["level"]
+                                )
+                            )
+
                             server_exp += userinfo["servers"][str(server.id)]["current_exp"]
                             try:
                                 users.append((userinfo["username"], server_exp))
@@ -515,9 +520,11 @@ class Leveler(commands.Cog):
         msg += "Title: {}\n".format(userinfo["title"])
         msg += "Reps: {}\n".format(userinfo["rep"])
         msg += "Server Level: {}\n".format(userinfo["servers"][str(server.id)]["level"])
-        total_server_exp = 0
-        for i in range(userinfo["servers"][str(server.id)]["level"]):
-            total_server_exp += await self._required_exp(i)
+        total_server_exp = sum(
+            await self._required_exp(i)
+            for i in range(userinfo["servers"][str(server.id)]["level"])
+        )
+
         total_server_exp += userinfo["servers"][str(server.id)]["current_exp"]
         msg += "Server Exp: {}\n".format(total_server_exp)
         msg += "Total Exp: {}\n".format(userinfo["total_exp"])
@@ -688,16 +695,16 @@ class Leveler(commands.Cog):
             return
 
         # get correct section for db query
-        if section == "rep":
-            section_name = "rep_color"
-        elif section == "exp":
-            section_name = "profile_exp_color"
+        if section == "all":
+            section_name = "all"
         elif section == "badge":
             section_name = "badge_col_color"
+        elif section == "exp":
+            section_name = "profile_exp_color"
         elif section == "info":
             section_name = "profile_info_color"
-        elif section == "all":
-            section_name = "all"
+        elif section == "rep":
+            section_name = "rep_color"
         else:
             await ctx.send(
                 "**Not a valid section. Must be `rep`, `exp`, `badge`, `info` or `all`.**"
@@ -706,18 +713,10 @@ class Leveler(commands.Cog):
 
         # get correct color choice
         if color == "auto":
-            if not all(lib in globals().keys() for lib in ["numpy", "cluster"]):
+            if any(lib not in globals().keys() for lib in ["numpy", "cluster"]):
                 await ctx.send("**Missing required package. Autocolor feature unavailable**")
                 return
-            if section == "exp":
-                color_ranks = [random.randint(2, 3)]
-            elif section == "rep":
-                color_ranks = [random.randint(2, 3)]
-            elif section == "badge":
-                color_ranks = [0]  # most prominent color
-            elif section == "info":
-                color_ranks = [random.randint(0, 1)]
-            elif section == "all":
+            if section == "all":
                 color_ranks = [
                     random.randint(2, 3),
                     random.randint(2, 3),
@@ -725,6 +724,12 @@ class Leveler(commands.Cog):
                     random.randint(0, 2),
                 ]
 
+            elif section == "badge":
+                color_ranks = [0]  # most prominent color
+            elif section in ["exp", "rep"]:
+                color_ranks = [random.randint(2, 3)]
+            elif section == "info":
+                color_ranks = [random.randint(0, 1)]
             hex_colors = await self._auto_color(ctx, userinfo["profile_background"], color_ranks)
             set_color = []
             for hex_color in hex_colors:
@@ -832,28 +837,28 @@ class Leveler(commands.Cog):
             return
 
         # get correct section for db query
-        if section == "exp":
+        if section == "all":
+            section_name = "all"
+        elif section == "exp":
             section_name = "rank_exp_color"
         elif section == "info":
             section_name = "rank_info_color"
-        elif section == "all":
-            section_name = "all"
         else:
             await ctx.send("**Not a valid section. Must be `exp`, `info` or `all`**")
             return
 
         # get correct color choice
         if color == "auto":
-            if not all(lib in globals().keys() for lib in ["numpy", "cluster"]):
+            if any(lib not in globals().keys() for lib in ["numpy", "cluster"]):
                 await ctx.send("**Missing required package. Autocolor feature unavailable**")
                 return
-            if section == "exp":
+            if section == "all":
+                color_ranks = [random.randint(2, 3), random.randint(0, 1)]
+
+            elif section == "exp":
                 color_ranks = [random.randint(2, 3)]
             elif section == "info":
                 color_ranks = [random.randint(0, 1)]
-            elif section == "all":
-                color_ranks = [random.randint(2, 3), random.randint(0, 1)]
-
             hex_colors = await self._auto_color(ctx, userinfo["rank_background"], color_ranks)
             set_color = []
             for hex_color in hex_colors:
@@ -862,17 +867,17 @@ class Leveler(commands.Cog):
         elif color == "white":
             set_color = [white_info_color]
         elif color == "default":
-            if section == "exp":
-                set_color = [default_exp]
-            elif section == "info":
-                set_color = [default_info_color]
-            elif section == "all":
+            if section == "all":
                 set_color = [
                     default_exp,
                     default_rep,
                     default_badge,
                     default_info_color,
                 ]
+            elif section == "exp":
+                set_color = [default_exp]
+            elif section == "info":
+                set_color = [default_info_color]
         elif self._is_hex(color):
             set_color = [self._hex_to_rgb(color, default_a)]
         else:
@@ -955,7 +960,7 @@ class Leveler(commands.Cog):
 
         # get correct color choice
         if color == "auto":
-            if not all(lib in globals().keys() for lib in ["numpy", "cluster"]):
+            if any(lib not in globals().keys() for lib in ["numpy", "cluster"]):
                 await ctx.send("**Missing required package. Autocolor feature unavailable**")
                 return
             if section == "info":
@@ -1004,11 +1009,7 @@ class Leveler(commands.Cog):
         counts, bins = numpy.histogram(vecs, len(codes))  # count occurrences
 
         # sort counts
-        freq_index = []
-        index = 0
-        for count in counts:
-            freq_index.append((index, count))
-            index += 1
+        freq_index = [(index, count) for index, count in enumerate(counts)]
         sorted_list = sorted(freq_index, key=operator.itemgetter(1), reverse=True)
 
         colors = []
@@ -1026,7 +1027,7 @@ class Leveler(commands.Cog):
 
         # if only 3 characters are given
         if len(str(h)) == 3:
-            expand = "".join([x * 2 for x in str(h)])
+            expand = "".join(x * 2 for x in str(h))
             h = expand
 
         colors = [int(h[i : i + 2], 16) for i in (0, 2, 4)]
@@ -1358,9 +1359,11 @@ class Leveler(commands.Cog):
             return
 
         # get rid of old level exp
-        old_server_exp = 0
-        for i in range(userinfo["servers"][str(server.id)]["level"]):
-            old_server_exp += await self._required_exp(i)
+        old_server_exp = sum(
+            await self._required_exp(i)
+            for i in range(userinfo["servers"][str(server.id)]["level"])
+        )
+
         userinfo["total_exp"] -= old_server_exp
         userinfo["total_exp"] -= userinfo["servers"][str(server.id)]["current_exp"]
 
@@ -1538,7 +1541,7 @@ class Leveler(commands.Cog):
         Options: `server` or `global`.
         Defaults for server."""
         server = ctx.guild
-        if any([badge_type.casefold() == btype for btype in ["server", "guild"]]):
+        if any(badge_type.casefold() == btype for btype in ["server", "guild"]):
             servername = server.name
             icon_url = server.icon_url
             serverid = server.id
@@ -1576,11 +1579,9 @@ class Leveler(commands.Cog):
             )
             for page in pagify(msg, page_length=2048)
         ]
-        pagenum = 1
-        for page in pages:
+        for pagenum, page in enumerate(pages, start=1):
             page.set_author(name=servername, icon_url=icon_url)
             page.set_footer(text="Page {}/{}".format(pagenum, len(pages)))
-            pagenum += 1
         await menu(ctx, pages, DEFAULT_CONTROLS)
 
     @badge.command(name="list")
@@ -1606,17 +1607,19 @@ class Leveler(commands.Cog):
                 priority_badges.append((badge, priority_num))
         sorted_badges = sorted(priority_badges, key=operator.itemgetter(1), reverse=True)
 
-        badge_ranks = ""
-        counter = 1
-        for badge, priority_num in sorted_badges[:12]:
-            badge_ranks += "**{}. {}** ({}) [{}] **—** {}\n".format(
+        badge_ranks = "".join(
+            "**{}. {}** ({}) [{}] **—** {}\n".format(
                 counter,
                 badge["badge_name"],
                 badge["server_name"],
                 priority_num,
                 badge["description"],
             )
-            counter += 1
+            for counter, (badge, priority_num) in enumerate(
+                sorted_badges[:12], start=1
+            )
+        )
+
         if not badge_ranks:
             badge_ranks = "None"
 
@@ -1625,13 +1628,11 @@ class Leveler(commands.Cog):
         total_pages = len(list(pagify(badge_ranks)))
         embeds = []
 
-        counter = 1
-        for page in pagify(badge_ranks, ["\n"]):
+        for counter, page in enumerate(pagify(badge_ranks, ["\n"]), start=1):
             em.description = page
             em.set_author(name="Badges for {}".format(user.name), icon_url=user.avatar_url)
             em.set_footer(text="Page {} of {}".format(counter, total_pages))
             embeds.append(em)
-            counter += 1
         await menu(ctx, embeds, DEFAULT_CONTROLS)
 
     @badge.command(name="buy")
@@ -1642,10 +1643,7 @@ class Leveler(commands.Cog):
         Option: `-global`."""
         user = ctx.author
         server = ctx.guild
-        if global_badge == "-global":
-            serverid = "global"
-        else:
-            serverid = server.id
+        serverid = "global" if global_badge == "-global" else server.id
         await self._create_user(user, server)
         userinfo = await self.db.users.find_one({"user_id": str(user.id)})
         userinfo = await self._badge_convert_dict(userinfo)
@@ -3009,11 +3007,8 @@ class Leveler(commands.Cog):
             ],
         )
 
-        n = 0
-        while n < iterations:
+        for _ in range(iterations):
             back = back.filter(ImageFilter.BLUR)
-            n += 1
-
         # Paste the input image onto the shadow backdrop
         image_left = border - min(offset[0], 0)
         image_top = border - min(offset[1], 0)
@@ -3309,7 +3304,7 @@ class Leveler(commands.Cog):
         else:
             info_color = (30, 30, 30, 150)
 
-        for i in range(0, height):
+        for i in range(height):
             draw.rectangle(
                 [(0, height - i), (width, height - i)],
                 fill=(info_color[0], info_color[1], info_color[2], 255 - i * 3),
@@ -3539,10 +3534,12 @@ class Leveler(commands.Cog):
 
         async for userinfo in self.db.users.find({}):
             try:
-                server_exp = 0
                 userid = userinfo["user_id"]
-                for i in range(userinfo["servers"][str(server.id)]["level"]):
-                    server_exp += await self._required_exp(i)
+                server_exp = sum(
+                    await self._required_exp(i)
+                    for i in range(userinfo["servers"][str(server.id)]["level"])
+                )
+
                 server_exp += userinfo["servers"][str(server.id)]["current_exp"]
                 users.append((userid, server_exp))
             except KeyError:
@@ -3550,11 +3547,9 @@ class Leveler(commands.Cog):
 
         sorted_list = sorted(users, key=operator.itemgetter(1), reverse=True)
 
-        rank = 1
-        async for a_user in AsyncIter(sorted_list):
+        async for rank, a_user in enumerate(AsyncIter(sorted_list), start=1):
             if a_user[0] == targetid:
                 return rank
-            rank += 1
 
     async def _find_server_rep_rank(self, user, server):
         if not self._db_ready:
@@ -3567,11 +3562,9 @@ class Leveler(commands.Cog):
 
         sorted_list = sorted(users, key=operator.itemgetter(1), reverse=True)
 
-        rank = 1
-        async for a_user in AsyncIter(sorted_list):
+        async for rank, a_user in enumerate(AsyncIter(sorted_list), start=1):
             if a_user[0] == targetid:
                 return rank
-            rank += 1
 
     async def _find_server_exp(self, user, server):
         if not self._db_ready:
@@ -3600,11 +3593,9 @@ class Leveler(commands.Cog):
                 pass
         sorted_list = sorted(users, key=operator.itemgetter(1), reverse=True)
 
-        rank = 1
-        async for stats in AsyncIter(sorted_list):
+        async for rank, stats in enumerate(AsyncIter(sorted_list), start=1):
             if stats[0] == str(user.id):
                 return rank
-            rank += 1
 
     async def _find_global_rep_rank(self, user):
         if not self._db_ready:
@@ -3619,11 +3610,9 @@ class Leveler(commands.Cog):
                 pass
         sorted_list = sorted(users, key=operator.itemgetter(1), reverse=True)
 
-        rank = 1
-        async for stats in AsyncIter(sorted_list):
+        async for rank, stats in enumerate(AsyncIter(sorted_list), start=1):
             if stats[0] == str(user.id):
                 return rank
-            rank += 1
 
     # handles user creation, adding new server, blocking
     async def _create_user(self, user, server):
@@ -3707,8 +3696,7 @@ class Leveler(commands.Cog):
         return int((1 / 278) * (9 + math.sqrt(81 + 1112 * total_exp)))
 
     async def char_in_font(self, unicode_char, font):
-        for cmap in font["cmap"].tables:
-            if cmap.isUnicode():
-                if ord(unicode_char) in cmap.cmap:
-                    return True
-        return False
+        return any(
+            cmap.isUnicode() and ord(unicode_char) in cmap.cmap
+            for cmap in font["cmap"].tables
+        )
