@@ -1,7 +1,7 @@
 import re
 from asyncio import TimeoutError as AsyncTimeoutError
 from random import choice
-from typing import Optional
+from typing import Optional, Union
 
 import aiohttp
 import discord
@@ -18,7 +18,7 @@ except ImportError:
 
 _ = Translator("AdminUtils", __file__)
 
-EMOJI_RE = re.compile(r"(<(a)?:[a-zA-Z0-9_]+:([0-9]+)>)")
+EMOJI_RE = re.compile(r"(<(a)?:([a-zA-Z0-9_]+):([0-9]+)>)")
 
 
 @cog_i18n(_)
@@ -171,7 +171,7 @@ class AdminUtils(commands.Cog):
             await ctx.send(chat.error(_("Unable to get emoji from provided url: {}").format(e)))
             return
         try:
-            await ctx.guild.create_custom_emoji(
+            e = await ctx.guild.create_custom_emoji(
                 name=name,
                 image=data,
                 roles=roles,
@@ -189,45 +189,79 @@ class AdminUtils(commands.Cog):
         except discord.HTTPException as e:
             await ctx.send(chat.error(_("An error occured on adding an emoji: {}").format(e)))
         else:
+            msg = _("{em} created with the name `{em.name}`".format(em=em))
+            msg += _(" and locked to the roles {}.".format(chat.humanize_list([role.name for role in roles])) if roles else ".")
+            await ctx.send(msg)
             await ctx.tick()
 
-    @emoji.command(name="message", aliases=["steal"])
-    async def emote_steal(self, ctx, name: str, message_id: discord.Message, *roles: discord.Role):
+    @emoji.command(name="import")
+    async def emoji_import(
+        self,
+        ctx,
+        name: str,
+        location: Union[discord.Message, discord.Member, discord.Emoji, discord.PartialEmoji],
+        *roles: discord.Role,
+    ):
         """
-        Add an emoji from a specified message
-        Use double quotes if role name has spaces
+        Add an emoji from either a member's status, a message, or an emoji from another server.
+
+        Use double quotes if role name has spaces.
+        Use `_` as name to preserve original emoji name.
 
         Examples:
-            `[p]emoji message Example 162379234070467641`
-            `[p]emoji message RoleBased 162379234070467641 EmojiRole`
+            `[p]emoji import SomeonesEmoji 236598364265634245`
+            `[p]emoji import peepoStolenDance Username#0000`
+            `[p]emoji import thonk :thonk: emojiRole`
         """
-        # TrusyJaid NotSoBot converter
-        # https://github.com/TrustyJAID/Trusty-cogs/blob/a3e931bc6227645007b37c3f4f524c9fc9859686/notsobot/converter.py#L30-L36
-        emoji = EMOJI_RE.search(message_id.content)
-        if not emoji:
-            await ctx.send(chat.error(_("No emojis found specified message.")))
-            return
-        url = (
-            "https://cdn.discordapp.com/emojis/"
-            f"{emoji.group(3)}.{'gif' if emoji.group(2) else 'png'}?v=1"
-        )
-        async with self.session.get(url) as r:
-            data = await r.read()
+        if isinstance(location, (discord.Emoji, discord.PartialEmoji)):
+            async with self.session.get(str(location.url)) as r:
+                data = await r.read()
+            if name == "_":
+                name = location.name
+        elif isinstance(location, discord.Message):
+            emoji = EMOJI_RE.search(location.content)
+            if not emoji:
+                await ctx.send(chat.error(_("No emojis found in the specified message.")))
+                return
+            url = (
+                "https://cdn.discordapp.com/emojis/"
+                f"{emoji.group(4)}.{'gif' if emoji.group(2) else 'png'}?v=1"
+            )
+            if name == "_":
+                name = emoji.group(3)
+            async with self.session.get(url) as r:
+                data = await r.read()
+        elif isinstance(location, discord.Member):
+            emoji = None
+            if (
+                location.activity
+                and location.activity.emoji
+                and location.activity.emoji.is_custom_emoji()
+            ):
+                emoji = location.activity.emoji
+            if not emoji:
+                await ctx.send(
+                    chat.error(_("This user does not have a custom emoji in their status."))
+                )
+                return
+            async with self.session.get(str(emoji.url)) as r:
+                data = await r.read()
+            if name == "_":
+                name = emoji.name
         try:
-            await ctx.guild.create_custom_emoji(
+            em = await ctx.guild.create_custom_emoji(
                 name=name,
                 image=data,
                 roles=roles,
                 reason=get_audit_reason(
                     ctx.author,
                     _("Restricted to roles: {}").format(
-                        ", ".join([f"{role.name}" for role in roles])
+                        ", ".join([role.name for role in roles])
                     )
                     if roles
                     else None,
                 ),
             )
-            await ctx.tick()
         except discord.InvalidArgument:
             await ctx.send(
                 _(
@@ -237,6 +271,11 @@ class AdminUtils(commands.Cog):
             return
         except discord.HTTPException as e:
             await ctx.send(chat.error(_("An error occurred on adding an emoji: {}").format(e)))
+        else:
+            msg = _("{em} created with the name `{em.name}`".format(em=em))
+            msg += _(" and locked to the roles {}.".format(chat.humanize_list([role.name for role in roles])) if roles else ".")
+            await ctx.send(msg)
+            await ctx.tick()
 
     @emoji.command(name="rename")
     async def emoji_rename(self, ctx, emoji: discord.Emoji, name: str, *roles: discord.Role):
@@ -253,7 +292,7 @@ class AdminUtils(commands.Cog):
             await ctx.send_help()
             return
         try:
-            await emoji.edit(
+            em = await emoji.edit(
                 name=name,
                 roles=roles,
                 reason=get_audit_reason(
@@ -267,6 +306,10 @@ class AdminUtils(commands.Cog):
             )
         except discord.Forbidden:
             await ctx.send(chat.error(_("I can't edit this emoji")))
+        else:
+            msg = _("{em} name changed to `{em.name}`".format(em=em))
+            msg += _(" and locked to the roles {}.".format(chat.humanize_list([role.name for role in roles])) if roles else ".")
+            await ctx.send(msg)
         await ctx.tick()
 
     @emoji.command(name="remove")
