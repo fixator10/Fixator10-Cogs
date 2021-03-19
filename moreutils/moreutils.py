@@ -81,11 +81,7 @@ def rgb_to_hsv(r, g, b):
         h = (60 * ((r - g) / diff) + 240) % 360
 
     # if cmax equal zero
-    if cmax == 0:
-        s = 0
-    else:
-        s = (diff / cmax) * 100
-
+    s = 0 if cmax == 0 else (diff / cmax) * 100
     # compute v
     v = cmax * 100
     return h, s, v
@@ -99,7 +95,7 @@ def bool_emojify(bool_var: bool) -> str:
 class MoreUtils(commands.Cog):
     """Some (maybe) useful utils."""
 
-    __version__ = "2.0.18"
+    __version__ = "2.0.19"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
