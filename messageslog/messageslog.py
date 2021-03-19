@@ -40,7 +40,7 @@ _ = Translator("MessagesLog", __file__)
 class MessagesLog(commands.Cog):
     """Log deleted and redacted messages to the defined channel"""
 
-    __version__ = "2.3.9"
+    __version__ = "2.3.10"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -317,6 +317,7 @@ class MessagesLog(commands.Cog):
 
     @commands.Cog.listener("on_raw_bulk_message_delete")
     async def raw_bulk_message_deleted(self, payload: discord.RawBulkMessageDeleteEvent):
+        # sourcery skip: comprehension-to-generator
         if not payload.guild_id:
             return
         if await self.bot.cog_disabled_in_guild_raw(self.qualified_name, payload.guild_id):
@@ -346,16 +347,18 @@ class MessagesLog(commands.Cog):
             n = "\n"
             messages_dump = chat.text_to_file(
                 "\n\n".join(
-                    f"[{m.id}]\n"
-                    f"[Author]:     {m.author}\n"
-                    f"[Channel]:    {m.channel.name} ({m.channel.id})\n"
-                    f"[Created at]: {m.created_at}\n"
-                    f"[Content]:\n"
-                    f"{m.system_content}\n"
-                    f"[Embeds]:\n"
-                    f"{n.join([pformat(e.to_dict()) for e in m.embeds])}"
-                    async for m in AsyncIter(payload.cached_messages)
-                    if m.guild.id == guild.id
+                    [
+                        f"[{m.id}]\n"
+                        f"[Author]:     {m.author}\n"
+                        f"[Channel]:    {m.channel.name} ({m.channel.id})\n"
+                        f"[Created at]: {m.created_at}\n"
+                        f"[Content]:\n"
+                        f"{m.system_content}\n"
+                        f"[Embeds]:\n"
+                        f"{n.join([pformat(e.to_dict()) for e in m.embeds])}"
+                        async for m in AsyncIter(payload.cached_messages)
+                        if m.guild.id == guild.id
+                    ]
                 ),
                 filename=f"{guild.id}.txt",
             )
