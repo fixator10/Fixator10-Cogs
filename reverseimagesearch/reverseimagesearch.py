@@ -88,7 +88,7 @@ def nsfwcheck():
 class ReverseImageSearch(commands.Cog):
     """(Anime) Reverse Image Search"""
 
-    __version__ = "2.1.8"
+    __version__ = "2.1.9"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -148,7 +148,7 @@ class ReverseImageSearch(commands.Cog):
                 description="\n".join(
                     [
                         _("Similarity: {}%").format(entry.similarity),
-                        "\n".join([n for n in [entry.eng_name, entry.jp_name] if n]) or "",
+                        "\n".join(n for n in [entry.eng_name, entry.jp_name] if n) or "",
                         entry.part and _("Part/Episode: {}").format(entry.part) or "",
                         entry.year and _("Year: {}").format(entry.year) or "",
                         entry.est_time and _("Est. Time: {}").format(entry.est_time) or "",
@@ -238,25 +238,22 @@ class ReverseImageSearch(commands.Cog):
             e = discord.Embed(
                 title=doc.title,
                 description="\n".join(
-                    [
-                        s
-                        for s in [
-                            _("Similarity: {:.2f}%").format(doc.similarity * 100),
-                            doc.title_native
-                            and "🇯🇵 " + _("Native title: {}").format(doc.title_native),
-                            doc.title_romaji
-                            and "🇯🇵 " + _("Romaji transcription: {}").format(doc.title_romaji),
-                            doc.title_chinese
-                            and "🇨🇳 " + _("Chinese title: {}").format(doc.title_chinese),
-                            doc.title_english
-                            and "🇺🇸 " + _("English title: {}").format(doc.title_english),
-                            _("Est. Time: {}").format(doc.time_str),
-                            _("Episode: {}").format(doc.episode),
-                            doc.synonyms
-                            and _("Also known as: {}").format(", ".join(doc.synonyms)),
-                        ]
-                        if s
+                    s
+                    for s in [
+                        _("Similarity: {:.2f}%").format(doc.similarity * 100),
+                        doc.title_native
+                        and "🇯🇵 " + _("Native title: {}").format(doc.title_native),
+                        doc.title_romaji
+                        and "🇯🇵 " + _("Romaji transcription: {}").format(doc.title_romaji),
+                        doc.title_chinese
+                        and "🇨🇳 " + _("Chinese title: {}").format(doc.title_chinese),
+                        doc.title_english
+                        and "🇺🇸 " + _("English title: {}").format(doc.title_english),
+                        _("Est. Time: {}").format(doc.time_str),
+                        _("Episode: {}").format(doc.episode),
+                        doc.synonyms and _("Also known as: {}").format(", ".join(doc.synonyms)),
                     ]
+                    if s
                 ),
                 url=doc.mal_id
                 and f"https://myanimelist.net/anime/{doc.mal_id}"
