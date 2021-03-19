@@ -264,9 +264,7 @@ class MessagesLog(commands.Cog):
             embed.add_field(
                 name=_("Attachments"),
                 value="\n".join(
-                    _("[{0.filename}]({0.url}) ([Cached]({0.proxy_url}))").format(
-                        a
-                    )
+                    _("[{0.filename}]({0.url}) ([Cached]({0.proxy_url}))").format(a)
                     for a in message.attachments
                 ),
             )
@@ -417,9 +415,7 @@ class MessagesLog(commands.Cog):
             embed.add_field(
                 name=_("Attachments"),
                 value="\n".join(
-                    _("[{0.filename}]({0.url}) ([Cached]({0.proxy_url}))").format(
-                        a
-                    )
+                    _("[{0.filename}]({0.url}) ([Cached]({0.proxy_url}))").format(a)
                     for a in before.attachments
                 ),
             )

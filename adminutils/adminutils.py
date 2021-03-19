@@ -177,9 +177,7 @@ class AdminUtils(commands.Cog):
                 roles=roles,
                 reason=get_audit_reason(
                     ctx.author,
-                    _("Restricted to roles: {}").format(
-                        ", ".join(role.name for role in roles)
-                    )
+                    _("Restricted to roles: {}").format(", ".join(role.name for role in roles))
                     if roles
                     else None,
                 ),
@@ -220,9 +218,7 @@ class AdminUtils(commands.Cog):
                 roles=roles,
                 reason=get_audit_reason(
                     ctx.author,
-                    _("Restricted to roles: {}").format(
-                        ", ".join(role.name for role in roles)
-                    )
+                    _("Restricted to roles: {}").format(", ".join(role.name for role in roles))
                     if roles
                     else None,
                 ),

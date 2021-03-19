@@ -566,13 +566,9 @@ class DataUtils(commands.Cog):
         if server is None or not await self.bot.is_owner(ctx.author):
             server = ctx.guild
         categories = "\n".join(x.name for x in server.categories) or _("No categories")
-        text_channels = "\n".join(x.name for x in server.text_channels) or _(
-            "No text channels"
-        )
+        text_channels = "\n".join(x.name for x in server.text_channels) or _("No text channels")
 
-        voice_channels = "\n".join(x.name for x in server.voice_channels) or _(
-            "No voice channels"
-        )
+        voice_channels = "\n".join(x.name for x in server.voice_channels) or _("No voice channels")
         categories = list(chat.pagify(categories, page_length=2048))
         text_channels = list(chat.pagify(text_channels, page_length=2048))
         voice_channels = list(chat.pagify(voice_channels, page_length=2048))
@@ -779,9 +775,7 @@ class DataUtils(commands.Cog):
             if emoji.roles:
                 em.add_field(
                     name=_("Roles"),
-                    value=chat.escape(
-                        "\n".join(x.name for x in emoji.roles), formatting=True
-                    ),
+                    value=chat.escape("\n".join(x.name for x in emoji.roles), formatting=True),
                     inline=False,
                 )
         elif isinstance(emoji, discord.PartialEmoji):
