@@ -1,5 +1,6 @@
 import base64
 import re
+from asyncio import TimeoutError as AsyncTimeoutError
 from datetime import datetime, timezone
 from io import BytesIO
 
@@ -36,7 +37,7 @@ _ = T_
 class MinecraftData(commands.Cog):
     """Minecraft-Related data"""
 
-    __version__ = "2.0.7"
+    __version__ = "2.0.8"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -280,6 +281,9 @@ class MinecraftData(commands.Cog):
                 status = await server.async_status()
             except OSError as e:
                 await ctx.send(chat.error(_("Unable to get server's status: {}").format(e)))
+                return
+            except AsyncTimeoutError:
+                await ctx.send(chat.error(_("Unable to get server's status: Timed out")))
                 return
             # TODO: Reimplement on async query in mcstatus
             # NOTE: Possibly, make query optional
