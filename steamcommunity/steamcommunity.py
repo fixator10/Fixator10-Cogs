@@ -72,7 +72,7 @@ filterwarnings("ignore", category=FutureWarning, module=r"valve.")
 class SteamCommunity(commands.Cog):
     """SteamCommunity commands"""
 
-    __version__ = "2.1.11"
+    __version__ = "2.1.12"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -195,7 +195,9 @@ class SteamCommunity(commands.Cog):
         async with ctx.typing():
             try:
                 async with self.session.get(
-                    "https://crowbar.steamstat.us/gravity.json", raise_for_status=True
+                    "https://crowbar.steamstat.us/gravity.json",
+                    headers={"referer": "https://steamstat.us/"},
+                    raise_for_status=True,
                 ) as gravity:
                     data = await gravity.json(loads=json.loads)
             except aiohttp.ClientResponseError as e:
