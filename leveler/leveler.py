@@ -95,6 +95,8 @@ class Leveler(
         self.db = None
         self.session = aiohttp.ClientSession()
 
+        self.bot.add_dev_env_value("leveler", lambda ctx: self)
+
     async def config_converter(self):
         """Update configs
 
@@ -147,6 +149,7 @@ class Leveler(
     def cog_unload(self):
         self.bot.loop.create_task(self.session.close())
         self._disconnect_mongo()
+        self.bot.remove_dev_env_value("leveler")
 
     async def red_delete_data_for_user(self, *, requester, user_id: int):
         await self.db.users.delete_one({"user_id": str(user_id)})
