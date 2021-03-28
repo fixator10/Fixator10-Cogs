@@ -69,9 +69,11 @@ class Users(MixinMeta):
             return
 
         # get rid of old level exp
-        old_server_exp = 0
-        for i in range(userinfo["servers"][str(server.id)]["level"]):
-            old_server_exp += await self._required_exp(i)
+        old_server_exp = sum(
+            await self._required_exp(i)
+            for i in range(userinfo["servers"][str(server.id)]["level"])
+        )
+
         userinfo["total_exp"] -= old_server_exp
         userinfo["total_exp"] -= userinfo["servers"][str(server.id)]["current_exp"]
 

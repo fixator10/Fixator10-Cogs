@@ -42,34 +42,26 @@ class Profile(MixinMeta):
             return
 
         # get correct section for db query
-        if section == "rep":
-            section_name = "rep_color"
-        elif section == "exp":
-            section_name = "profile_exp_color"
+        if section == "all":
+            section_name = "all"
         elif section == "badge":
             section_name = "badge_col_color"
+        elif section == "exp":
+            section_name = "profile_exp_color"
         elif section == "info":
             section_name = "profile_info_color"
-        elif section == "all":
-            section_name = "all"
+        elif section == "rep":
+            section_name = "rep_color"
         else:
             await ctx.send("Not a valid section. Must be `rep`, `exp`, `badge`, `info` or `all`.")
             return
 
         # get correct color choice
         if color == "auto":
-            if not all(module in modules for module in ("numpy", "scipy.cluster")):
+            if any(module not in modules for module in ("numpy", "scipy.cluster")):
                 await ctx.send("Missing required package. Autocolor feature unavailable")
                 return
-            if section == "exp":
-                color_ranks = [random.randint(2, 3)]
-            elif section == "rep":
-                color_ranks = [random.randint(2, 3)]
-            elif section == "badge":
-                color_ranks = [0]  # most prominent color
-            elif section == "info":
-                color_ranks = [random.randint(0, 1)]
-            elif section == "all":
+            if section == "all":
                 color_ranks = [
                     random.randint(2, 3),
                     random.randint(2, 3),
@@ -77,6 +69,12 @@ class Profile(MixinMeta):
                     random.randint(0, 2),
                 ]
 
+            elif section == "badge":
+                color_ranks = [0]  # most prominent color
+            elif section in ["exp", "rep"]:
+                color_ranks = [random.randint(2, 3)]
+            elif section == "info":
+                color_ranks = [random.randint(0, 1)]
             hex_colors = await self._auto_color(ctx, userinfo["profile_background"], color_ranks)
             if section == "all":
                 set_color = [await self._hex_to_rgb(color, default_a) for color in hex_colors]

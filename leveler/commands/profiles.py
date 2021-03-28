@@ -131,9 +131,11 @@ class Profiles(MixinMeta, metaclass=CompositeMetaClass):
         msg += "Title: {}\n".format(userinfo["title"])
         msg += "Reps: {}\n".format(userinfo["rep"])
         msg += "Server Level: {}\n".format(userinfo["servers"][str(server.id)]["level"])
-        total_server_exp = 0
-        for i in range(userinfo["servers"][str(server.id)]["level"]):
-            total_server_exp += await self._required_exp(i)
+        total_server_exp = sum(
+            await self._required_exp(i)
+            for i in range(userinfo["servers"][str(server.id)]["level"])
+        )
+
         total_server_exp += userinfo["servers"][str(server.id)]["current_exp"]
         msg += "Server Exp: {}\n".format(total_server_exp)
         msg += "Total Exp: {}\n".format(userinfo["total_exp"])

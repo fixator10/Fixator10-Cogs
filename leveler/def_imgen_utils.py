@@ -66,11 +66,7 @@ class DefaultImageGeneratorsUtils(MixinMeta):
         counts, bins = numpy.histogram(vecs, len(codes))  # count occurrences
 
         # sort counts
-        freq_index = []
-        index = 0
-        for count in counts:
-            freq_index.append((index, count))
-            index += 1
+        freq_index = [(index, count) for index, count in enumerate(counts)]
         sorted_list = sorted(freq_index, key=operator.itemgetter(1), reverse=True)
 
         colors = []
@@ -92,11 +88,10 @@ class DefaultImageGeneratorsUtils(MixinMeta):
         return int(start_pos)
 
     def char_in_font(self, unicode_char, font):
-        for cmap in font["cmap"].tables:
-            if cmap.isUnicode():
-                if ord(unicode_char) in cmap.cmap:
-                    return True
-        return False
+        return any(
+            cmap.isUnicode() and ord(unicode_char) in cmap.cmap
+            for cmap in font["cmap"].tables
+        )
 
     def _contrast(self, bg_color, color1, color2):
         """returns color that contrasts better in background"""

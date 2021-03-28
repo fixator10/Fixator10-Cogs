@@ -332,7 +332,7 @@ class ImageGenerators(MixinMeta):
         else:
             info_color = (30, 30, 30, 150)
 
-        for i in range(0, height):
+        for i in range(height):
             draw.rectangle(
                 [(0, height - i), (width, height - i)],
                 fill=(info_color[0], info_color[1], info_color[2], 255 - i * 3),
@@ -887,7 +887,7 @@ class ImageGenerators(MixinMeta):
         async for badgename in AsyncIter(userinfo["badges"].keys()):
             badge = userinfo["badges"][badgename]
             priority_num = badge["priority_num"]
-            if priority_num != 0 and priority_num != -1:
+            if priority_num not in [0, -1]:
                 priority_badges.append((badge, priority_num))
         sorted_badges = await self.asyncify(
             sorted, priority_badges, key=operator.itemgetter(1), reverse=True

@@ -43,28 +43,28 @@ class Rank(MixinMeta):
             return
 
         # get correct section for db query
-        if section == "exp":
+        if section == "all":
+            section_name = "all"
+        elif section == "exp":
             section_name = "rank_exp_color"
         elif section == "info":
             section_name = "rank_info_color"
-        elif section == "all":
-            section_name = "all"
         else:
             await ctx.send("Not a valid section. Must be `exp`, `info` or `all`")
             return
 
         # get correct color choice
         if color == "auto":
-            if not all(module in modules for module in ("numpy", "scipy.cluster")):
+            if any(module not in modules for module in ("numpy", "scipy.cluster")):
                 await ctx.send("Missing required package. Autocolor feature unavailable")
                 return
-            if section == "exp":
+            if section == "all":
+                color_ranks = [random.randint(2, 3), random.randint(0, 1)]
+
+            elif section == "exp":
                 color_ranks = [random.randint(2, 3)]
             elif section == "info":
                 color_ranks = [random.randint(0, 1)]
-            elif section == "all":
-                color_ranks = [random.randint(2, 3), random.randint(0, 1)]
-
             hex_colors = await self._auto_color(ctx, userinfo["rank_background"], color_ranks)
             if section == "all":
                 set_color = [await self._hex_to_rgb(color, default_a) for color in hex_colors]
@@ -73,17 +73,17 @@ class Rank(MixinMeta):
         elif color == "white":
             set_color = white_info_color
         elif color == "default":
-            if section == "exp":
-                set_color = default_exp
-            elif section == "info":
-                set_color = default_info_color
-            elif section == "all":
+            if section == "all":
                 set_color = [
                     default_exp,
                     default_rep,
                     default_badge,
                     default_info_color,
                 ]
+            elif section == "exp":
+                set_color = default_exp
+            elif section == "info":
+                set_color = default_info_color
         elif isinstance(color, discord.Color):
             set_color = (color.r, color.g, color.b, default_a)
         else:

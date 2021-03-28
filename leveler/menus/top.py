@@ -84,8 +84,7 @@ class TopMenu(menus.MenuPages, inherit_buttons=False):
             )
             if pred.result:
                 jump_page = int(msg.content)
-                if jump_page > self._source.get_max_pages():
-                    jump_page = self._source.get_max_pages()
+                jump_page = min(jump_page, self._source.get_max_pages())
                 await self.show_checked_page(jump_page - 1)
                 if self.ctx.channel.permissions_for(self.ctx.me).manage_messages:
                     with suppress(discord.HTTPException):

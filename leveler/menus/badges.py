@@ -53,7 +53,7 @@ class BadgeMenu(menus.MenuPages, inherit_buttons=False):
         page = await self.source.get_page(self.current_page)
         await self.ctx.invoke(
             self.ctx.cog.buy_badge,
-            is_global=True if page["server_id"] == "global" else False,
+            is_global=page["server_id"] == "global",
             name=page["badge_name"],
         )
 

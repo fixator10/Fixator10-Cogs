@@ -46,7 +46,7 @@ class Utils(MixinMeta):
 
         # if only 3 characters are given
         if len(str(h)) == 3:
-            expand = "".join([x * 2 for x in str(h)])
+            expand = "".join(x * 2 for x in str(h))
             h = expand
 
         colors = [int(h[i : i + 2], 16) for i in (0, 2, 4)]
