@@ -13,7 +13,7 @@
     "v2 cog",
     "mongodb"
   ],
-  "min_bot_version": "3.4.1",
+  "min_bot_version": "3.4.6",
   "requirements": [
     "pymongo>=3.10",
     "motor",
