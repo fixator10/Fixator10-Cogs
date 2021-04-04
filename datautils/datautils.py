@@ -560,10 +560,10 @@ class DataUtils(commands.Cog):
                 and f"{len(channel.members)}/{channel.user_limit}"
                 or f"{len(channel.members)}",
             )
-            if isinstance(channel, discord.StageChannel) and channel.requesting_to_speak:
+            if isinstance(channel, discord.StageChannel):
                 em.add_field(
                     name=_("Requesting to speak"),
-                    value=_("{} members").format(len(channel.requesting_to_speak)),
+                    value=_("{} users").format(len(channel.requesting_to_speak)),
                 )
         elif isinstance(channel, discord.CategoryChannel):
             em.add_field(name=_("NSFW"), value=bool_emojify(channel.is_nsfw()))
