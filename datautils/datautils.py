@@ -585,7 +585,7 @@ class DataUtils(commands.Cog):
         categories = "\n".join(x.name for x in server.categories) or _("No categories")
         text_channels = "\n".join(x.name for x in server.text_channels) or _("No text channels")
         voice_channels = "\n".join(x.name for x in server.voice_channels) or _("No voice channels")
-        stage_channels = "\n".join(x.name for x in server.voice_channels) or _("No voice channels")
+        stage_channels = "\n".join(x.name for x in server.stage_channels) or _("No stage channels")
         categories = list(chat.pagify(categories, page_length=2048))
         text_channels = list(chat.pagify(text_channels, page_length=2048))
         voice_channels = list(chat.pagify(voice_channels, page_length=2048))
