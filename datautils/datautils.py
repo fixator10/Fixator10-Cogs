@@ -97,7 +97,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.5.0"
+    __version__ = "2.5.1"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -579,15 +579,17 @@ class DataUtils(commands.Cog):
     @checks.bot_has_permissions(embed_links=True)
     async def channels(self, ctx, *, server: commands.GuildConverter = None):
         """Get all channels on server"""
+        # TODO: Use dpy menus for that
         if server is None or not await self.bot.is_owner(ctx.author):
             server = ctx.guild
         categories = "\n".join(x.name for x in server.categories) or _("No categories")
         text_channels = "\n".join(x.name for x in server.text_channels) or _("No text channels")
-
         voice_channels = "\n".join(x.name for x in server.voice_channels) or _("No voice channels")
+        stage_channels = "\n".join(x.name for x in server.voice_channels) or _("No voice channels")
         categories = list(chat.pagify(categories, page_length=2048))
         text_channels = list(chat.pagify(text_channels, page_length=2048))
         voice_channels = list(chat.pagify(voice_channels, page_length=2048))
+        stage_channels = list(chat.pagify(stage_channels, page_length=2048))
         embeds = []
         for n, page in enumerate(categories, start=1):
             em = discord.Embed(title="Categories:", description=chat.box(page))
@@ -598,7 +600,7 @@ class DataUtils(commands.Cog):
             )
             embeds.append(em)
         for n, page in enumerate(text_channels, start=1):
-            em = discord.Embed(title="Text channels:", description=chat.box(page))
+            em = discord.Embed(title=_("Text channels:"), description=chat.box(page))
             em.set_footer(
                 text=_("Page {}/{} • Text channels: {} • Total channels: {}").format(
                     n,
@@ -609,12 +611,23 @@ class DataUtils(commands.Cog):
             )
             embeds.append(em)
         for n, page in enumerate(voice_channels, start=1):
-            em = discord.Embed(title="Voice channels:", description=chat.box(page))
+            em = discord.Embed(title=_("Voice channels:"), description=chat.box(page))
             em.set_footer(
                 text=_("Page {}/{} • Voice channels: {} • Total channels: {}").format(
                     n,
                     len(voice_channels),
                     len(server.voice_channels),
+                    len(server.channels),
+                )
+            )
+            embeds.append(em)
+        for n, page in enumerate(stage_channels, start=1):
+            em = discord.Embed(title=_("Stage channels:"), description=chat.box(page))
+            em.set_footer(
+                text=_("Page {}/{} • Stage channels: {} • Total channels: {}").format(
+                    n,
+                    len(stage_channels),
+                    len(server.stage_channels),
                     len(server.channels),
                 )
             )
