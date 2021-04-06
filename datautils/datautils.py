@@ -97,7 +97,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.4.21"
+    __version__ = "2.5.0"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -504,9 +504,13 @@ class DataUtils(commands.Cog):
         changed_roles = sorted(channel.changed_roles, key=lambda r: r.position, reverse=True)
         em = discord.Embed(
             title=chat.escape(str(channel.name), formatting=True),
-            description=channel.topic
-            if isinstance(channel, (discord.TextChannel, discord.StageChannel))
-            else "💬: {} | 🔈: {}".format(len(channel.text_channels), len(channel.voice_channels))
+            description=topic
+            if (topic := getattr(channel, "topic", None))
+            else "\N{SPEECH BALLOON}: {} | \N{SPEAKER}: {} | \N{SATELLITE ANTENNA}: {}".format(
+                len(channel.text_channels),
+                len(channel.voice_channels),
+                len(channel.stage_channels),
+            )
             if isinstance(channel, discord.CategoryChannel)
             else discord.Embed.Empty,
             color=await ctx.embed_color(),
