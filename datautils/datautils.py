@@ -70,6 +70,7 @@ CHANNEL_TYPE_EMOJIS = {
     discord.ChannelType.store: "\N{SHOPPING TROLLEY}",
     discord.ChannelType.private: "\N{BUST IN SILHOUETTE}",
     discord.ChannelType.group: "\N{BUSTS IN SILHOUETTE}",
+    discord.ChannelType.stage_voice: "\N{SATELLITE ANTENNA}",
 }
 _ = T_
 
@@ -96,7 +97,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.4.20"
+    __version__ = "2.5.0"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -490,7 +491,12 @@ class DataUtils(commands.Cog):
         self,
         ctx,
         *,
-        channel: Union[discord.TextChannel, discord.VoiceChannel, discord.CategoryChannel] = None,
+        channel: Union[
+            discord.TextChannel,
+            discord.VoiceChannel,
+            discord.StageChannel,
+            discord.CategoryChannel,
+        ] = None,
     ):
         """Get info about channel"""
         if channel is None:
@@ -498,11 +504,15 @@ class DataUtils(commands.Cog):
         changed_roles = sorted(channel.changed_roles, key=lambda r: r.position, reverse=True)
         em = discord.Embed(
             title=chat.escape(str(channel.name), formatting=True),
-            description=channel.topic
-            if isinstance(channel, discord.TextChannel)
-            else "💬: {} | 🔈: {}".format(len(channel.text_channels), len(channel.voice_channels))
+            description=topic
+            if (topic := getattr(channel, "topic", None))
+            else "\N{SPEECH BALLOON}: {} | \N{SPEAKER}: {} | \N{SATELLITE ANTENNA}: {}".format(
+                len(channel.text_channels),
+                len(channel.voice_channels),
+                len(channel.stage_channels),
+            )
             if isinstance(channel, discord.CategoryChannel)
-            else None,
+            else discord.Embed.Empty,
             color=await ctx.embed_color(),
         )
         em.add_field(name=_("ID"), value=channel.id)
@@ -545,7 +555,8 @@ class DataUtils(commands.Cog):
                 and await channel.webhooks()
             ):
                 em.add_field(name=_("Webhooks count"), value=str(len(await channel.webhooks())))
-        elif isinstance(channel, discord.VoiceChannel):
+        elif isinstance(channel, (discord.VoiceChannel, discord.StageChannel)):
+            em.add_field(name=_("Region"), value=channel.rtc_region or _("Automatic"))
             em.add_field(name=_("Bitrate"), value=_("{}kbps").format(channel.bitrate / 1000))
             em.add_field(
                 name=_("Users"),
@@ -553,6 +564,11 @@ class DataUtils(commands.Cog):
                 and f"{len(channel.members)}/{channel.user_limit}"
                 or f"{len(channel.members)}",
             )
+            if isinstance(channel, discord.StageChannel):
+                em.add_field(
+                    name=_("Requesting to speak"),
+                    value=_("{} users").format(len(channel.requesting_to_speak)),
+                )
         elif isinstance(channel, discord.CategoryChannel):
             em.add_field(name=_("NSFW"), value=bool_emojify(channel.is_nsfw()))
         await ctx.send(embed=em)
