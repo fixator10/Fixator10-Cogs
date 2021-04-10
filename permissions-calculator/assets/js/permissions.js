@@ -70,7 +70,7 @@ angular.module('permissionsCalc', ['themes'])
 
         $scope.calculatePermissions = function()
         {
-            let value = 0;
+            let value = 0n;
             for (let sectionId in $scope.permissions)
             {
                 let section = $scope.permissions[sectionId];
@@ -79,10 +79,11 @@ angular.module('permissionsCalc', ['themes'])
                     let permission = section.permissions[permissionId];
                     if (permission.active)
                     {
-                        value |= permission.value;
+                        value |= BigInt(permission.value);
                     }
                 }
             }
+            value = Number(value)
             $location.search('v', value);
             return value;
         }
@@ -182,7 +183,7 @@ angular.module('permissionsCalc', ['themes'])
                 for (let permissionId in section.permissions)
                 {
                     let permission = section.permissions[permissionId];
-                    permission.active = (perms & permission.value) != 0;
+                    permission.active = (BigInt(perms) & BigInt(permission.value)) != 0;
                 }
             }
         }
