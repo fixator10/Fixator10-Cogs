@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fixator10-cogs\n"
-"POT-Creation-Date: 2021-03-05 14:21+0400\n"
+"POT-Creation-Date: 2021-04-06 15:50+0400\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
@@ -111,92 +111,92 @@ msgstr "Слушает"
 msgid "Competing in"
 msgstr "Соревнуется в"
 
-#: datautils\datautils.py:97
+#: datautils\datautils.py:98
 #, docstring
 msgid "Commands for getting information about users or servers."
 msgstr "Команды для получения информации о пользователях или серверах."
 
-#: datautils\datautils.py:104
+#: datautils\datautils.py:105
 msgid "%d.%m.%Y %H:%M:%S %Z"
 msgstr ""
 
-#: datautils\datautils.py:113
+#: datautils\datautils.py:114
 #, docstring
 msgid "Get info about any Discord's user by ID"
 msgstr "Получить информацию о любом пользователе Discord по ID"
 
-#: datautils\datautils.py:117
+#: datautils\datautils.py:118
 msgid "Discord user with ID `{}` not found"
 msgstr "Пользователь Discord с ID `{}` не найден"
 
-#: datautils\datautils.py:122
+#: datautils\datautils.py:123
 msgid "I was unable to get data about user with ID `{}`. Try again later"
 msgstr "Я не смог получить информацию о пользователе с ID `{}`. Попробуйте позже"
 
-#: datautils\datautils.py:133 datautils\datautils.py:510
-#: datautils\datautils.py:619 datautils\datautils.py:672
-#: datautils\datautils.py:768
+#: datautils\datautils.py:134 datautils\datautils.py:518
+#: datautils\datautils.py:645 datautils\datautils.py:696
+#: datautils\datautils.py:790
 msgid "ID"
 msgstr ""
 
-#: datautils\datautils.py:134 datautils\datautils.py:256
+#: datautils\datautils.py:135 datautils\datautils.py:255
 msgid "Bot?"
 msgstr "Бот?"
 
-#: datautils\datautils.py:135 datautils\datautils.py:257
+#: datautils\datautils.py:136 datautils\datautils.py:256
 msgid "System?"
 msgstr "Система?"
 
-#: datautils\datautils.py:136 datautils\datautils.py:267
-#: datautils\datautils.py:534 datautils\datautils.py:639
+#: datautils\datautils.py:137 datautils\datautils.py:266
+#: datautils\datautils.py:543 datautils\datautils.py:665
 msgid "Mention"
 msgstr "Упоминание"
 
-#: datautils\datautils.py:138
+#: datautils\datautils.py:139
 msgid "Default avatar"
 msgstr "Стандартный аватар"
 
-#: datautils\datautils.py:143
+#: datautils\datautils.py:144
 msgid "Avatar"
 msgstr "Аватар"
 
-#: datautils\datautils.py:148 datautils\datautils.py:279
+#: datautils\datautils.py:149 datautils\datautils.py:278
 msgid "Public flags"
 msgstr "Публичные флаги"
 
-#: datautils\datautils.py:159
+#: datautils\datautils.py:158
 msgid "Created at"
 msgstr "Создан"
 
-#: datautils\datautils.py:165
+#: datautils\datautils.py:164
 #, docstring
 msgid "Get data about server by ID via server's widget"
 msgstr "Получить информацию о сервере по ID через виджет сервера"
 
-#: datautils\datautils.py:169
+#: datautils\datautils.py:168
 msgid "Widget is disabled for this server."
 msgstr "Виджет для этого сервера отключён."
 
-#: datautils\datautils.py:172
+#: datautils\datautils.py:171
 msgid "Widget for that server is not found: {}"
 msgstr "Виджет для этог сервера не найден: {}"
 
-#: datautils\datautils.py:179 datautils\datautils.py:321
+#: datautils\datautils.py:178 datautils\datautils.py:320
 msgid "Server info"
 msgstr "Информация о сервере"
 
-#: datautils\datautils.py:181 datautils\datautils.py:232
-#: datautils\datautils.py:325 datautils\datautils.py:672
+#: datautils\datautils.py:180 datautils\datautils.py:231
+#: datautils\datautils.py:324 datautils\datautils.py:696
 msgid "Name"
 msgstr "Имя"
 
-#: datautils\datautils.py:182
+#: datautils\datautils.py:181
 msgid "**Online member count:** {members}\n"
 "**Voice channel count:** {channels}"
 msgstr "**Кол-во участников онлайн:** {members}\n"
 "**Кол-во голосовых каналов:** {channels}"
 
-#: datautils\datautils.py:188
+#: datautils\datautils.py:187
 msgid "**Server ID**: {guild_id}\n"
 "**Approximate member count:** {approx_members}\n"
 "**Approx. active members count:** {approx_active}\n"
@@ -206,174 +206,174 @@ msgstr "**ID сервера**: {guild_id}\n"
 "**Примерно кол-во активных участников:** {approx_active}\n"
 "**Канал приглашения:** {channel}"
 
-#: datautils\datautils.py:201 datautils\datautils.py:428
+#: datautils\datautils.py:200 datautils\datautils.py:427
 msgid "Features"
 msgstr "Особенности"
 
-#: datautils\datautils.py:213 datautils\datautils.py:396
+#: datautils\datautils.py:212 datautils\datautils.py:395
 msgid "Stats"
 msgstr "Статистка"
 
-#: datautils\datautils.py:215 datautils\datautils.py:445
+#: datautils\datautils.py:214 datautils\datautils.py:444
 msgid "Widget's invite"
 msgstr "Приглашение из виджета"
 
-#: datautils\datautils.py:222
+#: datautils\datautils.py:221
 #, docstring
 msgid "Information on a user"
 msgstr "Информация о пользователе"
 
-#: datautils\datautils.py:230
+#: datautils\datautils.py:229
 msgid "Nickname"
 msgstr "Никнейм"
 
-#: datautils\datautils.py:234
+#: datautils\datautils.py:233
 msgid "Client"
 msgstr "Клиент"
 
-#: datautils\datautils.py:243
+#: datautils\datautils.py:242
 msgid "Joined server"
 msgstr "Присоединился к серверу"
 
-#: datautils\datautils.py:246 datautils\datautils.py:327
-#: datautils\datautils.py:516 datautils\datautils.py:627
-#: datautils\datautils.py:773 datautils\datautils.py:789
+#: datautils\datautils.py:245 datautils\datautils.py:326
+#: datautils\datautils.py:524 datautils\datautils.py:653
+#: datautils\datautils.py:795 datautils\datautils.py:811
 msgid "Exists since"
 msgstr "Существует с"
 
-#: datautils\datautils.py:250 datautils\datautils.py:630
+#: datautils\datautils.py:249 datautils\datautils.py:656
 msgid "Color"
 msgstr "Цвет"
 
-#: datautils\datautils.py:253
+#: datautils\datautils.py:252
 msgid "Boosted server"
 msgstr "Буст сервера"
 
-#: datautils\datautils.py:259
+#: datautils\datautils.py:258
 msgid "Server permissions"
 msgstr "Серверные права"
 
-#: datautils\datautils.py:265
+#: datautils\datautils.py:264
 msgid "In voice channel"
 msgstr "В голосовом канале"
 
-#: datautils\datautils.py:273 datautils\datautils.py:443
-#: datautils\datautils.py:783
+#: datautils\datautils.py:272 datautils\datautils.py:442
+#: datautils\datautils.py:805
 msgid "Roles"
 msgstr "Роли"
 
-#: datautils\datautils.py:296
+#: datautils\datautils.py:295
 #, docstring
 msgid "List user's activities"
 msgstr "Список активностей пользователя"
 
-#: datautils\datautils.py:306
+#: datautils\datautils.py:305
 msgid "Right now this user is doing nothing"
 msgstr "В данным момент этот пользователь ничего не делает"
 
-#: datautils\datautils.py:312
+#: datautils\datautils.py:311
 #, docstring
 msgid "Shows server information"
 msgstr "Показывает информацию о сервере"
 
-#: datautils\datautils.py:326
+#: datautils\datautils.py:325
 msgid "Server ID"
 msgstr "ID сервера"
 
-#: datautils\datautils.py:328
+#: datautils\datautils.py:327 datautils\datautils.py:559
 msgid "Region"
 msgstr "Регион"
 
-#: datautils\datautils.py:330
+#: datautils\datautils.py:329
 msgid "Discovery language"
 msgstr "Язык \"Путешествия\""
 
-#: datautils\datautils.py:331
+#: datautils\datautils.py:330
 msgid "Owner"
 msgstr "Владелец"
 
-#: datautils\datautils.py:333
+#: datautils\datautils.py:332
 msgid "AFK timeout and channel"
 msgstr "Канал для бездействия"
 
-#: datautils\datautils.py:334
+#: datautils\datautils.py:333
 msgid "{} min in {}"
 msgstr "{} минут в {}"
 
-#: datautils\datautils.py:339
+#: datautils\datautils.py:338
 msgid "Verification level"
 msgstr "Уровень проверки"
 
-#: datautils\datautils.py:340
+#: datautils\datautils.py:339
 msgid "None"
 msgstr "Отсутствует"
 
-#: datautils\datautils.py:342
+#: datautils\datautils.py:341
 msgid "Low"
 msgstr "Низкий"
 
-#: datautils\datautils.py:344
+#: datautils\datautils.py:343
 msgid "Medium"
 msgstr "Средний"
 
-#: datautils\datautils.py:346
+#: datautils\datautils.py:345
 msgid "High"
 msgstr "Высокий"
 
-#: datautils\datautils.py:348
+#: datautils\datautils.py:347
 msgid "Highest"
 msgstr "Самый высокий"
 
-#: datautils\datautils.py:350 datautils\datautils.py:360
-#: datautils\datautils.py:368
+#: datautils\datautils.py:349 datautils\datautils.py:359
+#: datautils\datautils.py:367
 msgid "Unknown"
 msgstr "Неизвестно"
 
-#: datautils\datautils.py:353
+#: datautils\datautils.py:352
 msgid "Explicit content filter"
 msgstr "Фильтр откровенного содержимого"
 
-#: datautils\datautils.py:354
+#: datautils\datautils.py:353
 msgid "Don't scan any messages."
 msgstr "Не сканировать никакие сообщения."
 
-#: datautils\datautils.py:356
+#: datautils\datautils.py:355
 msgid "Scan messages from members without a role."
 msgstr "Сканировать сообщения участников без роли."
 
-#: datautils\datautils.py:358
+#: datautils\datautils.py:357
 msgid "Scan messages sent by all members."
 msgstr "Сканировать сообщения от всех участников."
 
-#: datautils\datautils.py:363
+#: datautils\datautils.py:362
 msgid "Default notifications"
 msgstr "Стандартные уведомления"
 
-#: datautils\datautils.py:364
+#: datautils\datautils.py:363
 msgid "All messages"
 msgstr "Все сообщения"
 
-#: datautils\datautils.py:366
+#: datautils\datautils.py:365
 msgid "Only @mentions"
 msgstr "Только для @упоминаний"
 
-#: datautils\datautils.py:370
+#: datautils\datautils.py:369
 msgid "2FA admins"
 msgstr "Двухфакторная аутентификация"
 
-#: datautils\datautils.py:373
+#: datautils\datautils.py:372
 msgid "Rules channel"
 msgstr "Канал правил"
 
-#: datautils\datautils.py:378
+#: datautils\datautils.py:377
 msgid "Public updates channel"
 msgstr "Канал новостей для сообществ"
 
-#: datautils\datautils.py:383
+#: datautils\datautils.py:382
 msgid "System messages channel"
 msgstr "Канал системных сообщений"
 
-#: datautils\datautils.py:384
+#: datautils\datautils.py:383
 msgid "**Channel:** {channel}\n"
 "**Welcome message:** {welcome}\n"
 "**Boosts:** {boost}"
@@ -381,7 +381,7 @@ msgstr "**Канал:** {channel}\n"
 "**Сообщения приветствия:** {welcome}\n"
 "**Бусты:** {boost}"
 
-#: datautils\datautils.py:397
+#: datautils\datautils.py:396
 msgid "**Bot's shard:** {shard}\n"
 "**Member count:** {members}/{members_limit}\n"
 "**Role count:** {roles}/250\n"
@@ -403,307 +403,335 @@ msgstr "**Shard бота:** {shard}\n"
 "**Макс. размер файла:** {files} МБ\n"
 "**Макс. пользователей в видео-чате:** {max_video}"
 
-#: datautils\datautils.py:438
+#: datautils\datautils.py:437
 msgid "**Everyone role:** {}"
 msgstr "**Роль everyone:** {}"
 
-#: datautils\datautils.py:440
+#: datautils\datautils.py:439
 msgid "**Booster role:** {}"
 msgstr "**Роль бустеров:** {}"
 
-#: datautils\datautils.py:442
+#: datautils\datautils.py:441
 msgid "**{} role:** {}"
 msgstr "**Роль {}:** {}"
 
-#: datautils\datautils.py:454
+#: datautils\datautils.py:453
 #, docstring
 msgid "Get bans from server by id"
 msgstr "Получить баны сервера по ID"
 
-#: datautils\datautils.py:458
+#: datautils\datautils.py:457
 msgid "I need permission \"Ban Members\" to access banned members on server"
 msgstr "Мне необходимо право \"Банить участников\" для доступа к банам на этом сервере"
 
-#: datautils\datautils.py:466
+#: datautils\datautils.py:465
 msgid "Banlist is empty!"
 msgstr "Список банов пуст!"
 
-#: datautils\datautils.py:473
+#: datautils\datautils.py:472
 #, docstring
 msgid "Get invites from server by id"
 msgstr "Получить приглашения сервера по ID"
 
-#: datautils\datautils.py:478
+#: datautils\datautils.py:477
 msgid "I need permission \"Manage Server\" to access list of invites on server"
 msgstr "Мне необходимо право \"Управлять сервером\" для доступа к списку приглашений на этом сервере"
 
-#: datautils\datautils.py:486
+#: datautils\datautils.py:485
 msgid "There is no invites for this server"
 msgstr "На данном сервере нет приглашений"
 
-#: datautils\datautils.py:497
+#: datautils\datautils.py:501
 #, docstring
 msgid "Get info about channel"
 msgstr "Получить информацию о канале"
 
-#: datautils\datautils.py:512
+#: datautils\datautils.py:520
 msgid "Type"
 msgstr "Тип"
 
-#: datautils\datautils.py:520
+#: datautils\datautils.py:528
 msgid "Category"
 msgstr "Категория"
 
-#: datautils\datautils.py:522
+#: datautils\datautils.py:530
 msgid "Not in category"
 msgstr "Вне категории"
 
-#: datautils\datautils.py:524 datautils\datautils.py:632
+#: datautils\datautils.py:532 datautils\datautils.py:658
 msgid "Position"
 msgstr "Позиция"
 
-#: datautils\datautils.py:526 datautils\datautils.py:552
+#: datautils\datautils.py:534 datautils\datautils.py:562
 msgid "Users"
 msgstr "Пользователей"
 
-#: datautils\datautils.py:528
+#: datautils\datautils.py:536
 msgid "Changed roles permissions"
 msgstr "Изменённые настройки прав"
 
-#: datautils\datautils.py:530
+#: datautils\datautils.py:538
 msgid "Not set"
 msgstr "Не настроено"
 
-#: datautils\datautils.py:540
+#: datautils\datautils.py:549
 msgid "Slowmode delay"
 msgstr "Задержка сообщений"
 
-#: datautils\datautils.py:541
+#: datautils\datautils.py:550
 msgid "{} seconds"
 msgstr "{} секунд"
 
-#: datautils\datautils.py:543 datautils\datautils.py:558
+#: datautils\datautils.py:552 datautils\datautils.py:573
 msgid "NSFW"
 msgstr ""
 
-#: datautils\datautils.py:548
+#: datautils\datautils.py:557
 msgid "Webhooks count"
 msgstr "Количество вебхуков"
 
-#: datautils\datautils.py:550
+#: datautils\datautils.py:559
+msgid "Automatic"
+msgstr "Автоматический выбор"
+
+#: datautils\datautils.py:560
 msgid "Bitrate"
 msgstr "Битрейт"
 
-#: datautils\datautils.py:550
+#: datautils\datautils.py:560
 msgid "{}kbps"
 msgstr "{}кб/с"
 
-#: datautils\datautils.py:566
+#: datautils\datautils.py:569
+msgid "Requesting to speak"
+msgstr "Запросы на разговор"
+
+#: datautils\datautils.py:570
+msgid "{} users"
+msgstr "{} пользователей"
+
+#: datautils\datautils.py:581
 #, docstring
 msgid "Get all channels on server"
 msgstr "Получить список каналов на сервере"
 
-#: datautils\datautils.py:569
+#: datautils\datautils.py:584
 msgid "No categories"
 msgstr "Нет категорий"
 
-#: datautils\datautils.py:570
+#: datautils\datautils.py:585
 msgid "No text channels"
 msgstr "Нет текстовых каналов"
 
-#: datautils\datautils.py:571
+#: datautils\datautils.py:586 datautils\datautils.py:587
 msgid "No voice channels"
 msgstr "Нет голосовых каналов"
 
-#: datautils\datautils.py:581
+#: datautils\datautils.py:596
 msgid "Page {}/{} • Categories: {} • Total channels: {}"
 msgstr "Страница {}/{} • Категорий: {} • Всего каналов: {}"
 
-#: datautils\datautils.py:589
+#: datautils\datautils.py:602
+msgid "Text channels:"
+msgstr "Текстовые каналы:"
+
+#: datautils\datautils.py:604
 msgid "Page {}/{} • Text channels: {} • Total channels: {}"
 msgstr "Страница {}/{} • Текстовых каналов: {} • Всего каналов: {}"
 
-#: datautils\datautils.py:600
+#: datautils\datautils.py:613
+msgid "Voice channels:"
+msgstr "Голосовые каналы:"
+
+#: datautils\datautils.py:615
 msgid "Page {}/{} • Voice channels: {} • Total channels: {}"
 msgstr "Страница {}/{} • Голосовых каналов: {} • Всего каналов: {}"
 
-#: datautils\datautils.py:614
+#: datautils\datautils.py:624
+msgid "Stage channels:"
+msgstr "Каналы-сцена:"
+
+#: datautils\datautils.py:626
+msgid "Page {}/{} • Stage channels: {} • Total channels: {}"
+msgstr "Страница {}/{} • Каналов-сцен: {} • Всего каналов: {}"
+
+#: datautils\datautils.py:640
 #, docstring
 msgid "Get info about role"
 msgstr "Получить информацию о роли"
 
-#: datautils\datautils.py:621
+#: datautils\datautils.py:647
 msgid "Permissions"
 msgstr "Права"
 
-#: datautils\datautils.py:631
+#: datautils\datautils.py:657
 msgid "Members"
 msgstr "Участников"
 
-#: datautils\datautils.py:633 datautils\datautils.py:777
+#: datautils\datautils.py:659 datautils\datautils.py:799
 msgid "Managed"
 msgstr "Управляемая"
 
-#: datautils\datautils.py:634
+#: datautils\datautils.py:660
 msgid "Managed by bot"
 msgstr "Управляемая ботом"
 
-#: datautils\datautils.py:635
+#: datautils\datautils.py:661
 msgid "Managed by boosts"
 msgstr "Управляемая бустами"
 
-#: datautils\datautils.py:636
+#: datautils\datautils.py:662
 msgid "Managed by integration"
 msgstr "Управляемая интеграцией"
 
-#: datautils\datautils.py:637
+#: datautils\datautils.py:663
 msgid "Hoist"
 msgstr "Показывать отдельно"
 
-#: datautils\datautils.py:638
+#: datautils\datautils.py:664
 msgid "Mentionable"
 msgstr "Упоминаемая"
 
-#: datautils\datautils.py:648
+#: datautils\datautils.py:674
 #, docstring
 msgid "Get list of members that has provided role"
 msgstr "Получить список пользователей, имеющих указанную роль"
 
-#: datautils\datautils.py:651
+#: datautils\datautils.py:677
 msgid "There is no members in this role"
 msgstr "Нет пользователей с этой ролью"
 
-#: datautils\datautils.py:659 datautils\datautils.py:737
+#: datautils\datautils.py:684 datautils\datautils.py:760
 msgid "Page {}/{}"
 msgstr "Страница {}/{}"
 
-#: datautils\datautils.py:667
+#: datautils\datautils.py:691
 #, docstring
 msgid "Get all roles on server"
 msgstr "Получить все роли на сервере"
 
-#: datautils\datautils.py:688
+#: datautils\datautils.py:712
 #, docstring
 msgid "Check user's permission for current or provided channel"
 msgstr "Проверить права пользователя в текущем или указанном канале"
 
-#: datautils\datautils.py:698
+#: datautils\datautils.py:722
 msgid "No permissions"
 msgstr "Нет прав"
 
-#: datautils\datautils.py:707
+#: datautils\datautils.py:731
 #, docstring
 msgid "Get info about emoji"
 msgstr "Получить информацию о эмодзи"
 
-#: datautils\datautils.py:710
+#: datautils\datautils.py:734
 msgid "React to this message with your emoji"
 msgstr "Добавьте реакцию с вашим эмодзи на это сообщение"
 
-#: datautils\datautils.py:731
+#: datautils\datautils.py:755
 #, docstring
 msgid "Get all emojis on server"
 msgstr "Получить список эмодзи на сервере"
 
-#: datautils\datautils.py:742
+#: datautils\datautils.py:764
 msgid "No emojis on this server"
 msgstr "На этом сервере нет эмодзи"
 
-#: datautils\datautils.py:749
+#: datautils\datautils.py:771
 msgid "[Unable to resolve unicode name]"
 msgstr "[Невозможно найти имя в Unicode]"
 
-#: datautils\datautils.py:757
+#: datautils\datautils.py:779
 msgid "Unicode character"
 msgstr "Символ Unicode"
 
-#: datautils\datautils.py:763
+#: datautils\datautils.py:785
 msgid "Unicode category"
 msgstr "Категория Unicode"
 
-#: datautils\datautils.py:769
+#: datautils\datautils.py:791
 msgid "Animated"
 msgstr "Анимированная"
 
-#: datautils\datautils.py:776
+#: datautils\datautils.py:798
 msgid "\":\" required"
 msgstr "Требуется \":\""
 
-#: datautils\datautils.py:778
+#: datautils\datautils.py:800
 msgid "Server"
 msgstr "Сервер"
 
-#: datautils\datautils.py:779
+#: datautils\datautils.py:801
 msgid "Available"
 msgstr "Доступно"
 
-#: datautils\datautils.py:780
+#: datautils\datautils.py:802
 msgid "Usable by bot"
 msgstr "Доступно боту"
 
-#: datautils\datautils.py:792
+#: datautils\datautils.py:814
 msgid "Custom emoji"
 msgstr "Серверная эмодзи"
 
-#: datautils\datautils.py:812
+#: datautils\datautils.py:834
 msgid "Custom status"
 msgstr "Пользовательский статус"
 
-#: datautils\datautils.py:815
+#: datautils\datautils.py:837
 msgid "Playing {}"
 msgstr "Играет в {}"
 
-#: datautils\datautils.py:833
+#: datautils\datautils.py:855
 msgid "This game will end at"
 msgstr "Эта игра закончится в"
 
-#: datautils\datautils.py:837
+#: datautils\datautils.py:859
 msgid "Playing since"
 msgstr "Играет с"
 
-#: datautils\datautils.py:861
+#: datautils\datautils.py:883
 msgid "Small image text"
 msgstr "Текст малого изображения"
 
-#: datautils\datautils.py:866
+#: datautils\datautils.py:888
 msgid "Application ID"
 msgstr "ID приложения"
 
-#: datautils\datautils.py:869 datautils\datautils.py:903
+#: datautils\datautils.py:891 datautils\datautils.py:925
 msgid "Started at"
 msgstr "Началось в"
 
-#: datautils\datautils.py:874 datautils\datautils.py:905
+#: datautils\datautils.py:896 datautils\datautils.py:927
 msgid "Will end at"
 msgstr "Закончится в"
 
-#: datautils\datautils.py:879
+#: datautils\datautils.py:901
 msgid "Large image text"
 msgstr "Текст большого изображения"
 
-#: datautils\datautils.py:890
+#: datautils\datautils.py:912
 msgid "Streaming on {}"
 msgstr "Стримит на {}"
 
-#: datautils\datautils.py:894
+#: datautils\datautils.py:916
 msgid "Game"
 msgstr "Игра"
 
-#: datautils\datautils.py:898
+#: datautils\datautils.py:920
 msgid "by {}\n"
 "on {}"
 msgstr "от {}\n"
 "из {}"
 
-#: datautils\datautils.py:904
+#: datautils\datautils.py:926
 msgid "Duration"
 msgstr "Длительность"
 
-#: datautils\datautils.py:907
+#: datautils\datautils.py:929
 msgid "Listening since"
 msgstr "Слушает с"
 
-#: datautils\datautils.py:909
+#: datautils\datautils.py:931
 msgid "Unsupported activity type: {}"
 msgstr "Неподдерживаемый тип активности: {}"
 
