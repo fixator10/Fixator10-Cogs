@@ -1,4 +1,5 @@
 import asyncio
+from inspect import getsource
 from logging import getLogger
 
 import aiohttp
@@ -95,6 +96,12 @@ class Leveler(
         self.db = None
         self.session = aiohttp.ClientSession()
 
+        self._db_required_commands = [
+            c.qualified_name
+            for c in set(self.walk_commands())
+            if "self.db." in getsource(c.callback)
+        ]  # hacky way to get list of commands that requires db
+
         self.bot.add_dev_env_value("leveler", lambda ctx: self)
 
     async def config_converter(self):
@@ -144,7 +151,8 @@ class Leveler(
 
     async def cog_before_invoke(self, ctx):
         # creates user if not exists
-        await self._create_user(ctx.author, ctx.guild)
+        if ctx.command.qualified_name in self._db_required_commands:
+            await self._create_user(ctx.author, ctx.guild)
 
     def cog_unload(self):
         self.bot.loop.create_task(self.session.close())
