@@ -48,6 +48,7 @@ class MongoDB(MixinMeta):
         if user.bot:
             return
         async with self._db_lock:
+            self.log.debug("Locking db for user %s creation", user)
             try:
                 userinfo = await self.db.users.find_one({"user_id": str(user.id)})
                 backgrounds = await self.config.backgrounds()
@@ -98,3 +99,4 @@ class MongoDB(MixinMeta):
                     )
             except AttributeError as error:
                 self.log.error(f"Unable to create/update user {user.id}.", exc_info=error)
+            self.log.debug("Unlocking db after user %s creation", user)

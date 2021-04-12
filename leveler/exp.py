@@ -48,6 +48,7 @@ class XP(MixinMeta):
         await self._create_user(user, server)
         curr_time = time.time()
         async with self._db_lock:
+            self.log.debug("XP handling: lock for %s", user.id)
             userinfo = await self.db.users.find_one({"user_id": str(user.id)})
 
             if all(
@@ -61,6 +62,7 @@ class XP(MixinMeta):
             ):
                 await self._process_exp(message, userinfo, random.randint(xp[0], xp[1]))
                 await self._give_chat_credit(user, server)
+            self.log.debug("XP handling: unlock for %s", user.id)
 
     async def _process_exp(self, message, userinfo, exp: int):
         server = message.guild
@@ -76,11 +78,7 @@ class XP(MixinMeta):
             self.log.error(f"Unable to process xp for {user.id}", exc_info=exc)
             return
         required = await self._required_exp(userinfo["servers"][str(server.id)]["level"])
-        # FIXME: Sometimes this creates discrepancy in global total_exp and xp for all servers
-        # If this happens again, some sort of debug is needed here
-        # This happened again, end me pls
         if userinfo["servers"][str(server.id)]["current_exp"] + exp >= required:
-            # The actual issue may be somewhere here, but im bad at math, and not sure
             userinfo["servers"][str(server.id)]["level"] += 1
             await self.db.users.update_one(
                 {"user_id": str(user.id)},
