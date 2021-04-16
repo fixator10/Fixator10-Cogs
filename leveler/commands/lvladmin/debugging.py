@@ -27,12 +27,13 @@ class Debugging(MixinMeta):
 
     @debug_commands.command(name="info")
     async def debug_info(self, ctx):
-        """Get info about libs used by leveler and environment data"""
+        """Get info about libs used by leveler and environment info"""
         await ctx.send(
             chat.box(
                 tabulate(
                     [
                         ("DB lock locked", self._db_lock.locked()),
+                        ("DB lock queue", len(self._db_lock._waiters)),
                         ("pymongo version", pymongoversion),
                         ("motor version", motorversion),
                         (
