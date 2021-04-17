@@ -97,7 +97,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.5.1"
+    __version__ = "2.5.2"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -708,7 +708,12 @@ class DataUtils(commands.Cog):
         ctx,
         member: Optional[discord.Member],
         *,
-        channel: Union[discord.TextChannel, discord.VoiceChannel, discord.CategoryChannel] = None,
+        channel: Union[
+            discord.TextChannel,
+            discord.VoiceChannel,
+            discord.StageChannel,
+            discord.CategoryChannel,
+        ] = None,
     ):
         """Check user's permission for current or provided channel"""
         if not member:
