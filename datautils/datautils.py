@@ -70,6 +70,7 @@ CHANNEL_TYPE_EMOJIS = {
     discord.ChannelType.store: "\N{SHOPPING TROLLEY}",
     discord.ChannelType.private: "\N{BUST IN SILHOUETTE}",
     discord.ChannelType.group: "\N{BUSTS IN SILHOUETTE}",
+    discord.ChannelType.stage_voice: "\N{SATELLITE ANTENNA}",
 }
 _ = T_
 
@@ -96,7 +97,7 @@ async def find_app_by_name(where: list, name: str):
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.4.17"
+    __version__ = "2.5.2"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -147,10 +148,8 @@ class DataUtils(commands.Cog):
             em.add_field(
                 name=_("Public flags"),
                 value="\n".join(
-                    [
-                        str(flag)[10:].replace("_", " ").capitalize()
-                        for flag in user.public_flags.all()
-                    ]
+                    str(flag)[10:].replace("_", " ").capitalize()
+                    for flag in user.public_flags.all()
                 ),
                 inline=False,
             )
@@ -435,6 +434,12 @@ class DataUtils(commands.Cog):
                 ),
                 inline=False,
             )
+        roles_str = _("**Everyone role:** {}").format(server.default_role)
+        if boost_role := server.premium_subscriber_role:
+            roles_str += "\n" + _("**Booster role:** {}").format(boost_role)
+        if bot_role := server.self_role:
+            roles_str += "\n" + _("**{} role:** {}").format(ctx.me.display_name, bot_role)
+        em.add_field(name=_("Roles"), value=roles_str, inline=False)
         if widget.invite_url:
             em.add_field(name=_("Widget's invite"), value=widget.invite_url)
         em.set_image(url=server.icon_url_as(static_format="png", size=4096))
@@ -453,7 +458,7 @@ class DataUtils(commands.Cog):
             return
         banlist = await server.bans()
         if banlist:
-            banlisttext = "\n".join([f"{x.user} ({x.user.id})" for x in banlist])
+            banlisttext = "\n".join(f"{x.user} ({x.user.id})" for x in banlist)
             pages = [chat.box(page) for page in list(chat.pagify(banlisttext))]
             await menu(ctx, pages, DEFAULT_CONTROLS)
         else:
@@ -474,7 +479,7 @@ class DataUtils(commands.Cog):
             return
         invites = await server.invites()
         if invites:
-            inviteslist = "\n".join([f"{x} ({x.channel.name})" for x in invites])
+            inviteslist = "\n".join(f"{x} ({x.channel.name})" for x in invites)
             await menu(ctx, list(chat.pagify(inviteslist)), DEFAULT_CONTROLS)
         else:
             await ctx.send(_("There is no invites for this server"))
@@ -486,7 +491,12 @@ class DataUtils(commands.Cog):
         self,
         ctx,
         *,
-        channel: Union[discord.TextChannel, discord.VoiceChannel, discord.CategoryChannel] = None,
+        channel: Union[
+            discord.TextChannel,
+            discord.VoiceChannel,
+            discord.StageChannel,
+            discord.CategoryChannel,
+        ] = None,
     ):
         """Get info about channel"""
         if channel is None:
@@ -494,11 +504,15 @@ class DataUtils(commands.Cog):
         changed_roles = sorted(channel.changed_roles, key=lambda r: r.position, reverse=True)
         em = discord.Embed(
             title=chat.escape(str(channel.name), formatting=True),
-            description=channel.topic
-            if isinstance(channel, discord.TextChannel)
-            else "💬: {} | 🔈: {}".format(len(channel.text_channels), len(channel.voice_channels))
+            description=topic
+            if (topic := getattr(channel, "topic", None))
+            else "\N{SPEECH BALLOON}: {} | \N{SPEAKER}: {} | \N{SATELLITE ANTENNA}: {}".format(
+                len(channel.text_channels),
+                len(channel.voice_channels),
+                len(channel.stage_channels),
+            )
             if isinstance(channel, discord.CategoryChannel)
-            else None,
+            else discord.Embed.Empty,
             color=await ctx.embed_color(),
         )
         em.add_field(name=_("ID"), value=channel.id)
@@ -521,7 +535,8 @@ class DataUtils(commands.Cog):
         em.add_field(
             name=_("Changed roles permissions"),
             value=chat.escape(
-                "\n".join([str(x) for x in changed_roles]) or _("Not set"), formatting=True
+                "\n".join(str(x) for x in changed_roles) or _("Not set"),
+                formatting=True,
             ),
         )
         em.add_field(
@@ -540,7 +555,8 @@ class DataUtils(commands.Cog):
                 and await channel.webhooks()
             ):
                 em.add_field(name=_("Webhooks count"), value=str(len(await channel.webhooks())))
-        elif isinstance(channel, discord.VoiceChannel):
+        elif isinstance(channel, (discord.VoiceChannel, discord.StageChannel)):
+            em.add_field(name=_("Region"), value=channel.rtc_region or _("Automatic"))
             em.add_field(name=_("Bitrate"), value=_("{}kbps").format(channel.bitrate / 1000))
             em.add_field(
                 name=_("Users"),
@@ -548,6 +564,11 @@ class DataUtils(commands.Cog):
                 and f"{len(channel.members)}/{channel.user_limit}"
                 or f"{len(channel.members)}",
             )
+            if isinstance(channel, discord.StageChannel):
+                em.add_field(
+                    name=_("Requesting to speak"),
+                    value=_("{} users").format(len(channel.requesting_to_speak)),
+                )
         elif isinstance(channel, discord.CategoryChannel):
             em.add_field(name=_("NSFW"), value=bool_emojify(channel.is_nsfw()))
         await ctx.send(embed=em)
@@ -558,16 +579,17 @@ class DataUtils(commands.Cog):
     @checks.bot_has_permissions(embed_links=True)
     async def channels(self, ctx, *, server: commands.GuildConverter = None):
         """Get all channels on server"""
+        # TODO: Use dpy menus for that
         if server is None or not await self.bot.is_owner(ctx.author):
             server = ctx.guild
-        categories = "\n".join([x.name for x in server.categories]) or _("No categories")
-        text_channels = "\n".join([x.name for x in server.text_channels]) or _("No text channels")
-        voice_channels = "\n".join([x.name for x in server.voice_channels]) or _(
-            "No voice channels"
-        )
+        categories = "\n".join(x.name for x in server.categories) or _("No categories")
+        text_channels = "\n".join(x.name for x in server.text_channels) or _("No text channels")
+        voice_channels = "\n".join(x.name for x in server.voice_channels) or _("No voice channels")
+        stage_channels = "\n".join(x.name for x in server.stage_channels) or _("No stage channels")
         categories = list(chat.pagify(categories, page_length=2048))
         text_channels = list(chat.pagify(text_channels, page_length=2048))
         voice_channels = list(chat.pagify(voice_channels, page_length=2048))
+        stage_channels = list(chat.pagify(stage_channels, page_length=2048))
         embeds = []
         for n, page in enumerate(categories, start=1):
             em = discord.Embed(title="Categories:", description=chat.box(page))
@@ -578,7 +600,7 @@ class DataUtils(commands.Cog):
             )
             embeds.append(em)
         for n, page in enumerate(text_channels, start=1):
-            em = discord.Embed(title="Text channels:", description=chat.box(page))
+            em = discord.Embed(title=_("Text channels:"), description=chat.box(page))
             em.set_footer(
                 text=_("Page {}/{} • Text channels: {} • Total channels: {}").format(
                     n,
@@ -589,12 +611,23 @@ class DataUtils(commands.Cog):
             )
             embeds.append(em)
         for n, page in enumerate(voice_channels, start=1):
-            em = discord.Embed(title="Voice channels:", description=chat.box(page))
+            em = discord.Embed(title=_("Voice channels:"), description=chat.box(page))
             em.set_footer(
                 text=_("Page {}/{} • Voice channels: {} • Total channels: {}").format(
                     n,
                     len(voice_channels),
                     len(server.voice_channels),
+                    len(server.channels),
+                )
+            )
+            embeds.append(em)
+        for n, page in enumerate(stage_channels, start=1):
+            em = discord.Embed(title=_("Stage channels:"), description=chat.box(page))
+            em.set_footer(
+                text=_("Page {}/{} • Stage channels: {} • Total channels: {}").format(
+                    n,
+                    len(stage_channels),
+                    len(server.stage_channels),
                     len(server.channels),
                 )
             )
@@ -621,11 +654,14 @@ class DataUtils(commands.Cog):
             name=_("Exists since"),
             value=role.created_at.strftime(self.TIME_FORMAT),
         )
-        em.add_field(name=_("Hoist"), value=bool_emojify(role.hoist))
+        em.add_field(name=_("Color"), value=role.colour)
         em.add_field(name=_("Members"), value=str(len(role.members)))
         em.add_field(name=_("Position"), value=role.position)
-        em.add_field(name=_("Color"), value=role.colour)
         em.add_field(name=_("Managed"), value=bool_emojify(role.managed))
+        em.add_field(name=_("Managed by bot"), value=bool_emojify(role.is_bot_managed()))
+        em.add_field(name=_("Managed by boosts"), value=bool_emojify(role.is_premium_subscriber()))
+        em.add_field(name=_("Managed by integration"), value=bool_emojify(role.is_integration()))
+        em.add_field(name=_("Hoist"), value=bool_emojify(role.hoist))
         em.add_field(name=_("Mentionable"), value=bool_emojify(role.mentionable))
         em.add_field(name=_("Mention"), value=role.mention + "\n`" + role.mention + "`")
         em.set_thumbnail(
@@ -645,10 +681,8 @@ class DataUtils(commands.Cog):
             discord.Embed(description=p, color=await ctx.embed_color())
             for p in chat.pagify("\n".join(memberslist), page_length=2048)
         ]
-        pagenum = 1
-        for page in pages:
+        for pagenum, page in enumerate(pages, start=1):
             page.set_footer(text=_("Page {}/{}").format(pagenum, len(pages)))
-            pagenum += 1
         await menu(ctx, pages, DEFAULT_CONTROLS)
 
     @commands.command(aliases=["listroles", "rolelist"])
@@ -674,7 +708,12 @@ class DataUtils(commands.Cog):
         ctx,
         member: Optional[discord.Member],
         *,
-        channel: Union[discord.TextChannel, discord.VoiceChannel, discord.CategoryChannel] = None,
+        channel: Union[
+            discord.TextChannel,
+            discord.VoiceChannel,
+            discord.StageChannel,
+            discord.CategoryChannel,
+        ] = None,
     ):
         """Check user's permission for current or provided channel"""
         if not member:
@@ -723,10 +762,8 @@ class DataUtils(commands.Cog):
         if server is None or not await self.bot.is_owner(ctx.author):
             server = ctx.guild
         emojis = [await self.emoji_embed(ctx, emoji) for emoji in server.emojis]
-        pagenum = 1
-        for page in emojis:
+        for pagenum, page in enumerate(emojis, start=1):
             page.set_footer(text=_("Page {}/{}").format(pagenum, len(emojis)))
-            pagenum += 1
         if emojis:
             await menu(ctx, emojis, DEFAULT_CONTROLS)
         else:
@@ -772,13 +809,13 @@ class DataUtils(commands.Cog):
             if emoji.roles:
                 em.add_field(
                     name=_("Roles"),
-                    value=chat.escape("\n".join([x.name for x in emoji.roles]), formatting=True),
+                    value=chat.escape("\n".join(x.name for x in emoji.roles), formatting=True),
                     inline=False,
                 )
         elif isinstance(emoji, discord.PartialEmoji):
             em.add_field(
                 name=_("Exists since"),
-                value=discord.utils.snowflake_time(emoji.id).strftime(self.TIME_FORMAT),
+                value=emoji.created_at.strftime(self.TIME_FORMAT),
             )
             em.add_field(name=_("Custom emoji"), value=bool_emojify(emoji.is_custom_emoji()))
             # em.add_field(

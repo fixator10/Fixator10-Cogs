@@ -28,6 +28,7 @@ DISCORD_STATUS_NAMES = {
 _ = T_
 
 
+# credits to https://stackoverflow.com/questions/14088375/how-can-i-convert-rgb-to-cmyk-and-vice-versa-in-python
 def rgb_to_cmyk(r, g, b):
     rgb_scale = 255
     cmyk_scale = 100
@@ -36,19 +37,54 @@ def rgb_to_cmyk(r, g, b):
         return 0, 0, 0, cmyk_scale
 
     # rgb [0,255] -> cmy [0,1]
-    c = 1 - r / float(rgb_scale)
-    m = 1 - g / float(rgb_scale)
-    y = 1 - b / float(rgb_scale)
+    c = 1 - (r / float(rgb_scale))
+    m = 1 - (g / float(rgb_scale))
+    y = 1 - (b / float(rgb_scale))
 
     # extract out k [0,1]
     min_cmy = min(c, m, y)
-    c = c - min_cmy
-    m = m - min_cmy
-    y = y - min_cmy
+    c = (c - min_cmy) / (1 - min_cmy)
+    m = (m - min_cmy) / (1 - min_cmy)
+    y = (y - min_cmy) / (1 - min_cmy)
     k = min_cmy
 
     # rescale to the range [0,cmyk_scale]
     return c * cmyk_scale, m * cmyk_scale, y * cmyk_scale, k * cmyk_scale
+
+
+# credits to https://www.geeksforgeeks.org/program-change-rgb-color-model-hsv-color-model/
+# logic from http://www.niwa.nu/2013/05/math-behind-colorspace-conversions-rgb-hsl/
+def rgb_to_hsv(r, g, b):
+    # R, G, B values are divided by 255
+    # to change the range from 0..255 to 0..1:
+    r, g, b = r / 255.0, g / 255.0, b / 255.0
+
+    # h, s, v = hue, saturation, value
+    cmax = max(r, g, b)
+    cmin = min(r, g, b)
+    diff = cmax - cmin
+
+    # if cmax and cmax are equal then h = 0
+    if cmax == cmin:
+        h = 0
+
+    # if cmax equal r then compute h
+    elif cmax == r:
+        h = (60 * ((g - b) / diff) + 360) % 360
+
+    # if cmax equal g then compute h
+    elif cmax == g:
+        h = (60 * ((b - r) / diff) + 120) % 360
+
+    # if cmax equal b then compute h
+    elif cmax == b:
+        h = (60 * ((r - g) / diff) + 240) % 360
+
+    # if cmax equal zero
+    s = 0 if cmax == 0 else (diff / cmax) * 100
+    # compute v
+    v = cmax * 100
+    return h, s, v
 
 
 def bool_emojify(bool_var: bool) -> str:
@@ -59,7 +95,7 @@ def bool_emojify(bool_var: bool) -> str:
 class MoreUtils(commands.Cog):
     """Some (maybe) useful utils."""
 
-    __version__ = "2.0.16"
+    __version__ = "2.0.19"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -83,18 +119,20 @@ class MoreUtils(commands.Cog):
     async def color(self, ctx, *, color: discord.Color):
         """Shows some info about provided color."""
         colorrgb = color.to_rgb()
-        colorhsv = colorsys.rgb_to_hsv(colorrgb[0], colorrgb[1], colorrgb[2])
-        colorhls = colorsys.rgb_to_hls(colorrgb[0], colorrgb[1], colorrgb[2])
-        coloryiq = colorsys.rgb_to_yiq(colorrgb[0], colorrgb[1], colorrgb[2])
-        colorcmyk = rgb_to_cmyk(colorrgb[0], colorrgb[1], colorrgb[2])
+        rgb_coords = [x / 255 for x in colorrgb]
+        colorhsv = rgb_to_hsv(*colorrgb)
+        h, l, s = colorsys.rgb_to_hls(*rgb_coords)
+        colorhls = (colorhsv[0], l * 100, s * 100)
+        coloryiq = colorsys.rgb_to_yiq(*rgb_coords)
+        colorcmyk = rgb_to_cmyk(*colorrgb)
         colors_text = (
-            "HEX: {}\n"
-            "RGB: {}\n"
-            "CMYK: {}\n"
-            "HSV: {}\n"
-            "HLS: {}\n"
-            "YIQ: {}\n"
-            "int: {}".format(
+            "`HEX :` {}\n"
+            "`RGB :` {}\n"
+            "`CMYK:` {}\n"
+            "`HSV :` {}\n"
+            "`HLS :` {}\n"
+            "`YIQ :` {}\n"
+            "`Int :` {}".format(
                 str(color),
                 colorrgb,
                 tuple(map(lambda x: isinstance(x, float) and round(x, 2) or x, colorcmyk)),
@@ -106,7 +144,7 @@ class MoreUtils(commands.Cog):
         )
         em = discord.Embed(
             title=str(color),
-            description=_("Name: Loading...\n") + colors_text,
+            description=_("`Name:` Loading...\n") + colors_text,
             url=f"http://www.color-hex.com/color/{str(color)[1:]}",
             colour=color,
             timestamp=ctx.message.created_at,
@@ -120,7 +158,7 @@ class MoreUtils(commands.Cog):
         ) as data:
             color_response = await data.json(loads=json.loads)
             em.description = (
-                _("Name: {} ({})\n").format(
+                _("`Name:` {} ({})\n").format(
                     color_response.get("name", {}).get("value", "?"),
                     color_response.get("name", {}).get("closest_named_hex", "?"),
                 )

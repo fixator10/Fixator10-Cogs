@@ -37,9 +37,7 @@ def bool_emojify(bool_var: bool) -> str:
 
 def check_api(ctx):
     """Is API ready?"""
-    if "ISteamUser" in list(ctx.cog.steam._interfaces.keys()):
-        return True
-    return False
+    return "ISteamUser" in list(ctx.cog.steam._interfaces.keys())
 
 
 async def validate_ip(s):
@@ -74,7 +72,7 @@ filterwarnings("ignore", category=FutureWarning, module=r"valve.")
 class SteamCommunity(commands.Cog):
     """SteamCommunity commands"""
 
-    __version__ = "2.1.11"
+    __version__ = "2.1.12"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -197,7 +195,9 @@ class SteamCommunity(commands.Cog):
         async with ctx.typing():
             try:
                 async with self.session.get(
-                    "https://crowbar.steamstat.us/gravity.json", raise_for_status=True
+                    "https://crowbar.steamstat.us/gravity.json",
+                    headers={"referer": "https://steamstat.us/"},
+                    raise_for_status=True,
                 ) as gravity:
                     data = await gravity.json(loads=json.loads)
             except aiohttp.ClientResponseError as e:
@@ -390,7 +390,7 @@ class SteamCommunity(commands.Cog):
         )
         cur = graphdata["start"]
         x = []
-        for i in range(0, len(graphdata["data"])):
+        for _ in range(len(graphdata["data"])):
             cur += graphdata["step"]
             x.append(cur)
         x = [datetime.utcfromtimestamp(_x / 1000) for _x in x]

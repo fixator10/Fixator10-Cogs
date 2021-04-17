@@ -25,7 +25,7 @@ EMOJI_RE = re.compile(r"(<(a)?:[a-zA-Z0-9_]+:([0-9]+)>)")
 class AdminUtils(commands.Cog):
     """Useful commands for server administrators."""
 
-    __version__ = "2.5.5"
+    __version__ = "2.5.6"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -60,7 +60,7 @@ class AdminUtils(commands.Cog):
         pred = MessagePredicate.yes_or_no(ctx)
         if not ctx.assume_yes:
             roles_text = _("\nIncluding members in roles: {}\n").format(
-                ", ".join([r.mention for r in roles])
+                ", ".join(r.mention for r in roles)
             )
             await ctx.send(
                 chat.warning(
@@ -76,7 +76,7 @@ class AdminUtils(commands.Cog):
                 pass
         if ctx.assume_yes or pred.result:
             cleanup = await ctx.guild.prune_members(
-                days=days, reason=get_audit_reason(ctx.author), roles=roles if roles else None
+                days=days, reason=get_audit_reason(ctx.author), roles=roles or None
             )
             await ctx.send(
                 chat.info(
@@ -177,9 +177,7 @@ class AdminUtils(commands.Cog):
                 roles=roles,
                 reason=get_audit_reason(
                     ctx.author,
-                    _("Restricted to roles: {}").format(
-                        ", ".join([f"{role.name}" for role in roles])
-                    )
+                    _("Restricted to roles: {}").format(", ".join(role.name for role in roles))
                     if roles
                     else None,
                 ),
@@ -220,9 +218,7 @@ class AdminUtils(commands.Cog):
                 roles=roles,
                 reason=get_audit_reason(
                     ctx.author,
-                    _("Restricted to roles: {}").format(
-                        ", ".join([f"{role.name}" for role in roles])
-                    )
+                    _("Restricted to roles: {}").format(", ".join(role.name for role in roles))
                     if roles
                     else None,
                 ),
@@ -258,9 +254,7 @@ class AdminUtils(commands.Cog):
                 roles=roles,
                 reason=get_audit_reason(
                     ctx.author,
-                    _("Restricted to roles: ").format(
-                        ", ".join([f"{role.name}" for role in roles])
-                    )
+                    _("Restricted to roles: ").format(", ".join(role.name for role in roles))
                     if roles
                     else None,
                 ),

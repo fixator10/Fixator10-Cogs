@@ -40,7 +40,7 @@ _ = Translator("MessagesLog", __file__)
 class MessagesLog(commands.Cog):
     """Log deleted and redacted messages to the defined channel"""
 
-    __version__ = "2.3.8"
+    __version__ = "2.3.10"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -59,7 +59,7 @@ class MessagesLog(commands.Cog):
         }
         self.config.register_guild(**default_guild)
 
-    async def initialize(self):
+    async def initialize(self):  # sourcery skip: last-if-guard
         """Update configs
 
         Versions:
@@ -194,17 +194,21 @@ class MessagesLog(commands.Cog):
             if not any([users, channels, categories]):
                 await ctx.send(chat.info(_("Nothing is ignored")))
                 return
-            users_pages = []
-            channels_pages = []
-            categories_pages = []
-            for page in chat.pagify("\n".join(users), page_length=2048):
-                users_pages.append(discord.Embed(title=_("Ignored users"), description=page))
-            for page in chat.pagify("\n".join(channels), page_length=2048):
-                channels_pages.append(discord.Embed(title=_("Ignored channels"), description=page))
-            for page in chat.pagify("\n".join(categories), page_length=2048):
-                categories_pages.append(
-                    discord.Embed(title=_("Ignored categories"), description=page)
-                )
+            users_pages = [
+                discord.Embed(title=_("Ignored users"), description=page)
+                for page in chat.pagify("\n".join(users), page_length=2048)
+            ]
+
+            channels_pages = [
+                discord.Embed(title=_("Ignored channels"), description=page)
+                for page in chat.pagify("\n".join(channels), page_length=2048)
+            ]
+
+            categories_pages = [
+                discord.Embed(title=_("Ignored categories"), description=page)
+                for page in chat.pagify("\n".join(categories), page_length=2048)
+            ]
+
             pages = users_pages + channels_pages + categories_pages
             await menu(ctx, pages, DEFAULT_CONTROLS)
         else:
@@ -260,10 +264,8 @@ class MessagesLog(commands.Cog):
             embed.add_field(
                 name=_("Attachments"),
                 value="\n".join(
-                    [
-                        _("[{0.filename}]({0.url}) ([Cached]({0.proxy_url}))").format(a)
-                        for a in message.attachments
-                    ]
+                    _("[{0.filename}]({0.url}) ([Cached]({0.proxy_url}))").format(a)
+                    for a in message.attachments
                 ),
             )
         embed.set_author(name=message.author, icon_url=message.author.avatar_url)
@@ -315,6 +317,7 @@ class MessagesLog(commands.Cog):
 
     @commands.Cog.listener("on_raw_bulk_message_delete")
     async def raw_bulk_message_deleted(self, payload: discord.RawBulkMessageDeleteEvent):
+        # sourcery skip: comprehension-to-generator
         if not payload.guild_id:
             return
         if await self.bot.cog_disabled_in_guild_raw(self.qualified_name, payload.guild_id):
@@ -415,10 +418,8 @@ class MessagesLog(commands.Cog):
             embed.add_field(
                 name=_("Attachments"),
                 value="\n".join(
-                    [
-                        _("[{0.filename}]({0.url}) ([Cached]({0.proxy_url}))").format(a)
-                        for a in before.attachments
-                    ]
+                    _("[{0.filename}]({0.url}) ([Cached]({0.proxy_url}))").format(a)
+                    for a in before.attachments
                 ),
             )
         embed.set_author(name=before.author, icon_url=before.author.avatar_url)

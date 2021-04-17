@@ -19,7 +19,7 @@ class GodConverter(commands.MemberConverter):
         """Get apikey by godname
         :param godname: name of god to get key
         :param game: type of account ("godville" or "godvillegame")"""
-        if not any(g == game for g in ["godville", "godvillegame"]):
+        if game not in ["godville", "godvillegame"]:
             raise ValueError(
                 f"{game} is not right type of account\n"
                 'only "godville" and "godvillegame" are supported'
@@ -49,7 +49,7 @@ class GodConverter(commands.MemberConverter):
 class GodvilleData(commands.Cog):
     """Get data about Godville profiles"""
 
-    __version__ = "2.1.3"
+    __version__ = "2.1.4"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):

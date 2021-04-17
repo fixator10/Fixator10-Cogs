@@ -1,5 +1,6 @@
 import base64
 import re
+from asyncio import TimeoutError as AsyncTimeoutError
 from datetime import datetime, timezone
 from io import BytesIO
 
@@ -36,7 +37,7 @@ _ = T_
 class MinecraftData(commands.Cog):
     """Minecraft-Related data"""
 
-    __version__ = "2.0.4"
+    __version__ = "2.0.8"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -198,8 +199,10 @@ class MinecraftData(commands.Cog):
                 )
             return
         em = discord.Embed(timestamp=ctx.message.created_at, color=await ctx.embed_color())
-        em.set_author(name=player.name, url=f"https://minecraftcapes.co.uk/getCape/{player.uuid}")
-        em.set_image(url=f"https://minecraftcapes.co.uk/getCape/{player.uuid}")
+        em.set_author(
+            name=player.name, url=f"https://minecraftcapes.net/profile/{player.uuid}/cape"
+        )
+        em.set_image(url=f"https://minecraftcapes.net/profile/{player.uuid}/cape")
         await ctx.send(embed=em)
 
     @cape.group(aliases=["5zig"], invoke_without_command=True)
@@ -267,20 +270,27 @@ class MinecraftData(commands.Cog):
     async def server(self, ctx, server_ip: str):
         """Get info about server"""
         try:
-            server = await self.bot.loop.run_in_executor(None, MinecraftServer.lookup, server_ip)
+            server: MinecraftServer = await self.bot.loop.run_in_executor(
+                None, MinecraftServer.lookup, server_ip
+            )
         except Exception as e:
             await ctx.send(chat.error(_("Unable to resolve IP: {}").format(e)))
             return
         async with ctx.channel.typing():
             try:
-                status = await self.bot.loop.run_in_executor(None, server.status)
+                status = await server.async_status()
             except OSError as e:
                 await ctx.send(chat.error(_("Unable to get server's status: {}").format(e)))
                 return
-            try:
-                query = await self.bot.loop.run_in_executor(None, server.query)
-            except (ConnectionResetError, OSError):
-                query = None
+            except AsyncTimeoutError:
+                await ctx.send(chat.error(_("Unable to get server's status: Timed out")))
+                return
+            # TODO: Reimplement on async query in mcstatus
+            # NOTE: Possibly, make query optional
+            # try:
+            #     query = await server.async_query()
+            # except (ConnectionResetError, OSError):
+            #     query = None
         icon_file = None
         icon = (
             discord.File(
@@ -302,8 +312,7 @@ class MinecraftData(commands.Cog):
             name=_("Players"),
             value="{0.players.online}/{0.players.max}\n{1}".format(
                 status,
-                status.players.sample
-                and chat.box(
+                chat.box(
                     list(
                         chat.pagify(
                             await self.clear_mcformatting(
@@ -313,20 +322,21 @@ class MinecraftData(commands.Cog):
                         )
                     )[0]
                 )
-                or "",
+                if status.players.sample
+                else "",
             ),
         )
         embed.add_field(
             name=_("Version"),
             value=_("{}\nProtocol: {}").format(status.version.name, status.version.protocol),
         )
-        if query:
-            embed.add_field(name=_("World"), value=f"{query.map}")
-            embed.add_field(
-                name=_("Software"),
-                value=_("{}\nVersion: {}").format(query.software.brand, query.software.version)
-                # f"Plugins: {query.software.plugins}"
-            )
+        # if query:
+        #     embed.add_field(name=_("World"), value=f"{query.map}")
+        #     embed.add_field(
+        #         name=_("Software"),
+        #         value=_("{}\nVersion: {}").format(query.software.brand, query.software.version)
+        #         # f"Plugins: {query.software.plugins}"
+        #     )
         await ctx.send(file=icon, embed=embed)
         if icon_file:
             icon_file.close()
@@ -392,24 +402,23 @@ class MinecraftData(commands.Cog):
 
     async def clear_mcformatting(self, formatted_str) -> str:
         """Remove Minecraft-formatting"""
-        if isinstance(formatted_str, dict):
-            clean = ""
-            async for text in self.gen_dict_extract("text", formatted_str):
-                clean += text
-            clean = re.sub(r"\xA7[0-9A-FK-OR]", "", clean, flags=re.IGNORECASE)
-        else:
-            clean = re.sub(r"\xA7[0-9A-FK-OR]", "", formatted_str, flags=re.IGNORECASE)
-        return clean
+        if not isinstance(formatted_str, dict):
+            return re.sub(r"\xA7[0-9A-FK-OR]", "", formatted_str, flags=re.IGNORECASE)
+        clean = ""
+        async for text in self.gen_dict_extract("text", formatted_str):
+            clean += text
+        return re.sub(r"\xA7[0-9A-FK-OR]", "", clean, flags=re.IGNORECASE)
 
     async def gen_dict_extract(self, key, var):
-        if hasattr(var, "items"):
-            for k, v in var.items():
-                if k == key:
-                    yield v
-                if isinstance(v, dict):
-                    async for result in self.gen_dict_extract(key, v):
+        if not hasattr(var, "items"):
+            return
+        for k, v in var.items():
+            if k == key:
+                yield v
+            if isinstance(v, dict):
+                async for result in self.gen_dict_extract(key, v):
+                    yield result
+            elif isinstance(v, list):
+                for d in v:
+                    async for result in self.gen_dict_extract(key, d):
                         yield result
-                elif isinstance(v, list):
-                    for d in v:
-                        async for result in self.gen_dict_extract(key, d):
-                            yield result
