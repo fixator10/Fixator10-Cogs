@@ -12,7 +12,7 @@ from redbot.core.utils.predicates import ReactionPredicate
 
 from .common_variables import CHANNEL_TYPE_EMOJIS, GUILD_FEATURES, KNOWN_CHANNEL_TYPES
 from .embeds import emoji_embed
-from .menus import ActivityPager, BaseMenu, EmojiPager, PagePager, ChannelsMenu, ChannelsPager
+from .menus import ActivityPager, BaseMenu, ChannelsMenu, ChannelsPager, EmojiPager, PagePager
 from .utils import _, bool_emojify
 
 

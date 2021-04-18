@@ -5,7 +5,7 @@ import discord
 from redbot.core.utils import chat_formatting as chat
 
 from .common_variables import ACTIVITY_TYPES, APP_ICON_URL, NON_ESCAPABLE_CHARACTERS
-from .utils import bool_emojify, find_app_by_name, get_twemoji, _
+from .utils import _, bool_emojify, find_app_by_name, get_twemoji
 
 
 async def emoji_embed(ctx, emoji: Union[discord.Emoji, discord.PartialEmoji]) -> discord.Embed:

@@ -1,6 +1,6 @@
 import discord
-from redbot.vendored.discord.ext import menus
 from redbot.core.utils import chat_formatting as chat
+from redbot.vendored.discord.ext import menus
 
 from .common_variables import KNOWN_CHANNEL_TYPES
 from .embeds import activity_embed, emoji_embed
@@ -10,6 +10,7 @@ from .utils import _
 def check_channels(channel_type: str):
     def predicate(self):
         return channel_type not in self.sources
+
     return predicate
 
 
@@ -101,9 +102,7 @@ class ChannelsMenu(menus.MenuPages, inherit_buttons=False):
     def should_add_reactions(self):
         return True
 
-    @menus.button(
-        "\N{BOOKMARK TABS}", position=menus.First(0), skip_if=check_channels("category")
-    )
+    @menus.button("\N{BOOKMARK TABS}", position=menus.First(0), skip_if=check_channels("category"))
     async def switch_category(self, payload):
         await self.set_source("category")
 
