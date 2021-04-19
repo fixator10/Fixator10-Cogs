@@ -96,11 +96,11 @@ class Leveler(
         self.db = None
         self.session = aiohttp.ClientSession()
 
-        self._db_required_commands = [
+        self._db_user_required_commands = [
             c.qualified_name
             for c in set(self.walk_commands())
-            if "self.db." in getsource(c.callback)
-        ]  # hacky way to get list of commands that requires db
+            if "self.db.users" in getsource(c.callback)
+        ]  # hacky way to get list of commands that requires users db
 
         self.bot.add_dev_env_value("leveler", lambda ctx: self)
 
@@ -151,7 +151,7 @@ class Leveler(
 
     async def cog_before_invoke(self, ctx):
         # creates user if not exists
-        if ctx.command.qualified_name in self._db_required_commands:
+        if ctx.command.qualified_name in self._db_user_required_commands:
             await self._create_user(ctx.author, ctx.guild)
 
     def cog_unload(self):
