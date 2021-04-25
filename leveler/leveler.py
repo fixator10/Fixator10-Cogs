@@ -59,7 +59,7 @@ async def non_global_bank(ctx):
 class Leveler(commands.Cog):
     """A level up thing with image generation!"""
 
-    __version__ = "2.1.4b"
+    __version__ = "2.1.5b"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot: Red):
@@ -313,6 +313,8 @@ class Leveler(commands.Cog):
         if await self.config.guild(ctx.guild).disabled():
             await ctx.send("**Leveler commands for this server are disabled!**")
             return
+
+        await self._create_user(user, server)
 
         async with ctx.typing():
             users = []
