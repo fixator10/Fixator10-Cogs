@@ -1,5 +1,3 @@
-import string
-import unicodedata
 from asyncio import TimeoutError as AsyncTimeoutError
 from textwrap import shorten
 from types import SimpleNamespace
@@ -8,96 +6,21 @@ from typing import Optional, Union
 import discord
 import tabulate
 from redbot.core import checks, commands
-from redbot.core.i18n import Translator, cog_i18n
-from redbot.core.utils import AsyncIter
+from redbot.core.i18n import cog_i18n
 from redbot.core.utils import chat_formatting as chat
-from redbot.core.utils.menus import DEFAULT_CONTROLS, menu
 from redbot.core.utils.predicates import ReactionPredicate
 
-
-def bool_emojify(bool_var: bool) -> str:
-    return "✅" if bool_var else "❌"
-
-
-T_ = Translator("DataUtils", __file__)
-_ = lambda s: s
-
-TWEMOJI_URL = "https://twemoji.maxcdn.com/v/latest/72x72"
-APP_ICON_URL = "https://cdn.discordapp.com/app-icons/{app_id}/{icon_hash}.png"
-NON_ESCAPABLE_CHARACTERS = string.ascii_letters + string.digits
-
-GUILD_FEATURES = {
-    "VIP_REGIONS": _("384kbps voice bitrate"),
-    "VANITY_URL": _("Vanity invite URL"),
-    "INVITE_SPLASH": _("Invite splash{splash}"),
-    "VERIFIED": _("Verified"),
-    "PARTNERED": _("Discord Partner"),
-    "MORE_EMOJI": _("Extended emoji limit"),  # Non-boosted?
-    "DISCOVERABLE": _("Shows in Server Discovery{discovery}"),
-    "FEATURABLE": _('Can be in "Featured" section of Server Discovery'),
-    "COMMERCE": _("Store channels"),
-    "NEWS": _("News channels"),
-    "BANNER": _("Banner{banner}"),
-    "ANIMATED_ICON": _("Animated icon"),
-    "WELCOME_SCREEN_ENABLED": _("Welcome screen"),
-    "PUBLIC_DISABLED": _("Cannot be public"),
-    "ENABLED_DISCOVERABLE_BEFORE": _("Was in Server Discovery"),
-    "COMMUNITY": _("Community server"),
-    # Docs from https://github.com/vDelite/DiscordLists:
-    "PREVIEW_ENABLED": _('Preview enabled ("Lurkable")'),
-    "MEMBER_VERIFICATION_GATE_ENABLED": _("Member verification gate enabled"),
-    "MEMBER_LIST_DISABLED": _("Member list disabled"),
-    # im honestly idk what the fuck that shit means, and discord doesnt provides much docs,
-    # so if you see that on your server while using my cog - idk what the fuck is that and how it got there,
-    # ask discord to write fucking docs already
-    "FORCE_RELAY": _(
-        "Shards connections to the guild to different nodes that relay information between each other."
-    ),
-}
-
-ACTIVITY_TYPES = {
-    discord.ActivityType.playing: _("Playing"),
-    discord.ActivityType.watching: _("Watching"),
-    discord.ActivityType.listening: _("Listening to"),
-    discord.ActivityType.competing: _("Competing in"),
-}
-
-CHANNEL_TYPE_EMOJIS = {
-    discord.ChannelType.text: "\N{SPEECH BALLOON}",
-    discord.ChannelType.voice: "\N{SPEAKER}",
-    discord.ChannelType.category: "\N{BOOKMARK TABS}",
-    discord.ChannelType.news: "\N{NEWSPAPER}",
-    discord.ChannelType.store: "\N{SHOPPING TROLLEY}",
-    discord.ChannelType.private: "\N{BUST IN SILHOUETTE}",
-    discord.ChannelType.group: "\N{BUSTS IN SILHOUETTE}",
-    discord.ChannelType.stage_voice: "\N{SATELLITE ANTENNA}",
-}
-_ = T_
-
-
-async def get_twemoji(emoji: str):
-    emoji_unicode = []
-    for char in emoji:
-        char = hex(ord(char))[2:]
-        emoji_unicode.append(char)
-    if "200d" not in emoji_unicode:
-        emoji_unicode = list(filter(lambda c: c != "fe0f", emoji_unicode))
-    emoji_unicode = "-".join(emoji_unicode)
-    return f"{TWEMOJI_URL}/{emoji_unicode}.png"
-
-
-async def find_app_by_name(where: list, name: str):
-    async for item in AsyncIter(where):
-        for k, v in item.items():
-            if v == name:
-                return item
+from .common_variables import CHANNEL_TYPE_EMOJIS, GUILD_FEATURES, KNOWN_CHANNEL_TYPES
+from .embeds import emoji_embed
+from .menus import ActivityPager, BaseMenu, ChannelsMenu, ChannelsPager, EmojiPager, PagePager
+from .utils import _, bool_emojify
 
 
 @cog_i18n(_)
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.5.2"
+    __version__ = "2.6.0"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -295,14 +218,10 @@ class DataUtils(commands.Cog):
         """List user's activities"""
         if member is None:
             member = ctx.message.author
-        pages = []
-        for activity in member.activities:
-            em = await self.activity_embed(ctx, activity)
-            pages.append(em)
-        if pages:
-            await menu(ctx, pages, DEFAULT_CONTROLS)
-        else:
+        if not (activities := member.activities):
             await ctx.send(chat.info(_("Right now this user is doing nothing")))
+            return
+        await BaseMenu(ActivityPager(activities)).start(ctx)
 
     @commands.command(aliases=["servinfo", "serv", "sv"])
     @commands.guild_only()
@@ -459,8 +378,7 @@ class DataUtils(commands.Cog):
         banlist = await server.bans()
         if banlist:
             banlisttext = "\n".join(f"{x.user} ({x.user.id})" for x in banlist)
-            pages = [chat.box(page) for page in list(chat.pagify(banlisttext))]
-            await menu(ctx, pages, DEFAULT_CONTROLS)
+            await BaseMenu(PagePager(list(chat.pagify(banlisttext)))).start(ctx)
         else:
             await ctx.send(_("Banlist is empty!"))
 
@@ -480,7 +398,7 @@ class DataUtils(commands.Cog):
         invites = await server.invites()
         if invites:
             inviteslist = "\n".join(f"{x} ({x.channel.name})" for x in invites)
-            await menu(ctx, list(chat.pagify(inviteslist)), DEFAULT_CONTROLS)
+            await BaseMenu(PagePager(list(chat.pagify(inviteslist)))).start(ctx)
         else:
             await ctx.send(_("There is no invites for this server"))
 
@@ -582,57 +500,11 @@ class DataUtils(commands.Cog):
         # TODO: Use dpy menus for that
         if server is None or not await self.bot.is_owner(ctx.author):
             server = ctx.guild
-        categories = "\n".join(x.name for x in server.categories) or _("No categories")
-        text_channels = "\n".join(x.name for x in server.text_channels) or _("No text channels")
-        voice_channels = "\n".join(x.name for x in server.voice_channels) or _("No voice channels")
-        stage_channels = "\n".join(x.name for x in server.stage_channels) or _("No stage channels")
-        categories = list(chat.pagify(categories, page_length=2048))
-        text_channels = list(chat.pagify(text_channels, page_length=2048))
-        voice_channels = list(chat.pagify(voice_channels, page_length=2048))
-        stage_channels = list(chat.pagify(stage_channels, page_length=2048))
-        embeds = []
-        for n, page in enumerate(categories, start=1):
-            em = discord.Embed(title="Categories:", description=chat.box(page))
-            em.set_footer(
-                text=_("Page {}/{} • Categories: {} • Total channels: {}").format(
-                    n, len(categories), len(server.categories), len(server.channels)
-                )
-            )
-            embeds.append(em)
-        for n, page in enumerate(text_channels, start=1):
-            em = discord.Embed(title=_("Text channels:"), description=chat.box(page))
-            em.set_footer(
-                text=_("Page {}/{} • Text channels: {} • Total channels: {}").format(
-                    n,
-                    len(text_channels),
-                    len(server.text_channels),
-                    len(server.channels),
-                )
-            )
-            embeds.append(em)
-        for n, page in enumerate(voice_channels, start=1):
-            em = discord.Embed(title=_("Voice channels:"), description=chat.box(page))
-            em.set_footer(
-                text=_("Page {}/{} • Voice channels: {} • Total channels: {}").format(
-                    n,
-                    len(voice_channels),
-                    len(server.voice_channels),
-                    len(server.channels),
-                )
-            )
-            embeds.append(em)
-        for n, page in enumerate(stage_channels, start=1):
-            em = discord.Embed(title=_("Stage channels:"), description=chat.box(page))
-            em.set_footer(
-                text=_("Page {}/{} • Stage channels: {} • Total channels: {}").format(
-                    n,
-                    len(stage_channels),
-                    len(server.stage_channels),
-                    len(server.channels),
-                )
-            )
-            embeds.append(em)
-        await menu(ctx, embeds, DEFAULT_CONTROLS)
+        channels = {
+            channel_type: ChannelsPager(getattr(server, type_data[0]))
+            for channel_type, type_data in KNOWN_CHANNEL_TYPES.items()
+        }
+        await ChannelsMenu(channels, "category", len(server.channels)).start(ctx)
 
     @commands.command(aliases=["roleinfo"])
     @commands.guild_only()
@@ -673,17 +545,21 @@ class DataUtils(commands.Cog):
     @commands.guild_only()
     async def rolemembers(self, ctx, *, role: discord.Role):
         """Get list of members that has provided role"""
-        memberslist = [str(m) for m in sorted(role.members, key=lambda m: m.joined_at)]
+        memberslist = [(m.id, str(m)) for m in sorted(role.members, key=lambda m: m.joined_at)]
         if not memberslist:
             await ctx.send(chat.error(_("There is no members in this role")))
             return
-        pages = [
-            discord.Embed(description=p, color=await ctx.embed_color())
-            for p in chat.pagify("\n".join(memberslist), page_length=2048)
-        ]
-        for pagenum, page in enumerate(pages, start=1):
-            page.set_footer(text=_("Page {}/{}").format(pagenum, len(pages)))
-        await menu(ctx, pages, DEFAULT_CONTROLS)
+        await BaseMenu(
+            PagePager(
+                list(
+                    chat.pagify(
+                        tabulate.tabulate(
+                            memberslist, tablefmt="orgtbl", headers=[_("ID"), _("Name")]
+                        )
+                    )
+                )
+            )
+        ).start(ctx)
 
     @commands.command(aliases=["listroles", "rolelist"])
     @commands.admin_or_permissions(manage_roles=True)
@@ -692,13 +568,16 @@ class DataUtils(commands.Cog):
         """Get all roles on server"""
         if server is None or not await self.bot.is_owner(ctx.author):
             server = ctx.guild
-        roles = []
-        for role in reversed(server.roles):
-            dic = {_("Name"): shorten(role.name, 32, placeholder="…"), _("ID"): role.id}
-            roles.append(dic)
-        pages = list(chat.pagify(tabulate.tabulate(roles, tablefmt="orgtbl")))
-        pages = [chat.box(p) for p in pages]
-        await menu(ctx, pages, DEFAULT_CONTROLS)
+        roles = [(role.id, shorten(role.name, 32, placeholder="…")) for role in server.roles]
+        await BaseMenu(
+            PagePager(
+                list(
+                    chat.pagify(
+                        tabulate.tabulate(roles, tablefmt="orgtbl", headers=[_("ID"), _("Name")])
+                    )
+                )
+            )
+        ).start(ctx)
 
     @commands.command(aliases=["cperms"])
     @commands.guild_only()
@@ -735,7 +614,7 @@ class DataUtils(commands.Cog):
     @checks.bot_has_permissions(embed_links=True)
     async def einfo(self, ctx, *, emoji: Union[discord.Emoji, discord.PartialEmoji] = None):
         """Get info about emoji"""
-        if emoji is None:
+        if not emoji:
             if ctx.channel.permissions_for(ctx.author).add_reactions:
                 m = await ctx.send(_("React to this message with your emoji"))
                 try:
@@ -752,7 +631,7 @@ class DataUtils(commands.Cog):
             else:
                 await ctx.send_help()
                 return
-        em = await self.emoji_embed(ctx, emoji)
+        em = await emoji_embed(ctx, emoji)
         await ctx.send(embed=em)
 
     @commands.command(aliases=["emojilist", "listemojis"])
@@ -761,178 +640,7 @@ class DataUtils(commands.Cog):
         """Get all emojis on server"""
         if server is None or not await self.bot.is_owner(ctx.author):
             server = ctx.guild
-        emojis = [await self.emoji_embed(ctx, emoji) for emoji in server.emojis]
-        for pagenum, page in enumerate(emojis, start=1):
-            page.set_footer(text=_("Page {}/{}").format(pagenum, len(emojis)))
-        if emojis:
-            await menu(ctx, emojis, DEFAULT_CONTROLS)
-        else:
+        if not (emojis := server.emojis):
             await ctx.send(_("No emojis on this server"))
-
-    async def emoji_embed(self, ctx, emoji: Union[discord.Emoji, discord.PartialEmoji]):
-        """Make embed with info about emoji"""
-        em = discord.Embed(
-            title=isinstance(emoji, str)
-            and "\n".join(
-                map(lambda c: unicodedata.name(c, _("[Unable to resolve unicode name]")), emoji)
-            )
-            or chat.escape(emoji.name, formatting=True),
-            color=await ctx.embed_color(),
-        )
-        if isinstance(emoji, str):
-            # em.add_field(name=_("Unicode emoji"), value="✅")
-            em.add_field(
-                name=_("Unicode character"),
-                value="\n".join(
-                    f"\\{c}" if c not in NON_ESCAPABLE_CHARACTERS else c for c in emoji
-                ),
-            )
-            em.add_field(
-                name=_("Unicode category"),
-                value="\n".join(unicodedata.category(c) for c in emoji),
-            )
-            em.set_image(url=await get_twemoji(emoji))
-        if not isinstance(emoji, str):
-            em.add_field(name=_("ID"), value=emoji.id)
-            em.add_field(name=_("Animated"), value=bool_emojify(emoji.animated))
-            em.set_image(url=emoji.url)
-        if isinstance(emoji, discord.Emoji):
-            em.add_field(
-                name=_("Exists since"),
-                value=emoji.created_at.strftime(self.TIME_FORMAT),
-            )
-            em.add_field(name=_('":" required'), value=bool_emojify(emoji.require_colons))
-            em.add_field(name=_("Managed"), value=bool_emojify(emoji.managed))
-            em.add_field(name=_("Server"), value=emoji.guild)
-            em.add_field(name=_("Available"), value=bool_emojify(emoji.available))
-            em.add_field(name=_("Usable by bot"), value=bool_emojify(emoji.is_usable()))
-            if emoji.roles:
-                em.add_field(
-                    name=_("Roles"),
-                    value=chat.escape("\n".join(x.name for x in emoji.roles), formatting=True),
-                    inline=False,
-                )
-        elif isinstance(emoji, discord.PartialEmoji):
-            em.add_field(
-                name=_("Exists since"),
-                value=emoji.created_at.strftime(self.TIME_FORMAT),
-            )
-            em.add_field(name=_("Custom emoji"), value=bool_emojify(emoji.is_custom_emoji()))
-            # em.add_field(
-            #     name=_("Unicode emoji"), value=bool_emojify(emoji.is_unicode_emoji())
-            # )
-        return em
-
-    async def activity_embed(self, ctx, activity: discord.Activity):
-        """Make embed with info about activity"""
-        # design is not my best side
-        if isinstance(activity, discord.CustomActivity):
-            em = discord.Embed(title=activity.name, color=await ctx.embed_color())
-            if activity.emoji:
-                if activity.emoji.is_unicode_emoji():
-                    emoji_pic = await get_twemoji(activity.emoji.name)
-                else:
-                    emoji_pic = activity.emoji.url
-                if activity.name:
-                    em.set_thumbnail(url=emoji_pic)
-                else:
-                    em.set_image(url=emoji_pic)
-            em.set_footer(text=_("Custom status"))
-        elif isinstance(activity, discord.Game):
-            em = discord.Embed(
-                title=_("Playing {}").format(activity.name),
-                timestamp=activity.start or discord.Embed.Empty,
-                color=await ctx.embed_color(),
-            )
-            # noinspection PyUnresolvedReferences
-            apps = await self.bot.http.request(
-                discord.http.Route("GET", "/applications/detectable")
-            )
-            app = await find_app_by_name(apps, activity.name)
-            if app:
-                em.set_thumbnail(
-                    url=APP_ICON_URL.format(
-                        app_id=app.get("id", ""),
-                        icon_hash=app.get("icon", ""),
-                    )
-                )
-            if activity.end:
-                em.add_field(
-                    name=_("This game will end at"),
-                    value=activity.end.strftime(self.TIME_FORMAT),
-                )
-            if activity.start:
-                em.set_footer(text=_("Playing since"))
-        elif isinstance(activity, discord.Activity):
-            party_size = activity.party.get("size")
-            party_size = f" ({party_size[0]}/{party_size[1]})" if party_size else ""
-            em = discord.Embed(
-                title=f"{_(ACTIVITY_TYPES.get(activity.type, activity.type))} {activity.name}",
-                description=f"{activity.details and activity.details or ''}\n"
-                f"{activity.state and activity.state or ''}{party_size}",
-                color=await ctx.embed_color(),
-            )
-            # noinspection PyUnresolvedReferences
-            apps = await self.bot.http.request(
-                discord.http.Route("GET", "/applications/detectable")
-            )
-            app = await find_app_by_name(apps, activity.name)
-            if app:
-                em.set_thumbnail(
-                    url=APP_ICON_URL.format(
-                        app_id=app.get("id", activity.application_id or ""),
-                        icon_hash=app.get("icon", ""),
-                    )
-                )
-            if activity.small_image_text:
-                em.add_field(
-                    name=_("Small image text"),
-                    value=activity.small_image_text,
-                    inline=False,
-                )
-            if activity.application_id:
-                em.add_field(name=_("Application ID"), value=activity.application_id)
-            if activity.start:
-                em.add_field(
-                    name=_("Started at"),
-                    value=activity.start.strftime(self.TIME_FORMAT),
-                )
-            if activity.end:
-                em.add_field(
-                    name=_("Will end at"),
-                    value=activity.end.strftime(self.TIME_FORMAT),
-                )
-            if activity.large_image_text:
-                em.add_field(
-                    name=_("Large image text"),
-                    value=activity.large_image_text,
-                    inline=False,
-                )
-            if activity.small_image_url:
-                em.set_thumbnail(url=activity.small_image_url)
-            if activity.large_image_url:
-                em.set_image(url=activity.large_image_url)
-        elif isinstance(activity, discord.Streaming):
-            em = discord.Embed(
-                title=activity.name,
-                description=_("Streaming on {}").format(activity.platform),
-                url=activity.url,
-            )
-            if activity.game:
-                em.add_field(name=_("Game"), value=activity.game)
-        elif isinstance(activity, discord.Spotify):
-            em = discord.Embed(
-                title=activity.title,
-                description=_("by {}\non {}").format(", ".join(activity.artists), activity.album),
-                color=activity.color,
-                timestamp=activity.created_at,
-                url=f"https://open.spotify.com/track/{activity.track_id}",
-            )
-            em.add_field(name=_("Started at"), value=activity.start.strftime(self.TIME_FORMAT))
-            em.add_field(name=_("Duration"), value=str(activity.duration)[:-3])  # 0:03:33.877[000]
-            em.add_field(name=_("Will end at"), value=activity.end.strftime(self.TIME_FORMAT))
-            em.set_image(url=activity.album_cover_url)
-            em.set_footer(text=_("Listening since"))
-        else:
-            em = discord.Embed(title=_("Unsupported activity type: {}").format(type(activity)))
-        return em
+            return
+        await BaseMenu(EmojiPager(emojis)).start(ctx)
