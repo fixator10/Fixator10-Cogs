@@ -24,10 +24,9 @@ except ImportError:
 _ = Translator("Translators", __file__)
 
 USERAGENT = (
-    "Mozilla/5.0 (X11; Linux x86_64) "
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
     "AppleWebKit/537.36 (KHTML, like Gecko) "
-    "Ubuntu Chromium/69.0.3497.81 "
-    "Chrome/69.0.3497.81 "
+    "Chrome/88.0.4324.104 "
     "Safari/537.36"
 )
 
@@ -48,7 +47,7 @@ EMOJIFY_CHARS = {
 class Translators(commands.Cog):
     """Useful (and not) translators"""
 
-    __version__ = "2.2.6"
+    __version__ = "2.2.7"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
