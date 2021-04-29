@@ -5,6 +5,7 @@ from functools import partial
 from io import BytesIO
 from os import path
 from socket import gethostbyname_ex
+from time import time
 from warnings import filterwarnings
 
 import aiohttp
@@ -28,6 +29,12 @@ except ImportError:
     import json
 
 
+USERAGENT = (
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+    "AppleWebKit/537.36 (KHTML, like Gecko) "
+    "Chrome/88.0.4324.104 "
+    "Safari/537.36"
+)
 LOAD_INDICATORS = ["\N{GREEN HEART}", "\N{YELLOW HEART}", "\N{BROKEN HEART}"]
 
 
@@ -72,13 +79,14 @@ filterwarnings("ignore", category=FutureWarning, module=r"valve.")
 class SteamCommunity(commands.Cog):
     """SteamCommunity commands"""
 
-    __version__ = "2.1.12"
+    __version__ = "2.1.13"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
         self.bot = bot
         self.steam = None
         self.session = aiohttp.ClientSession(json_serialize=json.dumps)
+        self.status_data = {"last_update": 0, "data": {}}
 
     def cog_unload(self):
         self.bot.loop.create_task(self.session.close())
@@ -193,24 +201,32 @@ class SteamCommunity(commands.Cog):
     async def steamstatus(self, ctx):
         """Get status of steam services"""
         async with ctx.typing():
-            try:
-                async with self.session.get(
-                    "https://crowbar.steamstat.us/gravity.json",
-                    headers={"referer": "https://steamstat.us/"},
-                    raise_for_status=True,
-                ) as gravity:
-                    data = await gravity.json(loads=json.loads)
-            except aiohttp.ClientResponseError as e:
-                await ctx.send(
-                    chat.error(
-                        _("Unable to get data from steamstat.us: {} ({})").format(
-                            e.status, e.message
+            if time() - self.status_data["last_update"] >= 45:
+                try:
+                    async with self.session.get(
+                        "https://vortigaunt.steamstat.us/not_an_api.json",
+                        headers={"referer": "https://steamstat.us/", "User-Agent": USERAGENT},
+                        raise_for_status=True,
+                    ) as gravity:
+                        data = await gravity.json(loads=json.loads)
+                        self.status_data["data"] = data
+                        self.status_data["last_update"] = time()
+                except aiohttp.ClientResponseError as e:
+                    await ctx.send(
+                        chat.error(
+                            _("Unable to get data from steamstat.us: {} ({})").format(
+                                e.status, e.message
+                            )
                         )
                     )
-                )
-                return
-            except aiohttp.ClientError as e:
-                await ctx.send(chat.error(_("Unable to get data from steamstat.us: {}").format(e)))
+                    return
+                except aiohttp.ClientError as e:
+                    await ctx.send(
+                        chat.error(_("Unable to get data from steamstat.us: {}").format(e))
+                    )
+                    return
+            else:
+                data = self.status_data["data"]
         services = data.get("services", {})
         graph = data.get("graph")
         em = discord.Embed(
