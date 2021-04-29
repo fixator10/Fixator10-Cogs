@@ -86,7 +86,7 @@ class SteamCommunity(commands.Cog):
         self.bot = bot
         self.steam = None
         self.session = aiohttp.ClientSession(json_serialize=json.dumps)
-        self.status_data = {"last_update": 0, "data": {}}
+        self.status_data = {"last_update": 0., "data": {}}
 
     def cog_unload(self):
         self.bot.loop.create_task(self.session.close())
