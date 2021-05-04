@@ -88,7 +88,7 @@ def nsfwcheck():
 class ReverseImageSearch(commands.Cog):
     """(Anime) Reverse Image Search"""
 
-    __version__ = "2.1.9"
+    __version__ = "2.1.10"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -141,7 +141,7 @@ class ReverseImageSearch(commands.Cog):
             try:
                 url = entry.urls[0]
             except IndexError:
-                url = None
+                url = discord.Embed.Empty
             # NOTE: Probably someone will come up with better embed design, but not me
             e = discord.Embed(
                 title=entry.source or entry.title or entry.service,
