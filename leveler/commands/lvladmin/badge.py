@@ -204,7 +204,9 @@ class Badge(MixinMeta):
         `is_global`: Owner-only. Give global badge.
         `name`: Badge name."""
         org_user = ctx.message.author
-        server_id = "global" if is_global and await self.bot.is_owner(org_user) else str(ctx.guild.id)
+        server_id = (
+            "global" if is_global and await self.bot.is_owner(org_user) else str(ctx.guild.id)
+        )
         if user.bot:
             await ctx.send_help()
             return
