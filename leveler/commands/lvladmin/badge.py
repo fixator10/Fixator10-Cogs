@@ -36,7 +36,7 @@ class Badge(MixinMeta):
     ):
         """Add a badge.
 
-        Options :
+        Options:
         `name`: Indicate badge's name. If the badge has space, use quote.
         `is_global`: Owner-only. Make badge global.
         `bg_img`: Indicate the image of the badge. (Only URL supported)
@@ -196,12 +196,15 @@ class Badge(MixinMeta):
     @commands.mod_or_permissions(manage_roles=True)
     @badge.command()
     @commands.guild_only()
-    async def give(self, ctx, user: discord.Member, name: str):
-        """Give a user a badge with a certain name
+    async def give(self, ctx, user: discord.Member, is_global: Optional[bool], name: str):
+        """Give a user a badge by its name.
 
-        Indicate the user and the badge's name."""
+        Options:
+        `user`: User to get a badge
+        `is_global`: Owner-only. Give global badge.
+        `name`: Badge name."""
         org_user = ctx.message.author
-        server = ctx.guild
+        server_id = "global" if is_global and await self.bot.is_owner(user) else str(ctx.guild.id)
         # creates user if doesn't exist
         if user.bot:
             await ctx.send_help()
@@ -209,8 +212,8 @@ class Badge(MixinMeta):
         userinfo = await self.db.users.find_one({"user_id": str(user.id)})
         userinfo = await self._badge_convert_dict(userinfo)
 
-        serverbadges = await self.db.badges.find_one({"server_id": str(server.id)})
-        badge_name = "{}_{}".format(name, server.id)
+        serverbadges = await self.db.badges.find_one({"server_id": server_id})
+        badge_name = "{}_{}".format(name, server_id)
 
         if not serverbadges or name not in (badges := serverbadges["badges"]):
             await ctx.send("That badge doesn't exist in this server!")
