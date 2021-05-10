@@ -32,6 +32,7 @@ class MongoDB(MixinMeta):
             self.client = AsyncIOMotorClient(**{k: v for k, v in config.items() if k != "db_name"})
             info = await self.client.server_info()
             if not info.get("versionArray", []) > REQUIRED_MONGODB_VERSION:
+                self.client.close()
                 raise MongoDBUnsupportedVersion(REQUIRED_MONGODB_VERSION, info.get("version", "?"))
             self.db = self.client[config["db_name"]]
             self._db_ready = True
