@@ -41,7 +41,7 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
             pos = 0
             if options.rep and options.global_top and owner:
                 title = "Global Rep Leaderboard for {}\n".format(self.bot.user.name)
-                async for userinfo in self.db.users.find({}).sort("rep", -1):
+                async for userinfo in self.db.users.find({}).allow_disk_use(True).sort("rep", -1):
                     pos += 1
                     users.append(
                         (
@@ -64,7 +64,9 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
             elif options.global_top and owner:
                 is_level = True if await self.config.global_levels() else False
                 title = "Global Exp Leaderboard for {}\n".format(self.bot.user.name)
-                async for userinfo in self.db.users.find({}).sort("total_exp", -1):
+                async for userinfo in self.db.users.find({}).allow_disk_use(True).sort(
+                    "total_exp", -1
+                ):
                     pos += 1
                     if is_level:
                         users.append(
@@ -109,7 +111,7 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
                 title = "Rep Leaderboard for {}\n".format(server.name)
                 async for userinfo in self.db.users.find(
                     {f"servers.{server.id}": {"$exists": True}}
-                ).sort("rep", -1):
+                ).allow_disk_use(True).sort("rep", -1):
                     pos += 1
                     users.append(
                         (
@@ -137,7 +139,7 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
                 title = "Exp Leaderboard for {}\n".format(server.name)
                 async for userinfo in self.db.users.find(
                     {f"servers.{server.id}": {"$exists": True}}
-                ).sort(
+                ).allow_disk_use(True).sort(
                     [(f"servers.{server.id}.level", -1), (f"servers.{server.id}.current_exp", -1)]
                 ):
                     pos += 1

@@ -17,9 +17,7 @@ class MongoDB(MixinMeta):
         self._disconnect_mongo()
         config = await self.config.custom("MONGODB").all()
         try:
-            self.client = AsyncIOMotorClient(
-                **{k: v for k, v in config.items() if not k == "db_name"}
-            )
+            self.client = AsyncIOMotorClient(**{k: v for k, v in config.items() if k != "db_name"})
             await self.client.server_info()
             self.db = self.client[config["db_name"]]
             self._db_ready = True

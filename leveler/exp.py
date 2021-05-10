@@ -207,7 +207,9 @@ class XP(MixinMeta):
 
     async def _find_server_rank(self, user, server):
         rank = 1
-        async for userinfo in self.db.users.find({f"servers.{server.id}": {"$exists": True}}).sort(
+        async for userinfo in self.db.users.find(
+            {f"servers.{server.id}": {"$exists": True}}
+        ).allow_disk_use(True).sort(
             [(f"servers.{server.id}.level", -1), (f"servers.{server.id}.current_exp", -1)]
         ):
             if userinfo["user_id"] == str(user.id):
@@ -216,9 +218,9 @@ class XP(MixinMeta):
 
     async def _find_server_rep_rank(self, user, server):
         rank = 1
-        async for userinfo in self.db.users.find({f"servers.{server.id}": {"$exists": True}}).sort(
-            "rep", -1
-        ):
+        async for userinfo in self.db.users.find(
+            {f"servers.{server.id}": {"$exists": True}}
+        ).allow_disk_use(True).sort("rep", -1):
             if userinfo.get("user_id") == str(user.id):
                 return rank
             rank += 1
@@ -237,14 +239,14 @@ class XP(MixinMeta):
 
     async def _find_global_rank(self, user):
         rank = 1
-        async for userinfo in self.db.users.find({}).sort("total_exp", -1):
+        async for userinfo in self.db.users.find({}).allow_disk_use(True).sort("total_exp", -1):
             if userinfo.get("user_id") == str(user.id):
                 return rank
             rank += 1
 
     async def _find_global_rep_rank(self, user):
         rank = 1
-        async for userinfo in self.db.users.find({}).sort("rep", -1):
+        async for userinfo in self.db.users.find({}).allow_disk_use(True).sort("rep", -1):
             if userinfo.get("user_id") == str(user.id):
                 return rank
             rank += 1
