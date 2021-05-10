@@ -7,6 +7,18 @@ except Exception as e:
     raise RuntimeError(f"Can't load pymongo/motor:{e}\nInstall 'pymongo' and 'motor' packages")
 
 
+REQUIRED_MONGODB_VERSION = [4, 4]
+
+
+class MongoDBUnsupportedVersion(Exception):
+    def __init__(self, version, current_version):
+        super().__init__(
+            "MongoDB connection succeeded, but Leveler requires "
+            f"version {version}, you have {current_version}.\n"
+            "Please follow MongoDB docs for upgrade."
+        )
+
+
 class MongoDB(MixinMeta):
     """MongoDB connection handling"""
 
@@ -18,7 +30,9 @@ class MongoDB(MixinMeta):
         config = await self.config.custom("MONGODB").all()
         try:
             self.client = AsyncIOMotorClient(**{k: v for k, v in config.items() if k != "db_name"})
-            await self.client.server_info()
+            info = await self.client.server_info()
+            if not info.get("versionArray", []) > REQUIRED_MONGODB_VERSION:
+                raise MongoDBUnsupportedVersion(REQUIRED_MONGODB_VERSION, info.get("version", "?"))
             self.db = self.client[config["db_name"]]
             self._db_ready = True
             self.log.info("MongoDB: connection established.")
