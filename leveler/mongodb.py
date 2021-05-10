@@ -40,6 +40,7 @@ class MongoDB(MixinMeta):
             mongoerrors.ServerSelectionTimeoutError,
             mongoerrors.ConfigurationError,
             mongoerrors.OperationFailure,
+            MongoDBUnsupportedVersion,
         ) as error:
             self.log.exception(
                 "Can't connect to the MongoDB server.\nFollow instructions on Git/online to install MongoDB.",
