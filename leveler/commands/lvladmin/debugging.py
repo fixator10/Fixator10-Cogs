@@ -33,7 +33,9 @@ class Debugging(MixinMeta):
                 tabulate(
                     [
                         ("DB lock locked", self._db_lock.locked()),
-                        ("DB lock queue", len(self._db_lock._waiters)),
+                        ("DB lock queue", len(self._db_lock._waiters))
+                        if self._db_lock._waiters
+                        else "N/A",
                         ("pymongo version", pymongoversion),
                         ("motor version", motorversion),
                         (
