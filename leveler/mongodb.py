@@ -14,7 +14,7 @@ class MongoDBUnsupportedVersion(Exception):
     def __init__(self, version, current_version):
         super().__init__(
             "MongoDB connection succeeded, but Leveler requires "
-            f"version {version}, and you have {current_version}.\n"
+            f"version {'.'.join(version)}, and you have {current_version}.\n"
             "Please follow MongoDB docs for upgrade."
         )
 
