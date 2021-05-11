@@ -39,59 +39,60 @@ class MeeSix(MixinMeta):
                 return await ctx.send("Timed out waiting for a response.")
             if pred.result is False:
                 return await ctx.send("Command cancelled.")
-        failed = 0
-        async for i in AsyncIter(range(pages)):
-            async with self.session.get(
-                f"https://mee6.xyz/api/plugins/levels/leaderboard/{ctx.guild.id}?page={i}&limit=999"
-            ) as r:
+        async with ctx.typing():
+            failed = 0
+            async for i in AsyncIter(range(pages)):
+                async with self.session.get(
+                    f"https://mee6.xyz/api/plugins/levels/leaderboard/{ctx.guild.id}?page={i}&limit=999"
+                ) as r:
 
-                if r.status == 200:
-                    data = await r.json()
-                else:
-                    return await ctx.send("No data was found within the Mee6 API.")
+                    if r.status == 200:
+                        data = await r.json()
+                    else:
+                        return await ctx.send("No data was found within the Mee6 API.")
 
-            async for userdata in AsyncIter(data["players"]):
-                # _handle_levelup requires a Member
-                user = ctx.guild.get_member(int(userdata["id"]))
+                async for userdata in AsyncIter(data["players"]):
+                    # _handle_levelup requires a Member
+                    user = ctx.guild.get_member(int(userdata["id"]))
 
-                if not user:
-                    failed += 1
-                    continue
+                    if not user:
+                        failed += 1
+                        continue
 
-                level = userdata["level"]
-                server = ctx.guild
-                channel = ctx.channel
+                    level = userdata["level"]
+                    server = ctx.guild
+                    channel = ctx.channel
 
-                # creates user if doesn't exist
-                await self._create_user(user, server)
-                userinfo = await self.db.users.find_one({"user_id": str(user.id)})
+                    # creates user if doesn't exist
+                    await self._create_user(user, server)
+                    userinfo = await self.db.users.find_one({"user_id": str(user.id)})
 
-                # get rid of old level exp
-                old_server_exp = 0
-                async for _i in AsyncIter(range(userinfo["servers"][str(server.id)]["level"])):
-                    old_server_exp += await self._required_exp(_i)
-                userinfo["total_exp"] -= old_server_exp
-                userinfo["total_exp"] -= userinfo["servers"][str(server.id)]["current_exp"]
+                    # get rid of old level exp
+                    old_server_exp = 0
+                    async for _i in AsyncIter(range(userinfo["servers"][str(server.id)]["level"])):
+                        old_server_exp += await self._required_exp(_i)
+                    userinfo["total_exp"] -= old_server_exp
+                    userinfo["total_exp"] -= userinfo["servers"][str(server.id)]["current_exp"]
 
-                # add in new exp
-                total_exp = await self._level_exp(level)
-                userinfo["servers"][str(server.id)]["current_exp"] = 0
-                userinfo["servers"][str(server.id)]["level"] = level
-                userinfo["total_exp"] += total_exp
+                    # add in new exp
+                    total_exp = await self._level_exp(level)
+                    userinfo["servers"][str(server.id)]["current_exp"] = 0
+                    userinfo["servers"][str(server.id)]["level"] = level
+                    userinfo["total_exp"] += total_exp
 
-                if userinfo["total_exp"] > 0:
-                    await self.db.users.update_one(
-                        {"user_id": str(user.id)},
-                        {
-                            "$set": {
-                                "servers.{}.level".format(server.id): level,
-                                "servers.{}.current_exp".format(server.id): 0,
-                                "total_exp": userinfo["total_exp"],
-                            }
-                        },
-                    )
-                    await self._handle_levelup(user, userinfo, server, channel)
-        await ctx.send(f"{failed} users could not be found and were skipped.")
+                    if userinfo["total_exp"] > 0:
+                        await self.db.users.update_one(
+                            {"user_id": str(user.id)},
+                            {
+                                "$set": {
+                                    "servers.{}.level".format(server.id): level,
+                                    "servers.{}.current_exp".format(server.id): 0,
+                                    "total_exp": userinfo["total_exp"],
+                                }
+                            },
+                        )
+                        await self._handle_levelup(user, userinfo, server, channel)
+            await ctx.send(f"{failed} users could not be found and were skipped.")
 
     @mee6.command(name="roles", aliases=["ranks"])
     @commands.guild_only()
