@@ -146,6 +146,35 @@ class AdminUtils(commands.Cog):
                     continue
         await ctx.send(_("Finished moving users. {} members could not be moved.").format(fails))
 
+    @commands.command()
+    @commands.guild_only()
+    @checks.admin_or_permissions(manage_roles=True)
+    @commands.bot_has_permissions(manage_roles=True)
+    async def delrole(self, ctx, role: discord.Role):
+        """Delete a role"""
+        if role is ctx.guild.default_role:
+            return await ctx.send("You cannot delete the default role.")
+        try:
+            await role.delete(reason=get_audit_reason(ctx.author))
+        except discord.HTTPException as e:
+            return await ctx.send(chat.error("An error occured on deleting the role: {}").format(e))
+        await ctx.tick()
+    
+    @commands.command()
+    @commands.guild_only()
+    @checks.admin_or_permissions(manage_channels=True)
+    @commands.bot_has_permissions(manage_channels=True)
+    async def delchannel(self, ctx, channel: Optional[discord.TextChannel, discord.VoiceChannel]):
+        """Delete a text channel
+        
+        Channel can be a voice channel or a text channel.
+        """
+        try:
+            await channel.delete(reason=get_audit_reason(ctx.author))
+        except discord.HTTPException as e:
+            return await ctx.send(chat.error("An error occured on deleting the channel: {}").format(e))
+        await ctx.tick()
+        
     @commands.group()
     @commands.guild_only()
     @checks.admin_or_permissions(manage_emojis=True)
