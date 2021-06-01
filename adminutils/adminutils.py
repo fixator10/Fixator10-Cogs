@@ -157,24 +157,28 @@ class AdminUtils(commands.Cog):
         try:
             await role.delete(reason=get_audit_reason(ctx.author))
         except discord.HTTPException as e:
-            return await ctx.send(chat.error("An error occured on deleting the role: {}").format(e))
+            return await ctx.send(
+                chat.error("An error occured on deleting the role: {}").format(e)
+            )
         await ctx.tick()
-    
+
     @commands.command()
     @commands.guild_only()
     @checks.admin_or_permissions(manage_channels=True)
     @commands.bot_has_permissions(manage_channels=True)
     async def delchannel(self, ctx, channel: Optional[discord.TextChannel, discord.VoiceChannel]):
         """Delete a text channel
-        
+
         Channel can be a voice channel or a text channel.
         """
         try:
             await channel.delete(reason=get_audit_reason(ctx.author))
         except discord.HTTPException as e:
-            return await ctx.send(chat.error("An error occured on deleting the channel: {}").format(e))
+            return await ctx.send(
+                chat.error("An error occured on deleting the channel: {}").format(e)
+            )
         await ctx.tick()
-        
+
     @commands.group()
     @commands.guild_only()
     @checks.admin_or_permissions(manage_emojis=True)
