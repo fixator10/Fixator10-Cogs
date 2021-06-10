@@ -22,7 +22,7 @@ class Users(MixinMeta):
         ctx,
         bantime: commands.converter.TimedeltaConverter,
         *,
-        user: Union[discord.User, int]
+        user: Union[discord.User, int],
     ):
         """Ban user from getting experience."""
         if isinstance(user, int):
