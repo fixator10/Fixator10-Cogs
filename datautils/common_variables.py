@@ -32,6 +32,9 @@ GUILD_FEATURES = {
     # im honestly idk what the fuck that shit means, and discord doesnt provides much docs,
     # so if you see that on your server while using my cog - idk what the fuck is that and how it got there,
     # ask discord to write fucking docs already
+    "RELAY_ENABLED": _(
+        "Shards connections to the guild to different nodes that relay information between each other."
+    ),
     "FORCE_RELAY": _(
         "Shards connections to the guild to different nodes that relay information between each other."
     ),

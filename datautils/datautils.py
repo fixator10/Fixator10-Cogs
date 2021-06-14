@@ -20,7 +20,7 @@ from .utils import _, bool_emojify
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.6.0"
+    __version__ = "2.6.1"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):

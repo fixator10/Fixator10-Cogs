@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-04-18 22:39+0400\n"
+"POT-Creation-Date: 2021-06-14 20:45+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -87,41 +87,41 @@ msgstr ""
 msgid "Member list disabled"
 msgstr ""
 
-#: datautils\common_variables.py:35
+#: datautils\common_variables.py:35 datautils\common_variables.py:38
 msgid ""
 "Shards connections to the guild to different nodes that relay information "
 "between each other."
 msgstr ""
 
-#: datautils\common_variables.py:41
+#: datautils\common_variables.py:44
 msgid "Playing"
 msgstr ""
 
-#: datautils\common_variables.py:42
+#: datautils\common_variables.py:45
 msgid "Watching"
 msgstr ""
 
-#: datautils\common_variables.py:43
+#: datautils\common_variables.py:46
 msgid "Listening to"
 msgstr ""
 
-#: datautils\common_variables.py:44
+#: datautils\common_variables.py:47
 msgid "Competing in"
 msgstr ""
 
-#: datautils\common_variables.py:59
+#: datautils\common_variables.py:62
 msgid "Categories"
 msgstr ""
 
-#: datautils\common_variables.py:60
+#: datautils\common_variables.py:63
 msgid "Text channels"
 msgstr ""
 
-#: datautils\common_variables.py:61
+#: datautils\common_variables.py:64
 msgid "Voice channels"
 msgstr ""
 
-#: datautils\common_variables.py:62
+#: datautils\common_variables.py:65
 msgid "Stage channels"
 msgstr ""
 
@@ -695,14 +695,14 @@ msgstr ""
 msgid "Unsupported activity type: {}"
 msgstr ""
 
-#: datautils\menus.py:174
+#: datautils\menus.py:173
 msgid "No channels"
 msgstr ""
 
-#: datautils\menus.py:177
+#: datautils\menus.py:176
 msgid "Page {}/{} • {}: {} • Total channels: {}"
 msgstr ""
 
-#: datautils\menus.py:202
+#: datautils\menus.py:201
 msgid "Page {}/{}"
 msgstr ""
