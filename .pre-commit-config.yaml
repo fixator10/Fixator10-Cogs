@@ -11,3 +11,6 @@ repos:
     rev: 5.8.0
     hooks:
       - id: isort
+ci:
+  autoupdate_commit_msg: "[meta] update pre-commit"
+  autofix_commit_msg: "[meta] pre-commit styling fix"
