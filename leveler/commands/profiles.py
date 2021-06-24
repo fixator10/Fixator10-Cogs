@@ -176,4 +176,4 @@ class Profiles(MixinMeta, metaclass=CompositeMetaClass):
             name="Profile Information for {}".format(user.name),
             icon_url=user.avatar_url,
         )
-        await ctx.send(embed=em)
+        await ctx.reply(embed=em, mention_author=False)
