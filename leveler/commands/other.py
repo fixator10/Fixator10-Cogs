@@ -24,13 +24,13 @@ class Other(MixinMeta, metaclass=CompositeMetaClass):
         curr_time = time.time()
 
         if user and user.id == org_user.id:
-            await ctx.send("You can't give a rep to yourself!")
+            await ctx.reply("You can't give a rep to yourself!", mention_author=False)
             return
         if user and user.bot:
-            await ctx.send("You can't give a rep to a bot!")
+            await ctx.reply("You can't give a rep to a bot!", mention_author=False)
             return
         if user and await self.config.rep_rotation() and user.id == org_userinfo.get("lastrep"):
-            await ctx.send("You already gave a rep point to this user!")
+            await ctx.reply("You already gave a rep point to this user!", mention_author=False)
             return
 
         delta = float(curr_time) - float(org_userinfo.get("rep_block", 0))
@@ -45,20 +45,21 @@ class Other(MixinMeta, metaclass=CompositeMetaClass):
             await self.db.users.update_one(
                 {"user_id": str(user.id)}, {"$set": {"rep": userinfo["rep"] + 1}}
             )
-            await ctx.send(
+            await ctx.reply(
                 "You have just given {} a reputation point!".format(user.mention),
                 allowed_mentions=discord.AllowedMentions(users=await self.config.mention()),
+                mention_author=False,
             )
         else:
             # calulate time left
             seconds = 43200 - delta
             if seconds < 0:
-                await ctx.send("You can give a rep!")
+                await ctx.reply("You can give a rep!", mention_author=False)
                 return
-            await ctx.send(
+            await ctx.reply(
                 "You need to wait {} until you can give reputation again!".format(
                     chat.humanize_timedelta(seconds=seconds)
-                )
+                ), mention_author=False
             )
 
     @commands.command(name="backgrounds", usage="[profile|rank|levelup]")
@@ -69,10 +70,10 @@ class Other(MixinMeta, metaclass=CompositeMetaClass):
         pages = {t: BackgroundPager(tuple(backgrounds[t].items())) for t in backgrounds}
         bg_type = bg_type.casefold()
         if bg_type not in pages:
-            await ctx.send(
+            await ctx.reply(
                 chat.error("Unknown background type. It should be one of: {}.").format(
                     chat.humanize_list(tuple(pages.keys()), style="or")
-                )
+                ), mention_author=False
             )
             return
         await BackgroundMenu(pages, bg_type).start(ctx)
