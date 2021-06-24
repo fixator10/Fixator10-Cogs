@@ -59,7 +59,8 @@ class Other(MixinMeta, metaclass=CompositeMetaClass):
             await ctx.reply(
                 "You need to wait {} until you can give reputation again!".format(
                     chat.humanize_timedelta(seconds=seconds)
-                ), mention_author=False
+                ),
+                mention_author=False,
             )
 
     @commands.command(name="backgrounds", usage="[profile|rank|levelup]")
@@ -73,7 +74,8 @@ class Other(MixinMeta, metaclass=CompositeMetaClass):
             await ctx.reply(
                 chat.error("Unknown background type. It should be one of: {}.").format(
                     chat.humanize_list(tuple(pages.keys()), style="or")
-                ), mention_author=False
+                ),
+                mention_author=False,
             )
             return
         await BackgroundMenu(pages, bg_type).start(ctx)
