@@ -28,6 +28,7 @@ GUILD_FEATURES = {
     "TICKETED_EVENTS_ENABLED": _("Ticketed events"),
     "MONETIZATION_ENABLED": _("Monetization"),
     "MORE_STICKERS": _("Extended custom sticker slots"),
+    "THERADS_ENABLED": _("Threads"),
     "PRIVATE_THREADS": _("Private threads"),  # "keep Discord’s core features free"
     "THREE_DAY_THREAD_ARCHIVE": _("3 day thread archive"),
     "SEVEN_DAY_THREAD_ARCHIVE": _("7 day thread archive"),
