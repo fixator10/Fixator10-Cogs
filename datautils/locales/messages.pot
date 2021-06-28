@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-06-14 20:45+0400\n"
+"POT-Creation-Date: 2021-06-28 12:29+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -75,53 +75,65 @@ msgstr ""
 msgid "Community server"
 msgstr ""
 
+#: datautils\common_variables.py:28
+msgid "Private threads"
+msgstr ""
+
 #: datautils\common_variables.py:29
-msgid "Preview enabled (\"Lurkable\")"
+msgid "3 day thread archive"
 msgstr ""
 
 #: datautils\common_variables.py:30
+msgid "7 day thread archive"
+msgstr ""
+
+#: datautils\common_variables.py:32
+msgid "Preview enabled (\"Lurkable\")"
+msgstr ""
+
+#: datautils\common_variables.py:33
 msgid "Member verification gate enabled"
 msgstr ""
 
-#: datautils\common_variables.py:31
+#: datautils\common_variables.py:34
 msgid "Member list disabled"
 msgstr ""
 
-#: datautils\common_variables.py:35 datautils\common_variables.py:38
+#: datautils\common_variables.py:38 datautils\common_variables.py:41
 msgid ""
 "Shards connections to the guild to different nodes that relay information "
 "between each other."
 msgstr ""
 
-#: datautils\common_variables.py:44
+#: datautils\common_variables.py:47
 msgid "Playing"
 msgstr ""
 
-#: datautils\common_variables.py:45
+#: datautils\common_variables.py:48
 msgid "Watching"
 msgstr ""
 
-#: datautils\common_variables.py:46
+#: datautils\common_variables.py:49
 msgid "Listening to"
 msgstr ""
 
-#: datautils\common_variables.py:47
+#: datautils\common_variables.py:50
 msgid "Competing in"
 msgstr ""
 
-#: datautils\common_variables.py:62
+#: datautils\common_variables.py:65
 msgid "Categories"
 msgstr ""
 
-#: datautils\common_variables.py:63
+#: datautils\common_variables.py:66
 msgid "Text channels"
 msgstr ""
 
-#: datautils\common_variables.py:64
+#: datautils\common_variables.py:67
 msgid "Voice channels"
 msgstr ""
 
-#: datautils\common_variables.py:65
+#: datautils\common_variables.py:68
 msgid "Stage channels"
 msgstr ""
 

@@ -25,6 +25,9 @@ GUILD_FEATURES = {
     "PUBLIC_DISABLED": _("Cannot be public"),
     "ENABLED_DISCOVERABLE_BEFORE": _("Was in Server Discovery"),
     "COMMUNITY": _("Community server"),
+    "PRIVATE_THREADS": _("Private threads"),  # "keep Discord’s core features free"
+    "THREE_DAY_THREAD_ARCHIVE": _("3 day thread archive"),
+    "SEVEN_DAY_THREAD_ARCHIVE": _("7 day thread archive"),
     # Docs from https://github.com/vDelite/DiscordLists:
     "PREVIEW_ENABLED": _('Preview enabled ("Lurkable")'),
     "MEMBER_VERIFICATION_GATE_ENABLED": _("Member verification gate enabled"),
