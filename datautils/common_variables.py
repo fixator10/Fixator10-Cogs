@@ -25,6 +25,9 @@ GUILD_FEATURES = {
     "PUBLIC_DISABLED": _("Cannot be public"),
     "ENABLED_DISCOVERABLE_BEFORE": _("Was in Server Discovery"),
     "COMMUNITY": _("Community server"),
+    "TICKETED_EVENTS_ENABLED": _("Ticketed events"),
+    "MONETIZATION_ENABLED": _("Monetization"),
+    "MORE_STICKERS": _("Extended custom sticker slots"),
     "PRIVATE_THREADS": _("Private threads"),  # "keep Discord’s core features free"
     "THREE_DAY_THREAD_ARCHIVE": _("3 day thread archive"),
     "SEVEN_DAY_THREAD_ARCHIVE": _("7 day thread archive"),
