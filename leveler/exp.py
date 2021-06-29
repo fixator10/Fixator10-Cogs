@@ -114,7 +114,9 @@ class XP(MixinMeta):
 
     async def _handle_levelup(self, user, userinfo, server, channel):
         # channel lock implementation
-        channel = server.get_channel(await self.config.guild(server).lvl_msg_lock())
+        lock_channel = await self.config.guild(server).lvl_msg_lock()
+        if lock_channel:
+            channel = server.get_channel(await self.config.guild(server).lvl_msg_lock())
 
         server_identifier = ""  # super hacky
         name = user.mention  # also super hacky
