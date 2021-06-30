@@ -116,7 +116,7 @@ class XP(MixinMeta):
         # channel lock implementation
         lock_channel = await self.config.guild(server).lvl_msg_lock()
         if lock_channel:
-            channel = server.get_channel(await self.config.guild(server).lvl_msg_lock())
+            channel = server.get_channel(lock_channel)
 
         server_identifier = ""  # super hacky
         name = user.mention  # also super hacky
