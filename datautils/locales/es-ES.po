@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fixator10-cogs\n"
-"POT-Creation-Date: 2021-06-14 20:45+0400\n"
+"POT-Creation-Date: 2021-06-28 13:07+0400\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "MIME-Version: 1.0\n"
@@ -79,51 +79,79 @@ msgstr ""
 msgid "Community server"
 msgstr ""
 
+#: datautils\common_variables.py:28
+msgid "Ticketed events"
+msgstr ""
+
 #: datautils\common_variables.py:29
-msgid "Preview enabled (\"Lurkable\")"
+msgid "Monetization"
 msgstr ""
 
 #: datautils\common_variables.py:30
-msgid "Member verification gate enabled"
+msgid "Extended custom sticker slots"
 msgstr ""
 
 #: datautils\common_variables.py:31
+msgid "Threads"
+msgstr ""
+
+#: datautils\common_variables.py:32
+msgid "Private threads"
+msgstr ""
+
+#: datautils\common_variables.py:33
+msgid "3 day thread archive"
+msgstr ""
+
+#: datautils\common_variables.py:34
+msgid "7 day thread archive"
+msgstr ""
+
+#: datautils\common_variables.py:36
+msgid "Preview enabled (\"Lurkable\")"
+msgstr ""
+
+#: datautils\common_variables.py:37
+msgid "Member verification gate enabled"
+msgstr ""
+
+#: datautils\common_variables.py:38
 msgid "Member list disabled"
 msgstr ""
 
-#: datautils\common_variables.py:35 datautils\common_variables.py:38
+#: datautils\common_variables.py:42 datautils\common_variables.py:45
 msgid "Shards connections to the guild to different nodes that relay information between each other."
 msgstr ""
 
-#: datautils\common_variables.py:44
+#: datautils\common_variables.py:51
 msgid "Playing"
 msgstr ""
 
-#: datautils\common_variables.py:45
+#: datautils\common_variables.py:52
 msgid "Watching"
 msgstr ""
 
-#: datautils\common_variables.py:46
+#: datautils\common_variables.py:53
 msgid "Listening to"
 msgstr ""
 
-#: datautils\common_variables.py:47
+#: datautils\common_variables.py:54
 msgid "Competing in"
 msgstr ""
 
-#: datautils\common_variables.py:62
+#: datautils\common_variables.py:69
 msgid "Categories"
 msgstr ""
 
-#: datautils\common_variables.py:63
+#: datautils\common_variables.py:70
 msgid "Text channels"
 msgstr ""
 
-#: datautils\common_variables.py:64
+#: datautils\common_variables.py:71
 msgid "Voice channels"
 msgstr ""
 
-#: datautils\common_variables.py:65
+#: datautils\common_variables.py:72
 msgid "Stage channels"
 msgstr ""
 
