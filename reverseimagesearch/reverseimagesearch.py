@@ -30,14 +30,13 @@ async def send_preview(
     timeout: float,
     emoji: str,
 ):
+    # TODO: Use dpy menus/ui.view
     with suppress(discord.NotFound):
         await message.delete()
     doc = ctx.search_docs[page]
     async with ctx.typing():
         try:
-            async with ctx.cog.session.get(
-                doc.preview_scene, raise_for_status=True
-            ) as video_preview:
+            async with ctx.cog.session.get(doc.video, raise_for_status=True) as video_preview:
                 video_preview = BytesIO(await video_preview.read())
                 await ctx.send(
                     embed=pages[page],
@@ -88,7 +87,7 @@ def nsfwcheck():
 class ReverseImageSearch(commands.Cog):
     """(Anime) Reverse Image Search"""
 
-    __version__ = "2.1.10"
+    __version__ = "2.1.11"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -162,7 +161,7 @@ class ReverseImageSearch(commands.Cog):
                 text=_("Via SauceNAO • Page {}/{}").format(page, search.results_returned),
                 icon_url="https://www.google.com/s2/favicons?domain=saucenao.com",
             )
-            e.set_thumbnail(url=entry.thumbnail)
+            e.set_thumbnail(url=entry.image)
             embeds.append(e)
         if embeds:
             await menu(ctx, embeds, DEFAULT_CONTROLS)
@@ -212,6 +211,7 @@ class ReverseImageSearch(commands.Cog):
             await ctx.send(_("Command `{}` has not been used yet").format(self.saucenao))
 
     @commands.group(invoke_without_command=True, aliases=["WAIT"])
+    @commands.cooldown(60, 60)
     async def tracemoe(self, ctx, image: ImageFinder = None):
         """Reverse search image via WAIT
 
@@ -241,15 +241,11 @@ class ReverseImageSearch(commands.Cog):
                     s
                     for s in [
                         _("Similarity: {:.2f}%").format(doc.similarity * 100),
-                        doc.title_native
-                        and "🇯🇵 " + _("Native title: {}").format(doc.title_native),
                         doc.title_romaji
                         and "🇯🇵 " + _("Romaji transcription: {}").format(doc.title_romaji),
-                        doc.title_chinese
-                        and "🇨🇳 " + _("Chinese title: {}").format(doc.title_chinese),
                         doc.title_english
                         and "🇺🇸 " + _("English title: {}").format(doc.title_english),
-                        _("Est. Time: {}").format(doc.time_str),
+                        _("Time: {}").format(doc.time_str),
                         _("Episode: {}").format(doc.episode),
                         doc.synonyms and _("Also known as: {}").format(", ".join(doc.synonyms)),
                     ]
@@ -260,15 +256,17 @@ class ReverseImageSearch(commands.Cog):
                 or f"https://anilist.co/anime/{doc.anilist_id}",
                 color=await ctx.embed_color(),
             )
-            e.set_thumbnail(url=doc.thumbnail)
+            e.set_thumbnail(url=doc.image)
             e.set_footer(
-                text=_("Via WAIT (trace.moe) • Page {}/{}").format(page, len(search.docs)),
+                text=_("Via Anime Scene Search Engine (trace.moe) • Page {}/{}").format(
+                    page, len(search.docs)
+                ),
                 icon_url="https://trace.moe/favicon128.png",
             )
             embeds.append(e)
         if embeds:
             ctx.search_docs = search.docs
-            await menu(ctx, embeds, TRACEMOE_MENU_CONTROLS)
+            await menu(ctx, embeds, TRACEMOE_MENU_CONTROLS)  # TODO: Use dpy menus/ui.view
         else:
             await ctx.send(chat.info(_("Nothing found")))
 
@@ -278,19 +276,7 @@ class ReverseImageSearch(commands.Cog):
         """See how many requests are left and time until reset"""
         stats = await TraceMoe.me(ctx)
         await ctx.send(
-            _(
-                "Remaining requests (ratelimit): {}/{}\n"
-                "Remaining requests (quota): {}/{}\n"
-                "Ratelimit reset in {}/{}\n"
-                "Quota reset in {}/{}\n"
-            ).format(
-                stats.limit,
-                stats.user_limit,
-                stats.quota,
-                stats.user_quota,
-                stats.limit_ttl,
-                stats.user_limit_ttl,
-                stats.quota_ttl,
-                stats.user_quota_ttl,
+            _("Priority: {}\n" "Concurrency: {}\n" "Quota: {}/{}").format(
+                stats.priority, stats.concurrency, stats.quotaUsed, stats.quota
             )
         )

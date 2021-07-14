@@ -21,7 +21,7 @@ class SauceNAOEntry:
     def __init__(self, result: dict):
         header = result.get("header", {})
         self.similarity = header.get("similarity")
-        self.thumbnail = URL(header.get("thumbnail"))
+        self.thumbnail = URL(header.get("image"))
         self.index = SimpleNamespace()
         self.index.id = header.get("index_id")
         self.index.name = header.get("index_name")
