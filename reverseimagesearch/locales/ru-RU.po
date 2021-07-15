@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fixator10-cogs\n"
-"POT-Creation-Date: 2020-11-14 17:14+0400\n"
+"POT-Creation-Date: 2021-07-15 13:26+0400\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
@@ -15,69 +15,68 @@ msgstr ""
 "X-Crowdin-File-ID: 71\n"
 "Language: ru_RU\n"
 
-#: reverseimagesearch\converters.py:68
+#: reverseimagesearch\converters.py:66
 msgid "No images provided."
 msgstr "Не указано никаких изображений."
 
-#: reverseimagesearch\converters.py:82
+#: reverseimagesearch\converters.py:80
 msgid "No Images found in recent history."
 msgstr "Изображений в последних сообщениях не обнаружено."
 
-#: reverseimagesearch\reverseimagesearch.py:48
+#: reverseimagesearch\reverseimagesearch.py:47
 msgid "Unable to get video preview: {}"
 msgstr "Невозможно получить видео-предпросмотр: {}"
 
-#: reverseimagesearch\reverseimagesearch.py:50
+#: reverseimagesearch\reverseimagesearch.py:49
 msgid "Unable to send video preview: {}"
 msgstr "Невозможно отправить видео-предпросмотр: {}"
 
-#: reverseimagesearch\reverseimagesearch.py:75
+#: reverseimagesearch\reverseimagesearch.py:79
 msgid "You can't use this command in a non-NSFW channel!"
 msgstr "Эту команду нельзя использовать вне NSFW каналов!"
 
-#: reverseimagesearch\reverseimagesearch.py:84
+#: reverseimagesearch\reverseimagesearch.py:88
 #, docstring
 msgid "(Anime) Reverse Image Search"
 msgstr "Поиск (аниме) по изображению"
 
-#: reverseimagesearch\reverseimagesearch.py:112
+#: reverseimagesearch\reverseimagesearch.py:116
 #, docstring
-msgid "Reverse search image via SauceNAO"
-msgstr "Поиск по изображению через SauceNAO"
+msgid "[NSFW] Reverse search image via SauceNAO"
+msgstr "[NSFW] Поиск по изображению через SauceNAO"
 
-#: reverseimagesearch\reverseimagesearch.py:126
-#: reverseimagesearch\reverseimagesearch.py:165
+#: reverseimagesearch\reverseimagesearch.py:130
+#: reverseimagesearch\reverseimagesearch.py:169
 #: reverseimagesearch\reverseimagesearch.py:271
 msgid "Nothing found"
 msgstr "Ничего не найдено"
 
-#: reverseimagesearch\reverseimagesearch.py:145
+#: reverseimagesearch\reverseimagesearch.py:149
 msgid "Similarity: {}%"
 msgstr "Схожесть: {}%"
 
-#: reverseimagesearch\reverseimagesearch.py:147
+#: reverseimagesearch\reverseimagesearch.py:151
 msgid "Part/Episode: {}"
 msgstr "Часть/Эпизод: {}"
 
-#: reverseimagesearch\reverseimagesearch.py:148
+#: reverseimagesearch\reverseimagesearch.py:152
 msgid "Year: {}"
 msgstr "Год: {}"
 
-#: reverseimagesearch\reverseimagesearch.py:149
-#: reverseimagesearch\reverseimagesearch.py:248
+#: reverseimagesearch\reverseimagesearch.py:153
 msgid "Est. Time: {}"
 msgstr "Пр. время: {}"
 
-#: reverseimagesearch\reverseimagesearch.py:157
+#: reverseimagesearch\reverseimagesearch.py:161
 msgid "Via SauceNAO • Page {}/{}"
 msgstr "Через SauceNAO • Страница {}/{}"
 
-#: reverseimagesearch\reverseimagesearch.py:170
+#: reverseimagesearch\reverseimagesearch.py:174
 #, docstring
 msgid "Set API key for SauceNAO"
 msgstr "Установить API ключ для SauceNAO"
 
-#: reverseimagesearch\reverseimagesearch.py:171
+#: reverseimagesearch\reverseimagesearch.py:175
 msgid "To get SauceNAO API key:\n"
 "1. [Login](https://saucenao.com/user.php) to your SauceNAO account\n"
 "2. Go to [Search > api](https://saucenao.com/user.php?page=search-api) page\n"
@@ -92,19 +91,19 @@ msgstr "Для получения API ключа SauceNAO:\n"
 "4. Используйте `{}set api revereseimagesearch saucenao <your_api_key>`\n\n"
 "Примечание: Эти ключи приватны и должны быть установлены только в приватном канале или личных сообщениях с ботом."
 
-#: reverseimagesearch\reverseimagesearch.py:185
+#: reverseimagesearch\reverseimagesearch.py:189
 #, docstring
 msgid "Set API count of results count for SauceNAO\n\n"
 "        6 by default"
 msgstr "Установить кол-во результатов для SauceNAO\n\n"
 "        По умолчанию 6"
 
-#: reverseimagesearch\reverseimagesearch.py:194
+#: reverseimagesearch\reverseimagesearch.py:198
 #, docstring
 msgid "See how many requests are left"
 msgstr "Посмотреть сколько запросов осталось"
 
-#: reverseimagesearch\reverseimagesearch.py:197
+#: reverseimagesearch\reverseimagesearch.py:201
 msgid "Remaining requests:\n"
 "Short (30 seconds): {}/{}\n"
 "Long: (24 hours): {}/{}"
@@ -112,48 +111,44 @@ msgstr "Осталось запросов:\n"
 "Сейчас (30 секунд): {}/{}\n"
 "В общем: (24 часа): {}/{}"
 
-#: reverseimagesearch\reverseimagesearch.py:207
+#: reverseimagesearch\reverseimagesearch.py:211
 msgid "Command `{}` has not been used yet"
 msgstr "Команда `{}` пока еще не использовалась"
 
-#: reverseimagesearch\reverseimagesearch.py:211
+#: reverseimagesearch\reverseimagesearch.py:216
 #, docstring
 msgid "Reverse search image via WAIT\n\n"
 "        If search performed not in NSFW channel, NSFW results will be not shown"
 msgstr "Поиск по изображению через WAIT\n\n"
 "        Если поиск производится не в NSFW канале, NSFW результаты не будут показаны"
 
-#: reverseimagesearch\reverseimagesearch.py:239
+#: reverseimagesearch\reverseimagesearch.py:243
 msgid "Similarity: {:.2f}%"
 msgstr "Схожесть: {:.2f}%"
 
-#: reverseimagesearch\reverseimagesearch.py:241
-msgid "Native title: {}"
-msgstr "Название на родном языке: {}"
-
-#: reverseimagesearch\reverseimagesearch.py:243
+#: reverseimagesearch\reverseimagesearch.py:245
 msgid "Romaji transcription: {}"
 msgstr "Транскрипция на ромадзи: {}"
-
-#: reverseimagesearch\reverseimagesearch.py:245
-msgid "Chinese title: {}"
-msgstr "Название на китайском: {}"
 
 #: reverseimagesearch\reverseimagesearch.py:247
 msgid "English title: {}"
 msgstr "Название на английском: {}"
 
+#: reverseimagesearch\reverseimagesearch.py:248
+msgid "Time: {}"
+msgstr "Время: {}"
+
 #: reverseimagesearch\reverseimagesearch.py:249
 msgid "Episode: {}"
 msgstr "Эпизод: {}"
 
-#: reverseimagesearch\reverseimagesearch.py:251
+#: reverseimagesearch\reverseimagesearch.py:250
 msgid "Also known as: {}"
 msgstr "Так же известное как: {}"
 
-#: reverseimagesearch\reverseimagesearch.py:263
-msgid "Via WAIT (trace.moe) • Page {}/{}"
-msgstr "Через WAIT (trace.moe) • Страница {}/{}"
+#: reverseimagesearch\reverseimagesearch.py:261
+msgid "Via Anime Scene Search Engine (trace.moe) • Page {}/{}"
+msgstr "Через Anime Scene Search Engine (trace.moe) • Страница {}/{}"
 
 #: reverseimagesearch\reverseimagesearch.py:276
 #, docstring
@@ -161,14 +156,12 @@ msgid "See how many requests are left and time until reset"
 msgstr "Посмотреть сколько запросов осталось и время до сброса"
 
 #: reverseimagesearch\reverseimagesearch.py:279
-msgid "Remaining requests (ratelimit): {}/{}\n"
-"Remaining requests (quota): {}/{}\n"
-"Ratelimit reset in {}/{}\n"
-"Quota reset in {}/{}\n"
-msgstr "Оставшиеся запросы (ratelimit): {}/{}\n"
-"Оставшиеся запросы (quota): {}/{}\n"
-"Сброс ratelimit через {}/{}\n"
-"Сброс quota через {}/{}\n"
+msgid "Priority: {}\n"
+"Concurrency: {}\n"
+"Quota: {}/{}"
+msgstr "Приоритет: {}\n"
+"Параллельных запросов: {}\n"
+"Квота: {}/{}"
 
 #: reverseimagesearch\saucenao.py:96
 msgid "Unable to search for provided image, SauceNAO returned {status} ({message})\n"
@@ -180,15 +173,19 @@ msgstr "Не удаётся найти ничего по указанному с
 msgid "Unable to search for provided image, SauceNAO returned {status} ({message})"
 msgstr "Невозможно выполнить поиск по указанному изображению, SauceNAO вернул код {status} ({message})"
 
-#: reverseimagesearch\tracemoe.py:88
+#: reverseimagesearch\tracemoe.py:85
 msgid "Unable to convert image."
 msgstr "Невозможно преобразовать изображение."
 
-#: reverseimagesearch\tracemoe.py:90
+#: reverseimagesearch\tracemoe.py:87
 msgid "Unable to get image: {}"
 msgstr "Невозможно получить изображение: {}"
 
-#: reverseimagesearch\tracemoe.py:102
+#: reverseimagesearch\tracemoe.py:101
+msgid "An error occurred during search: {}"
+msgstr "При поиске произошла ошибка: {}"
+
+#: reverseimagesearch\tracemoe.py:108
 msgid "Unable to search for provided image, trace.moe returned {status} ({message})"
 msgstr "Невозможно выполнить поиск по указанному изображению, trace.moe вернул код {status} ({message})"
 

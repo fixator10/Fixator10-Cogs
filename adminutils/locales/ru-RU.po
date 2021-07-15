@@ -49,7 +49,7 @@ msgstr "Вы собираетесь выгнать **{to_kick}** пользов�
 msgid "**{removed}**/**{all}** inactive members removed.\n"
 "(They was inactive for **{days}** days)"
 msgstr "**{removed}**/**{all}** неактивных участников удалено.\n"
-"(Они были неактивны **{days}** дней)\""
+"(Они были неактивны **{days}** дней)"
 
 #: adminutils\adminutils.py:90
 msgid "Inactive members cleanup canceled."
