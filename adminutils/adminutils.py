@@ -82,7 +82,7 @@ class AdminUtils(commands.Cog):
                 chat.info(
                     _(
                         "**{removed}**/**{all}** inactive members removed.\n"
-                        "(They was inactive for **{days}** days)"
+                        "(They were inactive for **{days}** days)"
                     ).format(removed=cleanup, all=to_kick, days=days)
                 )
             )
