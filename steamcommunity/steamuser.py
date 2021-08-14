@@ -86,6 +86,10 @@ class SteamUser:
         userapi = steam["ISteamUser"]
         argument = argument.replace("\\", "/")
         if (url_parsed := urlparse(argument)).scheme in ["http", "https"]:
+            if url_parsed.netloc != "steamcommunity.com":
+                raise BadArgument(
+                    _("{} is not a Steam Community domain name.").format(url_parsed.netloc)
+                )
             argument = PurePosixPath(url_parsed.path).name
         if argument.isdigit():
             id64 = argument
@@ -97,7 +101,9 @@ class SteamUser:
                     raise BadArgument(_("Incorrect SteamID32 provided."))
             else:
                 try:
-                    id64 = userapi.ResolveVanityURL(argument)["response"].get("steamid", "")
+                    id64 = (
+                        userapi.ResolveVanityURL(argument).get("response", {}).get("steamid", "")
+                    )
                 except JSONDecodeError:
                     raise BadArgument(
                         _(
