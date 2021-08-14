@@ -79,7 +79,7 @@ filterwarnings("ignore", category=FutureWarning, module=r"valve.")
 class SteamCommunity(commands.Cog):
     """SteamCommunity commands"""
 
-    __version__ = "2.1.13"
+    __version__ = "2.1.14"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
