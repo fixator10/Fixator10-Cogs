@@ -87,7 +87,7 @@ def nsfwcheck():
 class ReverseImageSearch(commands.Cog):
     """(Anime) Reverse Image Search"""
 
-    __version__ = "2.1.11"
+    __version__ = "2.1.12"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -210,10 +210,10 @@ class ReverseImageSearch(commands.Cog):
         else:
             await ctx.send(_("Command `{}` has not been used yet").format(self.saucenao))
 
-    @commands.group(invoke_without_command=True, aliases=["WAIT"])
+    @commands.group(invoke_without_command=True, aliases=["WAIT", "ASSE"])
     @commands.cooldown(60, 60)
     async def tracemoe(self, ctx, image: ImageFinder = None):
-        """Reverse search image via WAIT
+        """Reverse search image via Anime Scene Search Engine
 
         If search performed not in NSFW channel, NSFW results will be not shown"""
         if image is None:

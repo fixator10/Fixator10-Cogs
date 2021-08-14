@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-07-15 13:26+0400\n"
+"POT-Creation-Date: 2021-08-14 15:28+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -111,7 +111,7 @@ msgstr ""
 #: reverseimagesearch\reverseimagesearch.py:216
 #, docstring
 msgid ""
-"Reverse search image via WAIT\n"
+"Reverse search image via Anime Scene Search Engine\n"
 "\n"
 "        If search performed not in NSFW channel, NSFW results will be not shown"
 msgstr ""
