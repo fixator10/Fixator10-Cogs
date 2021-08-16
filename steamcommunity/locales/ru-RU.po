@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fixator10-cogs\n"
-"POT-Creation-Date: 2020-10-28 11:33+0400\n"
+"POT-Creation-Date: 2021-08-14 17:40+0400\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
@@ -15,17 +15,17 @@ msgstr ""
 "X-Crowdin-File-ID: 75\n"
 "Language: ru_RU\n"
 
-#: steamcommunity\steamcommunity.py:75 steamcommunity\steamcommunity.py:102
+#: steamcommunity\steamcommunity.py:80 steamcommunity\steamcommunity.py:108
 #, docstring
 msgid "SteamCommunity commands"
 msgstr "Команды SteamCommunity"
 
-#: steamcommunity\steamcommunity.py:108
+#: steamcommunity\steamcommunity.py:114
 #, docstring
 msgid "Set API key for Steam Web API"
 msgstr "Установить API ключ для Steam Web API"
 
-#: steamcommunity\steamcommunity.py:109
+#: steamcommunity\steamcommunity.py:115
 msgid "To get Steam Web API key:\n"
 "1. Login to your Steam account\n"
 "2. Visit [Register Steam Web API Key](https://steamcommunity.com/dev/apikey) page\n"
@@ -42,115 +42,115 @@ msgstr "Для получения ключа Steam Web API:\n"
 "5. Используйте `{}set api steam web <your_apikey>`\n"
 "Примечание: Эти ключи приватны и должны быть установлены только в приватном канале или личных сообщениях с ботом."
 
-#: steamcommunity\steamcommunity.py:126
+#: steamcommunity\steamcommunity.py:132
 #, docstring
 msgid "Get steam user's steamcommunity profile"
 msgstr "Вывести профиль пользователя Steam в Steamcommunity"
 
-#: steamcommunity\steamcommunity.py:137
+#: steamcommunity\steamcommunity.py:143
 msgid "In game: [{}](http://store.steampowered.com/app/{})"
 msgstr "В игре: [{}](http://store.steampowered.com/app/{})"
 
-#: steamcommunity\steamcommunity.py:141
+#: steamcommunity\steamcommunity.py:147
 msgid " on server {}"
 msgstr " на сервере {}"
 
-#: steamcommunity\steamcommunity.py:143
+#: steamcommunity\steamcommunity.py:149
 msgid "\n"
 "Family Shared by [{}]({})"
 msgstr "\n"
 "Через Family Sharing от [{}]({})"
 
-#: steamcommunity\steamcommunity.py:147
+#: steamcommunity\steamcommunity.py:153
 msgid "Real name"
 msgstr "Настоящее имя"
 
-#: steamcommunity\steamcommunity.py:148
+#: steamcommunity\steamcommunity.py:154
 msgid "Level"
 msgstr "Уровень"
 
-#: steamcommunity\steamcommunity.py:150
+#: steamcommunity\steamcommunity.py:156
 msgid "Country"
 msgstr "Страна"
 
-#: steamcommunity\steamcommunity.py:151
+#: steamcommunity\steamcommunity.py:157
 msgid "Visibility"
 msgstr "Видимость"
 
-#: steamcommunity\steamcommunity.py:154
+#: steamcommunity\steamcommunity.py:160
 msgid "Created at"
 msgstr "Создан"
 
-#: steamcommunity\steamcommunity.py:156
+#: steamcommunity\steamcommunity.py:162
 msgid "%d.%m.%Y %H:%M:%S"
 msgstr ""
 
-#: steamcommunity\steamcommunity.py:162
+#: steamcommunity\steamcommunity.py:168
 msgid "Days since last ban: {}"
 msgstr "Дней с последней блокировки: {}"
 
-#: steamcommunity\steamcommunity.py:164
+#: steamcommunity\steamcommunity.py:170
 msgid "Has one or more bans:"
 msgstr "Имеет одну или более блокировок:"
 
-#: steamcommunity\steamcommunity.py:166
+#: steamcommunity\steamcommunity.py:172
 msgid "No bans on record"
 msgstr "Нет известных блокировок"
 
-#: steamcommunity\steamcommunity.py:167
+#: steamcommunity\steamcommunity.py:173
 msgid "🛡 Bans"
 msgstr "🛡 Баны"
 
-#: steamcommunity\steamcommunity.py:168
+#: steamcommunity\steamcommunity.py:174
 msgid "Community ban"
 msgstr "Блокировка сообщества"
 
-#: steamcommunity\steamcommunity.py:170
+#: steamcommunity\steamcommunity.py:176
 msgid "Economy ban"
 msgstr "Блокировка экономики"
 
-#: steamcommunity\steamcommunity.py:174
+#: steamcommunity\steamcommunity.py:180
 msgid "VAC bans"
 msgstr "VAC блокировка"
 
-#: steamcommunity\steamcommunity.py:175
+#: steamcommunity\steamcommunity.py:181
 msgid "{} VAC bans"
 msgstr "{} блокировок VAC"
 
-#: steamcommunity\steamcommunity.py:178
+#: steamcommunity\steamcommunity.py:184
 msgid "Game bans"
 msgstr "Игровые блокировки"
 
-#: steamcommunity\steamcommunity.py:179
+#: steamcommunity\steamcommunity.py:185
 msgid "{} game bans"
 msgstr "{} игровых блокировок"
 
-#: steamcommunity\steamcommunity.py:182
+#: steamcommunity\steamcommunity.py:188
 msgid "Powered by Steam"
 msgstr ""
 
-#: steamcommunity\steamcommunity.py:184
+#: steamcommunity\steamcommunity.py:190
 msgid "Last seen on"
 msgstr "Был в сети"
 
-#: steamcommunity\steamcommunity.py:196
+#: steamcommunity\steamcommunity.py:202
 #, docstring
 msgid "Get status of steam services"
 msgstr "Получить состояние сервисов Steam"
 
-#: steamcommunity\steamcommunity.py:206
+#: steamcommunity\steamcommunity.py:217
 msgid "Unable to get data from steamstat.us: {} ({})"
 msgstr "Невозможно получить информацию от steamstat.us: {} ({})"
 
-#: steamcommunity\steamcommunity.py:213
+#: steamcommunity\steamcommunity.py:225
 msgid "Unable to get data from steamstat.us: {}"
 msgstr "Невозможно получить информацию от steamstat.us: {}"
 
-#: steamcommunity\steamcommunity.py:217
+#: steamcommunity\steamcommunity.py:233
 msgid "Steam Status"
 msgstr "Состояние Steam"
 
-#: steamcommunity\steamcommunity.py:222
+#: steamcommunity\steamcommunity.py:238
 msgid "**Online**: {}\n"
 "**In-game**: {}\n"
 "**Store**: {}\n"
@@ -166,11 +166,11 @@ msgstr "**В сети**: {}\n"
 "**Менеджеры подключения Steam**: {}\n"
 "**База данных SteamDB.info**: {}"
 
-#: steamcommunity\steamcommunity.py:240
+#: steamcommunity\steamcommunity.py:256
 msgid "Games"
 msgstr "Игры"
 
-#: steamcommunity\steamcommunity.py:241
+#: steamcommunity\steamcommunity.py:257
 msgid "**TF2 Game Coordinator**: {}\n"
 "**Dota 2 Game Coordinator**: {}\n"
 "**Underlords Game Coordinator**: {}\n"
@@ -188,126 +188,130 @@ msgstr "**Координатор игр TF2**: {}\n"
 "**Инвентарь CS:GO**: {}\n"
 "**Соревновательный планировщик CS:GO**: {}\n"
 
-#: steamcommunity\steamcommunity.py:273
+#: steamcommunity\steamcommunity.py:289
 #, docstring
 msgid "Get info about a gameserver"
 msgstr "Получить информацию о игровом сервере"
 
-#: steamcommunity\steamcommunity.py:283
+#: steamcommunity\steamcommunity.py:299
 msgid "The specified domain is not valid: {}"
 msgstr "Указаный домен неверен: {}"
 
-#: steamcommunity\steamcommunity.py:305
+#: steamcommunity\steamcommunity.py:321
 msgid "Could not fetch Server or the Server is not on the Steam masterlist"
 msgstr "Невозможно найти сервер или сервер не в мастерсписке Steam"
 
-#: steamcommunity\steamcommunity.py:310
+#: steamcommunity\steamcommunity.py:326
 msgid "An Error has been occurred: {}"
 msgstr "Произошла ошибка: {}"
 
-#: steamcommunity\steamcommunity.py:337
+#: steamcommunity\steamcommunity.py:353
 msgid "Game"
 msgstr "Игра"
 
-#: steamcommunity\steamcommunity.py:340
+#: steamcommunity\steamcommunity.py:356
 msgid "Gamemode"
 msgstr "Игровой режим"
 
-#: steamcommunity\steamcommunity.py:341
+#: steamcommunity\steamcommunity.py:357
 msgid "Server name"
 msgstr "Название сервера"
 
-#: steamcommunity\steamcommunity.py:342
+#: steamcommunity\steamcommunity.py:358
 msgid "Map"
 msgstr "Карта"
 
-#: steamcommunity\steamcommunity.py:344
+#: steamcommunity\steamcommunity.py:360
 msgid "Operating System"
 msgstr "Операционная система"
 
-#: steamcommunity\steamcommunity.py:345
+#: steamcommunity\steamcommunity.py:361
 msgid "Server type"
 msgstr "Тип сервера"
 
-#: steamcommunity\steamcommunity.py:346
+#: steamcommunity\steamcommunity.py:362
 msgid "Version"
 msgstr "Версия"
 
-#: steamcommunity\steamcommunity.py:349
+#: steamcommunity\steamcommunity.py:365
 msgid "Password"
 msgstr "Пароль"
 
-#: steamcommunity\steamcommunity.py:354 steamcommunity\steamcommunity.py:358
+#: steamcommunity\steamcommunity.py:370 steamcommunity\steamcommunity.py:374
 msgid "Players"
 msgstr "Игроков"
 
-#: steamcommunity\steamcommunity.py:355
+#: steamcommunity\steamcommunity.py:371
 msgid "{}/{}\n"
 "Bots: {}"
 msgstr "{}/{}\n"
 "Боты: {}"
 
-#: steamcommunity\steamuser.py:22
+#: steamcommunity\steamuser.py:27
 msgid "Private"
 msgstr "Скрытый"
 
-#: steamcommunity\steamuser.py:23
+#: steamcommunity\steamuser.py:28
 msgid "Friends only"
 msgstr "Только друзья"
 
-#: steamcommunity\steamuser.py:24 steamcommunity\steamuser.py:26
+#: steamcommunity\steamuser.py:29 steamcommunity\steamuser.py:31
 msgid "Public"
 msgstr "Открытый"
 
-#: steamcommunity\steamuser.py:25
+#: steamcommunity\steamuser.py:30
 msgid "Users only"
 msgstr "Только пользователи"
 
-#: steamcommunity\steamuser.py:80
+#: steamcommunity\steamuser.py:85
 msgid "ApiKey not set or incorrect."
 msgstr "API ключ не установлен или неверен."
 
 #: steamcommunity\steamuser.py:91
+msgid "{} is not a Steam Community domain name."
+msgstr ""
+
+#: steamcommunity\steamuser.py:101
 msgid "Incorrect SteamID32 provided."
 msgstr "Указан неверный SteamID32."
 
-#: steamcommunity\steamuser.py:97
+#: steamcommunity\steamuser.py:109
 msgid "Unable to resolve {} into SteamID. Check your input or try again later."
 msgstr "Невозможно преобразовать {} в SteamID. Проверьте ваш ввод или попробуйте позже."
 
-#: steamcommunity\steamuser.py:103
+#: steamcommunity\steamuser.py:115
 msgid "User with SteamID {} not found."
 msgstr "Пользователь с SteamID {} не найден."
 
-#: steamcommunity\steamuser.py:108
+#: steamcommunity\steamuser.py:121
 msgid "Unable to get profile for {} ({}). Check your input or try again later."
 msgstr "Не могу получить профиль для {} ({}). Проверьте вводные данные или попробуйте позднее."
 
-#: steamcommunity\steamuser.py:118
+#: steamcommunity\steamuser.py:131
 msgid "Offline"
 msgstr "Не в сети"
 
-#: steamcommunity\steamuser.py:119
+#: steamcommunity\steamuser.py:132
 msgid "Online"
 msgstr "В сети"
 
-#: steamcommunity\steamuser.py:120
+#: steamcommunity\steamuser.py:133
 msgid "Busy"
 msgstr "Не беспокоить"
 
-#: steamcommunity\steamuser.py:121
+#: steamcommunity\steamuser.py:134
 msgid "Away"
 msgstr "Нет на месте"
 
-#: steamcommunity\steamuser.py:122
+#: steamcommunity\steamuser.py:135
 msgid "Snooze"
 msgstr "Спит"
 
-#: steamcommunity\steamuser.py:123
+#: steamcommunity\steamuser.py:136
 msgid "Looking to trade"
 msgstr "Хочет обменяться"
 
-#: steamcommunity\steamuser.py:124
+#: steamcommunity\steamuser.py:137
 msgid "Looking to play"
 msgstr "Хочет играть"
 
