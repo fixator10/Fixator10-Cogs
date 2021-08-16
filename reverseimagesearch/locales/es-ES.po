@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fixator10-cogs\n"
-"POT-Creation-Date: 2021-07-15 13:26+0400\n"
+"POT-Creation-Date: 2021-08-14 15:28+0400\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "MIME-Version: 1.0\n"
@@ -109,7 +109,7 @@ msgstr ""
 
 #: reverseimagesearch\reverseimagesearch.py:216
 #, docstring
-msgid "Reverse search image via WAIT\n\n"
+msgid "Reverse search image via Anime Scene Search Engine\n\n"
 "        If search performed not in NSFW channel, NSFW results will be not shown"
 msgstr ""
 
