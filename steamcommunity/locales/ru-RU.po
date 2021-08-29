@@ -269,7 +269,7 @@ msgstr "API ключ не установлен или неверен."
 
 #: steamcommunity\steamuser.py:91
 msgid "{} is not a Steam Community domain name."
-msgstr ""
+msgstr "{} не является доменом Сообщества Steam."
 
 #: steamcommunity\steamuser.py:101
 msgid "Incorrect SteamID32 provided."
