@@ -119,7 +119,8 @@ msgstr "Команда `{}` пока еще не использовалась"
 #, docstring
 msgid "Reverse search image via Anime Scene Search Engine\n\n"
 "        If search performed not in NSFW channel, NSFW results will be not shown"
-msgstr ""
+msgstr "Поиск по изображению через Anime Scene Search Engine\n\n"
+"        Если поиск производится не в NSFW канале, NSFW результаты не будут показаны"
 
 #: reverseimagesearch\reverseimagesearch.py:243
 msgid "Similarity: {:.2f}%"

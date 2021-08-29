@@ -93,19 +93,19 @@ msgstr "Расширенный лимит пользовательских ст�
 
 #: datautils\common_variables.py:31
 msgid "Threads"
-msgstr "Треды"
+msgstr "Ветки"
 
 #: datautils\common_variables.py:32
 msgid "Private threads"
-msgstr "Приватные треды"
+msgstr "Приватные ветки"
 
 #: datautils\common_variables.py:33
 msgid "3 day thread archive"
-msgstr "Архив треда на 3 дня"
+msgstr "3 дня до архивации веток"
 
 #: datautils\common_variables.py:34
 msgid "7 day thread archive"
-msgstr "Архив треда на 7 дней"
+msgstr "7 дней до архивации веток"
 
 #: datautils\common_variables.py:36
 msgid "Preview enabled (\"Lurkable\")"
@@ -153,7 +153,7 @@ msgstr "Голосовые каналы"
 
 #: datautils\common_variables.py:72
 msgid "Stage channels"
-msgstr "Каналы-сцена"
+msgstr "Каналы-трибуны"
 
 #: datautils\datautils.py:21
 #, docstring
@@ -549,7 +549,7 @@ msgstr "{}кб/с"
 
 #: datautils\datautils.py:487
 msgid "Requesting to speak"
-msgstr "Запросы на разговор"
+msgstr "Запросов на вступление"
 
 #: datautils\datautils.py:488
 msgid "{} users"
