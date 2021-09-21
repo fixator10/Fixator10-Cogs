@@ -52,42 +52,11 @@ async def send_preview(
 TRACEMOE_MENU_CONTROLS = {**DEFAULT_CONTROLS, "\N{FILM FRAMES}": send_preview}
 
 
-def nsfwcheck():
-    """
-    Custom check that hide all commands used with it in the help formatter
-    and block usage of them if used in a non-nsfw channel.
-    """
-    # original code is by preda:
-    # https://github.com/PredaaA/predacogs/blob/9bd61dc494010829d4fecd9d550339aa58a412d3/nsfw/core.py#L206
-
-    async def predicate(ctx: commands.Context):
-        if (
-            not ctx.guild
-            or ctx.channel.is_nsfw()
-            or ctx.invoked_with == "help"
-            or ctx.invoked_subcommand
-        ):
-            return True
-        if ctx.invoked_with not in [k for k in ctx.bot.all_commands]:
-            # For this weird issue with last version of discord.py (1.2.3) with non-existing commands.
-            # So this check is only for dev version of Red.
-            # https://discordapp.com/channels/133049272517001216/133251234164375552/598149067268292648 for reference.
-            # It probably need to check in d.py to see what is happening, looks like an issue somewhere.
-            # It will probably removed in the future, it's a temporary check.
-            return False
-        try:
-            await ctx.send(chat.error(_("You can't use this command in a non-NSFW channel!")))
-        finally:
-            return False
-
-    return commands.check(predicate)
-
-
 @cog_i18n(_)
 class ReverseImageSearch(commands.Cog):
     """(Anime) Reverse Image Search"""
 
-    __version__ = "2.1.12"
+    __version__ = "2.1.13"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -111,7 +80,7 @@ class ReverseImageSearch(commands.Cog):
 
     @commands.group(invoke_without_command=True)
     @commands.cooldown(1, 30, commands.BucketType.user)
-    @nsfwcheck()
+    @commands.is_nsfw()
     async def saucenao(self, ctx, image: ImageFinder = None):
         """[NSFW] Reverse search image via SauceNAO"""
         if image is None:

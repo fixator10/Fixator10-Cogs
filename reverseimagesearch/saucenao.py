@@ -4,7 +4,6 @@ from types import SimpleNamespace
 from aiohttp import ClientResponseError
 from dateutil.parser import parse
 from redbot.core.i18n import Translator
-from yarl import URL
 
 try:
     from redbot import json  # support of Draper's branch
@@ -19,9 +18,10 @@ INDEX_SERVICENAME_REGEX = re.compile(r"^Index #\d*: (?P<service>.*) - [^ ]*\.jpg
 
 class SauceNAOEntry:
     def __init__(self, result: dict):
+        # TODO: Check fields, saucenao seems to be changed API
         header = result.get("header", {})
         self.similarity = header.get("similarity")
-        self.thumbnail = URL(header.get("image"))
+        self.thumbnail = header.get("thumbnail")
         self.index = SimpleNamespace()
         self.index.id = header.get("index_id")
         self.index.name = header.get("index_name")
