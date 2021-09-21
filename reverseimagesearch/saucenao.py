@@ -18,7 +18,6 @@ INDEX_SERVICENAME_REGEX = re.compile(r"^Index #\d*: (?P<service>.*) - [^ ]*\.jpg
 
 class SauceNAOEntry:
     def __init__(self, result: dict):
-        # TODO: Check fields, saucenao seems to be changed API
         header = result.get("header", {})
         self.similarity = header.get("similarity")
         self.thumbnail = header.get("thumbnail")
