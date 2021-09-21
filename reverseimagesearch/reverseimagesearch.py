@@ -56,7 +56,7 @@ TRACEMOE_MENU_CONTROLS = {**DEFAULT_CONTROLS, "\N{FILM FRAMES}": send_preview}
 class ReverseImageSearch(commands.Cog):
     """(Anime) Reverse Image Search"""
 
-    __version__ = "2.1.13"
+    __version__ = "2.1.14"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -130,7 +130,7 @@ class ReverseImageSearch(commands.Cog):
                 text=_("Via SauceNAO • Page {}/{}").format(page, search.results_returned),
                 icon_url="https://www.google.com/s2/favicons?domain=saucenao.com",
             )
-            e.set_thumbnail(url=entry.image)
+            e.set_thumbnail(url=entry.thumbnail)
             embeds.append(e)
         if embeds:
             await menu(ctx, embeds, DEFAULT_CONTROLS)
