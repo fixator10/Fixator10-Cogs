@@ -40,6 +40,16 @@ class DataBase(MixinMeta, metaclass=CompositeMetaClass):
 
     @levelerset.command()
     @levelerset_concurrency()
+    async def reconnect(self, ctx):
+        """Attempt to reconnect to MongoDB without changing settings"""
+        message = await ctx.send("Reconnecting...")
+        client = await self._connect_to_mongo()
+        if not client:
+            return await message.edit(content="Failed to connect...")
+        await message.edit(content="Reconnected.")
+
+    @levelerset.command()
+    @levelerset_concurrency()
     async def host(self, ctx, host: str = "localhost"):
         """Set the MongoDB server host."""
         await self.config.custom("MONGODB").host.set(host)
