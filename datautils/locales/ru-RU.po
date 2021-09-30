@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fixator10-cogs\n"
-"POT-Creation-Date: 2021-06-28 13:07+0400\n"
+"POT-Creation-Date: 2021-09-25 20:03+0400\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
@@ -96,62 +96,82 @@ msgid "Threads"
 msgstr "Ветки"
 
 #: datautils\common_variables.py:32
+msgid "Threads (testing)"
+msgstr ""
+
+#: datautils\common_variables.py:33
 msgid "Private threads"
 msgstr "Приватные ветки"
 
-#: datautils\common_variables.py:33
+#: datautils\common_variables.py:34
 msgid "3 day thread archive"
 msgstr "3 дня до архивации веток"
 
-#: datautils\common_variables.py:34
+#: datautils\common_variables.py:35
 msgid "7 day thread archive"
 msgstr "7 дней до архивации веток"
 
-#: datautils\common_variables.py:36
+#: datautils\common_variables.py:37
 msgid "Preview enabled (\"Lurkable\")"
 msgstr "Предпросмотр включён"
 
-#: datautils\common_variables.py:37
+#: datautils\common_variables.py:38
 msgid "Member verification gate enabled"
 msgstr "Включена проверка возраста"
 
-#: datautils\common_variables.py:38
+#: datautils\common_variables.py:39
 msgid "Member list disabled"
 msgstr "Список участников отключён"
 
-#: datautils\common_variables.py:42 datautils\common_variables.py:45
-msgid "Shards connections to the guild to different nodes that relay information between each other."
-msgstr ""
+#: datautils\common_variables.py:40
+msgid "Permanent level 3 boost"
+msgstr "Постоянный буст 3 уровня"
 
-#: datautils\common_variables.py:51
+#: datautils\common_variables.py:41
+msgid "Enabled new thread permissions"
+msgstr "Включены новые права веток"
+
+#: datautils\common_variables.py:42
+msgid "Role icons"
+msgstr "Значки пользовательских ролей"
+
+#: datautils\common_variables.py:43
+msgid "Cannot be in Server Discovery"
+msgstr "Не может быть в \"публичных серверах\""
+
+#: datautils\common_variables.py:47 datautils\common_variables.py:50
+msgid "Shards connections to the guild to different nodes that relay information between each other."
+msgstr "Делит соединения к серверу на разные узлы, передающие информацию между собой."
+
+#: datautils\common_variables.py:56
 msgid "Playing"
 msgstr "Играет в"
 
-#: datautils\common_variables.py:52
+#: datautils\common_variables.py:57
 msgid "Watching"
 msgstr "Смотрит"
 
-#: datautils\common_variables.py:53
+#: datautils\common_variables.py:58
 msgid "Listening to"
 msgstr "Слушает"
 
-#: datautils\common_variables.py:54
+#: datautils\common_variables.py:59
 msgid "Competing in"
 msgstr "Соревнуется в"
 
-#: datautils\common_variables.py:69
+#: datautils\common_variables.py:74
 msgid "Categories"
 msgstr "Категории"
 
-#: datautils\common_variables.py:70
+#: datautils\common_variables.py:75
 msgid "Text channels"
 msgstr "Текстовые каналы"
 
-#: datautils\common_variables.py:71
+#: datautils\common_variables.py:76
 msgid "Voice channels"
 msgstr "Голосовые каналы"
 
-#: datautils\common_variables.py:72
+#: datautils\common_variables.py:77
 msgid "Stage channels"
 msgstr "Каналы-трибуны"
 
