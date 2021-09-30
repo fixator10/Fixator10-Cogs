@@ -38,7 +38,7 @@ async def role_icons_feature(ctx):
 class PersonalRoles(commands.Cog):
     """Assign and edit personal roles"""
 
-    __version__ = "2.2.0"
+    __version__ = "2.2.1"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -276,7 +276,7 @@ class PersonalRoles(commands.Cog):
                 await ctx.send_help()
                 return
         try:
-            if isinstance(emoji, discord.Emoji):
+            if isinstance(emoji, (discord.Emoji, discord.PartialEmoji)):
                 await edit_role_icon(
                     self.bot,
                     role,
