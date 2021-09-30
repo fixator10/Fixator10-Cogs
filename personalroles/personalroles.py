@@ -307,7 +307,7 @@ class PersonalRoles(commands.Cog):
 
     @icon.command(name="image", aliases=["url"])
     async def icon_image(self, ctx, *, url: str = None):
-        """Change icon of personal role by using image"""
+        """Change icon of personal role using image"""
         role = await self.config.member(ctx.author).role()
         role = ctx.guild.get_role(role)
         if not (ctx.message.attachments or url):
