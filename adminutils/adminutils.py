@@ -38,11 +38,23 @@ class AdminUtils(commands.Cog):
     async def red_delete_data_for_user(self, **kwargs):
         return
 
+    @staticmethod
+    def check_channel_permission(ctx: commands.Context, channel: discord.TextChannel) -> bool:
+        """
+        Check user's permission in a channel, to be sure he can edit it.
+        """
+        mc = channel.permissions_for(ctx.author).manage_channels
+        if mc:
+            return True
+        raise commands.UserFeedbackCheckFailure("You are not allowed to edit this channel.")
+
     @commands.command(name="prune")
     @commands.guild_only()
     @checks.admin_or_permissions(kick_members=True)
     @checks.bot_has_permissions(kick_members=True)
-    async def cleanup_users(self, ctx, days: Optional[int] = 1, *roles: discord.Role):
+    async def cleanup_users(
+        self, ctx: commands.Context, days: Optional[int] = 1, *roles: discord.Role
+    ):
         """Cleanup inactive server members"""
         if days > 30:
             await ctx.send(
@@ -93,7 +105,7 @@ class AdminUtils(commands.Cog):
     @commands.guild_only()
     @checks.admin_or_permissions(manage_guild=True)
     @commands.bot_has_permissions(manage_guild=True)
-    async def restartvoice(self, ctx):
+    async def restartvoice(self, ctx: commands.Context):
         """Change server's voice region to random and back
 
         Useful to reinitate all voice connections"""
@@ -118,7 +130,10 @@ class AdminUtils(commands.Cog):
     @checks.admin_or_permissions(move_members=True)
     @commands.bot_has_guild_permissions(move_members=True)
     async def massmove(
-        self, ctx, from_channel: discord.VoiceChannel, to_channel: discord.VoiceChannel = None
+        self,
+        ctx: commands.Context,
+        from_channel: discord.VoiceChannel,
+        to_channel: discord.VoiceChannel = None,
     ):
         """Move all members from one voice channel to another
 
@@ -150,7 +165,7 @@ class AdminUtils(commands.Cog):
     @commands.guild_only()
     @checks.admin_or_permissions(manage_emojis=True)
     @commands.bot_has_permissions(manage_emojis=True)
-    async def emoji(self, ctx):
+    async def emoji(self, ctx: commands.Context):
         """Manage emoji"""
         pass
 
@@ -190,7 +205,9 @@ class AdminUtils(commands.Cog):
             await ctx.tick()
 
     @emoji.command(name="message", aliases=["steal"])
-    async def emote_steal(self, ctx, name: str, message_id: discord.Message, *roles: discord.Role):
+    async def emote_steal(
+        self, ctx: commands.Context, name: str, message_id: discord.Message, *roles: discord.Role
+    ):
         """
         Add an emoji from a specified message
         Use double quotes if role name has spaces
@@ -199,7 +216,7 @@ class AdminUtils(commands.Cog):
             `[p]emoji message Example 162379234070467641`
             `[p]emoji message RoleBased 162379234070467641 EmojiRole`
         """
-        # TrusyJaid NotSoBot converter
+        # TrustyJaid NotSoBot converter
         # https://github.com/TrustyJAID/Trusty-cogs/blob/a3e931bc6227645007b37c3f4f524c9fc9859686/notsobot/converter.py#L30-L36
         emoji = EMOJI_RE.search(message_id.content)
         if not emoji:
@@ -235,7 +252,9 @@ class AdminUtils(commands.Cog):
             await ctx.send(chat.error(_("An error occurred on adding an emoji: {}").format(e)))
 
     @emoji.command(name="rename")
-    async def emoji_rename(self, ctx, emoji: discord.Emoji, name: str, *roles: discord.Role):
+    async def emoji_rename(
+        self, ctx: commands.Context, emoji: discord.Emoji, name: str, *roles: discord.Role
+    ):
         """Rename emoji and restrict to certain roles
         Only this roles will be able to use this emoji
 
@@ -264,10 +283,64 @@ class AdminUtils(commands.Cog):
         await ctx.tick()
 
     @emoji.command(name="remove")
-    async def emoji_remove(self, ctx, *, emoji: discord.Emoji):
+    async def emoji_remove(self, ctx: commands.Context, *, emoji: discord.Emoji):
         """Remove emoji from server"""
         if emoji.guild != ctx.guild:
             await ctx.send_help()
             return
         await emoji.delete(reason=get_audit_reason(ctx.author))
+        await ctx.tick()
+
+    @commands.group()
+    @commands.guild_only()
+    @checks.admin_or_permissions(manage_channels=True)
+    @commands.bot_has_permissions(manage_channels=True)
+    async def channel(self, ctx: commands.Context):
+        """Manage channels"""
+        pass
+
+    @channel.command(name="create", aliases=["add"])
+    async def channel_create(
+        self,
+        ctx: commands.Context,
+        category: Optional[discord.CategoryChannel] = None,
+        *,
+        name: str,
+    ):
+        """Create a channel
+
+        You can create the channel under a category if passed, else it is created under no category
+        Use double quotes if category has spaces
+
+        Examples:
+            `[p]channel add "The Zoo" awesome-channel` will create under the "The Zoo" category.
+            `[p]channel add awesome-channel` will create under no category, at the top.
+        """
+        await ctx.guild.create_text_channel(
+            name, category=category, reason=get_audit_reason(ctx.author)
+        )
+        await ctx.tick()
+
+    @channel.command(name="rename")
+    async def channel_rename(self, ctx: commands.Context, channel: discord.TextChannel, *, name: str):
+        """Rename a channel
+
+        Use double quotes if channel has spaces
+
+        Examples:
+            `[p]channel rename channel new-channel-name`
+        """
+        self.check_channel_permission(ctx, channel)
+        await channel.edit(name=name, reason=get_audit_reason(ctx.author))
+        await ctx.tick()
+
+    @channel.command(name="delete", aliases=["remove"])
+    async def channel_delete(self, ctx: commands.Context, *, channel: discord.TextChannel):
+        """Remove a channel from server
+
+        Example:
+            `[p]channel delete channel`
+        """
+        self.check_channel_permission(ctx, channel)
+        await channel.delete(reason=get_audit_reason(ctx.author))
         await ctx.tick()
