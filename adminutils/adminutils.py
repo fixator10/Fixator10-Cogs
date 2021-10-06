@@ -322,7 +322,9 @@ class AdminUtils(commands.Cog):
         await ctx.tick()
 
     @channel.command(name="rename")
-    async def channel_rename(self, ctx: commands.Context, channel: discord.TextChannel, *, name: str):
+    async def channel_rename(
+        self, ctx: commands.Context, channel: discord.TextChannel, *, name: str
+    ):
         """Rename a channel
 
         Use double quotes if channel has spaces
