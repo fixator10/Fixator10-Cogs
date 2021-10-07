@@ -11,7 +11,7 @@ from warnings import filterwarnings
 import aiohttp
 import discord
 import valve.source.a2s
-from redbot.core import checks, commands
+from redbot.core import commands
 from redbot.core.data_manager import bundled_data_path
 from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils import chat_formatting as chat
@@ -79,7 +79,7 @@ filterwarnings("ignore", category=FutureWarning, module=r"valve.")
 class SteamCommunity(commands.Cog):
     """SteamCommunity commands"""
 
-    __version__ = "2.1.15"
+    __version__ = "2.1.16"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -109,7 +109,7 @@ class SteamCommunity(commands.Cog):
         pass
 
     @steamcommunity.command()
-    @checks.is_owner()
+    @commands.is_owner()
     async def apikey(self, ctx):
         """Set API key for Steam Web API"""
         message = _(

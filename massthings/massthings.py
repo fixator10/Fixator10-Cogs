@@ -3,7 +3,7 @@ from collections import Counter
 from typing import Union
 
 import discord
-from redbot.core import checks, commands, modlog
+from redbot.core import commands, modlog
 from redbot.core.config import Config
 from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils import AsyncIter
@@ -22,7 +22,7 @@ class MassThings(commands.Cog, command_attrs={"hidden": True}):
     May be against Discord API terms. Use with caution.
     Cog author is not responsible for any aftermath of using this cog."""
 
-    __version__ = "1.1.0"
+    __version__ = "1.1.1"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -54,7 +54,7 @@ class MassThings(commands.Cog, command_attrs={"hidden": True}):
     @commands.command()
     @commands.guild_only()
     @commands.cooldown(1, 300, commands.BucketType.guild)
-    @checks.admin_or_permissions(manage_nicknames=True)
+    @commands.admin_or_permissions(manage_nicknames=True)
     @commands.bot_has_permissions(manage_nicknames=True)
     async def massnick(self, ctx, *, nickname: str):
         """Mass nicknames everyone on the server"""
@@ -78,7 +78,7 @@ class MassThings(commands.Cog, command_attrs={"hidden": True}):
     @commands.command()
     @commands.guild_only()
     @commands.cooldown(1, 300, commands.BucketType.guild)
-    @checks.admin_or_permissions(manage_nicknames=True)
+    @commands.admin_or_permissions(manage_nicknames=True)
     @commands.bot_has_permissions(manage_nicknames=True)
     async def resetnicks(self, ctx):
         """Resets nicknames on the server"""
@@ -101,7 +101,7 @@ class MassThings(commands.Cog, command_attrs={"hidden": True}):
     @commands.command(aliases=["copyemojis"])
     @commands.guild_only()
     @commands.cooldown(1, 300, commands.BucketType.guild)
-    @checks.admin_or_permissions(manage_emojis=True)
+    @commands.admin_or_permissions(manage_emojis=True)
     @commands.bot_has_permissions(manage_emojis=True)
     @commands.max_concurrency(1, commands.BucketType.guild)
     async def massstealemoji(
@@ -163,7 +163,7 @@ class MassThings(commands.Cog, command_attrs={"hidden": True}):
     @commands.group()
     @commands.guild_only()
     @commands.cooldown(1, 300, commands.BucketType.guild)
-    @checks.admin_or_permissions(ban_members=True)
+    @commands.admin_or_permissions(ban_members=True)
     @commands.bot_has_permissions(ban_members=True)
     @commands.max_concurrency(1, commands.BucketType.guild)
     async def massunban(self, ctx: commands.Context, banned_by: discord.Member):
