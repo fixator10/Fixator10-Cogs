@@ -1,7 +1,7 @@
 import re
 from asyncio import TimeoutError as AsyncTimeoutError
 from random import choice
-from typing import Optional
+from typing import Optional, Union
 
 import aiohttp
 import discord
@@ -39,14 +39,21 @@ class AdminUtils(commands.Cog):
         return
 
     @staticmethod
-    def check_channel_permission(ctx: commands.Context, channel: discord.TextChannel) -> bool:
+    def check_channel_permission(
+        ctx: commands.Context, channel_or_category: Union[discord.TextChannel]
+    ) -> bool:
         """
         Check user's permission in a channel, to be sure he can edit it.
         """
-        mc = channel.permissions_for(ctx.author).manage_channels
+        mc = channel_or_category.permissions_for(ctx.author).manage_channels
         if mc:
             return True
-        raise commands.UserFeedbackCheckFailure("You are not allowed to edit this channel.")
+        reason = (
+            "You are not allowed to edit this channel."
+            if not isinstance(channel_or_category, discord.CategoryChannel)
+            else "You are not allowed to edit in this category."
+        )
+        raise commands.UserFeedbackCheckFailure(reason)
 
     @commands.command(name="prune")
     @commands.guild_only()
@@ -299,16 +306,18 @@ class AdminUtils(commands.Cog):
         """Manage channels"""
         pass
 
-    @channel.command(name="create", aliases=["add"])
+    @channel.command(name="create", aliases=["add"], usage="[channel_type] [category] <name>")
     async def channel_create(
         self,
         ctx: commands.Context,
+        channel_type: Optional[str] = "text",
         category: Optional[discord.CategoryChannel] = None,
         *,
         name: str,
     ):
         """Create a channel
 
+        The type can be `voice` for a voice channel and `text` for a text channel.
         You can create the channel under a category if passed, else it is created under no category
         Use double quotes if category has spaces
 
@@ -316,9 +325,19 @@ class AdminUtils(commands.Cog):
             `[p]channel add "The Zoo" awesome-channel` will create under the "The Zoo" category.
             `[p]channel add awesome-channel` will create under no category, at the top.
         """
-        await ctx.guild.create_text_channel(
-            name, category=category, reason=get_audit_reason(ctx.author)
-        )
+        self.check_channel_permission(category)
+        if channel_type not in ("text", "voice"):
+            raise commands.UserFeedbackCheckFailure(
+                "The channel's type can only be `voice` or `text`."
+            )
+        if channel_type == "text":
+            await ctx.guild.create_text_channel(
+                name, category=category, reason=get_audit_reason(ctx.author)
+            )
+        else:
+            await ctx.guild.create_voice_channel(
+                name, category=category, reason=get_audit_reason(ctx.author)
+            )
         await ctx.tick()
 
     @channel.command(name="rename")
