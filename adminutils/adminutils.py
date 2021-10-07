@@ -5,7 +5,7 @@ from typing import Optional
 
 import aiohttp
 import discord
-from redbot.core import checks, commands
+from redbot.core import commands
 from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils import chat_formatting as chat
 from redbot.core.utils.mod import get_audit_reason
@@ -25,7 +25,7 @@ EMOJI_RE = re.compile(r"(<(a)?:[a-zA-Z0-9_]+:([0-9]+)>)")
 class AdminUtils(commands.Cog):
     """Useful commands for server administrators."""
 
-    __version__ = "2.5.6"
+    __version__ = "2.5.7"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -40,8 +40,8 @@ class AdminUtils(commands.Cog):
 
     @commands.command(name="prune")
     @commands.guild_only()
-    @checks.admin_or_permissions(kick_members=True)
-    @checks.bot_has_permissions(kick_members=True)
+    @commands.admin_or_permissions(kick_members=True)
+    @commands.bot_has_permissions(kick_members=True)
     async def cleanup_users(self, ctx, days: Optional[int] = 1, *roles: discord.Role):
         """Cleanup inactive server members"""
         if days > 30:
@@ -91,7 +91,7 @@ class AdminUtils(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    @checks.admin_or_permissions(manage_guild=True)
+    @commands.admin_or_permissions(manage_guild=True)
     @commands.bot_has_permissions(manage_guild=True)
     async def restartvoice(self, ctx):
         """Change server's voice region to random and back
@@ -115,7 +115,7 @@ class AdminUtils(commands.Cog):
     @commands.command()
     @commands.guild_only()
     @commands.cooldown(1, 60, commands.BucketType.guild)
-    @checks.admin_or_permissions(move_members=True)
+    @commands.admin_or_permissions(move_members=True)
     @commands.bot_has_guild_permissions(move_members=True)
     async def massmove(
         self, ctx, from_channel: discord.VoiceChannel, to_channel: discord.VoiceChannel = None
@@ -148,7 +148,7 @@ class AdminUtils(commands.Cog):
 
     @commands.group()
     @commands.guild_only()
-    @checks.admin_or_permissions(manage_emojis=True)
+    @commands.admin_or_permissions(manage_emojis=True)
     @commands.bot_has_permissions(manage_emojis=True)
     async def emoji(self, ctx):
         """Manage emoji"""
