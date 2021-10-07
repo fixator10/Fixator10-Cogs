@@ -4,7 +4,7 @@ from pprint import pformat
 from typing import Union
 
 import discord
-from redbot.core import checks, commands
+from redbot.core import commands
 from redbot.core.config import Config
 from redbot.core.i18n import Translator, cog_i18n, set_contextual_locales_from_guild
 from redbot.core.utils import AsyncIter
@@ -40,7 +40,7 @@ _ = Translator("MessagesLog", __file__)
 class MessagesLog(commands.Cog):
     """Log deleted and redacted messages to the defined channel"""
 
-    __version__ = "2.3.10"
+    __version__ = "2.3.11"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -81,7 +81,7 @@ class MessagesLog(commands.Cog):
         return
 
     @commands.group(autohelp=True, aliases=["messagelog", "messageslogs", "messagelogs"])
-    @checks.admin_or_permissions(manage_guild=True)
+    @commands.admin_or_permissions(manage_guild=True)
     async def messageslog(self, ctx):
         """Manage message logging"""
         pass
