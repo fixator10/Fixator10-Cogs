@@ -1,5 +1,5 @@
 import discord
-from redbot.core import checks, commands
+from redbot.core import commands
 from redbot.core.config import Config
 from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils import chat_formatting as chat
@@ -20,7 +20,7 @@ _ = Translator("GeneralChannel", __file__)
 class GeneralChannel(commands.Cog):
     """Allow users to manage #general channel's name and topic"""
 
-    __version__ = "2.0.2"
+    __version__ = "2.0.3"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -39,7 +39,7 @@ class GeneralChannel(commands.Cog):
         pass
 
     @gc.group()
-    @checks.admin_or_permissions(manage_channels=True)
+    @commands.admin_or_permissions(manage_channels=True)
     async def set(self, ctx):
         """Set general channel"""
         pass

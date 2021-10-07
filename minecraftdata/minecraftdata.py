@@ -8,7 +8,7 @@ import aiohttp
 import discord
 import tabulate
 from mcstatus import MinecraftServer
-from redbot.core import checks, commands
+from redbot.core import commands
 from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils import chat_formatting as chat
 from redbot.core.utils.menus import DEFAULT_CONTROLS, menu
@@ -37,7 +37,7 @@ _ = T_
 class MinecraftData(commands.Cog):
     """Minecraft-Related data"""
 
-    __version__ = "2.0.8"
+    __version__ = "2.0.9"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -56,7 +56,7 @@ class MinecraftData(commands.Cog):
         pass
 
     @minecraft.command(usage="<player> [overlay layer=True]")
-    @checks.bot_has_permissions(embed_links=True)
+    @commands.bot_has_permissions(embed_links=True)
     async def skin(self, ctx, player: MCPlayer, overlay: bool = True):
         """Get minecraft skin by nickname"""
         uuid = player.uuid
@@ -108,7 +108,7 @@ class MinecraftData(commands.Cog):
         body_file.close()
 
     @minecraft.group(invoke_without_command=True)
-    @checks.bot_has_permissions(embed_links=True)
+    @commands.bot_has_permissions(embed_links=True)
     async def cape(self, ctx, player: MCPlayer):
         """Get Minecraft capes by nickname"""
         try:
@@ -265,7 +265,7 @@ class MinecraftData(commands.Cog):
         cape.close()
 
     @minecraft.command(usage="<server IP>[:port]")
-    @checks.bot_has_permissions(embed_links=True)
+    @commands.bot_has_permissions(embed_links=True)
     @commands.cooldown(1, 30, commands.BucketType.user)
     async def server(self, ctx, server_ip: str):
         """Get info about server"""
@@ -342,7 +342,7 @@ class MinecraftData(commands.Cog):
             icon_file.close()
 
     @minecraft.command()
-    @checks.bot_has_permissions(embed_links=True)
+    @commands.bot_has_permissions(embed_links=True)
     async def status(self, ctx):
         """Get status of minecraft services"""
         try:

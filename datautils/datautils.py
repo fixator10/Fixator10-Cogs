@@ -5,7 +5,7 @@ from typing import Optional, Union
 
 import discord
 import tabulate
-from redbot.core import checks, commands
+from redbot.core import commands
 from redbot.core.i18n import cog_i18n
 from redbot.core.utils import chat_formatting as chat
 from redbot.core.utils.predicates import ReactionPredicate
@@ -20,7 +20,7 @@ from .utils import _, bool_emojify
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.6.6"
+    __version__ = "2.6.7"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -32,7 +32,7 @@ class DataUtils(commands.Cog):
 
     @commands.command(aliases=["fetchuser"], hidden=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
-    @checks.bot_has_permissions(embed_links=True)
+    @commands.bot_has_permissions(embed_links=True)
     async def getuserinfo(self, ctx, user_id: int):
         """Get info about any Discord's user by ID"""
         try:
@@ -82,7 +82,7 @@ class DataUtils(commands.Cog):
         await ctx.send(embed=em)
 
     @commands.command(aliases=["widgetinfo"], hidden=True)
-    @checks.bot_has_permissions(embed_links=True)
+    @commands.bot_has_permissions(embed_links=True)
     async def fetchwidget(self, ctx, *, server_id: int):
         """Get data about server by ID via server's widget"""
         try:
@@ -139,7 +139,7 @@ class DataUtils(commands.Cog):
 
     @commands.command(aliases=["memberinfo", "membinfo"])
     @commands.guild_only()
-    @checks.bot_has_permissions(embed_links=True)
+    @commands.bot_has_permissions(embed_links=True)
     async def uinfo(self, ctx, *, member: discord.Member = None):
         """Information on a user"""
         if member is None:
@@ -213,7 +213,7 @@ class DataUtils(commands.Cog):
 
     @commands.command(aliases=["activity"])
     @commands.guild_only()
-    @checks.mod_or_permissions(embed_links=True)
+    @commands.mod_or_permissions(embed_links=True)
     async def activities(self, ctx, *, member: discord.Member = None):
         """List user's activities"""
         if member is None:
@@ -225,7 +225,7 @@ class DataUtils(commands.Cog):
 
     @commands.command(aliases=["servinfo", "serv", "sv"])
     @commands.guild_only()
-    @checks.bot_has_permissions(embed_links=True)
+    @commands.bot_has_permissions(embed_links=True)
     async def sinfo(self, ctx, *, server: commands.GuildConverter = None):
         """Shows server information"""
         if server is None or not await self.bot.is_owner(ctx.author):
@@ -366,8 +366,8 @@ class DataUtils(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    @checks.mod_or_permissions(ban_members=True)
-    @checks.bot_has_permissions(embed_links=True)
+    @commands.mod_or_permissions(ban_members=True)
+    @commands.bot_has_permissions(embed_links=True)
     async def bans(self, ctx: commands.Context, *, server: commands.GuildConverter = None):
         """Get bans from server by id"""
         if server is None or not await self.bot.is_owner(ctx.author):
@@ -384,8 +384,8 @@ class DataUtils(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    @checks.admin_or_permissions(manage_guild=True)
-    @checks.bot_has_permissions(embed_links=True)
+    @commands.admin_or_permissions(manage_guild=True)
+    @commands.bot_has_permissions(embed_links=True)
     async def invites(self, ctx: commands.Context, *, server: commands.GuildConverter = None):
         """Get invites from server by id"""
         if server is None or not await self.bot.is_owner(ctx.author):
@@ -404,7 +404,7 @@ class DataUtils(commands.Cog):
 
     @commands.command(aliases=["chaninfo", "channelinfo"])
     @commands.guild_only()
-    @checks.bot_has_permissions(embed_links=True)
+    @commands.bot_has_permissions(embed_links=True)
     async def cinfo(
         self,
         ctx,
@@ -494,7 +494,7 @@ class DataUtils(commands.Cog):
     @commands.command(aliases=["channellist", "listchannels"])
     @commands.guild_only()
     @commands.admin_or_permissions(manage_channels=True)
-    @checks.bot_has_permissions(embed_links=True)
+    @commands.bot_has_permissions(embed_links=True)
     async def channels(self, ctx, *, server: commands.GuildConverter = None):
         """Get all channels on server"""
         # TODO: Use dpy menus for that
@@ -508,7 +508,7 @@ class DataUtils(commands.Cog):
 
     @commands.command(aliases=["roleinfo"])
     @commands.guild_only()
-    @checks.bot_has_permissions(embed_links=True)
+    @commands.bot_has_permissions(embed_links=True)
     async def rinfo(self, ctx, *, role: discord.Role):
         """Get info about role"""
         em = discord.Embed(
@@ -581,7 +581,7 @@ class DataUtils(commands.Cog):
 
     @commands.command(aliases=["cperms"])
     @commands.guild_only()
-    @checks.admin_or_permissions(administrator=True)
+    @commands.admin_or_permissions(administrator=True)
     async def chanperms(
         self,
         ctx,
@@ -611,7 +611,7 @@ class DataUtils(commands.Cog):
         )
 
     @commands.command(aliases=["emojiinfo", "emojinfo"])
-    @checks.bot_has_permissions(embed_links=True)
+    @commands.bot_has_permissions(embed_links=True)
     async def einfo(self, ctx, *, emoji: Union[discord.Emoji, discord.PartialEmoji] = None):
         """Get info about emoji"""
         if not emoji:
