@@ -4,7 +4,7 @@ from typing import Union
 
 import aiohttp
 import discord
-from redbot.core import checks, commands
+from redbot.core import commands
 from redbot.core.config import Config
 from redbot.core.i18n import Translator, cog_i18n, set_contextual_locales_from_guild
 from redbot.core.utils import AsyncIter
@@ -38,7 +38,7 @@ async def role_icons_feature(ctx):
 class PersonalRoles(commands.Cog):
     """Assign and edit personal roles"""
 
-    __version__ = "2.2.1"
+    __version__ = "2.2.2"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -72,7 +72,7 @@ class PersonalRoles(commands.Cog):
         pass
 
     @myrole.command()
-    @checks.admin_or_permissions(manage_roles=True)
+    @commands.admin_or_permissions(manage_roles=True)
     async def assign(self, ctx, user: discord.Member, *, role: discord.Role):
         """Assign personal role to someone"""
         await self.config.member(user).role.set(role.id)
@@ -83,7 +83,7 @@ class PersonalRoles(commands.Cog):
         )
 
     @myrole.command()
-    @checks.admin_or_permissions(manage_roles=True)
+    @commands.admin_or_permissions(manage_roles=True)
     async def unassign(self, ctx, *, user: Union[discord.Member, discord.User, int]):
         """Unassign personal role from someone"""
         if isinstance(user, discord.Member):
@@ -102,7 +102,7 @@ class PersonalRoles(commands.Cog):
         )
 
     @myrole.command(name="list")
-    @checks.admin_or_permissions(manage_roles=True)
+    @commands.admin_or_permissions(manage_roles=True)
     async def mr_list(self, ctx):
         """Assigned roles list"""
         members_data = await self.config.all_members(ctx.guild)
@@ -127,7 +127,7 @@ class PersonalRoles(commands.Cog):
             await ctx.send(chat.info(_("There is no assigned personal roles on this server")))
 
     @myrole.command(name="persistence")
-    @checks.admin_or_permissions(manage_roles=True)
+    @commands.admin_or_permissions(manage_roles=True)
     async def mr_persistence(self, ctx):
         """Toggle auto-adding role on rejoin."""
         editing = self.config.guild(ctx.guild).role_persistence
@@ -142,7 +142,7 @@ class PersonalRoles(commands.Cog):
         )
 
     @myrole.group(name="blocklist", aliases=["blacklist"])
-    @checks.admin_or_permissions(manage_roles=True)
+    @commands.admin_or_permissions(manage_roles=True)
     async def blacklist(self, ctx):
         """Manage blocklisted names"""
         pass
@@ -175,7 +175,7 @@ class PersonalRoles(commands.Cog):
                 )
 
     @blacklist.command(name="list")
-    @checks.admin_or_permissions(manage_roles=True)
+    @commands.admin_or_permissions(manage_roles=True)
     async def bl_list(self, ctx):
         """List of blocklisted role names"""
         blacklist = await self.config.guild(ctx.guild).blacklist()
