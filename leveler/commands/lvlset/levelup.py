@@ -15,7 +15,7 @@ class Levelup(MixinMeta):
 
     lvlset = getattr(LevelSetBaseCMD, "lvlset")
 
-    @lvlset.group(name="levelup", pass_context=True)
+    @lvlset.group(name="levelup")
     async def levelupset(self, ctx):
         """Level-Up options."""
         pass

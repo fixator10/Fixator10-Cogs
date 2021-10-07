@@ -15,7 +15,7 @@ class Rank(MixinMeta):
 
     lvlset = getattr(LevelSetBaseCMD, "lvlset")
 
-    @lvlset.group(name="rank", pass_context=True)
+    @lvlset.group(name="rank")
     async def rankset(self, ctx):
         """Rank options."""
 
