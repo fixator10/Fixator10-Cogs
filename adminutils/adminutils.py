@@ -40,7 +40,8 @@ class AdminUtils(commands.Cog):
 
     @staticmethod
     def check_channel_permission(
-        ctx: commands.Context, channel_or_category: Union[discord.TextChannel]
+        ctx: commands.Context,
+        channel_or_category: Union[discord.TextChannel, discord.CategoryChannel],
     ) -> bool:
         """
         Check user's permission in a channel, to be sure he can edit it.
@@ -298,7 +299,7 @@ class AdminUtils(commands.Cog):
 
     @commands.group()
     @commands.guild_only()
-    @checks.admin_or_permissions(manage_channels=True)
+    @commands.admin_or_permissions(manage_channels=True)
     @commands.bot_has_permissions(manage_channels=True)
     async def channel(self, ctx: commands.Context):
         """Manage channels"""
@@ -323,7 +324,7 @@ class AdminUtils(commands.Cog):
             `[p]channel add "The Zoo" awesome-channel` will create under the "The Zoo" category.
             `[p]channel add awesome-channel` will create under no category, at the top.
         """
-        self.check_channel_permission(category)
+        self.check_channel_permission(ctx, category)
         if channel_type not in ("text", "voice"):
             raise commands.UserFeedbackCheckFailure(
                 "The channel's type can only be `voice` or `text`."
