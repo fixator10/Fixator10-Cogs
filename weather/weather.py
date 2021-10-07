@@ -6,7 +6,7 @@ import discord
 import forecastio
 from forecastio.utils import PropertyUnavailable
 from redbot.core import __version__ as redbot_ver
-from redbot.core import checks, commands
+from redbot.core import commands
 from redbot.core.config import Config
 from redbot.core.i18n import Translator, cog_i18n, get_locale
 from redbot.core.utils import chat_formatting as chat
@@ -137,7 +137,7 @@ _ = T_
 class Weather(commands.Cog):
     """Weather forecast"""
 
-    __version__ = "2.0.5"
+    __version__ = "2.0.6"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -157,7 +157,7 @@ class Weather(commands.Cog):
         await self.config.user_from_id(user_id).clear()
 
     @commands.command()
-    @checks.is_owner()
+    @commands.is_owner()
     async def forecastapi(self, ctx):
         """Set API key for forecast.io"""
         message = _(
@@ -220,7 +220,7 @@ class Weather(commands.Cog):
 
     @forecastunits.command(name="guild")
     @commands.guild_only()
-    @checks.admin_or_permissions(manage_guild=True)
+    @commands.admin_or_permissions(manage_guild=True)
     async def set_guild_units(self, ctx, units: str = None):
         """Set forecast units for this guild
 
