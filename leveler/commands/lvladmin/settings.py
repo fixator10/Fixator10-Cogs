@@ -1,7 +1,7 @@
 from functools import partial
 
 import discord
-from redbot.core import checks, commands
+from redbot.core import commands
 from redbot.core.utils import chat_formatting as chat
 from tabulate import tabulate
 
@@ -61,7 +61,7 @@ class Settings(MixinMeta):
         )
         await ctx.send(embed=em)
 
-    @checks.is_owner()
+    @commands.is_owner()
     @lvladmin.command()
     async def resetrep(self, ctx):
         """Resets all reputation points from MonogoDB"""
@@ -144,7 +144,7 @@ class Settings(MixinMeta):
             await self.config.guild(server).private_lvl_message.set(True)
             await ctx.send("Private level-up alerts enabled for `{}`.".format(server.name))
 
-    @checks.is_owner()
+    @commands.is_owner()
     @lvladmin.command()
     @commands.guild_only()
     async def reprotation(self, ctx):
