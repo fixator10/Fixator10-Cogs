@@ -11,6 +11,8 @@ from warnings import filterwarnings
 import aiohttp
 import discord
 import valve.source.a2s
+from fixcogsutils.dpy_future import TimestampStyle, get_markdown_timestamp
+from fixcogsutils.formatting import bool_emojify
 from redbot.core import commands
 from redbot.core.data_manager import bundled_data_path
 from redbot.core.i18n import Translator, cog_i18n
@@ -36,10 +38,6 @@ USERAGENT = (
     "Safari/537.36"
 )
 LOAD_INDICATORS = ["\N{GREEN HEART}", "\N{YELLOW HEART}", "\N{BROKEN HEART}"]
-
-
-def bool_emojify(bool_var: bool) -> str:
-    return "✅" if bool_var else "❌"
 
 
 def check_api(ctx):
@@ -158,9 +156,7 @@ class SteamCommunity(commands.Cog):
         if profile.createdat:
             em.add_field(
                 name=_("Created at"),
-                value=datetime.utcfromtimestamp(profile.createdat).strftime(
-                    _("%d.%m.%Y %H:%M:%S")
-                ),
+                value=get_markdown_timestamp(datetime.utcfromtimestamp(profile.createdat)),
             )
         em.add_field(name="SteamID", value="{}\n{}".format(profile.steamid, profile.sid3))
         em.add_field(name="SteamID64", value=profile.steamid64)
