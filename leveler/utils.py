@@ -26,9 +26,6 @@ class Utils(MixinMeta):
         with ProcessPoolExecutor() as pool:
             return await self.bot.loop.run_in_executor(pool, partial(func, *args, **kwargs))
 
-    def bool_emojify(self, bool_var: bool) -> str:
-        return "✅" if bool_var else "❌"
-
     async def _badge_convert_dict(self, userinfo):
         if "badges" not in userinfo or not isinstance(userinfo["badges"], dict):
             await self.db.users.update_one(

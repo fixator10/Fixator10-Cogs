@@ -68,10 +68,6 @@ class MixinMeta(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def bool_emojify(self, bool_var: bool) -> str:
-        raise NotImplementedError
-
-    @abstractmethod
     async def _handle_levelup(self, user, userinfo, server, channel):
         raise NotImplementedError
 

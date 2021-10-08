@@ -1,6 +1,7 @@
 from functools import partial
 
 import discord
+from fixcogsutils.formatting import bool_emojify
 from redbot.core import commands
 from redbot.core.utils import chat_formatting as chat
 from tabulate import tabulate
@@ -24,11 +25,11 @@ class Settings(MixinMeta):
 
         em = discord.Embed(colour=await ctx.embed_color())
         settings = {
-            "Text only mode": self.bool_emojify(await self.config.guild(ctx.guild).text_only()),
-            "Level messages enabled": self.bool_emojify(
+            "Text only mode": bool_emojify(await self.config.guild(ctx.guild).text_only()),
+            "Level messages enabled": bool_emojify(
                 await self.config.guild(ctx.guild).lvl_msg()
             ),
-            "Level messages are private": self.bool_emojify(
+            "Level messages are private": bool_emojify(
                 await self.config.guild(ctx.guild).private_lvl_message()
             ),
         }
@@ -39,9 +40,9 @@ class Settings(MixinMeta):
                     "Unique registered users": str(await self.db.users.count_documents({})),
                     "XP per message": "{}-{}".format(*await self.config.xp()),
                     "Min message length": str(await self.config.message_length()),
-                    "Global top": self.bool_emojify(await self.config.allow_global_top()),
-                    "Mentions": self.bool_emojify(await self.config.mention()),
-                    "Rep users rotation": self.bool_emojify(await self.config.rep_rotation()),
+                    "Global top": bool_emojify(await self.config.allow_global_top()),
+                    "Mentions": bool_emojify(await self.config.mention()),
+                    "Rep users rotation": bool_emojify(await self.config.rep_rotation()),
                     "Badges type": await self.config.badge_type(),
                 }
             )

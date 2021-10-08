@@ -19,7 +19,8 @@
     "motor",
     "fonttools",
     "pillow>=6.2.1",
-    "tabulate"
+    "tabulate",
+    "git+https://github.com/fixator10/F10-Cogs-Utils"
   ],
   "end_user_data_statement": "This cog persistently stores next data about user:\n    Discord user ID\n    Current username\n    Per-server XP data (current XP and current level)\n    Total count of XP on all servers\n    URLs to profile/rank/levelup backrounds\n    User-set title & info\n    User's \"reputation\" points count\n    Data about user's badges\n    Data about user's profile/rank/levelup colors\n    Timestamp of latest message and reputation\n    Last message text (for comparison)\nThis cog supports data removal requests."
 }
