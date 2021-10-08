@@ -17,10 +17,6 @@ async def get_twemoji(emoji: str):
     return f"{TWEMOJI_URL}/{emoji_unicode}.png"
 
 
-def bool_emojify(bool_var: bool) -> str:
-    return "✅" if bool_var else "❌"
-
-
 async def find_app_by_name(where: list, name: str):
     async for item in AsyncIter(where):
         for k, v in item.items():
