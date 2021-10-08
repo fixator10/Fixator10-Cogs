@@ -26,9 +26,7 @@ class Settings(MixinMeta):
         em = discord.Embed(colour=await ctx.embed_color())
         settings = {
             "Text only mode": bool_emojify(await self.config.guild(ctx.guild).text_only()),
-            "Level messages enabled": bool_emojify(
-                await self.config.guild(ctx.guild).lvl_msg()
-            ),
+            "Level messages enabled": bool_emojify(await self.config.guild(ctx.guild).lvl_msg()),
             "Level messages are private": bool_emojify(
                 await self.config.guild(ctx.guild).private_lvl_message()
             ),
