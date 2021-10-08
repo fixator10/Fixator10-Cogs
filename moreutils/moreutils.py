@@ -87,10 +87,6 @@ def rgb_to_hsv(r, g, b):
     return h, s, v
 
 
-def bool_emojify(bool_var: bool) -> str:
-    return "✅" if bool_var else "❌"
-
-
 @cog_i18n(_)
 class MoreUtils(commands.Cog):
     """Some (maybe) useful utils."""
