@@ -11,7 +11,7 @@ from warnings import filterwarnings
 import aiohttp
 import discord
 import valve.source.a2s
-from fixcogsutils.dpy_future import TimestampStyle, get_markdown_timestamp
+from fixcogsutils.dpy_future import get_markdown_timestamp
 from fixcogsutils.formatting import bool_emojify
 from redbot.core import commands
 from redbot.core.data_manager import bundled_data_path
