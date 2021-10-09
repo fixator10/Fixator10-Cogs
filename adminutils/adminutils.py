@@ -50,9 +50,9 @@ class AdminUtils(commands.Cog):
         if mc:
             return True
         reason = (
-            "You are not allowed to edit this channel."
+            _("You are not allowed to edit this channel.")
             if not isinstance(channel_or_category, discord.CategoryChannel)
-            else "You are not allowed to edit in this category."
+            else _("You are not allowed to edit in this category.")
         )
         raise commands.UserFeedbackCheckFailure(reason)
 
@@ -305,43 +305,64 @@ class AdminUtils(commands.Cog):
         """Manage channels"""
         pass
 
-    @channel.command(name="create", aliases=["add"], usage="[channel_type] [category] <name>")
+    @channel.group(name="create", aliases=["add"])
     async def channel_create(
         self,
         ctx: commands.Context,
-        channel_type: Optional[str] = "text",
+    ):
+        """Manage channels"""
+
+    @channel_create.command(name="text")
+    async def channel_create_text(
+        self,
+        ctx: commands.Context,
         category: Optional[discord.CategoryChannel] = None,
         *,
         name: str,
     ):
-        """Create a channel
+        """Create a text channel
 
-        The type can be `voice` for a voice channel and `text` for a text channel.
         You can create the channel under a category if passed, else it is created under no category
         Use double quotes if category has spaces
 
         Examples:
-            `[p]channel add "The Zoo" awesome-channel` will create under the "The Zoo" category.
-            `[p]channel add awesome-channel` will create under no category, at the top.
+            `[p]channel add text "The Zoo" awesome-channel` will create under the "The Zoo" category.
+            `[p]channel add text awesome-channel` will create under no category, at the top.
         """
-        self.check_channel_permission(ctx, category)
-        if channel_type not in ("text", "voice"):
-            raise commands.UserFeedbackCheckFailure(
-                "The channel's type can only be `voice` or `text`."
-            )
-        if channel_type == "text":
-            await ctx.guild.create_text_channel(
-                name, category=category, reason=get_audit_reason(ctx.author)
-            )
-        else:
-            await ctx.guild.create_voice_channel(
-                name, category=category, reason=get_audit_reason(ctx.author)
-            )
+        if category:
+            self.check_channel_permission(ctx, category)
+        await ctx.guild.create_text_channel(
+            name, category=category, reason=get_audit_reason(ctx.author)
+        )
+        await ctx.tick()
+
+    @channel_create.command(name="voice")
+    async def channel_create_voice(
+        self,
+        ctx: commands.Context,
+        category: Optional[discord.CategoryChannel] = None,
+        *,
+        name: str,
+    ):
+        """Create a voice channel
+
+        You can create the channel under a category if passed, else it is created under no category
+        Use double quotes if category has spaces
+
+        Examples:
+            `[p]channel add voice "The Zoo" Awesome Channel` will create under the "The Zoo" category.
+            `[p]channel add voice Awesome Channel` will create under no category, at the top.
+        """
+        if category:
+            self.check_channel_permission(ctx, category)
+        await ctx.guild.create_voice_channel(
+            name, category=category, reason=get_audit_reason(ctx.author)
+        )
         await ctx.tick()
 
     @channel.command(name="rename")
     async def channel_rename(
-        self, ctx: commands.Context, channel: discord.TextChannel, *, name: str
+        self, ctx: commands.Context, channel: Union[discord.TextChannel], *, name: str
     ):
         """Rename a channel
 
@@ -355,7 +376,7 @@ class AdminUtils(commands.Cog):
         await ctx.tick()
 
     @channel.command(name="delete", aliases=["remove"])
-    async def channel_delete(self, ctx: commands.Context, *, channel: discord.TextChannel):
+    async def channel_delete(self, ctx: commands.Context, *, channel: Union[discord.TextChannel, discord.VoiceChannel]):
         """Remove a channel from server
 
         Example:
