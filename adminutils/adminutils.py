@@ -376,7 +376,9 @@ class AdminUtils(commands.Cog):
         await ctx.tick()
 
     @channel.command(name="delete", aliases=["remove"])
-    async def channel_delete(self, ctx: commands.Context, *, channel: Union[discord.TextChannel, discord.VoiceChannel]):
+    async def channel_delete(
+        self, ctx: commands.Context, *, channel: Union[discord.TextChannel, discord.VoiceChannel]
+    ):
         """Remove a channel from server
 
         Example:
