@@ -310,7 +310,7 @@ class AdminUtils(commands.Cog):
         self,
         ctx: commands.Context,
     ):
-        """Manage channels"""
+        """Create a channel"""
 
     @channel_create.command(name="text")
     async def channel_create_text(
@@ -331,10 +331,16 @@ class AdminUtils(commands.Cog):
         """
         if category:
             self.check_channel_permission(ctx, category)
-        await ctx.guild.create_text_channel(
-            name, category=category, reason=get_audit_reason(ctx.author)
-        )
-        await ctx.tick()
+        try:
+            await ctx.guild.create_text_channel(
+                name, category=category, reason=get_audit_reason(ctx.author)
+            )
+        except discord.Forbidden:
+            await ctx.send(chat.error(_("I can't create channel in this category")))
+        except discord.HTTPException as e:
+            await ctx.send(chat.error(_("I am unable to create a channel: {}").format(e)))
+        else:
+            await ctx.tick()
 
     @channel_create.command(name="voice")
     async def channel_create_voice(
@@ -355,14 +361,24 @@ class AdminUtils(commands.Cog):
         """
         if category:
             self.check_channel_permission(ctx, category)
-        await ctx.guild.create_voice_channel(
-            name, category=category, reason=get_audit_reason(ctx.author)
-        )
-        await ctx.tick()
+        try:
+            await ctx.guild.create_voice_channel(
+                name, category=category, reason=get_audit_reason(ctx.author)
+            )
+        except discord.Forbidden:
+            await ctx.send(chat.error(_("I can't create channel in this category")))
+        except discord.HTTPException as e:
+            await ctx.send(chat.error(_("I am unable to create a channel: {}").format(e)))
+        else:
+            await ctx.tick()
 
     @channel.command(name="rename")
     async def channel_rename(
-        self, ctx: commands.Context, channel: Union[discord.TextChannel], *, name: str
+        self,
+        ctx: commands.Context,
+        channel: Union[discord.TextChannel, discord.VoiceChannel],
+        *,
+        name: str,
     ):
         """Rename a channel
 
@@ -372,8 +388,14 @@ class AdminUtils(commands.Cog):
             `[p]channel rename channel new-channel-name`
         """
         self.check_channel_permission(ctx, channel)
-        await channel.edit(name=name, reason=get_audit_reason(ctx.author))
-        await ctx.tick()
+        try:
+            await channel.edit(name=name, reason=get_audit_reason(ctx.author))
+        except discord.Forbidden:
+            await ctx.send(chat.error(_("I can't rename this channel")))
+        except discord.HTTPException as e:
+            await ctx.send(chat.error(_("I am unable to rename this channel: {}").format(e)))
+        else:
+            await ctx.tick()
 
     @channel.command(name="delete", aliases=["remove"])
     async def channel_delete(
@@ -385,5 +407,11 @@ class AdminUtils(commands.Cog):
             `[p]channel delete channel`
         """
         self.check_channel_permission(ctx, channel)
-        await channel.delete(reason=get_audit_reason(ctx.author))
-        await ctx.tick()
+        try:
+            await channel.delete(reason=get_audit_reason(ctx.author))
+        except discord.Forbidden:
+            await ctx.send(chat.error(_("I can't delete this channel")))
+        except discord.HTTPException as e:
+            await ctx.send(chat.error(_("I am unable to delete a channel: {}").format(e)))
+        else:
+            await ctx.tick()
