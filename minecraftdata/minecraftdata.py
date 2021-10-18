@@ -37,7 +37,7 @@ _ = T_
 class MinecraftData(commands.Cog):
     """Minecraft-Related data"""
 
-    __version__ = "2.0.9"
+    __version__ = "2.0.10"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -285,12 +285,6 @@ class MinecraftData(commands.Cog):
             except AsyncTimeoutError:
                 await ctx.send(chat.error(_("Unable to get server's status: Timed out")))
                 return
-            # TODO: Reimplement on async query in mcstatus
-            # NOTE: Possibly, make query optional
-            # try:
-            #     query = await server.async_query()
-            # except (ConnectionResetError, OSError):
-            #     query = None
         icon_file = None
         icon = (
             discord.File(
@@ -330,41 +324,29 @@ class MinecraftData(commands.Cog):
             name=_("Version"),
             value=_("{}\nProtocol: {}").format(status.version.name, status.version.protocol),
         )
-        # if query:
+        await ctx.send(file=icon, embed=embed)
+        if icon_file:
+            icon_file.close()
+        # TODO: for some reason, producing `OSError: [WinError 10038]` on current version of lib
+        # not tested further
+        # if query_data:  # Optional[bool]
+        #     try:
+        #         query = await server.async_query()
+        #     except OSError as e:
+        #         embed.set_footer(text=chat.error(_("Unable to get query data: {}").format(e)))
+        #         await msg.edit(embed=embed)
+        #         return
+        #     except AsyncTimeoutError:
+        #         embed.set_footer(text=chat.error(_("Unable to get query data: Timed out.")))
+        #         await msg.edit(embed=embed)
+        #         return
         #     embed.add_field(name=_("World"), value=f"{query.map}")
         #     embed.add_field(
         #         name=_("Software"),
         #         value=_("{}\nVersion: {}").format(query.software.brand, query.software.version)
         #         # f"Plugins: {query.software.plugins}"
         #     )
-        await ctx.send(file=icon, embed=embed)
-        if icon_file:
-            icon_file.close()
-
-    @minecraft.command()
-    @commands.bot_has_permissions(embed_links=True)
-    async def status(self, ctx):
-        """Get status of minecraft services"""
-        try:
-            async with self.session.get("https://status.mojang.com/check") as data:
-                data = await data.json(loads=json.loads)
-            em = discord.Embed(
-                title=_("Status of minecraft services"),
-                timestamp=ctx.message.created_at,
-                color=await ctx.embed_color(),
-            )
-            for service in data:
-                for entry, status in service.items():
-                    em.add_field(name=entry, value=_(SERVICE_STATUS.get(status, status)))
-            await ctx.send(embed=em)
-        except Exception as e:
-            await ctx.send(
-                chat.error(
-                    _("Unable to check. An error has been occurred: {}").format(
-                        chat.inline(str(e))
-                    )
-                )
-            )
+        #     await msg.edit(embed=embed)
 
     @minecraft.command(aliases=["nicknames", "nickhistory", "names"])
     async def nicks(self, ctx, current_nick: MCPlayer):
@@ -409,7 +391,7 @@ class MinecraftData(commands.Cog):
             clean += text
         return re.sub(r"\xA7[0-9A-FK-OR]", "", clean, flags=re.IGNORECASE)
 
-    async def gen_dict_extract(self, key, var):
+    async def gen_dict_extract(self, key: str, var: dict):
         if not hasattr(var, "items"):
             return
         for k, v in var.items():
