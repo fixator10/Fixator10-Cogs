@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2021-10-08 18:16+0400\n"
+"POT-Creation-Date: 2021-11-07 12:58+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -156,68 +156,66 @@ msgstr ""
 msgid ""
 "**TF2 Game Coordinator**: {}\n"
 "**Dota 2 Game Coordinator**: {}\n"
-"**Underlords Game Coordinator**: {}\n"
-"**Artifact Game Coordinator**: {}\n"
 "**CS:GO Game Coordinator**: {}\n"
 "**CS:GO Sessions Logon**: {}\n"
 "**CS:GO Player Inventories**: {}\n"
 "**CS:GO Matchmaking Scheduler**: {}\n"
 msgstr ""
 
-#: steamcommunity\steamcommunity.py:285
+#: steamcommunity\steamcommunity.py:281
 #, docstring
 msgid "Get info about a gameserver"
 msgstr ""
 
-#: steamcommunity\steamcommunity.py:295
+#: steamcommunity\steamcommunity.py:291
 msgid "The specified domain is not valid: {}"
 msgstr ""
 
-#: steamcommunity\steamcommunity.py:317
+#: steamcommunity\steamcommunity.py:313
 msgid "Could not fetch Server or the Server is not on the Steam masterlist"
 msgstr ""
 
-#: steamcommunity\steamcommunity.py:322
+#: steamcommunity\steamcommunity.py:318
 msgid "An Error has been occurred: {}"
 msgstr ""
 
-#: steamcommunity\steamcommunity.py:349
+#: steamcommunity\steamcommunity.py:345
 msgid "Game"
 msgstr ""
 
-#: steamcommunity\steamcommunity.py:352
+#: steamcommunity\steamcommunity.py:348
 msgid "Gamemode"
 msgstr ""
 
-#: steamcommunity\steamcommunity.py:353
+#: steamcommunity\steamcommunity.py:349
 msgid "Server name"
 msgstr ""
 
-#: steamcommunity\steamcommunity.py:354
+#: steamcommunity\steamcommunity.py:350
 msgid "Map"
 msgstr ""
 
-#: steamcommunity\steamcommunity.py:356
+#: steamcommunity\steamcommunity.py:352
 msgid "Operating System"
 msgstr ""
 
-#: steamcommunity\steamcommunity.py:357
+#: steamcommunity\steamcommunity.py:353
 msgid "Server type"
 msgstr ""
 
-#: steamcommunity\steamcommunity.py:358
+#: steamcommunity\steamcommunity.py:354
 msgid "Version"
 msgstr ""
 
-#: steamcommunity\steamcommunity.py:361
+#: steamcommunity\steamcommunity.py:357
 msgid "Password"
 msgstr ""
 
-#: steamcommunity\steamcommunity.py:366 steamcommunity\steamcommunity.py:370
+#: steamcommunity\steamcommunity.py:362 steamcommunity\steamcommunity.py:366
 msgid "Players"
 msgstr ""
 
-#: steamcommunity\steamcommunity.py:367
+#: steamcommunity\steamcommunity.py:363
 msgid ""
 "{}/{}\n"
 "Bots: {}"
