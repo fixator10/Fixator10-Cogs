@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fixator10-cogs\n"
-"POT-Creation-Date: 2021-03-19 13:11+0400\n"
+"POT-Creation-Date: 2021-10-18 15:14+0400\n"
 "Last-Translator: \n"
 "Language-Team: Arabic\n"
 "MIME-Version: 1.0\n"
@@ -141,58 +141,45 @@ msgstr ""
 msgid "Unable to get server's status: Timed out"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:310
+#: minecraftdata\minecraftdata.py:304
 msgid "Latency"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:312
+#: minecraftdata\minecraftdata.py:306
 msgid "Players"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:330
+#: minecraftdata\minecraftdata.py:324
 msgid "Version"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:331
+#: minecraftdata\minecraftdata.py:325
 msgid "{}\n"
 "Protocol: {}"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:347
-#, docstring
-msgid "Get status of minecraft services"
-msgstr ""
-
-#: minecraftdata\minecraftdata.py:352
-msgid "Status of minecraft services"
-msgstr ""
-
-#: minecraftdata\minecraftdata.py:363
-msgid "Unable to check. An error has been occurred: {}"
-msgstr ""
-
-#: minecraftdata\minecraftdata.py:371
+#: minecraftdata\minecraftdata.py:353
 #, docstring
 msgid "Check history of player's nicks"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:382
+#: minecraftdata\minecraftdata.py:364
 msgid "%d.%m.%Y %H:%M:%S"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:384
+#: minecraftdata\minecraftdata.py:366
 msgid "Initial"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:388
+#: minecraftdata\minecraftdata.py:370
 msgid "Nickname"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:389
+#: minecraftdata\minecraftdata.py:371
 msgid "Changed to at... (UTC)"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:398
+#: minecraftdata\minecraftdata.py:380
 msgid "Unable to check name history.\n"
 "An error has been occurred: "
 msgstr ""
