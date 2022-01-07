@@ -38,7 +38,7 @@ _ = Translator("MessagesLog", __file__)
 
 @cog_i18n(_)
 class MessagesLog(commands.Cog):
-    """Log deleted and redacted messages to the defined channel"""
+    """Log deleted and edited messages to the defined channel"""
 
     __version__ = "2.3.11"
 
@@ -380,7 +380,7 @@ class MessagesLog(commands.Cog):
             pass
 
     @commands.Cog.listener("on_message_edit")
-    async def message_redacted(self, before: discord.Message, after: discord.Message):
+    async def message_edited(self, before: discord.Message, after: discord.Message):
         if not before.guild:
             return
         if await self.bot.cog_disabled_in_guild(self, before.guild):
@@ -408,7 +408,7 @@ class MessagesLog(commands.Cog):
             return
         await set_contextual_locales_from_guild(self.bot, before.guild)
         embed = discord.Embed(
-            title=_("Message redacted"),
+            title=_("Message edited"),
             description=before.content or chat.inline(_("No text")),
             timestamp=before.created_at,
             color=before.author.color,
