@@ -40,7 +40,7 @@ _ = Translator("MessagesLog", __file__)
 class MessagesLog(commands.Cog):
     """Log deleted and edited messages to the defined channel"""
 
-    __version__ = "2.3.11"
+    __version__ = "2.3.12"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
