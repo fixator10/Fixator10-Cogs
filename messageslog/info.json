@@ -3,8 +3,8 @@
     "Fixator10"
   ],
   "install_msg": "Thanks for install.",
-  "short": "Log deleted and redacted messages in defined channel",
-  "description": "Log deleted and redacted messages in defined channel",
+  "short": "Log deleted and edited messages to a specified channel",
+  "description": "Log deleted and edited messages to a specified channel",
   "min_bot_version": "3.4.0",
   "tags": [
     "messages",
