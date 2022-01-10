@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2022-01-10 17:23+0400\n"
+"POT-Creation-Date: 2022-01-10 17:32+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -265,13 +265,15 @@ msgid ""
 msgstr ""
 
 #: adminutils\adminutils.py:414
-msgid "You are about to delete channel {channel}. This cannot be undone."
+msgid ""
+"You are about to delete channel {channel}. This cannot be undone. Are you sure?\n"
+"To agree, type \"yes\""
 msgstr ""
 
-#: adminutils\adminutils.py:427
+#: adminutils\adminutils.py:428
 msgid "I can't delete this channel"
 msgstr ""
 
-#: adminutils\adminutils.py:429
+#: adminutils\adminutils.py:430
 msgid "I am unable to delete a channel: {}"
 msgstr ""

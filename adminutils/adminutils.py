@@ -25,7 +25,7 @@ EMOJI_RE = re.compile(r"(<(a)?:[a-zA-Z0-9_]+:([0-9]+)>)")
 class AdminUtils(commands.Cog):
     """Useful commands for server administrators."""
 
-    __version__ = "2.5.9"
+    __version__ = "2.5.10"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -411,9 +411,10 @@ class AdminUtils(commands.Cog):
         if not ctx.assume_yes:
             await ctx.send(
                 chat.warning(
-                    _("You are about to delete channel {channel}. This cannot be undone.").format(
-                        channel=channel.mention
-                    )
+                    _(
+                        "You are about to delete channel {channel}. This cannot be undone. Are you sure?\n"
+                        'To agree, type "yes"'
+                    ).format(channel=channel.mention)
                 )
             )
             try:
