@@ -22,7 +22,7 @@ from .utils import _
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.6.8"
+    __version__ = "2.6.9"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
