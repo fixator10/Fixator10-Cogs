@@ -25,7 +25,7 @@ EMOJI_RE = re.compile(r"(<(a)?:[a-zA-Z0-9_]+:([0-9]+)>)")
 class AdminUtils(commands.Cog):
     """Useful commands for server administrators."""
 
-    __version__ = "2.5.8"
+    __version__ = "2.5.9"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -83,7 +83,7 @@ class AdminUtils(commands.Cog):
             await ctx.send(
                 chat.warning(
                     _(
-                        "You about to kick **{to_kick}** inactive for **{days}** days members from this server. "
+                        "You are about to kick **{to_kick}** inactive for **{days}** days members from this server. "
                         '{roles}Are you sure?\nTo agree, type "yes"'
                     ).format(to_kick=to_kick, days=days, roles=roles_text if roles else "")
                 )
@@ -407,11 +407,25 @@ class AdminUtils(commands.Cog):
             `[p]channel delete channel`
         """
         self.check_channel_permission(ctx, channel)
-        try:
-            await channel.delete(reason=get_audit_reason(ctx.author))
-        except discord.Forbidden:
-            await ctx.send(chat.error(_("I can't delete this channel")))
-        except discord.HTTPException as e:
-            await ctx.send(chat.error(_("I am unable to delete a channel: {}").format(e)))
-        else:
-            await ctx.tick()
+        pred = MessagePredicate.yes_or_no(ctx)
+        if not ctx.assume_yes:
+            await ctx.send(
+                chat.warning(
+                    _("You are about to delete channel {channel}. This cannot be undone.").format(
+                        channel=channel.mention
+                    )
+                )
+            )
+            try:
+                await self.bot.wait_for("message", check=pred, timeout=30)
+            except AsyncTimeoutError:
+                pass
+        if ctx.assume_yes or pred.result:
+            try:
+                await channel.delete(reason=get_audit_reason(ctx.author))
+            except discord.Forbidden:
+                await ctx.send(chat.error(_("I can't delete this channel")))
+            except discord.HTTPException as e:
+                await ctx.send(chat.error(_("I am unable to delete a channel: {}").format(e)))
+            else:
+                await ctx.tick()
