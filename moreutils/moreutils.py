@@ -87,11 +87,14 @@ def rgb_to_hsv(r, g, b):
     return h, s, v
 
 
+SM_DATETIME_FORMAT = "%m/%d/%Y - %H:%M:%S"
+
+
 @cog_i18n(_)
 class MoreUtils(commands.Cog):
     """Some (maybe) useful utils."""
 
-    __version__ = "2.0.20"
+    __version__ = "2.0.21"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -107,7 +110,7 @@ class MoreUtils(commands.Cog):
     @commands.command(name="thetime")
     async def _thetime(self, ctx):
         """Displays the current time of the server."""
-        await ctx.send(datetime.datetime.now().strftime(_("%d.%m.%Y %H:%M:%S %Z")))
+        await ctx.send(datetime.datetime.now().strftime(SM_DATETIME_FORMAT))
 
     @commands.command(aliases=["HEX", "hex", "colour"])
     @commands.bot_has_permissions(embed_links=True)
