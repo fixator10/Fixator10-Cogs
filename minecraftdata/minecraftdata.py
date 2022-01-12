@@ -7,9 +7,10 @@ from io import BytesIO
 import aiohttp
 import discord
 import tabulate
+from babel.dates import format_datetime
 from mcstatus import MinecraftServer
 from redbot.core import commands
-from redbot.core.i18n import Translator, cog_i18n
+from redbot.core.i18n import Translator, cog_i18n, get_babel_regional_format
 from redbot.core.utils import chat_formatting as chat
 from redbot.core.utils.menus import DEFAULT_CONTROLS, menu
 
@@ -37,7 +38,7 @@ _ = T_
 class MinecraftData(commands.Cog):
     """Minecraft-Related data"""
 
-    __version__ = "2.0.10"
+    __version__ = "2.0.11"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -359,9 +360,10 @@ class MinecraftData(commands.Cog):
                 data_history = await data.json(loads=json.loads)
             for nick in data_history:
                 try:
-                    nick["changedToAt"] = datetime.fromtimestamp(
-                        nick["changedToAt"] / 1000, timezone.utc
-                    ).strftime(_("%d.%m.%Y %H:%M:%S"))
+                    nick["changedToAt"] = format_datetime(
+                        datetime.fromtimestamp(nick["changedToAt"] / 1000, timezone.utc),
+                        locale=get_babel_regional_format(),
+                    )
                 except KeyError:
                     nick["changedToAt"] = _("Initial")
             table = tabulate.tabulate(
