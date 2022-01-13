@@ -10,8 +10,8 @@ try:
 except ImportError:
     import json
 
-BASE_API = "https://godville.net/gods/api/"
-BASE_API_GLOBAL = "http://godvillegame.com/gods/api/"
+BASE_API = "https://godville.net/gods/api"
+BASE_API_GLOBAL = "http://godvillegame.com/gods/api"
 
 
 class GodConverter(commands.MemberConverter):
@@ -49,7 +49,7 @@ class GodConverter(commands.MemberConverter):
 class GodvilleData(commands.Cog):
     """Get data about Godville profiles"""
 
-    __version__ = "2.1.4"
+    __version__ = "2.1.5"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
