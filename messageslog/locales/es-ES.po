@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fixator10-cogs\n"
-"POT-Creation-Date: 2020-10-28 11:33+0400\n"
+"POT-Creation-Date: 2022-01-08 20:33+0400\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "MIME-Version: 1.0\n"
@@ -17,7 +17,7 @@ msgstr ""
 
 #: messageslog\messageslog.py:41
 #, docstring
-msgid "Log deleted and redacted messages to the defined channel"
+msgid "Log deleted and edited messages to the defined channel"
 msgstr ""
 
 #: messageslog\messageslog.py:86
@@ -129,7 +129,7 @@ msgstr ""
 msgid "Nothing is ignored"
 msgstr ""
 
-#: messageslog\messageslog.py:201
+#: messageslog\messageslog.py:198
 msgid "Ignored users"
 msgstr ""
 
@@ -137,61 +137,61 @@ msgstr ""
 msgid "Ignored channels"
 msgstr ""
 
-#: messageslog\messageslog.py:206
+#: messageslog\messageslog.py:208
 msgid "Ignored categories"
 msgstr ""
 
-#: messageslog\messageslog.py:254
+#: messageslog\messageslog.py:258
 msgid "Message deleted"
 msgstr ""
 
-#: messageslog\messageslog.py:255 messageslog\messageslog.py:409
+#: messageslog\messageslog.py:259 messageslog\messageslog.py:412
 msgid "No text"
 msgstr ""
 
-#: messageslog\messageslog.py:261 messageslog\messageslog.py:416
+#: messageslog\messageslog.py:265 messageslog\messageslog.py:419
 msgid "Attachments"
 msgstr ""
 
-#: messageslog\messageslog.py:264 messageslog\messageslog.py:419
+#: messageslog\messageslog.py:267 messageslog\messageslog.py:421
 msgid "[{0.filename}]({0.url}) ([Cached]({0.proxy_url}))"
 msgstr ""
 
-#: messageslog\messageslog.py:270 messageslog\messageslog.py:309
-#: messageslog\messageslog.py:425
+#: messageslog\messageslog.py:272 messageslog\messageslog.py:311
+#: messageslog\messageslog.py:426
 msgid "ID: {} • Sent at"
 msgstr ""
 
-#: messageslog\messageslog.py:271 messageslog\messageslog.py:310
-#: messageslog\messageslog.py:373
+#: messageslog\messageslog.py:273 messageslog\messageslog.py:312
+#: messageslog\messageslog.py:376
 msgid "Channel"
 msgstr ""
 
-#: messageslog\messageslog.py:305
+#: messageslog\messageslog.py:307
 msgid "Old message deleted"
 msgstr ""
 
-#: messageslog\messageslog.py:363
+#: messageslog\messageslog.py:366
 msgid "Multiple messages deleted"
 msgstr ""
 
-#: messageslog\messageslog.py:364
+#: messageslog\messageslog.py:367
 msgid "{} messages removed"
 msgstr ""
 
-#: messageslog\messageslog.py:366
+#: messageslog\messageslog.py:369
 msgid "{} messages saved to file above"
 msgstr ""
 
-#: messageslog\messageslog.py:408
-msgid "Message redacted"
+#: messageslog\messageslog.py:411
+msgid "Message edited"
 msgstr ""
 
-#: messageslog\messageslog.py:413
+#: messageslog\messageslog.py:416
 msgid "Now"
 msgstr ""
 
-#: messageslog\messageslog.py:413
+#: messageslog\messageslog.py:416
 msgid "[View message]({})"
 msgstr ""
 
