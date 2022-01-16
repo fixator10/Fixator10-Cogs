@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fixator10-cogs\n"
-"POT-Creation-Date: 2021-10-08 17:41+0400\n"
+"POT-Creation-Date: 2022-01-10 17:13+0400\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
@@ -60,118 +60,130 @@ msgid "Banner{banner}"
 msgstr "Баннер{banner}"
 
 #: datautils\common_variables.py:23
+msgid "Animated banner"
+msgstr "Анимированный баннер"
+
+#: datautils\common_variables.py:24
 msgid "Animated icon"
 msgstr "Анимированная иконка"
 
-#: datautils\common_variables.py:24
+#: datautils\common_variables.py:25
 msgid "Welcome screen"
 msgstr "Экран с приветствием"
 
-#: datautils\common_variables.py:25
+#: datautils\common_variables.py:26
 msgid "Cannot be public"
 msgstr "Не может быть публичным"
 
-#: datautils\common_variables.py:26
+#: datautils\common_variables.py:27
 msgid "Was in Server Discovery"
 msgstr "Был в публичных серверах"
 
-#: datautils\common_variables.py:27
+#: datautils\common_variables.py:28
 msgid "Community server"
 msgstr "Сервер сообщества"
 
-#: datautils\common_variables.py:28
+#: datautils\common_variables.py:29
 msgid "Ticketed events"
 msgstr "События по билетам"
 
-#: datautils\common_variables.py:29
+#: datautils\common_variables.py:30
 msgid "Monetization"
 msgstr "Монетизация"
 
-#: datautils\common_variables.py:30
+#: datautils\common_variables.py:31
 msgid "Extended custom sticker slots"
 msgstr "Расширенный лимит пользовательских стикеров"
 
-#: datautils\common_variables.py:31
+#: datautils\common_variables.py:32
 msgid "Threads"
 msgstr "Ветки"
 
-#: datautils\common_variables.py:32
-msgid "Threads (testing)"
-msgstr ""
-
 #: datautils\common_variables.py:33
+msgid "Threads (testing)"
+msgstr "Ветки (тестирование)"
+
+#: datautils\common_variables.py:34
 msgid "Private threads"
 msgstr "Приватные ветки"
 
-#: datautils\common_variables.py:34
+#: datautils\common_variables.py:35
 msgid "3 day thread archive"
 msgstr "3 дня до архивации веток"
 
-#: datautils\common_variables.py:35
+#: datautils\common_variables.py:36
 msgid "7 day thread archive"
 msgstr "7 дней до архивации веток"
 
-#: datautils\common_variables.py:36
+#: datautils\common_variables.py:37
 msgid "Enabled new thread permissions"
 msgstr "Включены новые права веток"
 
-#: datautils\common_variables.py:37
+#: datautils\common_variables.py:38
 msgid "Role icons"
 msgstr "Значки пользовательских ролей"
 
-#: datautils\common_variables.py:38
+#: datautils\common_variables.py:39
 msgid "Cannot be in Server Discovery"
 msgstr "Не может быть в \"публичных серверах\""
 
-#: datautils\common_variables.py:40
+#: datautils\common_variables.py:41
 msgid "Preview enabled (\"Lurkable\")"
 msgstr "Предпросмотр включён"
 
-#: datautils\common_variables.py:41
+#: datautils\common_variables.py:42
 msgid "Member verification gate enabled"
 msgstr "Включена проверка возраста"
 
-#: datautils\common_variables.py:42
+#: datautils\common_variables.py:43
 msgid "Member list disabled"
 msgstr "Список участников отключён"
 
-#: datautils\common_variables.py:43
+#: datautils\common_variables.py:44
 msgid "Permanent level 3 boost"
 msgstr "Постоянный буст 3 уровня"
 
-#: datautils\common_variables.py:47 datautils\common_variables.py:50
+#: datautils\common_variables.py:45
+msgid "Server profiles"
+msgstr "Серверные профили"
+
+#: datautils\common_variables.py:46
+msgid "Channel banner"
+msgstr "Баннер канала"
+
+#: datautils\common_variables.py:50 datautils\common_variables.py:53
 msgid "Shards connections to the guild to different nodes that relay information between each other."
 msgstr "Делит соединения к серверу на разные узлы, передающие информацию между собой."
 
-#: datautils\common_variables.py:56
+#: datautils\common_variables.py:59
 msgid "Playing"
 msgstr "Играет в"
 
-#: datautils\common_variables.py:57
+#: datautils\common_variables.py:60
 msgid "Watching"
 msgstr "Смотрит"
 
-#: datautils\common_variables.py:58
+#: datautils\common_variables.py:61
 msgid "Listening to"
 msgstr "Слушает"
 
-#: datautils\common_variables.py:59
+#: datautils\common_variables.py:62
 msgid "Competing in"
 msgstr "Соревнуется в"
 
-#: datautils\common_variables.py:74
+#: datautils\common_variables.py:77
 msgid "Categories"
 msgstr "Категории"
 
-#: datautils\common_variables.py:75
+#: datautils\common_variables.py:78
 msgid "Text channels"
 msgstr "Текстовые каналы"
 
-#: datautils\common_variables.py:76
+#: datautils\common_variables.py:79
 msgid "Voice channels"
 msgstr "Голосовые каналы"
 
-#: datautils\common_variables.py:77
+#: datautils\common_variables.py:80
 msgid "Stage channels"
 msgstr "Каналы-трибуны"
 
@@ -195,7 +207,7 @@ msgstr "Я не смог получить информацию о пользов
 
 #: datautils\datautils.py:58 datautils\datautils.py:443
 #: datautils\datautils.py:525 datautils\datautils.py:564
-#: datautils\datautils.py:583 datautils\embeds.py:33
+#: datautils\datautils.py:583 datautils\embeds.py:35
 msgid "ID"
 msgstr ""
 
@@ -298,7 +310,7 @@ msgstr "Присоединился к серверу"
 
 #: datautils\datautils.py:172 datautils\datautils.py:250
 #: datautils\datautils.py:449 datautils\datautils.py:533
-#: datautils\embeds.py:38 datautils\embeds.py:54
+#: datautils\embeds.py:40 datautils\embeds.py:56
 msgid "Exists since"
 msgstr "Существует с"
 
@@ -319,7 +331,7 @@ msgid "In voice channel"
 msgstr "В голосовом канале"
 
 #: datautils\datautils.py:199 datautils\datautils.py:368
-#: datautils\embeds.py:48
+#: datautils\embeds.py:50
 msgid "Roles"
 msgstr "Роли"
 
@@ -589,7 +601,7 @@ msgstr "Права"
 msgid "Members"
 msgstr "Участников"
 
-#: datautils\datautils.py:539 datautils\embeds.py:42
+#: datautils\datautils.py:539 datautils\embeds.py:44
 msgid "Managed"
 msgstr "Управляемая"
 
@@ -654,101 +666,101 @@ msgstr "Получить список эмодзи на сервере"
 msgid "No emojis on this server"
 msgstr "На этом сервере нет эмодзи"
 
-#: datautils\embeds.py:16
+#: datautils\embeds.py:18
 msgid "[Unable to resolve unicode name]"
 msgstr "[Невозможно найти имя в Unicode]"
 
-#: datautils\embeds.py:24
+#: datautils\embeds.py:26
 msgid "Unicode character"
 msgstr "Символ Unicode"
 
-#: datautils\embeds.py:28
+#: datautils\embeds.py:30
 msgid "Unicode category"
 msgstr "Категория Unicode"
 
-#: datautils\embeds.py:34
+#: datautils\embeds.py:36
 msgid "Animated"
 msgstr "Анимированная"
 
-#: datautils\embeds.py:41
+#: datautils\embeds.py:43
 msgid "\":\" required"
 msgstr "Требуется \":\""
 
-#: datautils\embeds.py:43
+#: datautils\embeds.py:45
 msgid "Server"
 msgstr "Сервер"
 
-#: datautils\embeds.py:44
+#: datautils\embeds.py:46
 msgid "Available"
 msgstr "Доступно"
 
-#: datautils\embeds.py:45
+#: datautils\embeds.py:47
 msgid "Usable by bot"
 msgstr "Доступно боту"
 
-#: datautils\embeds.py:57
+#: datautils\embeds.py:59
 msgid "Custom emoji"
 msgstr "Серверная эмодзи"
 
-#: datautils\embeds.py:78
+#: datautils\embeds.py:80
 msgid "Custom status"
 msgstr "Пользовательский статус"
 
-#: datautils\embeds.py:81
+#: datautils\embeds.py:83
 msgid "Playing {}"
 msgstr "Играет в {}"
 
-#: datautils\embeds.py:99
+#: datautils\embeds.py:101
 msgid "This game will end at"
 msgstr "Эта игра закончится в"
 
-#: datautils\embeds.py:103
+#: datautils\embeds.py:105
 msgid "Playing since"
 msgstr "Играет с"
 
-#: datautils\embeds.py:127
+#: datautils\embeds.py:129
 msgid "Small image text"
 msgstr "Текст малого изображения"
 
-#: datautils\embeds.py:132
+#: datautils\embeds.py:134
 msgid "Application ID"
 msgstr "ID приложения"
 
-#: datautils\embeds.py:135 datautils\embeds.py:169
+#: datautils\embeds.py:137 datautils\embeds.py:172
 msgid "Started at"
 msgstr "Началось в"
 
-#: datautils\embeds.py:140 datautils\embeds.py:171
+#: datautils\embeds.py:142 datautils\embeds.py:177
 msgid "Will end at"
 msgstr "Закончится в"
 
-#: datautils\embeds.py:145
+#: datautils\embeds.py:147
 msgid "Large image text"
 msgstr "Текст большого изображения"
 
-#: datautils\embeds.py:156
+#: datautils\embeds.py:158
 msgid "Streaming on {}"
 msgstr "Стримит на {}"
 
-#: datautils\embeds.py:160
+#: datautils\embeds.py:162
 msgid "Game"
 msgstr "Игра"
 
-#: datautils\embeds.py:164
+#: datautils\embeds.py:166
 msgid "by {}\n"
 "on {}"
 msgstr "от {}\n"
 "из {}"
 
-#: datautils\embeds.py:170
+#: datautils\embeds.py:175
 msgid "Duration"
 msgstr "Длительность"
 
-#: datautils\embeds.py:173
+#: datautils\embeds.py:181
 msgid "Listening since"
 msgstr "Слушает с"
 
-#: datautils\embeds.py:175
+#: datautils\embeds.py:183
 msgid "Unsupported activity type: {}"
 msgstr "Неподдерживаемый тип активности: {}"
 
