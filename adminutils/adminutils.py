@@ -1,11 +1,11 @@
 import re
 from asyncio import TimeoutError as AsyncTimeoutError
 from random import choice
-from typing import Optional
+from typing import Optional, Union
 
 import aiohttp
 import discord
-from redbot.core import checks, commands
+from redbot.core import commands
 from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils import chat_formatting as chat
 from redbot.core.utils.mod import get_audit_reason
@@ -25,7 +25,7 @@ EMOJI_RE = re.compile(r"(<(a)?:[a-zA-Z0-9_]+:([0-9]+)>)")
 class AdminUtils(commands.Cog):
     """Useful commands for server administrators."""
 
-    __version__ = "2.5.6"
+    __version__ = "2.5.10"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -38,10 +38,28 @@ class AdminUtils(commands.Cog):
     async def red_delete_data_for_user(self, **kwargs):
         return
 
+    @staticmethod
+    def check_channel_permission(
+        ctx: commands.Context,
+        channel_or_category: Union[discord.TextChannel, discord.CategoryChannel],
+    ) -> bool:
+        """
+        Check user's permission in a channel, to be sure he can edit it.
+        """
+        mc = channel_or_category.permissions_for(ctx.author).manage_channels
+        if mc:
+            return True
+        reason = (
+            _("You are not allowed to edit this channel.")
+            if not isinstance(channel_or_category, discord.CategoryChannel)
+            else _("You are not allowed to edit in this category.")
+        )
+        raise commands.UserFeedbackCheckFailure(reason)
+
     @commands.command(name="prune")
     @commands.guild_only()
-    @checks.admin_or_permissions(kick_members=True)
-    @checks.bot_has_permissions(kick_members=True)
+    @commands.admin_or_permissions(kick_members=True)
+    @commands.bot_has_permissions(kick_members=True)
     async def cleanup_users(self, ctx, days: Optional[int] = 1, *roles: discord.Role):
         """Cleanup inactive server members"""
         if days > 30:
@@ -65,7 +83,7 @@ class AdminUtils(commands.Cog):
             await ctx.send(
                 chat.warning(
                     _(
-                        "You about to kick **{to_kick}** inactive for **{days}** days members from this server. "
+                        "You are about to kick **{to_kick}** inactive for **{days}** days members from this server. "
                         '{roles}Are you sure?\nTo agree, type "yes"'
                     ).format(to_kick=to_kick, days=days, roles=roles_text if roles else "")
                 )
@@ -82,7 +100,7 @@ class AdminUtils(commands.Cog):
                 chat.info(
                     _(
                         "**{removed}**/**{all}** inactive members removed.\n"
-                        "(They was inactive for **{days}** days)"
+                        "(They were inactive for **{days}** days)"
                     ).format(removed=cleanup, all=to_kick, days=days)
                 )
             )
@@ -91,9 +109,9 @@ class AdminUtils(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    @checks.admin_or_permissions(manage_guild=True)
+    @commands.admin_or_permissions(manage_guild=True)
     @commands.bot_has_permissions(manage_guild=True)
-    async def restartvoice(self, ctx):
+    async def restartvoice(self, ctx: commands.Context):
         """Change server's voice region to random and back
 
         Useful to reinitate all voice connections"""
@@ -115,10 +133,13 @@ class AdminUtils(commands.Cog):
     @commands.command()
     @commands.guild_only()
     @commands.cooldown(1, 60, commands.BucketType.guild)
-    @checks.admin_or_permissions(move_members=True)
+    @commands.admin_or_permissions(move_members=True)
     @commands.bot_has_guild_permissions(move_members=True)
     async def massmove(
-        self, ctx, from_channel: discord.VoiceChannel, to_channel: discord.VoiceChannel = None
+        self,
+        ctx: commands.Context,
+        from_channel: discord.VoiceChannel,
+        to_channel: discord.VoiceChannel = None,
     ):
         """Move all members from one voice channel to another
 
@@ -148,9 +169,9 @@ class AdminUtils(commands.Cog):
 
     @commands.group()
     @commands.guild_only()
-    @checks.admin_or_permissions(manage_emojis=True)
+    @commands.admin_or_permissions(manage_emojis=True)
     @commands.bot_has_permissions(manage_emojis=True)
-    async def emoji(self, ctx):
+    async def emoji(self, ctx: commands.Context):
         """Manage emoji"""
         pass
 
@@ -190,7 +211,9 @@ class AdminUtils(commands.Cog):
             await ctx.tick()
 
     @emoji.command(name="message", aliases=["steal"])
-    async def emote_steal(self, ctx, name: str, message_id: discord.Message, *roles: discord.Role):
+    async def emote_steal(
+        self, ctx: commands.Context, name: str, message_id: discord.Message, *roles: discord.Role
+    ):
         """
         Add an emoji from a specified message
         Use double quotes if role name has spaces
@@ -199,7 +222,7 @@ class AdminUtils(commands.Cog):
             `[p]emoji message Example 162379234070467641`
             `[p]emoji message RoleBased 162379234070467641 EmojiRole`
         """
-        # TrusyJaid NotSoBot converter
+        # TrustyJaid NotSoBot converter
         # https://github.com/TrustyJAID/Trusty-cogs/blob/a3e931bc6227645007b37c3f4f524c9fc9859686/notsobot/converter.py#L30-L36
         emoji = EMOJI_RE.search(message_id.content)
         if not emoji:
@@ -235,7 +258,9 @@ class AdminUtils(commands.Cog):
             await ctx.send(chat.error(_("An error occurred on adding an emoji: {}").format(e)))
 
     @emoji.command(name="rename")
-    async def emoji_rename(self, ctx, emoji: discord.Emoji, name: str, *roles: discord.Role):
+    async def emoji_rename(
+        self, ctx: commands.Context, emoji: discord.Emoji, name: str, *roles: discord.Role
+    ):
         """Rename emoji and restrict to certain roles
         Only this roles will be able to use this emoji
 
@@ -264,10 +289,144 @@ class AdminUtils(commands.Cog):
         await ctx.tick()
 
     @emoji.command(name="remove")
-    async def emoji_remove(self, ctx, *, emoji: discord.Emoji):
+    async def emoji_remove(self, ctx: commands.Context, *, emoji: discord.Emoji):
         """Remove emoji from server"""
         if emoji.guild != ctx.guild:
             await ctx.send_help()
             return
         await emoji.delete(reason=get_audit_reason(ctx.author))
         await ctx.tick()
+
+    @commands.group()
+    @commands.guild_only()
+    @commands.admin_or_permissions(manage_channels=True)
+    @commands.bot_has_permissions(manage_channels=True)
+    async def channel(self, ctx: commands.Context):
+        """Manage channels"""
+        pass
+
+    @channel.group(name="create", aliases=["add"])
+    async def channel_create(
+        self,
+        ctx: commands.Context,
+    ):
+        """Create a channel"""
+
+    @channel_create.command(name="text")
+    async def channel_create_text(
+        self,
+        ctx: commands.Context,
+        category: Optional[discord.CategoryChannel] = None,
+        *,
+        name: str,
+    ):
+        """Create a text channel
+
+        You can create the channel under a category if passed, else it is created under no category
+        Use double quotes if category has spaces
+
+        Examples:
+            `[p]channel add text "The Zoo" awesome-channel` will create under the "The Zoo" category.
+            `[p]channel add text awesome-channel` will create under no category, at the top.
+        """
+        if category:
+            self.check_channel_permission(ctx, category)
+        try:
+            await ctx.guild.create_text_channel(
+                name, category=category, reason=get_audit_reason(ctx.author)
+            )
+        except discord.Forbidden:
+            await ctx.send(chat.error(_("I can't create channel in this category")))
+        except discord.HTTPException as e:
+            await ctx.send(chat.error(_("I am unable to create a channel: {}").format(e)))
+        else:
+            await ctx.tick()
+
+    @channel_create.command(name="voice")
+    async def channel_create_voice(
+        self,
+        ctx: commands.Context,
+        category: Optional[discord.CategoryChannel] = None,
+        *,
+        name: str,
+    ):
+        """Create a voice channel
+
+        You can create the channel under a category if passed, else it is created under no category
+        Use double quotes if category has spaces
+
+        Examples:
+            `[p]channel add voice "The Zoo" Awesome Channel` will create under the "The Zoo" category.
+            `[p]channel add voice Awesome Channel` will create under no category, at the top.
+        """
+        if category:
+            self.check_channel_permission(ctx, category)
+        try:
+            await ctx.guild.create_voice_channel(
+                name, category=category, reason=get_audit_reason(ctx.author)
+            )
+        except discord.Forbidden:
+            await ctx.send(chat.error(_("I can't create channel in this category")))
+        except discord.HTTPException as e:
+            await ctx.send(chat.error(_("I am unable to create a channel: {}").format(e)))
+        else:
+            await ctx.tick()
+
+    @channel.command(name="rename")
+    async def channel_rename(
+        self,
+        ctx: commands.Context,
+        channel: Union[discord.TextChannel, discord.VoiceChannel],
+        *,
+        name: str,
+    ):
+        """Rename a channel
+
+        Use double quotes if channel has spaces
+
+        Examples:
+            `[p]channel rename channel new-channel-name`
+        """
+        self.check_channel_permission(ctx, channel)
+        try:
+            await channel.edit(name=name, reason=get_audit_reason(ctx.author))
+        except discord.Forbidden:
+            await ctx.send(chat.error(_("I can't rename this channel")))
+        except discord.HTTPException as e:
+            await ctx.send(chat.error(_("I am unable to rename this channel: {}").format(e)))
+        else:
+            await ctx.tick()
+
+    @channel.command(name="delete", aliases=["remove"])
+    async def channel_delete(
+        self, ctx: commands.Context, *, channel: Union[discord.TextChannel, discord.VoiceChannel]
+    ):
+        """Remove a channel from server
+
+        Example:
+            `[p]channel delete channel`
+        """
+        self.check_channel_permission(ctx, channel)
+        pred = MessagePredicate.yes_or_no(ctx)
+        if not ctx.assume_yes:
+            await ctx.send(
+                chat.warning(
+                    _(
+                        "You are about to delete channel {channel}. This cannot be undone. Are you sure?\n"
+                        'To agree, type "yes"'
+                    ).format(channel=channel.mention)
+                )
+            )
+            try:
+                await self.bot.wait_for("message", check=pred, timeout=30)
+            except AsyncTimeoutError:
+                pass
+        if ctx.assume_yes or pred.result:
+            try:
+                await channel.delete(reason=get_audit_reason(ctx.author))
+            except discord.Forbidden:
+                await ctx.send(chat.error(_("I can't delete this channel")))
+            except discord.HTTPException as e:
+                await ctx.send(chat.error(_("I am unable to delete a channel: {}").format(e)))
+            else:
+                await ctx.tick()

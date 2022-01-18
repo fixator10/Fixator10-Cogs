@@ -30,14 +30,13 @@ async def send_preview(
     timeout: float,
     emoji: str,
 ):
+    # TODO: Use dpy menus/ui.view
     with suppress(discord.NotFound):
         await message.delete()
     doc = ctx.search_docs[page]
     async with ctx.typing():
         try:
-            async with ctx.cog.session.get(
-                doc.preview_scene, raise_for_status=True
-            ) as video_preview:
+            async with ctx.cog.session.get(doc.video, raise_for_status=True) as video_preview:
                 video_preview = BytesIO(await video_preview.read())
                 await ctx.send(
                     embed=pages[page],
@@ -53,42 +52,11 @@ async def send_preview(
 TRACEMOE_MENU_CONTROLS = {**DEFAULT_CONTROLS, "\N{FILM FRAMES}": send_preview}
 
 
-def nsfwcheck():
-    """
-    Custom check that hide all commands used with it in the help formatter
-    and block usage of them if used in a non-nsfw channel.
-    """
-    # original code is by preda:
-    # https://github.com/PredaaA/predacogs/blob/9bd61dc494010829d4fecd9d550339aa58a412d3/nsfw/core.py#L206
-
-    async def predicate(ctx: commands.Context):
-        if (
-            not ctx.guild
-            or ctx.channel.is_nsfw()
-            or ctx.invoked_with == "help"
-            or ctx.invoked_subcommand
-        ):
-            return True
-        if ctx.invoked_with not in [k for k in ctx.bot.all_commands]:
-            # For this weird issue with last version of discord.py (1.2.3) with non-existing commands.
-            # So this check is only for dev version of Red.
-            # https://discordapp.com/channels/133049272517001216/133251234164375552/598149067268292648 for reference.
-            # It probably need to check in d.py to see what is happening, looks like an issue somewhere.
-            # It will probably removed in the future, it's a temporary check.
-            return False
-        try:
-            await ctx.send(chat.error(_("You can't use this command in a non-NSFW channel!")))
-        finally:
-            return False
-
-    return commands.check(predicate)
-
-
 @cog_i18n(_)
 class ReverseImageSearch(commands.Cog):
     """(Anime) Reverse Image Search"""
 
-    __version__ = "2.1.10"
+    __version__ = "2.1.14"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -112,7 +80,7 @@ class ReverseImageSearch(commands.Cog):
 
     @commands.group(invoke_without_command=True)
     @commands.cooldown(1, 30, commands.BucketType.user)
-    @nsfwcheck()
+    @commands.is_nsfw()
     async def saucenao(self, ctx, image: ImageFinder = None):
         """[NSFW] Reverse search image via SauceNAO"""
         if image is None:
@@ -211,9 +179,10 @@ class ReverseImageSearch(commands.Cog):
         else:
             await ctx.send(_("Command `{}` has not been used yet").format(self.saucenao))
 
-    @commands.group(invoke_without_command=True, aliases=["WAIT"])
+    @commands.group(invoke_without_command=True, aliases=["WAIT", "ASSE"])
+    @commands.cooldown(60, 60)
     async def tracemoe(self, ctx, image: ImageFinder = None):
-        """Reverse search image via WAIT
+        """Reverse search image via Anime Scene Search Engine
 
         If search performed not in NSFW channel, NSFW results will be not shown"""
         if image is None:
@@ -241,15 +210,11 @@ class ReverseImageSearch(commands.Cog):
                     s
                     for s in [
                         _("Similarity: {:.2f}%").format(doc.similarity * 100),
-                        doc.title_native
-                        and "🇯🇵 " + _("Native title: {}").format(doc.title_native),
                         doc.title_romaji
                         and "🇯🇵 " + _("Romaji transcription: {}").format(doc.title_romaji),
-                        doc.title_chinese
-                        and "🇨🇳 " + _("Chinese title: {}").format(doc.title_chinese),
                         doc.title_english
                         and "🇺🇸 " + _("English title: {}").format(doc.title_english),
-                        _("Est. Time: {}").format(doc.time_str),
+                        _("Time: {}").format(doc.time_str),
                         _("Episode: {}").format(doc.episode),
                         doc.synonyms and _("Also known as: {}").format(", ".join(doc.synonyms)),
                     ]
@@ -260,15 +225,17 @@ class ReverseImageSearch(commands.Cog):
                 or f"https://anilist.co/anime/{doc.anilist_id}",
                 color=await ctx.embed_color(),
             )
-            e.set_thumbnail(url=doc.thumbnail)
+            e.set_thumbnail(url=doc.image)
             e.set_footer(
-                text=_("Via WAIT (trace.moe) • Page {}/{}").format(page, len(search.docs)),
+                text=_("Via Anime Scene Search Engine (trace.moe) • Page {}/{}").format(
+                    page, len(search.docs)
+                ),
                 icon_url="https://trace.moe/favicon128.png",
             )
             embeds.append(e)
         if embeds:
             ctx.search_docs = search.docs
-            await menu(ctx, embeds, TRACEMOE_MENU_CONTROLS)
+            await menu(ctx, embeds, TRACEMOE_MENU_CONTROLS)  # TODO: Use dpy menus/ui.view
         else:
             await ctx.send(chat.info(_("Nothing found")))
 
@@ -278,19 +245,7 @@ class ReverseImageSearch(commands.Cog):
         """See how many requests are left and time until reset"""
         stats = await TraceMoe.me(ctx)
         await ctx.send(
-            _(
-                "Remaining requests (ratelimit): {}/{}\n"
-                "Remaining requests (quota): {}/{}\n"
-                "Ratelimit reset in {}/{}\n"
-                "Quota reset in {}/{}\n"
-            ).format(
-                stats.limit,
-                stats.user_limit,
-                stats.quota,
-                stats.user_quota,
-                stats.limit_ttl,
-                stats.user_limit_ttl,
-                stats.quota_ttl,
-                stats.user_quota_ttl,
+            _("Priority: {}\n" "Concurrency: {}\n" "Quota: {}/{}").format(
+                stats.priority, stats.concurrency, stats.quotaUsed, stats.quota
             )
         )

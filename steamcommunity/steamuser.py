@@ -1,4 +1,6 @@
 from json import JSONDecodeError
+from pathlib import PurePosixPath
+from urllib.parse import urlparse
 
 from redbot.core.commands import BadArgument
 from redbot.core.i18n import Translator
@@ -6,6 +8,9 @@ from valve.steam.api.interface import API
 from valve.steam.id import SteamID, SteamIDError
 
 _ = Translator("SteamCommunity", __file__)
+
+
+WEB_SCHEMES = ["http", "https"]
 
 
 class SteamUser:
@@ -79,8 +84,13 @@ class SteamUser:
         if "ISteamUser" not in list(steam._interfaces.keys()):
             raise BadArgument(_("ApiKey not set or incorrect."))
         userapi = steam["ISteamUser"]
-        if argument.startswith("http"):
-            argument = argument.strip("/").split("/")[-1]
+        argument = argument.replace("\\", "/")
+        if (url_parsed := urlparse(argument)).scheme in ["http", "https"]:
+            if url_parsed.netloc != "steamcommunity.com":
+                raise BadArgument(
+                    _("{} is not a Steam Community domain name.").format(url_parsed.netloc)
+                )
+            argument = PurePosixPath(url_parsed.path).name
         if argument.isdigit():
             id64 = argument
         else:
@@ -91,7 +101,9 @@ class SteamUser:
                     raise BadArgument(_("Incorrect SteamID32 provided."))
             else:
                 try:
-                    id64 = userapi.ResolveVanityURL(argument)["response"].get("steamid", "")
+                    id64 = (
+                        userapi.ResolveVanityURL(argument).get("response", {}).get("steamid", "")
+                    )
                 except JSONDecodeError:
                     raise BadArgument(
                         _(
@@ -101,14 +113,15 @@ class SteamUser:
                     )
         if not id64.isnumeric():
             raise BadArgument(_("User with SteamID {} not found.").format(argument))
-        try:
-            profile = await ctx.bot.loop.run_in_executor(None, SteamUser, steam, id64)
-        except IndexError:
-            raise BadArgument(
-                _(
-                    "Unable to get profile for {} ({}). Check your input or try again later."
-                ).format(argument, id64)
-            )
+        async with ctx.typing():
+            try:
+                profile = await ctx.bot.loop.run_in_executor(None, SteamUser, steam, id64)
+            except IndexError:
+                raise BadArgument(
+                    _(
+                        "Unable to get profile for {} ({}). Check your input or try again later."
+                    ).format(argument, id64)
+                )
         return profile
 
     def personastate(self, string: bool = True):

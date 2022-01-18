@@ -4,7 +4,7 @@ from pprint import pformat
 from typing import Union
 
 import discord
-from redbot.core import checks, commands
+from redbot.core import commands
 from redbot.core.config import Config
 from redbot.core.i18n import Translator, cog_i18n, set_contextual_locales_from_guild
 from redbot.core.utils import AsyncIter
@@ -38,9 +38,9 @@ _ = Translator("MessagesLog", __file__)
 
 @cog_i18n(_)
 class MessagesLog(commands.Cog):
-    """Log deleted and redacted messages to the defined channel"""
+    """Log deleted and edited messages to the defined channel"""
 
-    __version__ = "2.3.10"
+    __version__ = "2.3.12"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -81,7 +81,7 @@ class MessagesLog(commands.Cog):
         return
 
     @commands.group(autohelp=True, aliases=["messagelog", "messageslogs", "messagelogs"])
-    @checks.admin_or_permissions(manage_guild=True)
+    @commands.admin_or_permissions(manage_guild=True)
     async def messageslog(self, ctx):
         """Manage message logging"""
         pass
@@ -380,7 +380,7 @@ class MessagesLog(commands.Cog):
             pass
 
     @commands.Cog.listener("on_message_edit")
-    async def message_redacted(self, before: discord.Message, after: discord.Message):
+    async def message_edited(self, before: discord.Message, after: discord.Message):
         if not before.guild:
             return
         if await self.bot.cog_disabled_in_guild(self, before.guild):
@@ -408,7 +408,7 @@ class MessagesLog(commands.Cog):
             return
         await set_contextual_locales_from_guild(self.bot, before.guild)
         embed = discord.Embed(
-            title=_("Message redacted"),
+            title=_("Message edited"),
             description=before.content or chat.inline(_("No text")),
             timestamp=before.created_at,
             color=before.author.color,

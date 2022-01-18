@@ -4,7 +4,7 @@ import random
 
 import aiohttp
 import discord
-from redbot.core import checks, commands
+from redbot.core import commands
 from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils import chat_formatting as chat
 from tabulate import tabulate
@@ -87,15 +87,14 @@ def rgb_to_hsv(r, g, b):
     return h, s, v
 
 
-def bool_emojify(bool_var: bool) -> str:
-    return "✅" if bool_var else "❌"
+SM_DATETIME_FORMAT = "%m/%d/%Y - %H:%M:%S"
 
 
 @cog_i18n(_)
 class MoreUtils(commands.Cog):
     """Some (maybe) useful utils."""
 
-    __version__ = "2.0.19"
+    __version__ = "2.0.21"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -111,10 +110,10 @@ class MoreUtils(commands.Cog):
     @commands.command(name="thetime")
     async def _thetime(self, ctx):
         """Displays the current time of the server."""
-        await ctx.send(datetime.datetime.now().strftime(_("%d.%m.%Y %H:%M:%S %Z")))
+        await ctx.send(datetime.datetime.now().strftime(SM_DATETIME_FORMAT))
 
     @commands.command(aliases=["HEX", "hex", "colour"])
-    @checks.bot_has_permissions(embed_links=True)
+    @commands.bot_has_permissions(embed_links=True)
     @commands.max_concurrency(1, commands.BucketType.user)
     async def color(self, ctx, *, color: discord.Color):
         """Shows some info about provided color."""
@@ -195,7 +194,7 @@ class MoreUtils(commands.Cog):
             )
         )
 
-    @commands.command(pass_context=True)
+    @commands.command()
     @commands.cooldown(1, 10, commands.BucketType.user)
     @commands.max_concurrency(1, commands.BucketType.user)
     async def discordstatus(self, ctx):

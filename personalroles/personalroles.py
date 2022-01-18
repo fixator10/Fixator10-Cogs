@@ -1,37 +1,62 @@
+from asyncio import TimeoutError as AsyncTimeoutError
 from textwrap import shorten
 from typing import Union
 
+import aiohttp
 import discord
-from redbot.core import checks, commands
+from redbot.core import commands
 from redbot.core.config import Config
 from redbot.core.i18n import Translator, cog_i18n, set_contextual_locales_from_guild
 from redbot.core.utils import AsyncIter
 from redbot.core.utils import chat_formatting as chat
 from redbot.core.utils.menus import DEFAULT_CONTROLS, menu
 from redbot.core.utils.mod import get_audit_reason
+from redbot.core.utils.predicates import ReactionPredicate
 from tabulate import tabulate
+
+from .discord_py_future import edit_role_icon
+
+try:
+    from redbot import json  # support of Draper's branch
+except ImportError:
+    import json
 
 _ = Translator("PersonalRoles", __file__)
 
 
 async def has_assigned_role(ctx):
+    """Check if user has assigned role"""
     return ctx.guild.get_role(await ctx.cog.config.member(ctx.author).role())
+
+
+async def role_icons_feature(ctx):
+    """Check for ROLE_ICONS feature"""
+    return "ROLE_ICONS" in ctx.guild.features
 
 
 @cog_i18n(_)
 class PersonalRoles(commands.Cog):
     """Assign and edit personal roles"""
 
-    __version__ = "2.1.5"
+    __version__ = "2.2.2"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
         self.bot = bot
+        self.session = aiohttp.ClientSession(json_serialize=json.dumps)
         self.config = Config.get_conf(self, identifier=0x3D86BBD3E2B744AE8AA8B5D986EB4DD8)
         default_member = {"role": None}
         default_guild = {"blacklist": [], "role_persistence": True}
         self.config.register_member(**default_member)
         self.config.register_guild(**default_guild)
+
+        # Set cooldown for `[p]myrole icon` commands
+        self._icon_cd = commands.CooldownMapping.from_cooldown(1, 30, commands.BucketType.member)
+        for cmd in self.icon.walk_commands():
+            cmd._buckets = self._icon_cd
+
+    def cog_unload(self):
+        self.bot.loop.create_task(self.session.close())
 
     async def red_delete_data_for_user(self, *, requester, user_id: int):
         # Thanks Sinbad
@@ -47,7 +72,7 @@ class PersonalRoles(commands.Cog):
         pass
 
     @myrole.command()
-    @checks.admin_or_permissions(manage_roles=True)
+    @commands.admin_or_permissions(manage_roles=True)
     async def assign(self, ctx, user: discord.Member, *, role: discord.Role):
         """Assign personal role to someone"""
         await self.config.member(user).role.set(role.id)
@@ -58,7 +83,7 @@ class PersonalRoles(commands.Cog):
         )
 
     @myrole.command()
-    @checks.admin_or_permissions(manage_roles=True)
+    @commands.admin_or_permissions(manage_roles=True)
     async def unassign(self, ctx, *, user: Union[discord.Member, discord.User, int]):
         """Unassign personal role from someone"""
         if isinstance(user, discord.Member):
@@ -77,7 +102,7 @@ class PersonalRoles(commands.Cog):
         )
 
     @myrole.command(name="list")
-    @checks.admin_or_permissions(manage_roles=True)
+    @commands.admin_or_permissions(manage_roles=True)
     async def mr_list(self, ctx):
         """Assigned roles list"""
         members_data = await self.config.all_members(ctx.guild)
@@ -102,7 +127,7 @@ class PersonalRoles(commands.Cog):
             await ctx.send(chat.info(_("There is no assigned personal roles on this server")))
 
     @myrole.command(name="persistence")
-    @checks.admin_or_permissions(manage_roles=True)
+    @commands.admin_or_permissions(manage_roles=True)
     async def mr_persistence(self, ctx):
         """Toggle auto-adding role on rejoin."""
         editing = self.config.guild(ctx.guild).role_persistence
@@ -117,8 +142,7 @@ class PersonalRoles(commands.Cog):
         )
 
     @myrole.group(name="blocklist", aliases=["blacklist"])
-    @commands.guild_only()
-    @checks.admin_or_permissions(manage_roles=True)
+    @commands.admin_or_permissions(manage_roles=True)
     async def blacklist(self, ctx):
         """Manage blocklisted names"""
         pass
@@ -151,7 +175,7 @@ class PersonalRoles(commands.Cog):
                 )
 
     @blacklist.command(name="list")
-    @checks.admin_or_permissions(manage_roles=True)
+    @commands.admin_or_permissions(manage_roles=True)
     async def bl_list(self, ctx):
         """List of blocklisted role names"""
         blacklist = await self.config.guild(ctx.guild).blacklist()
@@ -163,8 +187,8 @@ class PersonalRoles(commands.Cog):
 
     @commands.cooldown(1, 30, commands.BucketType.member)
     @myrole.command(aliases=["color"])
-    @commands.guild_only()
     @commands.check(has_assigned_role)
+    @commands.bot_has_permissions(manage_roles=True)
     async def colour(self, ctx, *, colour: discord.Colour = discord.Colour.default()):
         """Change color of personal role"""
         role = await self.config.member(ctx.author).role()
@@ -174,12 +198,7 @@ class PersonalRoles(commands.Cog):
         except discord.Forbidden:
             ctx.command.reset_cooldown(ctx)
             await ctx.send(
-                chat.error(
-                    _(
-                        "Unable to edit role.\n"
-                        'Role must be lower than my top role and i must have permission "Manage Roles"'
-                    )
-                )
+                chat.error(_("Unable to edit role.\nRole must be lower than my top role"))
             )
         except discord.HTTPException as e:
             ctx.command.reset_cooldown(ctx)
@@ -198,8 +217,8 @@ class PersonalRoles(commands.Cog):
 
     @commands.cooldown(1, 30, commands.BucketType.member)
     @myrole.command()
-    @commands.guild_only()
     @commands.check(has_assigned_role)
+    @commands.bot_has_permissions(manage_roles=True)
     async def name(self, ctx, *, name: str):
         """Change name of personal role
         You cant use blocklisted names"""
@@ -214,12 +233,7 @@ class PersonalRoles(commands.Cog):
         except discord.Forbidden:
             ctx.command.reset_cooldown(ctx)
             await ctx.send(
-                chat.error(
-                    _(
-                        "Unable to edit role.\n"
-                        'Role must be lower than my top role and i must have permission "Manage Roles"'
-                    )
-                )
+                chat.error(_("Unable to edit role.\nRole must be lower than my top role"))
             )
         except discord.HTTPException as e:
             ctx.command.reset_cooldown(ctx)
@@ -230,6 +244,129 @@ class PersonalRoles(commands.Cog):
                     user=ctx.message.author.name, name=name
                 )
             )
+
+    @myrole.group(invoke_without_command=True)
+    @commands.check(has_assigned_role)
+    @commands.check(role_icons_feature)
+    @commands.bot_has_permissions(manage_roles=True)
+    async def icon(self, ctx):
+        """Change icon of personal role"""
+        pass
+
+    @icon.command(name="emoji")
+    async def icon_emoji(self, ctx, *, emoji: Union[discord.Emoji, discord.PartialEmoji] = None):
+        """Change icon of personal role using emoji"""
+        role = await self.config.member(ctx.author).role()
+        role = ctx.guild.get_role(role)
+        if not emoji:
+            if ctx.channel.permissions_for(ctx.author).add_reactions:
+                m = await ctx.send(_("React to this message with your emoji"))
+                try:
+                    reaction = await ctx.bot.wait_for(
+                        "reaction_add",
+                        check=ReactionPredicate.same_context(message=m, user=ctx.author),
+                        timeout=30,
+                    )
+                    emoji = reaction[0].emoji
+                except AsyncTimeoutError:
+                    return
+                finally:
+                    await m.delete(delay=0)
+            else:
+                await ctx.send_help()
+                return
+        try:
+            if isinstance(emoji, (discord.Emoji, discord.PartialEmoji)):
+                await edit_role_icon(
+                    self.bot,
+                    role,
+                    icon=await emoji.url_as(format="png").read(),
+                    reason=get_audit_reason(ctx.author, _("Personal Role")),
+                )
+            else:
+                await edit_role_icon(
+                    self.bot,
+                    role,
+                    unicode_emoji=emoji,
+                    reason=get_audit_reason(ctx.author, _("Personal Role")),
+                )
+        except discord.Forbidden:
+            ctx.command.reset_cooldown(ctx)
+            await ctx.send(
+                chat.error(_("Unable to edit role.\nRole must be lower than my top role"))
+            )
+        except discord.InvalidArgument:
+            await ctx.send(chat.error(_("This image type is unsupported, or link is incorrect")))
+        except discord.HTTPException as e:
+            ctx.command.reset_cooldown(ctx)
+            await ctx.send(chat.error(_("Unable to edit role: {}").format(e)))
+        else:
+            await ctx.send(
+                _("Changed icon of {user}'s personal role").format(user=ctx.message.author.name)
+            )
+
+    @icon.command(name="image", aliases=["url"])
+    async def icon_image(self, ctx, *, url: str = None):
+        """Change icon of personal role using image"""
+        role = await self.config.member(ctx.author).role()
+        role = ctx.guild.get_role(role)
+        if not (ctx.message.attachments or url):
+            raise commands.BadArgument
+        if ctx.message.attachments:
+            image = await ctx.message.attachments[0].read()
+        else:
+            try:
+                async with ctx.cog.session.get(url, raise_for_status=True) as resp:
+                    image = await resp.read()
+            except aiohttp.ClientResponseError as e:
+                await ctx.send(chat.error(_("Unable to get image: {}").format(e.message)))
+                return
+        try:
+            await edit_role_icon(
+                self.bot,
+                role,
+                icon=image,
+                reason=get_audit_reason(ctx.author, _("Personal Role")),
+            )
+        except discord.Forbidden:
+            ctx.command.reset_cooldown(ctx)
+            await ctx.send(
+                chat.error(_("Unable to edit role.\nRole must be lower than my top role"))
+            )
+        except discord.InvalidArgument:
+            await ctx.send(chat.error(_("This image type is unsupported, or link is incorrect")))
+        except discord.HTTPException as e:
+            ctx.command.reset_cooldown(ctx)
+            await ctx.send(chat.error(_("Unable to edit role: {}").format(e)))
+        else:
+            await ctx.send(
+                _("Changed icon of {user}'s personal role").format(user=ctx.message.author.name)
+            )
+
+    @icon.command(name="reset", aliases=["remove"])
+    async def icon_reset(self, ctx):
+        """Remove icon of personal role"""
+        role = await self.config.member(ctx.author).role()
+        role = ctx.guild.get_role(role)
+        try:
+            await edit_role_icon(
+                self.bot,
+                role,
+                icon=None,
+                unicode_emoji=None,
+                reason=get_audit_reason(ctx.author, _("Personal Role")),
+            )
+            await ctx.send(
+                _("Removed icon of {user}'s personal role").format(user=ctx.message.author.name)
+            )
+        except discord.Forbidden:
+            ctx.command.reset_cooldown(ctx)
+            await ctx.send(
+                chat.error(_("Unable to edit role.\nRole must be lower than my top role"))
+            )
+        except discord.HTTPException as e:
+            ctx.command.reset_cooldown(ctx)
+            await ctx.send(chat.error(_("Unable to edit role: {}").format(e)))
 
     @commands.Cog.listener("on_member_join")
     async def role_persistence(self, member):

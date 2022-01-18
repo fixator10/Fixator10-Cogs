@@ -11,7 +11,9 @@ from warnings import filterwarnings
 import aiohttp
 import discord
 import valve.source.a2s
-from redbot.core import checks, commands
+from fixcogsutils.dpy_future import get_markdown_timestamp
+from fixcogsutils.formatting import bool_emojify
+from redbot.core import commands
 from redbot.core.data_manager import bundled_data_path
 from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils import chat_formatting as chat
@@ -36,10 +38,6 @@ USERAGENT = (
     "Safari/537.36"
 )
 LOAD_INDICATORS = ["\N{GREEN HEART}", "\N{YELLOW HEART}", "\N{BROKEN HEART}"]
-
-
-def bool_emojify(bool_var: bool) -> str:
-    return "✅" if bool_var else "❌"
 
 
 def check_api(ctx):
@@ -79,7 +77,7 @@ filterwarnings("ignore", category=FutureWarning, module=r"valve.")
 class SteamCommunity(commands.Cog):
     """SteamCommunity commands"""
 
-    __version__ = "2.1.13"
+    __version__ = "2.1.17"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -109,7 +107,7 @@ class SteamCommunity(commands.Cog):
         pass
 
     @steamcommunity.command()
-    @checks.is_owner()
+    @commands.is_owner()
     async def apikey(self, ctx):
         """Set API key for Steam Web API"""
         message = _(
@@ -158,9 +156,7 @@ class SteamCommunity(commands.Cog):
         if profile.createdat:
             em.add_field(
                 name=_("Created at"),
-                value=datetime.utcfromtimestamp(profile.createdat).strftime(
-                    _("%d.%m.%Y %H:%M:%S")
-                ),
+                value=get_markdown_timestamp(datetime.utcfromtimestamp(profile.createdat)),
             )
         em.add_field(name="SteamID", value="{}\n{}".format(profile.steamid, profile.sid3))
         em.add_field(name="SteamID64", value=profile.steamid64)
@@ -257,8 +253,6 @@ class SteamCommunity(commands.Cog):
             value=_(
                 "**TF2 Game Coordinator**: {}\n"
                 "**Dota 2 Game Coordinator**: {}\n"
-                "**Underlords Game Coordinator**: {}\n"
-                "**Artifact Game Coordinator**: {}\n"
                 "**CS:GO Game Coordinator**: {}\n"
                 "**CS:GO Sessions Logon**: {}\n"
                 "**CS:GO Player Inventories**: {}\n"
@@ -266,8 +260,6 @@ class SteamCommunity(commands.Cog):
             ).format(
                 (await find_service(services, "tf2")).text_with_indicator,
                 (await find_service(services, "dota2")).text_with_indicator,
-                (await find_service(services, "underlords")).text_with_indicator,
-                (await find_service(services, "artifact")).text_with_indicator,
                 (await find_service(services, "csgo")).text_with_indicator,
                 (await find_service(services, "csgo_sessions")).text_with_indicator,
                 (await find_service(services, "csgo_community")).text_with_indicator,

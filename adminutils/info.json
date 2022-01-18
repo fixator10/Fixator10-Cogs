@@ -2,7 +2,8 @@
   "author": [
     "Fixator10",
     "DiNitride",
-    "kablekompany"
+    "kablekompany",
+    "Predeactor"
   ],
   "install_msg": "Thanks for install.\nThis cog contains some useful commands for server administrators.",
   "short": "Useful commands for server administrators.",
@@ -10,7 +11,7 @@
   "min_bot_version": "3.4.0",
   "tags": [
     "admin",
-    "emoj",
+    "emoji",
     "purge"
   ],
   "end_user_data_statement": "This cog does not persistently store data or metadata about users."

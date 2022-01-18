@@ -17,7 +17,8 @@
   "min_bot_version": "3.4.8",
   "requirements": [
     "tabulate",
-    "wcwidth"
+    "wcwidth",
+    "git+https://github.com/fixator10/F10-Cogs-Utils"
   ],
   "end_user_data_statement": "This cog does not persistently store data or metadata about users."
 }

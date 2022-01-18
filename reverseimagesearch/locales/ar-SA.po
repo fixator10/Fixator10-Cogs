@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fixator10-cogs\n"
-"POT-Creation-Date: 2020-11-14 17:14+0400\n"
+"POT-Creation-Date: 2021-08-14 15:28+0400\n"
 "Last-Translator: \n"
 "Language-Team: Arabic\n"
 "MIME-Version: 1.0\n"
@@ -15,69 +15,68 @@ msgstr ""
 "X-Crowdin-File-ID: 71\n"
 "Language: ar_SA\n"
 
-#: reverseimagesearch\converters.py:68
+#: reverseimagesearch\converters.py:66
 msgid "No images provided."
 msgstr ""
 
-#: reverseimagesearch\converters.py:82
+#: reverseimagesearch\converters.py:80
 msgid "No Images found in recent history."
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:48
+#: reverseimagesearch\reverseimagesearch.py:47
 msgid "Unable to get video preview: {}"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:50
+#: reverseimagesearch\reverseimagesearch.py:49
 msgid "Unable to send video preview: {}"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:75
+#: reverseimagesearch\reverseimagesearch.py:79
 msgid "You can't use this command in a non-NSFW channel!"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:84
+#: reverseimagesearch\reverseimagesearch.py:88
 #, docstring
 msgid "(Anime) Reverse Image Search"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:112
+#: reverseimagesearch\reverseimagesearch.py:116
 #, docstring
-msgid "Reverse search image via SauceNAO"
+msgid "[NSFW] Reverse search image via SauceNAO"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:126
-#: reverseimagesearch\reverseimagesearch.py:165
+#: reverseimagesearch\reverseimagesearch.py:130
+#: reverseimagesearch\reverseimagesearch.py:169
 #: reverseimagesearch\reverseimagesearch.py:271
 msgid "Nothing found"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:145
+#: reverseimagesearch\reverseimagesearch.py:149
 msgid "Similarity: {}%"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:147
+#: reverseimagesearch\reverseimagesearch.py:151
 msgid "Part/Episode: {}"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:148
+#: reverseimagesearch\reverseimagesearch.py:152
 msgid "Year: {}"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:149
-#: reverseimagesearch\reverseimagesearch.py:248
+#: reverseimagesearch\reverseimagesearch.py:153
 msgid "Est. Time: {}"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:157
+#: reverseimagesearch\reverseimagesearch.py:161
 msgid "Via SauceNAO • Page {}/{}"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:170
+#: reverseimagesearch\reverseimagesearch.py:174
 #, docstring
 msgid "Set API key for SauceNAO"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:171
+#: reverseimagesearch\reverseimagesearch.py:175
 msgid "To get SauceNAO API key:\n"
 "1. [Login](https://saucenao.com/user.php) to your SauceNAO account\n"
 "2. Go to [Search > api](https://saucenao.com/user.php?page=search-api) page\n"
@@ -87,63 +86,59 @@ msgid "To get SauceNAO API key:\n"
 "or in DM with the bot."
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:185
+#: reverseimagesearch\reverseimagesearch.py:189
 #, docstring
 msgid "Set API count of results count for SauceNAO\n\n"
 "        6 by default"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:194
+#: reverseimagesearch\reverseimagesearch.py:198
 #, docstring
 msgid "See how many requests are left"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:197
+#: reverseimagesearch\reverseimagesearch.py:201
 msgid "Remaining requests:\n"
 "Short (30 seconds): {}/{}\n"
 "Long: (24 hours): {}/{}"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:207
+#: reverseimagesearch\reverseimagesearch.py:211
 msgid "Command `{}` has not been used yet"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:211
+#: reverseimagesearch\reverseimagesearch.py:216
 #, docstring
-msgid "Reverse search image via WAIT\n\n"
+msgid "Reverse search image via Anime Scene Search Engine\n\n"
 "        If search performed not in NSFW channel, NSFW results will be not shown"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:239
+#: reverseimagesearch\reverseimagesearch.py:243
 msgid "Similarity: {:.2f}%"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:241
-msgid "Native title: {}"
-msgstr ""
-
-#: reverseimagesearch\reverseimagesearch.py:243
-msgid "Romaji transcription: {}"
-msgstr ""
-
 #: reverseimagesearch\reverseimagesearch.py:245
-msgid "Chinese title: {}"
+msgid "Romaji transcription: {}"
 msgstr ""
 
 #: reverseimagesearch\reverseimagesearch.py:247
 msgid "English title: {}"
 msgstr ""
 
+#: reverseimagesearch\reverseimagesearch.py:248
+msgid "Time: {}"
+msgstr ""
+
 #: reverseimagesearch\reverseimagesearch.py:249
 msgid "Episode: {}"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:251
+#: reverseimagesearch\reverseimagesearch.py:250
 msgid "Also known as: {}"
 msgstr ""
 
-#: reverseimagesearch\reverseimagesearch.py:263
-msgid "Via WAIT (trace.moe) • Page {}/{}"
+#: reverseimagesearch\reverseimagesearch.py:261
+msgid "Via Anime Scene Search Engine (trace.moe) • Page {}/{}"
 msgstr ""
 
 #: reverseimagesearch\reverseimagesearch.py:276
@@ -152,10 +147,9 @@ msgid "See how many requests are left and time until reset"
 msgstr ""
 
 #: reverseimagesearch\reverseimagesearch.py:279
-msgid "Remaining requests (ratelimit): {}/{}\n"
-"Remaining requests (quota): {}/{}\n"
-"Ratelimit reset in {}/{}\n"
-"Quota reset in {}/{}\n"
+msgid "Priority: {}\n"
+"Concurrency: {}\n"
+"Quota: {}/{}"
 msgstr ""
 
 #: reverseimagesearch\saucenao.py:96
@@ -167,15 +161,19 @@ msgstr ""
 msgid "Unable to search for provided image, SauceNAO returned {status} ({message})"
 msgstr ""
 
-#: reverseimagesearch\tracemoe.py:88
+#: reverseimagesearch\tracemoe.py:85
 msgid "Unable to convert image."
 msgstr ""
 
-#: reverseimagesearch\tracemoe.py:90
+#: reverseimagesearch\tracemoe.py:87
 msgid "Unable to get image: {}"
 msgstr ""
 
-#: reverseimagesearch\tracemoe.py:102
+#: reverseimagesearch\tracemoe.py:101
+msgid "An error occurred during search: {}"
+msgstr ""
+
+#: reverseimagesearch\tracemoe.py:108
 msgid "Unable to search for provided image, trace.moe returned {status} ({message})"
 msgstr ""
 

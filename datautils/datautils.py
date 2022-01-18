@@ -5,7 +5,9 @@ from typing import Optional, Union
 
 import discord
 import tabulate
-from redbot.core import checks, commands
+from fixcogsutils.dpy_future import TimestampStyle, get_markdown_timestamp
+from fixcogsutils.formatting import bool_emojify
+from redbot.core import commands
 from redbot.core.i18n import cog_i18n
 from redbot.core.utils import chat_formatting as chat
 from redbot.core.utils.predicates import ReactionPredicate
@@ -13,26 +15,25 @@ from redbot.core.utils.predicates import ReactionPredicate
 from .common_variables import CHANNEL_TYPE_EMOJIS, GUILD_FEATURES, KNOWN_CHANNEL_TYPES
 from .embeds import emoji_embed
 from .menus import ActivityPager, BaseMenu, ChannelsMenu, ChannelsPager, EmojiPager, PagePager
-from .utils import _, bool_emojify
+from .utils import _
 
 
 @cog_i18n(_)
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.6.0"
+    __version__ = "2.6.9"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
         self.bot = bot
-        self.TIME_FORMAT = _("%d.%m.%Y %H:%M:%S %Z")
 
     async def red_delete_data_for_user(self, **kwargs):
         return
 
     @commands.command(aliases=["fetchuser"], hidden=True)
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    @checks.bot_has_permissions(embed_links=True)
+    @commands.cooldown(1, 30, commands.BucketType.user)
+    @commands.bot_has_permissions(embed_links=True)
     async def getuserinfo(self, ctx, user_id: int):
         """Get info about any Discord's user by ID"""
         try:
@@ -82,7 +83,7 @@ class DataUtils(commands.Cog):
         await ctx.send(embed=em)
 
     @commands.command(aliases=["widgetinfo"], hidden=True)
-    @checks.bot_has_permissions(embed_links=True)
+    @commands.bot_has_permissions(embed_links=True)
     async def fetchwidget(self, ctx, *, server_id: int):
         """Get data about server by ID via server's widget"""
         try:
@@ -139,7 +140,7 @@ class DataUtils(commands.Cog):
 
     @commands.command(aliases=["memberinfo", "membinfo"])
     @commands.guild_only()
-    @checks.bot_has_permissions(embed_links=True)
+    @commands.bot_has_permissions(embed_links=True)
     async def uinfo(self, ctx, *, member: discord.Member = None):
         """Information on a user"""
         if member is None:
@@ -162,18 +163,21 @@ class DataUtils(commands.Cog):
                 str(member.web_status).capitalize(),
             ),
         )
-        em.add_field(name=_("Joined server"), value=member.joined_at.strftime(self.TIME_FORMAT))
+        em.add_field(
+            name=_("Joined server"),
+            value=get_markdown_timestamp(member.joined_at, TimestampStyle.datetime_long),
+        )
         em.add_field(name="ID", value=member.id)
         em.add_field(
             name=_("Exists since"),
-            value=member.created_at.strftime(self.TIME_FORMAT),
+            value=get_markdown_timestamp(member.created_at, TimestampStyle.datetime_long),
         )
         if member.color.value:
             em.add_field(name=_("Color"), value=member.colour)
         if member.premium_since:
             em.add_field(
                 name=_("Boosted server"),
-                value=member.premium_since.strftime(self.TIME_FORMAT),
+                value=get_markdown_timestamp(member.premium_since, TimestampStyle.datetime_long),
             )
         em.add_field(name=_("Bot?"), value=bool_emojify(member.bot))
         em.add_field(name=_("System?"), value=bool_emojify(member.system))
@@ -213,7 +217,7 @@ class DataUtils(commands.Cog):
 
     @commands.command(aliases=["activity"])
     @commands.guild_only()
-    @checks.mod_or_permissions(embed_links=True)
+    @commands.mod_or_permissions(embed_links=True)
     async def activities(self, ctx, *, member: discord.Member = None):
         """List user's activities"""
         if member is None:
@@ -225,7 +229,7 @@ class DataUtils(commands.Cog):
 
     @commands.command(aliases=["servinfo", "serv", "sv"])
     @commands.guild_only()
-    @checks.bot_has_permissions(embed_links=True)
+    @commands.bot_has_permissions(embed_links=True)
     async def sinfo(self, ctx, *, server: commands.GuildConverter = None):
         """Shows server information"""
         if server is None or not await self.bot.is_owner(ctx.author):
@@ -242,7 +246,10 @@ class DataUtils(commands.Cog):
         )
         em.add_field(name=_("Name"), value=chat.escape(server.name, formatting=True))
         em.add_field(name=_("Server ID"), value=server.id)
-        em.add_field(name=_("Exists since"), value=server.created_at.strftime(self.TIME_FORMAT))
+        em.add_field(
+            name=_("Exists since"),
+            value=get_markdown_timestamp(server.created_at, TimestampStyle.datetime_long),
+        )
         em.add_field(name=_("Region"), value=server.region)
         if server.preferred_locale:
             em.add_field(name=_("Discovery language"), value=server.preferred_locale)
@@ -366,8 +373,8 @@ class DataUtils(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    @checks.mod_or_permissions(ban_members=True)
-    @checks.bot_has_permissions(embed_links=True)
+    @commands.mod_or_permissions(ban_members=True)
+    @commands.bot_has_permissions(embed_links=True)
     async def bans(self, ctx: commands.Context, *, server: commands.GuildConverter = None):
         """Get bans from server by id"""
         if server is None or not await self.bot.is_owner(ctx.author):
@@ -384,8 +391,8 @@ class DataUtils(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    @checks.admin_or_permissions(manage_guild=True)
-    @checks.bot_has_permissions(embed_links=True)
+    @commands.admin_or_permissions(manage_guild=True)
+    @commands.bot_has_permissions(embed_links=True)
     async def invites(self, ctx: commands.Context, *, server: commands.GuildConverter = None):
         """Get invites from server by id"""
         if server is None or not await self.bot.is_owner(ctx.author):
@@ -404,7 +411,7 @@ class DataUtils(commands.Cog):
 
     @commands.command(aliases=["chaninfo", "channelinfo"])
     @commands.guild_only()
-    @checks.bot_has_permissions(embed_links=True)
+    @commands.bot_has_permissions(embed_links=True)
     async def cinfo(
         self,
         ctx,
@@ -440,7 +447,7 @@ class DataUtils(commands.Cog):
         )
         em.add_field(
             name=_("Exists since"),
-            value=channel.created_at.strftime(self.TIME_FORMAT),
+            value=get_markdown_timestamp(channel.created_at, TimestampStyle.datetime_long),
         )
         em.add_field(
             name=_("Category"),
@@ -494,7 +501,7 @@ class DataUtils(commands.Cog):
     @commands.command(aliases=["channellist", "listchannels"])
     @commands.guild_only()
     @commands.admin_or_permissions(manage_channels=True)
-    @checks.bot_has_permissions(embed_links=True)
+    @commands.bot_has_permissions(embed_links=True)
     async def channels(self, ctx, *, server: commands.GuildConverter = None):
         """Get all channels on server"""
         # TODO: Use dpy menus for that
@@ -508,7 +515,7 @@ class DataUtils(commands.Cog):
 
     @commands.command(aliases=["roleinfo"])
     @commands.guild_only()
-    @checks.bot_has_permissions(embed_links=True)
+    @commands.bot_has_permissions(embed_links=True)
     async def rinfo(self, ctx, *, role: discord.Role):
         """Get info about role"""
         em = discord.Embed(
@@ -524,7 +531,7 @@ class DataUtils(commands.Cog):
         )
         em.add_field(
             name=_("Exists since"),
-            value=role.created_at.strftime(self.TIME_FORMAT),
+            value=get_markdown_timestamp(role.created_at, TimestampStyle.datetime_long),
         )
         em.add_field(name=_("Color"), value=role.colour)
         em.add_field(name=_("Members"), value=str(len(role.members)))
@@ -581,7 +588,7 @@ class DataUtils(commands.Cog):
 
     @commands.command(aliases=["cperms"])
     @commands.guild_only()
-    @checks.admin_or_permissions(administrator=True)
+    @commands.admin_or_permissions(administrator=True)
     async def chanperms(
         self,
         ctx,
@@ -611,7 +618,7 @@ class DataUtils(commands.Cog):
         )
 
     @commands.command(aliases=["emojiinfo", "emojinfo"])
-    @checks.bot_has_permissions(embed_links=True)
+    @commands.bot_has_permissions(embed_links=True)
     async def einfo(self, ctx, *, emoji: Union[discord.Emoji, discord.PartialEmoji] = None):
         """Get info about emoji"""
         if not emoji:

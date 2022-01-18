@@ -20,18 +20,36 @@ GUILD_FEATURES = {
     "COMMERCE": _("Store channels"),
     "NEWS": _("News channels"),
     "BANNER": _("Banner{banner}"),
+    "ANIMATED_BANNER": _("Animated banner"),
     "ANIMATED_ICON": _("Animated icon"),
     "WELCOME_SCREEN_ENABLED": _("Welcome screen"),
     "PUBLIC_DISABLED": _("Cannot be public"),
     "ENABLED_DISCOVERABLE_BEFORE": _("Was in Server Discovery"),
     "COMMUNITY": _("Community server"),
+    "TICKETED_EVENTS_ENABLED": _("Ticketed events"),
+    "MONETIZATION_ENABLED": _("Monetization"),
+    "MORE_STICKERS": _("Extended custom sticker slots"),
+    "THREADS_ENABLED": _("Threads"),
+    "THREADS_ENABLED_TESTING": _("Threads (testing)"),
+    "PRIVATE_THREADS": _("Private threads"),  # "keep Discord’s core features free"
+    "THREE_DAY_THREAD_ARCHIVE": _("3 day thread archive"),
+    "SEVEN_DAY_THREAD_ARCHIVE": _("7 day thread archive"),
+    "NEW_THREAD_PERMISSIONS": _("Enabled new thread permissions"),
+    "ROLE_ICONS": _("Role icons"),
+    "DISCOVERABLE_DISABLED": _("Cannot be in Server Discovery"),
     # Docs from https://github.com/vDelite/DiscordLists:
     "PREVIEW_ENABLED": _('Preview enabled ("Lurkable")'),
     "MEMBER_VERIFICATION_GATE_ENABLED": _("Member verification gate enabled"),
     "MEMBER_LIST_DISABLED": _("Member list disabled"),
+    "PREMIUM_TIER_3_OVERRIDE": _("Permanent level 3 boost"),
+    "MEMBER_PROFILES": _("Server profiles"),
+    "CHANNEL_BANNER": _("Channel banner"),
     # im honestly idk what the fuck that shit means, and discord doesnt provides much docs,
     # so if you see that on your server while using my cog - idk what the fuck is that and how it got there,
     # ask discord to write fucking docs already
+    "RELAY_ENABLED": _(
+        "Shards connections to the guild to different nodes that relay information between each other."
+    ),
     "FORCE_RELAY": _(
         "Shards connections to the guild to different nodes that relay information between each other."
     ),

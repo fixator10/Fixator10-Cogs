@@ -6,6 +6,9 @@
     <a href="https://github.com/Cog-Creators/Red-DiscordBot">
         <img alt="Red-DiscordBot" src="https://img.shields.io/badge/Red-DiscordBot-red.svg?style=for-the-badge">
     </a>
+    <a href="https://jb.gg/OpenSource">
+        <img alt="JetBrains PyCharm" src="https://img.shields.io/badge/JetBrains-PyCharm-18d68c.svg?style=for-the-badge">
+    </a>
     <a href="https://www.codefactor.io/repository/github/fixator10/fixator10-cogs">
         <img alt="Codefactor" src="https://www.codefactor.io/repository/github/fixator10/fixator10-cogs/badge?style=for-the-badge">
     </a>
