@@ -2713,7 +2713,7 @@ class Leveler(commands.Cog):
         )  # box
 
         # rep_text = "{} REP".format(userinfo["rep"])
-        rep_text = "{}".format(userinfo["rep"])
+        rep_text = "{}".format(await self.humanize_number(userinfo["rep"]))
         await _write_unicode("❤", 257, 9, rep_fnt, rep_u_fnt, rep_fill)
         draw.text(
             (await self._center(278, 340, rep_text, rep_fnt), 10),
@@ -2744,23 +2744,21 @@ class Leveler(commands.Cog):
 
         if "linux" in platform.system().lower():
             global_symbol = "\U0001F30E "
+            #money_symbol = "\U0001F4B0 "
         else:
             global_symbol = "G."
+            #money_symbol = "$."
 
         await _write_unicode(
             global_symbol, 36, label_align + 5, label_fnt, symbol_u_fnt, info_text_color
         )  # Symbol
         await _write_unicode(
-            global_symbol,
-            134,
-            label_align + 5,
-            label_fnt,
-            symbol_u_fnt,
-            info_text_color,
+            global_symbol, 134, label_align + 5, label_fnt, symbol_u_fnt, info_text_color
         )  # Symbol
+        #await _write_unicode(money_symbol, 246, label_align + 5, label_fnt, symbol_u_fnt, info_text_color)  # Symbol
 
         # userinfo
-        global_rank = "#{}".format(await self._find_global_rank(user))
+        global_rank = "#{}".format(await self.humanize_number(await self._find_global_rank(user)))
         global_level = "{}".format(await self._find_level(userinfo["total_exp"]))
         draw.text(
             (await self._center(0, 140, global_rank, large_fnt), label_align - 27),
@@ -2770,7 +2768,7 @@ class Leveler(commands.Cog):
         )  # Rank
         draw.text(
             (await self._center(0, 340, global_level, large_fnt), label_align - 27),
-            global_level,
+            await self.humanize_number(int(global_level)),
             font=large_fnt,
             fill=info_text_color,
         )  # Exp
@@ -2787,7 +2785,7 @@ class Leveler(commands.Cog):
             [(0, 305), (bar_length, 323)],
             fill=(exp_fill[0], exp_fill[1], exp_fill[2], 255),
         )  # box
-        exp_text = "{}/{}".format(exp_frac, exp_total)  # Exp
+        exp_text = "{}/{}".format(await self.humanize_number(exp_frac), await self.humanize_number(exp_total))  # Exp
         draw.text(
             (await self._center(0, 340, exp_text, exp_fnt), 305),
             exp_text,
@@ -2796,7 +2794,7 @@ class Leveler(commands.Cog):
         )  # Exp Text
 
         bank_credits = await bank.get_balance(user)
-        credit_txt = f"{bank_credits}{(await bank.get_currency_name(server))[0]}"
+        credit_txt = f"{await self.humanize_number(bank_credits)}"
         draw.text(
             (await self._center(200, 340, credit_txt, large_fnt), label_align - 27),
             credit_txt,
@@ -3174,6 +3172,7 @@ class Leveler(commands.Cog):
             font=label_fnt,
             fill=info_text_color,
         )  # Rank
+        #currency_name = str(await bank.get_currency_name(server)).upper()
         draw.text(
             (await self._center(260, 360, "BALANCE", label_fnt), v_label_align),
             "BALANCE",
@@ -3202,14 +3201,14 @@ class Leveler(commands.Cog):
         )  # Symbol
 
         # userinfo
-        server_rank = "#{}".format(await self._find_server_rank(user, server))
+        server_rank = "#{}".format(await self.humanize_number(await self._find_server_rank(user, server)))
         draw.text(
             (await self._center(100, 200, server_rank, large_fnt), v_label_align - 30),
             server_rank,
             font=large_fnt,
             fill=info_text_color,
         )  # Rank
-        level_text = "{}".format(userinfo["servers"][str(server.id)]["level"])
+        level_text = "{}".format(await self.humanize_number(userinfo["servers"][str(server.id)]["level"]))
         draw.text(
             (await self._center(95, 360, level_text, large_fnt), v_label_align - 30),
             level_text,
@@ -3217,14 +3216,14 @@ class Leveler(commands.Cog):
             fill=info_text_color,
         )  # Level
         bank_credits = await bank.get_balance(user)
-        credit_txt = f"{bank_credits}{(await bank.get_currency_name(server))[0]}"
+        credit_txt = f"{await self.humanize_number(bank_credits)}"
         draw.text(
             (await self._center(260, 360, credit_txt, large_fnt), v_label_align - 30),
             credit_txt,
             font=large_fnt,
             fill=info_text_color,
         )  # Balance
-        exp_text = "{}/{}".format(exp_frac, exp_total)
+        exp_text = "{}/{}".format(await self.humanize_number(exp_frac), await self.humanize_number(exp_total))
         draw.text(
             (await self._center(80, 360, exp_text, exp_fnt), 19),
             exp_text,
@@ -3682,6 +3681,20 @@ class Leveler(commands.Cog):
                 )
         except AttributeError:
             pass
+
+    # changes large numbers into smaller strings, ie "10000" becomes 10k
+    async def humanize_number(self, num):
+        if not num:
+            return 0
+
+        num = float(f"{num:.3g}")
+        magnitude = 0
+
+        while abs(num) >= 1000:
+            magnitude += 1
+            num /= 1000.0
+
+        return "{}{}".format("{:f}".format(num).rstrip('0').rstrip('.'), ['', 'k', 'm', 'b', 't'][magnitude])
 
     async def _truncate_text(self, text, max_length):
         if len(text) > max_length:
