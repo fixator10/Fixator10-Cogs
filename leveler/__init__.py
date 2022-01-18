@@ -23,4 +23,4 @@ __red_end_user_data_statement__ = (
 async def setup(bot):
     cog = Leveler(bot)
     bot.add_cog(cog)
-    bot.loop.create_task(cog.initialize())
+    await cog.initialize()
