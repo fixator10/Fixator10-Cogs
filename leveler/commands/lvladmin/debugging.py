@@ -144,14 +144,15 @@ class Debugging(MixinMeta):
     async def db_integrity_fix(self, ctx):
         """Artificially fix Database integrity."""
         async with ctx.typing():
-            async for user in self.db.users.find({}):
-                total_xp = 0
-                for server in user["servers"]:
-                    xp = await self._level_exp(user["servers"][server]["level"])
-                    total_xp += xp
-                    total_xp += user["servers"][server]["current_exp"]
-                if total_xp != user["total_exp"]:
-                    await self.db.users.update_one(
-                        {"user_id": user["user_id"]}, {"$set": {"total_exp": total_xp}}
-                    )
+            async with self._db_lock:
+                async for user in self.db.users.find({}):
+                    total_xp = 0
+                    for server in user["servers"]:
+                        xp = await self._level_exp(user["servers"][server]["level"])
+                        total_xp += xp
+                        total_xp += user["servers"][server]["current_exp"]
+                    if total_xp != user["total_exp"]:
+                        await self.db.users.update_one(
+                            {"user_id": user["user_id"]}, {"$set": {"total_exp": total_xp}}
+                        )
         await ctx.tick()
