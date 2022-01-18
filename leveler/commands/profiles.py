@@ -1,7 +1,7 @@
 import discord
-from tabulate import tabulate
 from redbot.core import bank, commands
 from redbot.core.utils import chat_formatting as chat
+from tabulate import tabulate
 
 from ..abc import CompositeMetaClass, MixinMeta
 
@@ -144,7 +144,7 @@ class Profiles(MixinMeta, metaclass=CompositeMetaClass):
             "Profile background": userinfo["profile_background"],
             "Rank background": userinfo["rank_background"],
             "Levelup background": userinfo["levelup_background"],
-            "Badges": ", ".join(userinfo["badges"]),
+            "Badges": "\n".join(userinfo["badges"]),
         }
         for k, v in userinfo.items():
             if ("color" in k) and v:
