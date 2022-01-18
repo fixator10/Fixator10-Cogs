@@ -29,7 +29,7 @@
 # Fixator10-Cogs
 Cogs from [my edition of DiNitride's selfbot](https://github.com/fixator10/Discord-Self-Bot) and moar
 
-For support visit my [personal server](https://fixator10.ru/discord) or find me (Fixator10#7133) on [Red - Cog Support server](https://discord.gg/GET4DVk)
+For support find me (Fixator10#7133) in #support_fixator10-cogs on [Red - Cog Support server](https://discord.gg/GET4DVk).
 
 # Cog list
 | Cog                | Description                                                                                                                                                                                                                  |
