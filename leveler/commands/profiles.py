@@ -1,7 +1,7 @@
 import discord
-from tabulate import tabulate
 from redbot.core import bank, commands
 from redbot.core.utils import chat_formatting as chat
+from tabulate import tabulate
 
 from ..abc import CompositeMetaClass, MixinMeta
 
@@ -132,19 +132,20 @@ class Profiles(MixinMeta, metaclass=CompositeMetaClass):
         for i in range(userinfo["servers"][str(server.id)]["level"]):
             total_server_exp += await self._required_exp(i)
         total_server_exp += userinfo["servers"][str(server.id)]["current_exp"]
-        data = {"Name": user.name,
-                "Title": userinfo["title"],
-                "Reps": userinfo["rep"],
-                "Server level": userinfo["servers"][str(server.id)]["level"],
-                "Server XP": total_server_exp,
-                "Total XP": userinfo["total_exp"],
-                "Shared servers data": len(userinfo["servers"]),
-                "Info": userinfo["info"],
-                "Profile background": userinfo["profile_background"],
-                "Rank background": userinfo["rank_background"],
-                "Levelup background": userinfo["levelup_background"],
-                "Badges": ", ".join(userinfo["badges"])
-                }
+        data = {
+            "Name": user.name,
+            "Title": userinfo["title"],
+            "Reps": userinfo["rep"],
+            "Server level": userinfo["servers"][str(server.id)]["level"],
+            "Server XP": total_server_exp,
+            "Total XP": userinfo["total_exp"],
+            "Shared servers data": len(userinfo["servers"]),
+            "Info": userinfo["info"],
+            "Profile background": userinfo["profile_background"],
+            "Rank background": userinfo["rank_background"],
+            "Levelup background": userinfo["levelup_background"],
+            "Badges": ", ".join(userinfo["badges"]),
+        }
         for k, v in userinfo.items():
             if ("color" in k) and v:
                 data[k.capitalize().replace("_", " ")] = discord.Color.from_rgb(*v[:3])
