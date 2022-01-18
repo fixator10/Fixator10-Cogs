@@ -33,10 +33,6 @@ class Utils(MixinMeta):
             )
         return await self.db.users.find_one({"user_id": userinfo["user_id"]})
 
-    async def _rgb_to_hex(self, rgb):
-        rgb = tuple(rgb[:3])
-        return "#%02x%02x%02x" % rgb
-
     # converts hex to rgb
     async def _hex_to_rgb(self, hex_num: str, a: int):
         h = hex_num.lstrip("#")

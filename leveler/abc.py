@@ -40,10 +40,6 @@ class MixinMeta(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def _rgb_to_hex(self, rgb) -> str:
-        raise NotImplementedError
-
-    @abstractmethod
     async def _badge_convert_dict(self, userinfo):
         raise NotImplementedError
 

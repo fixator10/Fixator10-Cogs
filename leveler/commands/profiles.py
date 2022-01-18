@@ -1,5 +1,7 @@
 import discord
+from tabulate import tabulate
 from redbot.core import bank, commands
+from redbot.core.utils import chat_formatting as chat
 
 from ..abc import CompositeMetaClass, MixinMeta
 
@@ -126,52 +128,28 @@ class Profiles(MixinMeta, metaclass=CompositeMetaClass):
 
         # creates user if doesn't exist
         await self._create_user(user, server)
-        msg = ""
-        msg += "Name: {}\n".format(user.name)
-        msg += "Title: {}\n".format(userinfo["title"])
-        msg += "Reps: {}\n".format(userinfo["rep"])
-        msg += "Server Level: {}\n".format(userinfo["servers"][str(server.id)]["level"])
         total_server_exp = 0
         for i in range(userinfo["servers"][str(server.id)]["level"]):
             total_server_exp += await self._required_exp(i)
         total_server_exp += userinfo["servers"][str(server.id)]["current_exp"]
-        msg += "Server Exp: {}\n".format(total_server_exp)
-        msg += "Total Exp: {}\n".format(userinfo["total_exp"])
-        msg += "Shared servers data: {}\n".format(len(userinfo["servers"]))
-        msg += "Info: {}\n".format(userinfo["info"])
-        msg += "Profile background: {}\n".format(userinfo["profile_background"])
-        msg += "Rank background: {}\n".format(userinfo["rank_background"])
-        msg += "Levelup background: {}\n".format(userinfo["levelup_background"])
-        if userinfo.get("profile_info_color"):
-            msg += "Profile info color: {}\n".format(
-                await self._rgb_to_hex(userinfo["profile_info_color"])
-            )
-        if userinfo.get("profile_exp_color"):
-            msg += "Profile exp color: {}\n".format(
-                await self._rgb_to_hex(userinfo["profile_exp_color"])
-            )
-        if userinfo.get("rep_color"):
-            msg += "Rep section color: {}\n".format(await self._rgb_to_hex(userinfo["rep_color"]))
-        if userinfo.get("badge_col_color"):
-            msg += "Badge section color: {}\n".format(
-                await self._rgb_to_hex(userinfo["badge_col_color"])
-            )
-        if userinfo.get("rank_info_color"):
-            msg += "Rank info color: {}\n".format(
-                await self._rgb_to_hex(userinfo["rank_info_color"])
-            )
-        if userinfo.get("rank_exp_color"):
-            msg += "Rank exp color: {}\n".format(
-                await self._rgb_to_hex(userinfo["rank_exp_color"])
-            )
-        if userinfo.get("levelup_info_color"):
-            msg += "Level info color: {}\n".format(
-                await self._rgb_to_hex(userinfo["levelup_info_color"])
-            )
-        msg += "Badges: "
-        msg += ", ".join(userinfo["badges"])
+        data = {"Name": user.name,
+                "Title": userinfo["title"],
+                "Reps": userinfo["rep"],
+                "Server level": userinfo["servers"][str(server.id)]["level"],
+                "Server XP": total_server_exp,
+                "Total XP": userinfo["total_exp"],
+                "Shared servers data": len(userinfo["servers"]),
+                "Info": userinfo["info"],
+                "Profile background": userinfo["profile_background"],
+                "Rank background": userinfo["rank_background"],
+                "Levelup background": userinfo["levelup_background"],
+                "Badges": ", ".join(userinfo["badges"])
+                }
+        for k, v in userinfo.items():
+            if ("color" in k) and v:
+                data[k.capitalize().replace("_", " ")] = discord.Color.from_rgb(*v[:3])
 
-        em = discord.Embed(description=msg, colour=user.colour)
+        em = discord.Embed(description=chat.box(tabulate(data.items())), colour=user.colour)
         em.set_author(
             name="Profile Information for {}".format(user.name),
             icon_url=user.avatar_url,
