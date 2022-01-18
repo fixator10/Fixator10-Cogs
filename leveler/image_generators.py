@@ -11,6 +11,7 @@ from redbot.core.errors import CogLoadError
 from redbot.core.utils import AsyncIter
 
 from .abc import MixinMeta
+from .utils import Utils
 
 try:
     from PIL import Image, ImageDraw, ImageFont, ImageOps
@@ -192,6 +193,7 @@ class ImageGenerators(MixinMeta):
         # labels
         v_label_align = 75
         info_text_color = white_color
+        credits_name = credits_name.upper() if label_fnt.getmask(credits_name.upper()).getbbox()[2] < 200 else "BALANCE"
         draw.text(
             (self._center(100, 200, "  RANK", label_fnt), v_label_align),
             "  RANK",
@@ -205,8 +207,8 @@ class ImageGenerators(MixinMeta):
             fill=info_text_color,
         )  # Rank
         draw.text(
-            (self._center(260, 360, "BALANCE", label_fnt), v_label_align),
-            "BALANCE",
+            (self._center(260, 360, credits_name, label_fnt), v_label_align),
+            credits_name,
             font=label_fnt,
             fill=info_text_color,
         )  # Rank
@@ -229,14 +231,14 @@ class ImageGenerators(MixinMeta):
         )  # Symbol
 
         # userinfo
-        server_rank = "#{}".format(server_rank)
+        server_rank = "#{}".format(self._humanize_number(server_rank))
         draw.text(
             (self._center(100, 200, server_rank, large_fnt), v_label_align - 30),
             server_rank,
             font=large_fnt,
             fill=info_text_color,
         )  # Rank
-        level_text = "{}".format(userinfo["servers"][str(server.id)]["level"])
+        level_text = "{}".format(self._humanize_number(userinfo["servers"][str(server.id)]["level"]))
         draw.text(
             (self._center(95, 360, level_text, large_fnt), v_label_align - 30),
             level_text,
@@ -244,7 +246,7 @@ class ImageGenerators(MixinMeta):
             fill=info_text_color,
         )  # Level
         credit_txt = (
-            f"{bank_credits}"
+            f"{self._humanize_number(bank_credits)}"
             f"{credits_name if (credits_name := (credits_name)[0]) != '<' else '$'}"
         )
         draw.text(
@@ -253,7 +255,7 @@ class ImageGenerators(MixinMeta):
             font=large_fnt,
             fill=info_text_color,
         )  # Balance
-        exp_text = f"{exp_frac}/{exp_total}"
+        exp_text = f"{self._humanize_number(exp_frac)}/{self._humanize_number(exp_total)}"
         draw.text(
             (self._center(80, 360, exp_text, exp_fnt), 19),
             exp_text,
@@ -576,7 +578,7 @@ class ImageGenerators(MixinMeta):
         )  # box
 
         # rep_text = "{} REP".format(userinfo["rep"])
-        rep_text = "{}".format(userinfo["rep"])
+        rep_text = "{}".format(self._humanize_number(userinfo["rep"]))
         _write_unicode("\N{HEAVY BLACK HEART}", 257, 9, rep_fnt, rep_u_fnt, rep_fill)
         draw.text(
             (self._center(278, 340, rep_text, rep_fnt), 10),
@@ -585,6 +587,7 @@ class ImageGenerators(MixinMeta):
             fill=rep_fill,
         )  # Exp Text
 
+        credits_name = credits_name.upper() if label_fnt.getmask(credits_name.upper()).getbbox()[2] <= label_fnt.getmask("BALANCE").getbbox()[2] else "BALANCE"
         label_align = 362  # vertical
         draw.text(
             (self._center(0, 140, "    RANK", label_fnt), label_align),
@@ -599,8 +602,8 @@ class ImageGenerators(MixinMeta):
             fill=info_text_color,
         )  # Exp
         draw.text(
-            (self._center(200, 340, "BALANCE", label_fnt), label_align),
-            "BALANCE",
+            (self._center(200, 340, credits_name, label_fnt), label_align),
+            credits_name,
             font=label_fnt,
             fill=info_text_color,
         )  # Credits
@@ -620,7 +623,7 @@ class ImageGenerators(MixinMeta):
         )  # Symbol
 
         # userinfo
-        global_rank = "#{}".format(global_rank)
+        global_rank = "#{}".format(self._humanize_number(global_rank))
         global_level = "{}".format(level)
         draw.text(
             (self._center(0, 140, global_rank, large_fnt), label_align - 27),
@@ -647,7 +650,7 @@ class ImageGenerators(MixinMeta):
             [(0, 305), (bar_length, 323)],
             fill=(exp_fill[0], exp_fill[1], exp_fill[2], 255),
         )  # box
-        exp_text = f"{exp_frac}/{next_level_exp}"  # Exp
+        exp_text = f"{self._humanize_number(exp_frac)}/{self._humanize_number(next_level_exp)}"  # Exp
         draw.text(
             (self._center(0, 340, exp_text, exp_fnt), 305),
             exp_text,
@@ -656,8 +659,7 @@ class ImageGenerators(MixinMeta):
         )  # Exp Text
 
         credit_txt = (
-            f"{bank_credits}"
-            f"{credits_name if (credits_name := credits_name[0]) != '<' else '$'}"
+            f"{self._humanize_number(bank_credits)}"
         )
         draw.text(
             (self._center(200, 340, credit_txt, large_fnt), label_align - 27),
