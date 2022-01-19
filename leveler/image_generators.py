@@ -193,7 +193,7 @@ class ImageGenerators(MixinMeta):
         # labels
         v_label_align = 75
         info_text_color = white_color
-        credits_name = credits_name.upper() if label_fnt.getmask(credits_name.upper()).getbbox()[2] < 200 else "BALANCE"
+        credits_name = credits_name.upper() if label_fnt.getmask(credits_name.upper()).getbbox()[2] <= label_fnt.getmask("BALANCE").getbbox()[2] else "BALANCE"
         draw.text(
             (self._center(100, 200, "  RANK", label_fnt), v_label_align),
             "  RANK",
