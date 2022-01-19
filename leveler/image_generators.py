@@ -247,7 +247,6 @@ class ImageGenerators(MixinMeta):
         )  # Level
         credit_txt = (
             f"{self._humanize_number(bank_credits)}"
-            f"{credits_name if (credits_name := (credits_name)[0]) != '<' else '$'}"
         )
         draw.text(
             (self._center(260, 360, credit_txt, large_fnt), v_label_align - 30),
