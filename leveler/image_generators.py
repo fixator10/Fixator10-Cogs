@@ -194,7 +194,11 @@ class ImageGenerators(MixinMeta):
         # labels
         v_label_align = 75
         info_text_color = white_color
-        credits_name = credits_name.upper() if label_fnt.getmask(credits_name.upper()).getbbox()[2] <= balance_width else "BALANCE"
+        credits_name = (
+            credits_name.upper()
+            if label_fnt.getmask(credits_name.upper()).getbbox()[2] <= balance_width
+            else "BALANCE"
+        )
 
         draw.text(
             (self._center(100, 200, "  RANK", label_fnt), v_label_align),
@@ -247,9 +251,7 @@ class ImageGenerators(MixinMeta):
             font=large_fnt,
             fill=info_text_color,
         )  # Level
-        credit_txt = (
-            f"{self._humanize_number(bank_credits)}"
-        )
+        credit_txt = f"{self._humanize_number(bank_credits)}"
         draw.text(
             (self._center(260, 360, credit_txt, large_fnt), v_label_align - 30),
             credit_txt,
@@ -381,7 +383,9 @@ class ImageGenerators(MixinMeta):
         white_text = (250, 250, 250, 255)
         dark_text = (35, 35, 35, 230)
         level_up_text = self._contrast(info_color, white_text, dark_text)
-        lvl_text = "LEVEL {}".format(self._humanize_number(userinfo["servers"][str(server.id)]["level"]))
+        lvl_text = "LEVEL {}".format(
+            self._humanize_number(userinfo["servers"][str(server.id)]["level"])
+        )
         draw.text(
             (self._center(60, 170, lvl_text, level_fnt), 23),
             lvl_text,
@@ -590,7 +594,11 @@ class ImageGenerators(MixinMeta):
 
         balance_width = 85
 
-        credits_name = credits_name.upper() if label_fnt.getmask(credits_name.upper()).getbbox()[2] <= balance_width else "BALANCE"
+        credits_name = (
+            credits_name.upper()
+            if label_fnt.getmask(credits_name.upper()).getbbox()[2] <= balance_width
+            else "BALANCE"
+        )
 
         label_align = 362  # vertical
         draw.text(
@@ -662,9 +670,7 @@ class ImageGenerators(MixinMeta):
             fill=exp_font_color,
         )  # Exp Text
 
-        credit_txt = (
-            f"{self._humanize_number(bank_credits)}"
-        )
+        credit_txt = f"{self._humanize_number(bank_credits)}"
         draw.text(
             (self._center(200, 340, credit_txt, large_fnt), label_align - 27),
             credit_txt,
