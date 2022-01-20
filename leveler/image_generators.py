@@ -11,7 +11,6 @@ from redbot.core.errors import CogLoadError
 from redbot.core.utils import AsyncIter
 
 from .abc import MixinMeta
-from .utils import Utils
 
 try:
     from PIL import Image, ImageDraw, ImageFont, ImageOps
@@ -190,10 +189,13 @@ class ImageGenerators(MixinMeta):
             grey_color,
         )  # Name
 
+        balance_width = 63
+
         # labels
         v_label_align = 75
         info_text_color = white_color
-        credits_name = credits_name.upper() if label_fnt.getmask(credits_name.upper()).getbbox()[2] <= label_fnt.getmask("BALANCE").getbbox()[2] else "BALANCE"
+        credits_name = credits_name.upper() if label_fnt.getmask(credits_name.upper()).getbbox()[2] <= balance_width else "BALANCE"
+
         draw.text(
             (self._center(100, 200, "  RANK", label_fnt), v_label_align),
             "  RANK",
@@ -238,7 +240,7 @@ class ImageGenerators(MixinMeta):
             font=large_fnt,
             fill=info_text_color,
         )  # Rank
-        level_text = "{}".format(self._humanize_number(userinfo["servers"][str(server.id)]["level"]))
+        level_text = "{}".format(userinfo["servers"][str(server.id)]["level"])
         draw.text(
             (self._center(95, 360, level_text, large_fnt), v_label_align - 30),
             level_text,
@@ -254,7 +256,7 @@ class ImageGenerators(MixinMeta):
             font=large_fnt,
             fill=info_text_color,
         )  # Balance
-        exp_text = f"{self._humanize_number(exp_frac)}/{self._humanize_number(exp_total)}"
+        exp_text = f"{exp_frac}/{exp_total}"
         draw.text(
             (self._center(80, 360, exp_text, exp_fnt), 19),
             exp_text,
@@ -586,7 +588,10 @@ class ImageGenerators(MixinMeta):
             fill=rep_fill,
         )  # Exp Text
 
-        credits_name = credits_name.upper() if label_fnt.getmask(credits_name.upper()).getbbox()[2] <= label_fnt.getmask("BALANCE").getbbox()[2] else "BALANCE"
+        balance_width = 85
+
+        credits_name = credits_name.upper() if label_fnt.getmask(credits_name.upper()).getbbox()[2] <= balance_width else "BALANCE"
+
         label_align = 362  # vertical
         draw.text(
             (self._center(0, 140, "    RANK", label_fnt), label_align),
@@ -649,7 +654,7 @@ class ImageGenerators(MixinMeta):
             [(0, 305), (bar_length, 323)],
             fill=(exp_fill[0], exp_fill[1], exp_fill[2], 255),
         )  # box
-        exp_text = f"{self._humanize_number(exp_frac)}/{self._humanize_number(next_level_exp)}"  # Exp
+        exp_text = f"{exp_frac}/{next_level_exp}"  # Exp
         draw.text(
             (self._center(0, 340, exp_text, exp_fnt), 305),
             exp_text,

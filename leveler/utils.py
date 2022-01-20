@@ -80,17 +80,3 @@ class Utils(MixinMeta):
         if len(text) > max_length:
             return text[: max_length - 1] + "…"
         return text
-
-    # changes large numbers into smaller strings, ie "10000" becomes 10k
-    def _humanize_number(self, number):
-        if not number:
-            return 0
-
-        number = float(f"{number:.3g}")
-        magnitude = 0
-
-        while abs(number) >= 1000:
-            magnitude += 1
-            number /= 1000.0
-
-        return "{}{}".format("{:f}".format(number).rstrip('0').rstrip('.'), ['', 'k', 'm', 'b', 't'][magnitude])

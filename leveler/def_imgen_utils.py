@@ -84,6 +84,20 @@ class DefaultImageGeneratorsUtils(MixinMeta):
         im.close()
         return colors  # returns array
 
+    # changes large numbers into smaller strings, ie "10000" becomes 10k
+    def _humanize_number(self, number):
+        if not number:
+            return 0
+
+        number = float(f"{number:.3g}")
+        magnitude = 0
+
+        while abs(number) >= 1000:
+            magnitude += 1
+            number /= 1000.0
+
+        return f"{number:.0f}{['', 'k', 'm', 'b', 't', 'q'][magnitude]}"
+
     # finds the the pixel to center the text
     def _center(self, start, end, text, font):
         dist = end - start
