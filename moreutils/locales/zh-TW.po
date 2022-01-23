@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fixator10-cogs\n"
-"POT-Creation-Date: 2020-11-25 16:55+0400\n"
+"POT-Creation-Date: 2022-01-12 18:35+0400\n"
 "Last-Translator: \n"
 "Language-Team: Chinese Traditional\n"
 "MIME-Version: 1.0\n"
@@ -31,49 +31,45 @@ msgstr ""
 msgid "Critical problems"
 msgstr ""
 
-#: moreutils\moreutils.py:60
+#: moreutils\moreutils.py:95
 #, docstring
 msgid "Some (maybe) useful utils."
 msgstr ""
 
-#: moreutils\moreutils.py:77
+#: moreutils\moreutils.py:112
 #, docstring
 msgid "Displays the current time of the server."
 msgstr ""
 
-#: moreutils\moreutils.py:78
-msgid "%d.%m.%Y %H:%M:%S %Z"
-msgstr ""
-
-#: moreutils\moreutils.py:84
+#: moreutils\moreutils.py:119
 #, docstring
 msgid "Shows some info about provided color."
 msgstr ""
 
-#: moreutils\moreutils.py:109
-msgid "Name: Loading...\n"
+#: moreutils\moreutils.py:146
+msgid "`Name:` Loading...\n"
 msgstr ""
 
-#: moreutils\moreutils.py:123
-msgid "Name: {} ({})\n"
+#: moreutils\moreutils.py:160
+msgid "`Name:` {} ({})\n"
 msgstr ""
 
-#: moreutils\moreutils.py:134
+#: moreutils\moreutils.py:171
 #, docstring
 msgid "Help I've fallen and I need @someone.\n\n"
 "        Discord 2018 April Fools."
 msgstr ""
 
-#: moreutils\moreutils.py:164
+#: moreutils\moreutils.py:201
 #, docstring
 msgid "Get current discord status from discordstatus.com"
 msgstr ""
 
-#: moreutils\moreutils.py:174
+#: moreutils\moreutils.py:211
 msgid "Unable to get data from https://discordstatus.com: {}"
 msgstr ""
 
-#: moreutils\moreutils.py:182
+#: moreutils\moreutils.py:219
 msgid "Discord Status"
 msgstr ""
 

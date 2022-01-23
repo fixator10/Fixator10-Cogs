@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fixator10-cogs\n"
-"POT-Creation-Date: 2021-10-12 14:54+0400\n"
+"POT-Creation-Date: 2022-01-10 17:32+0400\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "MIME-Version: 1.0\n"
@@ -47,7 +47,7 @@ msgid "\n"
 msgstr ""
 
 #: adminutils\adminutils.py:85
-msgid "You about to kick **{to_kick}** inactive for **{days}** days members from this server. {roles}Are you sure?\n"
+msgid "You are about to kick **{to_kick}** inactive for **{days}** days members from this server. {roles}Are you sure?\n"
 "To agree, type \"yes\""
 msgstr ""
 
@@ -239,11 +239,16 @@ msgid "Remove a channel from server\n\n"
 "        "
 msgstr ""
 
-#: adminutils\adminutils.py:413
+#: adminutils\adminutils.py:414
+msgid "You are about to delete channel {channel}. This cannot be undone. Are you sure?\n"
+"To agree, type \"yes\""
+msgstr ""
+
+#: adminutils\adminutils.py:428
 msgid "I can't delete this channel"
 msgstr ""
 
-#: adminutils\adminutils.py:415
+#: adminutils\adminutils.py:430
 msgid "I am unable to delete a channel: {}"
 msgstr ""
 

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fixator10-cogs\n"
-"POT-Creation-Date: 2021-10-08 17:41+0400\n"
+"POT-Creation-Date: 2022-01-10 17:13+0400\n"
 "Last-Translator: \n"
 "Language-Team: Spanish\n"
 "MIME-Version: 1.0\n"
@@ -60,118 +60,130 @@ msgid "Banner{banner}"
 msgstr ""
 
 #: datautils\common_variables.py:23
-msgid "Animated icon"
+msgid "Animated banner"
 msgstr ""
 
 #: datautils\common_variables.py:24
-msgid "Welcome screen"
+msgid "Animated icon"
 msgstr ""
 
 #: datautils\common_variables.py:25
-msgid "Cannot be public"
+msgid "Welcome screen"
 msgstr ""
 
 #: datautils\common_variables.py:26
-msgid "Was in Server Discovery"
+msgid "Cannot be public"
 msgstr ""
 
 #: datautils\common_variables.py:27
-msgid "Community server"
+msgid "Was in Server Discovery"
 msgstr ""
 
 #: datautils\common_variables.py:28
-msgid "Ticketed events"
+msgid "Community server"
 msgstr ""
 
 #: datautils\common_variables.py:29
-msgid "Monetization"
+msgid "Ticketed events"
 msgstr ""
 
 #: datautils\common_variables.py:30
-msgid "Extended custom sticker slots"
+msgid "Monetization"
 msgstr ""
 
 #: datautils\common_variables.py:31
-msgid "Threads"
+msgid "Extended custom sticker slots"
 msgstr ""
 
 #: datautils\common_variables.py:32
-msgid "Threads (testing)"
+msgid "Threads"
 msgstr ""
 
 #: datautils\common_variables.py:33
-msgid "Private threads"
+msgid "Threads (testing)"
 msgstr ""
 
 #: datautils\common_variables.py:34
-msgid "3 day thread archive"
+msgid "Private threads"
 msgstr ""
 
 #: datautils\common_variables.py:35
-msgid "7 day thread archive"
+msgid "3 day thread archive"
 msgstr ""
 
 #: datautils\common_variables.py:36
-msgid "Enabled new thread permissions"
+msgid "7 day thread archive"
 msgstr ""
 
 #: datautils\common_variables.py:37
-msgid "Role icons"
+msgid "Enabled new thread permissions"
 msgstr ""
 
 #: datautils\common_variables.py:38
+msgid "Role icons"
+msgstr ""
+
+#: datautils\common_variables.py:39
 msgid "Cannot be in Server Discovery"
 msgstr ""
 
-#: datautils\common_variables.py:40
+#: datautils\common_variables.py:41
 msgid "Preview enabled (\"Lurkable\")"
 msgstr ""
 
-#: datautils\common_variables.py:41
+#: datautils\common_variables.py:42
 msgid "Member verification gate enabled"
 msgstr ""
 
-#: datautils\common_variables.py:42
+#: datautils\common_variables.py:43
 msgid "Member list disabled"
 msgstr ""
 
-#: datautils\common_variables.py:43
+#: datautils\common_variables.py:44
 msgid "Permanent level 3 boost"
 msgstr ""
 
-#: datautils\common_variables.py:47 datautils\common_variables.py:50
+#: datautils\common_variables.py:45
+msgid "Server profiles"
+msgstr ""
+
+#: datautils\common_variables.py:46
+msgid "Channel banner"
+msgstr ""
+
+#: datautils\common_variables.py:50 datautils\common_variables.py:53
 msgid "Shards connections to the guild to different nodes that relay information between each other."
 msgstr ""
 
-#: datautils\common_variables.py:56
+#: datautils\common_variables.py:59
 msgid "Playing"
 msgstr ""
 
-#: datautils\common_variables.py:57
+#: datautils\common_variables.py:60
 msgid "Watching"
 msgstr ""
 
-#: datautils\common_variables.py:58
+#: datautils\common_variables.py:61
 msgid "Listening to"
 msgstr ""
 
-#: datautils\common_variables.py:59
+#: datautils\common_variables.py:62
 msgid "Competing in"
 msgstr ""
 
-#: datautils\common_variables.py:74
+#: datautils\common_variables.py:77
 msgid "Categories"
 msgstr ""
 
-#: datautils\common_variables.py:75
+#: datautils\common_variables.py:78
 msgid "Text channels"
 msgstr ""
 
-#: datautils\common_variables.py:76
+#: datautils\common_variables.py:79
 msgid "Voice channels"
 msgstr ""
 
-#: datautils\common_variables.py:77
+#: datautils\common_variables.py:80
 msgid "Stage channels"
 msgstr ""
 
@@ -195,7 +207,7 @@ msgstr ""
 
 #: datautils\datautils.py:58 datautils\datautils.py:443
 #: datautils\datautils.py:525 datautils\datautils.py:564
-#: datautils\datautils.py:583 datautils\embeds.py:33
+#: datautils\datautils.py:583 datautils\embeds.py:35
 msgid "ID"
 msgstr ""
 
@@ -294,7 +306,7 @@ msgstr ""
 
 #: datautils\datautils.py:172 datautils\datautils.py:250
 #: datautils\datautils.py:449 datautils\datautils.py:533
-#: datautils\embeds.py:38 datautils\embeds.py:54
+#: datautils\embeds.py:40 datautils\embeds.py:56
 msgid "Exists since"
 msgstr ""
 
@@ -315,7 +327,7 @@ msgid "In voice channel"
 msgstr ""
 
 #: datautils\datautils.py:199 datautils\datautils.py:368
-#: datautils\embeds.py:48
+#: datautils\embeds.py:50
 msgid "Roles"
 msgstr ""
 
@@ -574,7 +586,7 @@ msgstr ""
 msgid "Members"
 msgstr ""
 
-#: datautils\datautils.py:539 datautils\embeds.py:42
+#: datautils\datautils.py:539 datautils\embeds.py:44
 msgid "Managed"
 msgstr ""
 
@@ -639,100 +651,100 @@ msgstr ""
 msgid "No emojis on this server"
 msgstr ""
 
-#: datautils\embeds.py:16
+#: datautils\embeds.py:18
 msgid "[Unable to resolve unicode name]"
 msgstr ""
 
-#: datautils\embeds.py:24
+#: datautils\embeds.py:26
 msgid "Unicode character"
 msgstr ""
 
-#: datautils\embeds.py:28
+#: datautils\embeds.py:30
 msgid "Unicode category"
 msgstr ""
 
-#: datautils\embeds.py:34
+#: datautils\embeds.py:36
 msgid "Animated"
 msgstr ""
 
-#: datautils\embeds.py:41
+#: datautils\embeds.py:43
 msgid "\":\" required"
 msgstr ""
 
-#: datautils\embeds.py:43
+#: datautils\embeds.py:45
 msgid "Server"
 msgstr ""
 
-#: datautils\embeds.py:44
+#: datautils\embeds.py:46
 msgid "Available"
 msgstr ""
 
-#: datautils\embeds.py:45
+#: datautils\embeds.py:47
 msgid "Usable by bot"
 msgstr ""
 
-#: datautils\embeds.py:57
+#: datautils\embeds.py:59
 msgid "Custom emoji"
 msgstr ""
 
-#: datautils\embeds.py:78
+#: datautils\embeds.py:80
 msgid "Custom status"
 msgstr ""
 
-#: datautils\embeds.py:81
+#: datautils\embeds.py:83
 msgid "Playing {}"
 msgstr ""
 
-#: datautils\embeds.py:99
+#: datautils\embeds.py:101
 msgid "This game will end at"
 msgstr ""
 
-#: datautils\embeds.py:103
+#: datautils\embeds.py:105
 msgid "Playing since"
 msgstr ""
 
-#: datautils\embeds.py:127
+#: datautils\embeds.py:129
 msgid "Small image text"
 msgstr ""
 
-#: datautils\embeds.py:132
+#: datautils\embeds.py:134
 msgid "Application ID"
 msgstr ""
 
-#: datautils\embeds.py:135 datautils\embeds.py:169
+#: datautils\embeds.py:137 datautils\embeds.py:172
 msgid "Started at"
 msgstr ""
 
-#: datautils\embeds.py:140 datautils\embeds.py:171
+#: datautils\embeds.py:142 datautils\embeds.py:177
 msgid "Will end at"
 msgstr ""
 
-#: datautils\embeds.py:145
+#: datautils\embeds.py:147
 msgid "Large image text"
 msgstr ""
 
-#: datautils\embeds.py:156
+#: datautils\embeds.py:158
 msgid "Streaming on {}"
 msgstr ""
 
-#: datautils\embeds.py:160
+#: datautils\embeds.py:162
 msgid "Game"
 msgstr ""
 
-#: datautils\embeds.py:164
+#: datautils\embeds.py:166
 msgid "by {}\n"
 "on {}"
 msgstr ""
 
-#: datautils\embeds.py:170
+#: datautils\embeds.py:175
 msgid "Duration"
 msgstr ""
 
-#: datautils\embeds.py:173
+#: datautils\embeds.py:181
 msgid "Listening since"
 msgstr ""
 
-#: datautils\embeds.py:175
+#: datautils\embeds.py:183
 msgid "Unsupported activity type: {}"
 msgstr ""
 
