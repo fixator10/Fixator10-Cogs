@@ -189,9 +189,17 @@ class ImageGenerators(MixinMeta):
             grey_color,
         )  # Name
 
+        balance_width = 63
+
         # labels
         v_label_align = 75
         info_text_color = white_color
+        credits_name = (
+            credits_name.upper()
+            if label_fnt.getmask(credits_name.upper()).getbbox()[2] <= balance_width
+            else "BALANCE"
+        )
+
         draw.text(
             (self._center(100, 200, "  RANK", label_fnt), v_label_align),
             "  RANK",
@@ -205,8 +213,8 @@ class ImageGenerators(MixinMeta):
             fill=info_text_color,
         )  # Rank
         draw.text(
-            (self._center(260, 360, "BALANCE", label_fnt), v_label_align),
-            "BALANCE",
+            (self._center(260, 360, credits_name, label_fnt), v_label_align),
+            credits_name,
             font=label_fnt,
             fill=info_text_color,
         )  # Rank
@@ -229,7 +237,7 @@ class ImageGenerators(MixinMeta):
         )  # Symbol
 
         # userinfo
-        server_rank = "#{}".format(server_rank)
+        server_rank = "#{}".format(self._humanize_number(server_rank))
         draw.text(
             (self._center(100, 200, server_rank, large_fnt), v_label_align - 30),
             server_rank,
@@ -243,10 +251,7 @@ class ImageGenerators(MixinMeta):
             font=large_fnt,
             fill=info_text_color,
         )  # Level
-        credit_txt = (
-            f"{bank_credits}"
-            f"{credits_name if (credits_name := (credits_name)[0]) != '<' else '$'}"
-        )
+        credit_txt = f"{self._humanize_number(bank_credits)}"
         draw.text(
             (self._center(260, 360, credit_txt, large_fnt), v_label_align - 30),
             credit_txt,
@@ -378,7 +383,9 @@ class ImageGenerators(MixinMeta):
         white_text = (250, 250, 250, 255)
         dark_text = (35, 35, 35, 230)
         level_up_text = self._contrast(info_color, white_text, dark_text)
-        lvl_text = "LEVEL {}".format(userinfo["servers"][str(server.id)]["level"])
+        lvl_text = "LEVEL {}".format(
+            self._humanize_number(userinfo["servers"][str(server.id)]["level"])
+        )
         draw.text(
             (self._center(60, 170, lvl_text, level_fnt), 23),
             lvl_text,
@@ -576,7 +583,7 @@ class ImageGenerators(MixinMeta):
         )  # box
 
         # rep_text = "{} REP".format(userinfo["rep"])
-        rep_text = "{}".format(userinfo["rep"])
+        rep_text = "{}".format(self._humanize_number(userinfo["rep"]))
         _write_unicode("\N{HEAVY BLACK HEART}", 257, 9, rep_fnt, rep_u_fnt, rep_fill)
         draw.text(
             (self._center(278, 340, rep_text, rep_fnt), 10),
@@ -584,6 +591,14 @@ class ImageGenerators(MixinMeta):
             font=rep_fnt,
             fill=rep_fill,
         )  # Exp Text
+
+        balance_width = 85
+
+        credits_name = (
+            credits_name.upper()
+            if label_fnt.getmask(credits_name.upper()).getbbox()[2] <= balance_width
+            else "BALANCE"
+        )
 
         label_align = 362  # vertical
         draw.text(
@@ -599,8 +614,8 @@ class ImageGenerators(MixinMeta):
             fill=info_text_color,
         )  # Exp
         draw.text(
-            (self._center(200, 340, "BALANCE", label_fnt), label_align),
-            "BALANCE",
+            (self._center(200, 340, credits_name, label_fnt), label_align),
+            credits_name,
             font=label_fnt,
             fill=info_text_color,
         )  # Credits
@@ -620,7 +635,7 @@ class ImageGenerators(MixinMeta):
         )  # Symbol
 
         # userinfo
-        global_rank = "#{}".format(global_rank)
+        global_rank = "#{}".format(self._humanize_number(global_rank))
         global_level = "{}".format(level)
         draw.text(
             (self._center(0, 140, global_rank, large_fnt), label_align - 27),
@@ -655,10 +670,7 @@ class ImageGenerators(MixinMeta):
             fill=exp_font_color,
         )  # Exp Text
 
-        credit_txt = (
-            f"{bank_credits}"
-            f"{credits_name if (credits_name := credits_name[0]) != '<' else '$'}"
-        )
+        credit_txt = f"{self._humanize_number(bank_credits)}"
         draw.text(
             (self._center(200, 340, credit_txt, large_fnt), label_align - 27),
             credit_txt,
