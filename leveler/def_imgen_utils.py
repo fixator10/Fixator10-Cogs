@@ -3,6 +3,7 @@ import random
 import traceback
 import warnings
 from io import BytesIO
+from math import floor, log
 
 from redbot.core.errors import CogLoadError
 
@@ -85,18 +86,20 @@ class DefaultImageGeneratorsUtils(MixinMeta):
         return colors  # returns array
 
     # changes large numbers into smaller strings, ie "10000" becomes 10k
+    # https://github.com/gabzin/django-ytdownloader/blob/e59e728aeac459b73fd4fb9ca663560855af19fd/YouTubeDownloader/views.py#L25
     def _humanize_number(self, number):
         if not number:
             return 0
+        negative = "-" if number < 0 else ""
+        if number < 0:
+            number *= -1
 
-        number = float(f"{number:.3g}")
-        magnitude = 0
-
-        while abs(number) >= 1000:
-            magnitude += 1
-            number /= 1000.0
-
-        return f"{number:.0f}{['', 'k', 'm', 'b', 't', 'q'][magnitude]}"
+        units = ["", "K", "M", "B", "T", "Q"]
+        k = 1000.0
+        magnitude = int(floor(log(number, k)))
+        if magnitude >= len(units):
+            return f">999{units[-1]}"
+        return f"{negative}{number / k**magnitude:.0f}{units[magnitude]}"
 
     # finds the the pixel to center the text
     def _center(self, start, end, text, font):
