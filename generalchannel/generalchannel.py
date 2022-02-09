@@ -20,7 +20,7 @@ _ = Translator("GeneralChannel", __file__)
 class GeneralChannel(commands.Cog):
     """Allow users to manage #general channel's name and topic"""
 
-    __version__ = "2.0.3"
+    __version__ = "2.0.4"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -28,6 +28,10 @@ class GeneralChannel(commands.Cog):
         self.config = Config.get_conf(self, identifier=0x8A87069DB515498281C88D41675BF85B)
         default_guild = {"channel": None}
         self.config.register_guild(**default_guild)
+
+    def format_help_for_context(self, ctx: commands.Context) -> str:  # Thanks Sinbad!
+        pre_processed = super().format_help_for_context(ctx)
+        return f"{pre_processed}\n\n**Version**: {self.__version__}"
 
     async def red_delete_data_for_user(self, **kwargs):
         return
