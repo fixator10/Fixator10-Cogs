@@ -40,7 +40,7 @@ _ = Translator("MessagesLog", __file__)
 class MessagesLog(commands.Cog):
     """Log deleted and edited messages to the defined channel"""
 
-    __version__ = "2.3.12"
+    __version__ = "2.3.13"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -76,6 +76,10 @@ class MessagesLog(commands.Cog):
                     await guild_config.channel.clear()
             log.info("Config updated to version 1")
             await self.config.config_version.set(1)
+
+    def format_help_for_context(self, ctx: commands.Context) -> str:  # Thanks Sinbad!
+        pre_processed = super().format_help_for_context(ctx)
+        return f"{pre_processed}\n\n**Version**: {self.__version__}"
 
     async def red_delete_data_for_user(self, **kwargs):
         return
