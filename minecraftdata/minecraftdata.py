@@ -302,7 +302,7 @@ class MinecraftData(commands.Cog):
         )
         if icon:
             embed.set_thumbnail(url="attachment://icon.png")
-        embed.add_field(name=_("Latency"), value=f"{status.latency} ms")
+        embed.add_field(name=_("Latency"), value=f"{status.latency:.2f} ms")
         embed.add_field(
             name=_("Players"),
             value="{0.players.online}/{0.players.max}\n{1}".format(
