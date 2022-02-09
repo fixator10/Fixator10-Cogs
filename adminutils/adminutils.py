@@ -25,7 +25,7 @@ EMOJI_RE = re.compile(r"(<(a)?:[a-zA-Z0-9_]+:([0-9]+)>)")
 class AdminUtils(commands.Cog):
     """Useful commands for server administrators."""
 
-    __version__ = "2.5.10"
+    __version__ = "2.5.11"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -34,6 +34,10 @@ class AdminUtils(commands.Cog):
 
     def cog_unload(self):
         self.bot.loop.create_task(self.session.close())
+
+    def format_help_for_context(self, ctx: commands.Context) -> str:  # Thanks Sinbad!
+        pre_processed = super().format_help_for_context(ctx)
+        return f"{pre_processed}\n\n**Version**: {self.__version__}"
 
     async def red_delete_data_for_user(self, **kwargs):
         return
