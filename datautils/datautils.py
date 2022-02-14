@@ -22,7 +22,7 @@ from .utils import _
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.6.10"
+    __version__ = "2.6.11"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -355,7 +355,9 @@ class DataUtils(commands.Cog):
         if server.features:
             em.add_field(
                 name=_("Features"),
-                value="\n".join(_(GUILD_FEATURES.get(f, f)) for f in server.features).format(
+                value="\n".join(
+                    _(GUILD_FEATURES.get(f, f)) for f in sorted(server.features)
+                ).format(
                     banner=server.banner and f" [🔗]({server.banner_url_as(format='png')})" or "",
                     splash=server.splash and f" [🔗]({server.splash_url_as(format='png')})" or "",
                     discovery=server.discovery_splash
