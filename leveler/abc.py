@@ -64,6 +64,10 @@ class MixinMeta(ABC):
         raise NotImplementedError
 
     @abstractmethod
+    async def hash_with_md5(self, string):
+        raise NotImplementedError
+
+    @abstractmethod
     async def _handle_levelup(self, user, userinfo, server, channel):
         raise NotImplementedError
 

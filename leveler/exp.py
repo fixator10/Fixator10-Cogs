@@ -14,9 +14,7 @@ class XP(MixinMeta):
 
     # calculates required exp for next level
     async def _required_exp(self, level: int):
-        if level < 0:
-            return 0
-        return 139 * level + 65
+        return 0 if level < 0 else 139 * level + 65
 
     async def _level_exp(self, level: int):
         return level * 65 + 139 * level * (level - 1) // 2
@@ -56,7 +54,7 @@ class XP(MixinMeta):
                     float(curr_time) - float(userinfo.get("chat_block", 0)) >= 120,
                     len(message.content) > await self.config.message_length()
                     or message.attachments,
-                    message.content != userinfo.get("last_message"),
+                    await self.hash_with_md5(message.content) != userinfo.get("last_message"),
                     message.channel.id not in await self.config.guild(server).ignored_channels(),
                 ]
             ):
@@ -91,7 +89,7 @@ class XP(MixinMeta):
                         + exp
                         - required,
                         "chat_block": time.time(),
-                        "last_message": message.content,
+                        "last_message": await self.hash_with_md5(message.content),
                     }
                 },
             )
@@ -106,7 +104,7 @@ class XP(MixinMeta):
                         ]["current_exp"]
                         + exp,
                         "chat_block": time.time(),
-                        "last_message": message.content,
+                        "last_message": await self.hash_with_md5(message.content),
                     }
                 },
             )

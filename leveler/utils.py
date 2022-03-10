@@ -1,6 +1,7 @@
 from asyncio import TimeoutError as AsyncTimeoutError
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
 from functools import partial
+from hashlib import md5
 
 import discord
 from redbot.core import bank
@@ -32,6 +33,9 @@ class Utils(MixinMeta):
                 {"user_id": userinfo["user_id"]}, {"$set": {"badges": {}}}
             )
         return await self.db.users.find_one({"user_id": userinfo["user_id"]})
+
+    async def hash_with_md5(self, string: str):
+        return (await self.asyncify(md5, string.encode())).hexdigest()
 
     # converts hex to rgb
     async def _hex_to_rgb(self, hex_num: str, a: int):
