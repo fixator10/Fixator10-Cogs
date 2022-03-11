@@ -20,27 +20,17 @@ class Users(MixinMeta):
     async def xpban(
         self,
         ctx,
-        bantime: commands.converter.TimedeltaConverter,
+        bantime: commands.converter.TimedeltaConverter(default_unit="seconds"),
         *,
         user: Union[discord.User, int],
     ):
         """Ban user from getting experience."""
         if isinstance(user, int):
-            try:
-                user = await self.bot.fetch_user(user)
-            except discord.NotFound:
+            user = await self.db.users.find_one({"user_id": str(user)})
+            if not user:
                 await ctx.send("Discord user with ID `{}` not found.".format(user))
                 return
-            except discord.HTTPException:
-                await ctx.send(
-                    "I was unable to get data about user with ID `{}`. Try again later.".format(
-                        user
-                    )
-                )
-                return
-        if user is None:
-            await ctx.send_help()
-            return
+            user = discord.Object(user)
         chat_block = time.time() + bantime.total_seconds()
         try:
             await self.db.users.update_one(
