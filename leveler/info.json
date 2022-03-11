@@ -1,21 +1,26 @@
 {
   "author": [
     "Fixator10",
-    "Stevy"
+    "Stevy",
+    "flaree",
+    "aikaterna"
   ],
-  "install_msg": "**Port of Leveler by AznStevy to V3.**\n⚠ Warning: this cog not tested fully and may be unstable, including existing database corruption.\nFor more information about installing, please reffer to this: https://github.com/fixator10/Fixator10-Cogs/wiki/Installing-Leveler",
+  "install_msg": "**Port of Leveler by AznStevy to V3.**\n⚠ Warning: This cog is not covered by any tests and may be unstable, it is recommended to have periodic database backups.\nFor more information about install and setup process, please refer to this page: https://github.com/fixator10/Fixator10-Cogs/wiki/Installing-Leveler",
   "short": "Level/Experience tracker",
   "description": "Level/Experience tracker\nIncrease activity (or not) on your server with chat exp!",
   "tags": [
     "leveler",
-    "v2 cog"
+    "v2 cog",
+    "mongodb"
   ],
-  "min_bot_version": "3.3.6",
+  "min_bot_version": "3.4.6",
   "requirements": [
     "pymongo>=3.10,<3.12.3",
     "motor",
     "fonttools",
     "pillow>=6.2.1",
-    "tabulate"
-  ]
+    "tabulate",
+    "git+https://github.com/fixator10/F10-Cogs-Utils"
+  ],
+  "end_user_data_statement": "This cog persistently stores next data about user:\n    Discord user ID\n    Current username\n    Per-server XP data (current XP and current level)\n    Total count of XP on all servers\n    URLs to profile/rank/levelup backrounds\n    User-set title & info\n    User's \"reputation\" points count\n    Data about user's badges\n    Data about user's profile/rank/levelup colors\n    Timestamp of latest message and reputation\n    Last message text (for comparison)\nThis cog supports data removal requests."
 }
