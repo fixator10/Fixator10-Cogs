@@ -29,7 +29,7 @@ class Leveler(
 ):
     """A level up thing with image generation!"""
 
-    __version__ = "3.0.0"
+    __version__ = "3.0.0r"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot: Red):
@@ -158,6 +158,10 @@ class Leveler(
         self.bot.loop.create_task(self.session.close())
         self._disconnect_mongo()
         self.bot.remove_dev_env_value("leveler")
+
+    def format_help_for_context(self, ctx: commands.Context) -> str:  # Thanks Sinbad!
+        pre_processed = super().format_help_for_context(ctx)
+        return f"{pre_processed}\n\n**Version**: {self.__version__}"
 
     async def red_delete_data_for_user(self, *, requester, user_id: int):
         await self.db.users.delete_one({"user_id": str(user_id)})

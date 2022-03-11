@@ -15,7 +15,7 @@ __red_end_user_data_statement__ = (
     "•    Data about user's badges<br>"
     "•    Data about user's profile/rank/levelup colors<br>"
     "•    Timestamp of latest message and reputation<br>"
-    "•    Last message text (for comparison)<br>"
+    "•    Last message MD5 hash (for comparison)<br>"
     "This cog supports data removal requests."
 )
 
