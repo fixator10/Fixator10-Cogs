@@ -49,7 +49,7 @@ class GodConverter(commands.MemberConverter):
 class GodvilleData(commands.Cog):
     """Get data about Godville profiles"""
 
-    __version__ = "2.1.5"
+    __version__ = "2.1.6"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -64,6 +64,10 @@ class GodvilleData(commands.Cog):
 
     def cog_unload(self):
         self.bot.loop.create_task(self.session.close())
+
+    def format_help_for_context(self, ctx: commands.Context) -> str:  # Thanks Sinbad!
+        pre_processed = super().format_help_for_context(ctx)
+        return f"{pre_processed}\n\n**Version**: {self.__version__}"
 
     async def red_delete_data_for_user(self, *, requester, user_id: int):
         await self.config.user_from_id(user_id).clear()

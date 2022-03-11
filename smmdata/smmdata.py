@@ -20,7 +20,7 @@ EMBED_EMPTY_VALUE = "\N{Invisible Separator}"
 class SMMData(commands.Cog):
     """Super Mario Maker-related data"""
 
-    __version__ = "2.0.2"
+    __version__ = "2.0.3"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -29,6 +29,10 @@ class SMMData(commands.Cog):
 
     def cog_unload(self):
         self.bot.loop.create_task(self.session.close())
+
+    def format_help_for_context(self, ctx: commands.Context) -> str:  # Thanks Sinbad!
+        pre_processed = super().format_help_for_context(ctx)
+        return f"{pre_processed}\n\n**Version**: {self.__version__}"
 
     async def red_delete_data_for_user(self, **kwargs):
         return
