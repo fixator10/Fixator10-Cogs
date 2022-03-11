@@ -26,8 +26,8 @@ class Users(MixinMeta):
     ):
         """Ban user from getting experience."""
         if isinstance(user, int):
-            user = await self.db.users.find_one({"user_id": str(user)})
-            if not user:
+            userinfo = await self.db.users.find_one({"user_id": str(user)})
+            if not userinfo:
                 await ctx.send("Discord user with ID `{}` not found.".format(user))
                 return
             user = discord.Object(user)
