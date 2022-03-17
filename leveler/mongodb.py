@@ -14,7 +14,7 @@ class MongoDBUnsupportedVersion(Exception):
     def __init__(self, version, current_version):
         super().__init__(
             "MongoDB connection succeeded, but Leveler requires "
-            f"version {'.'.join(version)}, and you have {current_version}.\n"
+            f"version {version}, and you have {current_version}.\n"
             "Please follow MongoDB docs for upgrade."
         )
 
@@ -33,7 +33,9 @@ class MongoDB(MixinMeta):
             info = await self.client.server_info()
             if not info.get("versionArray", []) > REQUIRED_MONGODB_VERSION:
                 self.client.close()
-                raise MongoDBUnsupportedVersion(REQUIRED_MONGODB_VERSION, info.get("version", "?"))
+                raise MongoDBUnsupportedVersion(
+                    ".".join(map(str, REQUIRED_MONGODB_VERSION)), info.get("version", "?")
+                )
             self.db = self.client[config["db_name"]]
             self._db_ready = True
             self.log.info("MongoDB: connection established.")
