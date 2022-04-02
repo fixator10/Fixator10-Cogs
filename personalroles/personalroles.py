@@ -38,7 +38,7 @@ async def role_icons_feature(ctx):
 class PersonalRoles(commands.Cog):
     """Assign and edit personal roles"""
 
-    __version__ = "2.2.3"
+    __version__ = "2.2.4"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -356,9 +356,8 @@ class PersonalRoles(commands.Cog):
             await edit_role_icon(
                 self.bot,
                 role,
-                icon=None,
-                unicode_emoji=None,
                 reason=get_audit_reason(ctx.author, _("Personal Role")),
+                reset=True,
             )
             await ctx.send(
                 _("Removed icon of {user}'s personal role").format(user=ctx.message.author.name)
