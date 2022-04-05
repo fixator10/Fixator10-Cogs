@@ -101,11 +101,11 @@ class VocaDB(commands.Cog):
             with contextlib.suppress(discord.NotFound, discord.HTTPException):
                 await prompt.edit(content="Cancelled.", delete_after=5.0)
             return None
-        else:
-            choice = int(choice.content.strip()) - 1
-            with contextlib.suppress(discord.NotFound, discord.HTTPException):
-                await prompt.delete()
-            return filtered_items[choice]
+
+        choice = int(choice.content.strip()) - 1
+        with contextlib.suppress(discord.NotFound, discord.HTTPException):
+            await prompt.delete()
+        return filtered_items[choice]
 
     def _info_embed(self, colour, data: Dict[str, Any]) -> discord.Embed:
         """Create an embed with the song info"""
