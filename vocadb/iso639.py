@@ -1,6 +1,5 @@
 from typing import Dict
 
-
 LANGUAGE_MAP: Dict[str, str] = {
     "ar": "Arabic",
     "cs": "Czech",
@@ -37,5 +36,5 @@ LANGUAGE_MAP: Dict[str, str] = {
     "ur": "Urdu",
     "vi": "Vietnamese",
     "zh": "Chinese",
-    "": "Romaji"
+    "": "Romaji",
 }

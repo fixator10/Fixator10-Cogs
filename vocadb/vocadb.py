@@ -1,8 +1,7 @@
 import asyncio
 import contextlib
-from typing import Any, Dict
-
 from datetime import datetime
+from typing import Any, Dict
 
 import aiohttp
 import discord
@@ -22,7 +21,7 @@ class VocaDB(commands.Cog):
     __authors__ = ["ow0x", "Fixator10"]
     __version__ = "0.1.2"
 
-    def format_help_for_context(self, ctx: commands.Context) -> str: # Thanks Sinbad!
+    def format_help_for_context(self, ctx: commands.Context) -> str:  # Thanks Sinbad!
         pre_processed = super().format_help_for_context(ctx)
         return f"{pre_processed}\n\n**Version:** {self.__version__}"
 
