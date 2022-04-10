@@ -1,0 +1,18 @@
+{
+    "name": "VocaDB",
+    "short": "Search for Vocaloid song lyrics on VocaDB.",
+    "description": "This cog can fetch Vocaloid (and UTAU) song lyrics from VocaDB.net a.k.a. Vocaloid Database.",
+    "end_user_data_statement": "This cog does not persistently store any PII data about users.",
+    "install_msg": "Thank you for installing my VocaDB cog. I hope you will enjoy it.",
+    "author": [
+        "ow0x",
+        "Fixator10"
+    ],
+    "required_cogs": {},
+    "requirements": [],
+    "tags": ["vocadb", "vocaloid"],
+    "min_bot_version": "3.4.12",
+    "hidden": false,
+    "disabled": false,
+    "type": "COG"
+}
