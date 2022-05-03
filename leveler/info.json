@@ -16,7 +16,7 @@
   "min_bot_version": "3.4.6",
   "requirements": [
     "pymongo>=3.10,<3.12.3",
-    "motor",
+    "motor>=2.5,<3.0",
     "fonttools",
     "pillow>=6.2.1",
     "tabulate",
