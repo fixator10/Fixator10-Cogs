@@ -6,7 +6,8 @@
     "args": [
         "DEFAULT",
         "--dev",
-        "--debug"
+        "--debug",
+        "--mentionable"
     ],
     "console": "externalTerminal"
 }
