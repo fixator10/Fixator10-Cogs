@@ -1,0 +1,12 @@
+{
+    "name": "Python: redbot",
+    "type": "python",
+    "request": "launch",
+    "module": "redbot",
+    "args": [
+        "DEFAULT",
+        "--dev",
+        "--debug"
+    ],
+    "console": "externalTerminal"
+}
