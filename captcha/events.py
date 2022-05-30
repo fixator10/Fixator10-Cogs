@@ -11,7 +11,7 @@ from redbot.core.utils.chat_formatting import bold
 
 from .abc import MixinMeta
 
-log = logging.getLogger("red.predeactor.captcha")
+log = logging.getLogger("red.fixator10-cogs.captcha")
 
 
 class Listeners(MixinMeta, metaclass=ABCMeta):

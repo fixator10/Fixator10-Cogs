@@ -11,7 +11,7 @@ from redbot.core.utils.predicates import MessagePredicate, ReactionPredicate
 
 from .errors import AskedForReload, LeftServerError, MissingRequiredValueError
 
-log = logging.getLogger("red.predeactor.captcha")
+log = logging.getLogger("red.fixator10-cogs.captcha")
 
 
 def ok_check(msg: str):

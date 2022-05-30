@@ -1,4 +1,4 @@
-__author__ = ["Predeactor", "Kreusada"]
+__author__ = ["Predeactor", "Kreusada", "Fixator10"]
 __version__ = "1.0.2"
 
 __patchnote__ = (

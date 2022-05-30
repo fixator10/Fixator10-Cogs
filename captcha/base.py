@@ -34,7 +34,7 @@ DEFAULT_GUILD = {
     "timeout": 5,  # Time in minutes before kicking.
     "retry": 3,  # The numnber of retry allowed.
 }
-log = logging.getLogger("red.predeactor.captcha")
+log = logging.getLogger("red.fixator10-cogs.captcha")
 
 
 class Captcha(
