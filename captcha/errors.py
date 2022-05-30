@@ -2,6 +2,7 @@
 All errors used/raised by the cog.
 """
 
+
 class AskedForReload(Exception):
     """This is not an error, but it's just to facilitate my life when reloading captcha."""
 

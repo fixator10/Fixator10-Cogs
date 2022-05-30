@@ -53,5 +53,5 @@ __OLD_PATCHNOTES__ = {
         "I really hope you'll enjoy this cog. Again, if you wish to support me, there's my Paypal "
         "<https://www.paypal.me/predeactor>, Ko-fi <https://ko-fi.com/predeactor> and Patreon for "
         "montly support <https://www.patreon.com/predeactor>."
-    )
+    ),
 }
