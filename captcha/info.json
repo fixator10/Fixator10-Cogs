@@ -1,0 +1,22 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Cog-Creators/Red-DiscordBot/V3/develop/schema/red_cog.schema.json",
+    "author": [
+        "Predeactor",
+        "Kreusada",
+        "Fixator10"
+    ],
+    "end_user_data_statement": "This cog does not save data about users persistently.",
+    "description": "Captcha defensive system. Another security layout for your server - originally by Predeactor.",
+    "short": "Captcha defensive system  - originally by Predeactor.",
+    "install_msg": "Thanks for installing Captcha, have fun.",
+    "min_bot_version": "3.4.0",
+    "tags": [
+        "security",
+        "protection",
+        "captcha",
+        "defender"
+    ],
+    "requirements": [
+        "discapty==0.4"
+    ]
+}
