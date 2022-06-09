@@ -32,7 +32,7 @@ DEFAULT_GUILD = {
     "temprole": None,  # Temporary role to give.
     "type": "plain",  # Captcha type.
     "timeout": 5,  # Time in minutes before kicking.
-    "retry": 3,  # The numnber of retry allowed.
+    "retry": 3,  # The number of retry allowed.
 }
 log = logging.getLogger("red.fixator10-cogs.captcha")
 
@@ -356,11 +356,14 @@ class Captcha(
         Thank to Sinbad.
         """
         pre_processed = super().format_help_for_context(ctx)
-        return "{pre_processed}\n\nAuthor: {authors}\nVersion: {version}".format(
+        return "{pre_processed}\n\n**Author**: {authors}\n**Version**: {version}".format(
             pre_processed=pre_processed,
             authors=humanize_list(self.__author__),
             version=self.__version__,
         )
+
+    async def red_delete_data_for_user(self, **kwargs):
+        return
 
     async def _initialize(self, send_patchnote: bool = True) -> None:
         """
