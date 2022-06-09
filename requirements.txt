@@ -1,8 +1,10 @@
 # This file exists only for GitHub's dependencies list
 # https://github.com/fixator10/Fixator10-Cogs/network/dependencies
 # It may be slightly outdated
-# Look at "requirements" key for specific cog in "info.json" fileRed-DiscordBot
+# Look at "requirements" key for specific cog in "info.json" file
+Red-DiscordBot
 beautifulsoup4
+discapty==0.4
 fonttools
 git+https://github.com/fixator10/F10-Cogs-Utils
 mcstatus>=5.1.1
