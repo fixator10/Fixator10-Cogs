@@ -1,6 +1,5 @@
 # Builtin or Pip
 from abc import ABCMeta
-from random import choice
 from typing import Union
 
 # Discord/Red related
