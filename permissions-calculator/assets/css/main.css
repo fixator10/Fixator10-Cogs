@@ -4,7 +4,7 @@ body{
     flex-direction:column;
 }
 body.theme-dark{
-    background: #2c2f33 url(https://discord.com/assets/530280c4e76a27a6dd43c0ecabb96e7d.png) fixed;
+    background: #2c2f33 url(../discord-background.png) fixed;
 }
 main{
     flex:1 0 auto;
