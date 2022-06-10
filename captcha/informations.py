@@ -10,8 +10,9 @@ __patchnote__ = (
     "- `[p]repo update`\n"
     "\n**If you do not have the Fixator10's repository:**\n"
     "- `[p]repo add fixator10-cogs https://github.com/Fixator10/Fixator10-Cogs`\n"
-    "\n**Then run:\n"
+    "\n**Then run:**\n"
     "- `[p]cog install fixator10-cogs captcha`\n"
+    "\nYou'll be good to go! Thank for using the Captcha cog! ❤"
 )
 __patchnote_version__ = "2"
 
