@@ -310,7 +310,11 @@ class Captcha(
         # Admin may have set channel to be DM, checking for manage_roles is useless since
         # it always return False, instead, we're taking a random text channel of the guild
         # to check our permission for kicking.
-        channel = challenge.guild.text_channels[0] if isinstance(challenge.channel, discord.DMChannel) else challenge.channel
+        channel = (
+            challenge.guild.text_channels[0]
+            if isinstance(challenge.channel, discord.DMChannel)
+            else challenge.channel
+        )
 
         if not channel.permissions_for(self.bot.get_guild(challenge.guild.id).me).manage_roles:
             raise MissingPermissions('Bot miss the "manage_roles" permission.')
@@ -323,7 +327,11 @@ class Captcha(
         # Admin may have set channel to be DM, checking for kick_members is useless since
         # it always return False, instead, we're taking a random text channel of the guild
         # to check our permission for kicking.
-        channel = challenge.guild.text_channels[0] if isinstance(challenge.channel, discord.DMChannel) else challenge.channel
+        channel = (
+            challenge.guild.text_channels[0]
+            if isinstance(challenge.channel, discord.DMChannel)
+            else challenge.channel
+        )
 
         if not channel.permissions_for(self.bot.get_guild(challenge.guild.id).me).kick_members:
             raise MissingPermissions('Bot miss the "kick_members" permission.')
