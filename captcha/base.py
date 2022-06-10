@@ -33,6 +33,7 @@ DEFAULT_GUILD = {
     "type": "plain",  # Captcha type.
     "timeout": 5,  # Time in minutes before kicking.
     "retry": 3,  # The number of retry allowed.
+    "was_loaded_once": False,  # If this is the first time we load the cog. The value isn't really interesting
 }
 log = logging.getLogger("red.fixator10-cogs.captcha")
 
@@ -138,9 +139,7 @@ class Captcha(
         """
         Check the basis from a member; used when a member join the server.
         """
-        if member.bot:
-            return False
-        return await self.data.guild(member.guild).enabled()
+        return False if member.bot else await self.data.guild(member.guild).enabled()
 
     async def create_challenge_for(self, member: discord.Member) -> Challenge:
         """
@@ -172,8 +171,7 @@ class Captcha(
         return self.running[member_or_id]
 
     async def give_temprole(self, challenge: Challenge) -> None:
-        temprole = challenge.config["temprole"]
-        if temprole:
+        if temprole := challenge.config["temprole"]:
             try:
                 await challenge.member.add_roles(
                     challenge.guild.get_role(temprole), reason="Beginning Captcha challenge."
@@ -182,8 +180,7 @@ class Captcha(
                 raise MissingPermissions('Bot miss the "manage_roles" permission.')
 
     async def remove_temprole(self, challenge: Challenge) -> None:
-        temprole = challenge.config["temprole"]
-        if temprole:
+        if temprole := challenge.config["temprole"]:
             try:
                 await challenge.member.remove_roles(
                     challenge.guild.get_role(temprole), reason="Finishing Captcha challenge."
@@ -198,9 +195,7 @@ class Captcha(
         timeout = False
         await self.give_temprole(challenge)
         try:
-            while is_ok is not True:
-                if challenge.trynum > limit:
-                    break
+            while is_ok is not True and (not challenge.trynum > limit):
                 try:
                     this = await challenge.try_challenging()
                 except TimeoutError:
@@ -316,10 +311,11 @@ class Captcha(
         # it always return False, instead, we're taking a random text channel of the guild
         # to check our permission for kicking.
         channel = (
-            challenge.channel
-            if not isinstance(challenge.channel, discord.DMChannel)
-            else challenge.guild.text_channels[0]
+            challenge.guild.text_channels[0]
+            if isinstance(challenge.channel, discord.DMChannel)
+            else challenge.channel
         )
+
         if not channel.permissions_for(self.bot.get_guild(challenge.guild.id).me).manage_roles:
             raise MissingPermissions('Bot miss the "manage_roles" permission.')
 
@@ -332,10 +328,11 @@ class Captcha(
         # it always return False, instead, we're taking a random text channel of the guild
         # to check our permission for kicking.
         channel = (
-            challenge.channel
-            if not isinstance(challenge.channel, discord.DMChannel)
-            else challenge.guild.text_channels[0]
+            challenge.guild.text_channels[0]
+            if isinstance(challenge.channel, discord.DMChannel)
+            else challenge.channel
         )
+
         if not channel.permissions_for(self.bot.get_guild(challenge.guild.id).me).kick_members:
             raise MissingPermissions('Bot miss the "kick_members" permission.')
 
@@ -381,6 +378,8 @@ class Captcha(
         if send_patchnote:
             await self._send_patchnote()
 
+        await self.config.was_loaded_once.set(True)
+
     async def _send_patchnote(self) -> None:
         await self.bot.wait_until_red_ready()
         self.patchnoteconfig = notice = Config.get_conf(
@@ -392,6 +391,13 @@ class Captcha(
         async with notice.get_users_lock():
             old_patchnote_version: str = await notice.user(self.bot.user).version()
             if old_patchnote_version != __patchnote_version__:
+
+                # Determine if this is the first time the user is using the cog (Not a change
+                # of repo, see https://github.com/fixator10/Fixator10-Cogs/pull/163)
+                if __patchnote_version__ == "2" and (not await self.data.was_loaded_once()):
+                    await notice.user(self.bot.user).version.set(__patchnote_version__)
+                    return
+
                 log.info("New version of patchnote detected! Delivering... (¬‿¬ )")
                 await self.bot.send_to_owners(self.patchnote)
                 await notice.user(self.bot.user).version.set(__patchnote_version__)
