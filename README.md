@@ -52,6 +52,8 @@ For support find me (Fixator10#7133) in #support_fixator10-cogs on [Red - Cog Su
 | weather            | <details><summary>Weather forecast</summary>Weather forecast. Requires "semi-private" DarkSky API key. For more info: https://blog.darksky.net</details>                                                                                                                                                 |
 
 # Installation
+`[p]load downloader`
+
 `[p]repo add Fixator10-Cogs https://github.com/fixator10/Fixator10-Cogs V3`
 
-`[p]cog install Fixator10-Cogs <cog_name>`
+`[p]cog install fixator10-cogs <cog_name>`
