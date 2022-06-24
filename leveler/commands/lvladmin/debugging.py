@@ -28,6 +28,12 @@ class Debugging(MixinMeta):
     @debug_commands.command(name="info")
     async def debug_info(self, ctx):
         """Get info about libs used by leveler and environment info"""
+        try:
+            from dns import version as dns_version
+        except ImportError:
+            dns_version = None
+        except Exception as e:
+            dns_version = e.__class__.__qualname__
         await ctx.send(
             chat.box(
                 tabulate(
@@ -45,6 +51,7 @@ class Debugging(MixinMeta):
                             "Mongo DB version",
                             (await self.client.server_info()).get("version", "?"),
                         ),
+                        ("dnspython version", dns_version),
                         ("PIL version", pilfeatures.version("pil")),
                         (
                             "PIL features",
