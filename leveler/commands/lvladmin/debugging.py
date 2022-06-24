@@ -29,11 +29,12 @@ class Debugging(MixinMeta):
     async def debug_info(self, ctx):
         """Get info about libs used by leveler and environment info"""
         try:
-            from dns import version as dns_version
+            from dns.version import version as dns_version
         except ImportError:
             dns_version = None
         except Exception as e:
             dns_version = e.__class__.__qualname__
+        # noinspection PyProtectedMember
         await ctx.send(
             chat.box(
                 tabulate(
