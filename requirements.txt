@@ -4,7 +4,7 @@
 # Look at "requirements" key for specific cog in "info.json" file
 Red-DiscordBot
 beautifulsoup4
-discapty==0.4
+discapty==2.0
 fonttools
 git+https://github.com/fixator10/F10-Cogs-Utils
 mcstatus>=5.1.1
