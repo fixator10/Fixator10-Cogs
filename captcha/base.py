@@ -378,7 +378,7 @@ class Captcha(
         if send_patchnote:
             await self._send_patchnote()
 
-        await self.config.was_loaded_once.set(True)
+        await self.data.was_loaded_once.set(True)
 
     async def _send_patchnote(self) -> None:
         await self.bot.wait_until_red_ready()
