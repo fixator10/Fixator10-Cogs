@@ -1,5 +1,5 @@
 __author__ = ["Predeactor", "Kreusada", "Fixator10"]
-__version__ = "1.0.2"
+__version__ = "1.0.3"
 
 __patchnote__ = (
     "Hello, this cog is (once again) moving of repository. It'll be now hosted by Fixator10 at \n"

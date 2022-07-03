@@ -23,7 +23,10 @@ from .events import Listeners
 from .informations import __author__, __patchnote__, __patchnote_version__, __version__
 from .utils import build_kick_embed
 
-DEFAULT_GLOBAL = {"log_level": 50}
+DEFAULT_GLOBAL = {
+    "log_level": 50,
+    "was_loaded_once": False,  # If this is the first time we load the cog. The value isn't really interesting
+}
 DEFAULT_GUILD = {
     "channel": None,  # The channel where the captcha is sent.
     "logschannel": None,  # Where logs are sent.
@@ -33,7 +36,6 @@ DEFAULT_GUILD = {
     "type": "plain",  # Captcha type.
     "timeout": 5,  # Time in minutes before kicking.
     "retry": 3,  # The number of retry allowed.
-    "was_loaded_once": False,  # If this is the first time we load the cog. The value isn't really interesting
 }
 log = logging.getLogger("red.fixator10-cogs.captcha")
 
