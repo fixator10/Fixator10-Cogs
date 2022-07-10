@@ -29,5 +29,6 @@ class MissingRequiredValueError(Exception):
 class LeftServerError(Exception):
     """An error raised in case the user left the server while challenging."""
 
+
 class SkipCaptcha(Exception):
     """An error raised in case the challenge is skipped by an admin."""
