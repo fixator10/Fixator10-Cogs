@@ -9,7 +9,7 @@ from redbot.core.commands import MissingPermissions
 from redbot.core.utils import chat_formatting as form
 from redbot.core.utils.predicates import MessagePredicate, ReactionPredicate
 
-from .errors import AskedForReload, LeftServerError, MissingRequiredValueError
+from .errors import AskedForReload, LeftServerError, MissingRequiredValueError, SkipCaptcha
 
 log = logging.getLogger("red.fixator10-cogs.captcha")
 
@@ -27,6 +27,7 @@ class Challenge:
         self.member: discord.Member = member
         self.guild: discord.Guild = member.guild
         self.config: dict = data  # Will contain the config of the guild.
+        self.skip_captcha = False
 
         if not self.config["channel"]:
             raise MissingRequiredValueError("Missing channel for verification.")
@@ -169,6 +170,8 @@ class Challenge:
             timeout=self.config["timeout"] * 60,
             return_when=asyncio.FIRST_COMPLETED,
         )
+        if self.skip_captcha:
+            raise SkipCaptcha("The captcha has been skipped.")
         self.cancel_tasks()
         if len(done) == 0:
             raise TimeoutError("User didn't answer.")
