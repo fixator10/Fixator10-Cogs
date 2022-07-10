@@ -165,12 +165,8 @@ class Listeners(MixinMeta, metaclass=ABCMeta):
                     )
                 else:
                     cancelled_challenge.append(member)
-                    try:
-                        await self.skip_challenge(ctx.author, challenge)
-                    except Exception:
-                        pass
-                    finally:
-                        await self.delete_challenge_for(member)
+                    await self.skip_challenge(ctx.author, challenge)
+                    await self.delete_challenge_for(member)
         message = "**The challenge has cancelled for the following members:**\n" + ", ".join(
             member.display_name
             for member in members
