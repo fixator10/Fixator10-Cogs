@@ -108,11 +108,7 @@ class Listeners(MixinMeta, metaclass=ABCMeta):
             except commands.MissingPermissions:
                 await self.send_or_update_log_message(
                     challenge.guild,
-                    error(
-                        bold(
-                            "Missing permissions for deleting all messages for verification!"
-                        )
-                    ),
+                    error(bold("Missing permissions for deleting all messages for verification!")),
                     challenge.messages.get("logs"),
                     member=challenge.member,
                 )
@@ -175,8 +171,9 @@ class Listeners(MixinMeta, metaclass=ABCMeta):
                         pass
                     finally:
                         await self.delete_challenge_for(member)
-        message = (
-            "**The challenge has cancelled for the following members:**\n"
-            + ", ".join(member.display_name for member in members if not member.bot and member in cancelled_challenge)
+        message = "**The challenge has cancelled for the following members:**\n" + ", ".join(
+            member.display_name
+            for member in members
+            if not member.bot and member in cancelled_challenge
         )
         await ctx.send(message)
