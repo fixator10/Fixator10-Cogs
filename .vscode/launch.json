@@ -1,17 +1,19 @@
 {
-    "configurations": [
-        {
-            "name": "Python: redbot",
-            "type": "python",
-            "request": "launch",
-            "module": "redbot",
-            "args": [
-                "DEFAULT",
-                "--dev",
-                "--debug",
-                "--mentionable"
-            ],
-            "console": "externalTerminal"
-        }
-    ]
+  "configurations": [
+    {
+      "name": "Python: redbot",
+      "type": "python",
+      "request": "launch",
+      "module": "redbot",
+      "args": ["${input:REDBOT_NAME}", "--dev", "--debug", "--mentionable"],
+    }
+  ],
+  "inputs": [
+    {
+      "id": "REDBOT_NAME",
+      "type": "promptString",
+      "default": "DEFAULT",
+      "description": "The name of your Redbot instance."
+    }
+  ]
 }
