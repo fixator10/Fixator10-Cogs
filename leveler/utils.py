@@ -116,8 +116,6 @@ class Utils(MixinMeta):
 
         Single characters should use _write_getsize_position_character instead of this function.
         """
-        print(type(line))
-        print(line)
         try:
             write_pos = font.getbbox(line)[3]
         except AttributeError:
