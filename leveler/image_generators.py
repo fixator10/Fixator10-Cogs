@@ -81,10 +81,10 @@ class ImageGenerators(MixinMeta):
                 # if char.isalnum() or char in string.punctuation or char in string.whitespace:
                 if self.char_in_font(char, check_font):
                     draw.text((write_pos, y), "{}".format(char), font=font, fill=fill)
-                    write_pos += font.getsize(char)[0]
+                    write_pos += font.getlength(char)[0]
                 else:
                     draw.text((write_pos, y), "{}".format(char), font=unicode_font, fill=fill)
-                    write_pos += unicode_font.getsize(char)[0]
+                    write_pos += unicode_font.getlength(char)[0]
             check_font.close()
 
         # set canvas
@@ -454,10 +454,10 @@ class ImageGenerators(MixinMeta):
                 # if char.isalnum() or char in string.punctuation or char in string.whitespace:
                 if self.char_in_font(char, check_font):
                     draw.text((write_pos, y), "{}".format(char), font=font, fill=fill)
-                    write_pos += font.getsize(char)[0]
+                    write_pos += font.getlength(char)[0]
                 else:
                     draw.text((write_pos, y), "{}".format(char), font=unicode_font, fill=fill)
-                    write_pos += unicode_font.getsize(char)[0]
+                    write_pos += unicode_font.getlength(char)[0]
             check_font.close()
 
         # COLORS
@@ -693,7 +693,7 @@ class ImageGenerators(MixinMeta):
             # for line in textwrap.wrap('userinfo["info"]', width=200):
             # draw.text((margin, offset), line, font=text_fnt, fill=white_color)
             _write_unicode(line, margin, offset, text_fnt, text_u_fnt, txt_color)
-            offset += text_fnt.getsize(line)[1] + 2
+            offset += text_fnt.getlength(line)[1] + 2
 
         # if await self.config.badge_type() == "circles":
         # circles require antialiasing
