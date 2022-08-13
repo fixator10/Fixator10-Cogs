@@ -22,6 +22,7 @@ except Exception as e:
         "https://github.com/fixator10/Fixator10-Cogs/wiki/"
         "Installing-Leveler#my-bot-throws-error-on-load-something-related-to-pillow."
     )
+
 try:
     from PIL.Image.Resampling import LANCZOS
 except ModuleNotFoundError:
