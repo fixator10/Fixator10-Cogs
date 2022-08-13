@@ -108,7 +108,7 @@ class DefaultImageGeneratorsUtils(MixinMeta):
     # finds the the pixel to center the text
     def _center(self, start, end, text, font):
         dist = end - start
-        width = font.getlength(text)[0]
+        width = int(font.getlength(text))
         start_pos = start + ((dist - width) / 2)
         return int(start_pos)
 
