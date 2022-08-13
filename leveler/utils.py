@@ -9,6 +9,16 @@ from redbot.core.utils.predicates import MessagePredicate
 
 from .abc import MixinMeta
 
+try:
+    from PIL import ImageFont
+except Exception as e:
+    raise CogLoadError(
+        f"Can't load pillow: {e}\n"
+        "Please follow next steps on wiki: "
+        "https://github.com/fixator10/Fixator10-Cogs/wiki/"
+        "Installing-Leveler#my-bot-throws-error-on-load-something-related-to-pillow."
+    )
+
 
 class Utils(MixinMeta):
     """Utility methods"""
@@ -84,3 +94,32 @@ class Utils(MixinMeta):
         if len(text) > max_length:
             return text[: max_length - 1] + "…"
         return text
+
+    @staticmethod
+    def _write_getsize_position_character(font: ImageFont.FreeTypeFont, char: str) -> int:
+        """
+        Use getlength over using getsize for characters, if available in PIL.
+
+        Lines of characters (more than 1 character) should use _write_getsize_position_line
+        instead of this function.
+        """
+        try:
+            write_pos = int(font.getlength(char))
+        except AttributeError:
+            write_pos = font.getsize(char)[0]
+        return write_pos
+
+    @staticmethod
+    def _write_getsize_position_line(font: ImageFont.FreeTypeFont, line: str) -> int:
+        """
+        Use getbbox over using getsize for positions of lines of characters, if available in PIL.
+
+        Single characters should use _write_getsize_position_character instead of this function.
+        """
+        print(type(line))
+        print(line)
+        try:
+            write_pos = font.getbbox(line)[3]
+        except AttributeError:
+            write_pos = font.getsize(line)[1]
+        return write_pos
