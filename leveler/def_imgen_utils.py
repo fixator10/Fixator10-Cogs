@@ -19,6 +19,10 @@ except Exception as e:
         "Installing-Leveler#my-bot-throws-error-on-load-something-related-to-pillow."
     )
 
+try:
+    from PIL.Image.Resampling import LANCZOS
+except ModuleNotFoundError:
+    from PIL.Image import LANCZOS
 
 try:
     import numpy
@@ -150,7 +154,7 @@ class DefaultImageGeneratorsUtils(MixinMeta):
         circle = Image.new("L", (raw_length, raw_length), 0)
         draw = ImageDraw.Draw(circle)
         draw.ellipse((0, 0, raw_length, raw_length), fill=255)
-        circle = circle.resize((rad * 2, rad * 2), Image.ANTIALIAS)
+        circle = circle.resize((rad * 2, rad * 2), LANCZOS)
 
         alpha = Image.new("L", im.size, 255)
         w, h = im.size
