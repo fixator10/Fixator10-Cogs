@@ -81,10 +81,10 @@ class ImageGenerators(MixinMeta):
                 # if char.isalnum() or char in string.punctuation or char in string.whitespace:
                 if self.char_in_font(char, check_font):
                     draw.text((write_pos, y), "{}".format(char), font=font, fill=fill)
-                    write_pos += self._write_getsize_position_character(font, char)
+                    write_pos += self._get_character_pixel_width(font, char)
                 else:
                     draw.text((write_pos, y), "{}".format(char), font=unicode_font, fill=fill)
-                    write_pos += self._write_getsize_position_character(unicode_font, char)
+                    write_pos += self._get_character_pixel_width(unicode_font, char)
             check_font.close()
 
         # set canvas
@@ -454,10 +454,10 @@ class ImageGenerators(MixinMeta):
                 # if char.isalnum() or char in string.punctuation or char in string.whitespace:
                 if self.char_in_font(char, check_font):
                     draw.text((write_pos, y), "{}".format(char), font=font, fill=fill)
-                    write_pos += self._write_getsize_position_character(font, char)
+                    write_pos += self._get_character_pixel_width(font, char)
                 else:
                     draw.text((write_pos, y), "{}".format(char), font=unicode_font, fill=fill)
-                    write_pos += self._write_getsize_position_character(unicode_font, char)
+                    write_pos += self._get_character_pixel_width(unicode_font, char)
             check_font.close()
 
         # COLORS
