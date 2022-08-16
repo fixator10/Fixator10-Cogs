@@ -22,7 +22,7 @@ from .utils import _
 class DataUtils(commands.Cog):
     """Commands for getting information about users or servers."""
 
-    __version__ = "2.6.12"
+    __version__ = "2.6.13"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -159,14 +159,11 @@ class DataUtils(commands.Cog):
             em.add_field(name=_("Name"), value=member.name)
         em.add_field(
             name=_("Client"),
-            value="📱: {}\n"
-            "🖥: {}\n"
-            "🌎: {}".format(
-                str(member.mobile_status).capitalize(),
-                str(member.desktop_status).capitalize(),
-                str(member.web_status).capitalize(),
-            ),
+            value=f"📱: {str(member.mobile_status).capitalize()}\n"
+            f"🖥: {str(member.desktop_status).capitalize()}\n"
+            f"🌎: {str(member.web_status).capitalize()}",
         )
+
         em.add_field(
             name=_("Joined server"),
             value=get_markdown_timestamp(member.joined_at, TimestampStyle.datetime_long),
