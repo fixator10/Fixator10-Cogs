@@ -96,13 +96,8 @@ class Utils(MixinMeta):
         return text
 
     @staticmethod
-    def _write_getsize_position_character(font: ImageFont.FreeTypeFont, char: str) -> int:
-        """
-        Use getlength over using getsize for characters, if available in PIL.
-
-        Lines of characters (more than 1 character) should use _write_getsize_position_line
-        instead of this function.
-        """
+    def _get_character_pixel_width(font: ImageFont.FreeTypeFont, char: str) -> int:
+        """Use getlength over using getsize for character pixel width, if available in PIL."""
         try:
             write_pos = int(font.getlength(char))
         except AttributeError:
