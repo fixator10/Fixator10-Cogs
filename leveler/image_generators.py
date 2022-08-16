@@ -689,11 +689,11 @@ class ImageGenerators(MixinMeta):
             offset = 195
         margin = 140
         txt_color = self._contrast(info_fill, white_color, dark_color)
-        for line in textwrap.wrap(userinfo["info"], width=32):
+        for line in textwrap.wrap(userinfo["info"], width=27):
             # for line in textwrap.wrap('userinfo["info"]', width=200):
             # draw.text((margin, offset), line, font=text_fnt, fill=white_color)
             _write_unicode(line, margin, offset, text_fnt, text_u_fnt, txt_color)
-            offset += self._write_getsize_position_line(text_fnt, line) + 2
+            offset += 18
 
         # if await self.config.badge_type() == "circles":
         # circles require antialiasing
