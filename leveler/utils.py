@@ -108,16 +108,3 @@ class Utils(MixinMeta):
         except AttributeError:
             write_pos = font.getsize(char)[0]
         return write_pos
-
-    @staticmethod
-    def _write_getsize_position_line(font: ImageFont.FreeTypeFont, line: str) -> int:
-        """
-        Use getbbox over using getsize for positions of lines of characters, if available in PIL.
-
-        Single characters should use _write_getsize_position_character instead of this function.
-        """
-        try:
-            write_pos = font.getbbox(line)[3]
-        except AttributeError:
-            write_pos = font.getsize(line)[1]
-        return write_pos
