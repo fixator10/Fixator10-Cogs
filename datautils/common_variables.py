@@ -37,13 +37,23 @@ GUILD_FEATURES = {
     "NEW_THREAD_PERMISSIONS": _("Enabled new thread permissions"),
     "ROLE_ICONS": _("Role icons"),
     "DISCOVERABLE_DISABLED": _("Cannot be in Server Discovery"),
+    "MEMBER_VERIFICATION_GATE_ENABLED": _("Membership screening (Rules screening)"),
+    "AUTO_MODERATION": _("Auto moderation enabled"),
+    "TEXT_IN_VOICE_ENABLED": _("Text in voice channels"),
     # Docs from https://github.com/vDelite/DiscordLists:
     "PREVIEW_ENABLED": _('Preview enabled ("Lurkable")'),
-    "MEMBER_VERIFICATION_GATE_ENABLED": _("Member verification gate enabled"),
     "MEMBER_LIST_DISABLED": _("Member list disabled"),
     "PREMIUM_TIER_3_OVERRIDE": _("Permanent level 3 boost"),
     "MEMBER_PROFILES": _("Server profiles"),
     "CHANNEL_BANNER": _("Channel banner"),
+    "BOT_DEVELOPER_EARLY_ACCESS": _("Early access for bot/lib devs"),
+    "INTERNAL_EMPLOYEE_ONLY": _("Only for discord employees"),
+    "GUILD_HOME_TEST": _("Home feature access"),
+    "HAD_EARLY_ACTIVITIES_ACCESS": _("Bypass voice channel activities requirements"),
+    "HAS_DIRECTORY_ENTRY": _("In a student hub"),
+    "HUB": _("Student hub"),
+    "ROLE_SUBSCRIPTIONS_ENABLED": _("Role subscriptions"),
+    "ROLE_SUBSCRIPTIONS_AVAILABLE_FOR_PURCHASE": _("Members can purchase roles"),
     # im honestly idk what the fuck that shit means, and discord doesnt provides much docs,
     # so if you see that on your server while using my cog - idk what the fuck is that and how it got there,
     # ask discord to write fucking docs already
@@ -53,6 +63,7 @@ GUILD_FEATURES = {
     "FORCE_RELAY": _(
         "Shards connections to the guild to different nodes that relay information between each other."
     ),
+    "EXPOSED_TO_ACTIVITIES_WTP_EXPERIMENT": _("Activities baseline engagement bundle"),
 }
 
 ACTIVITY_TYPES = {
