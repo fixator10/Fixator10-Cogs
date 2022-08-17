@@ -23,6 +23,11 @@ except Exception as e:
         "Installing-Leveler#my-bot-throws-error-on-load-something-related-to-pillow."
     )
 
+try:
+    from PIL.Image.Resampling import LANCZOS
+except ModuleNotFoundError:
+    from PIL.Image import LANCZOS
+
 
 log = getLogger("red.fixator10-cogs.leveler")
 
@@ -76,10 +81,10 @@ class ImageGenerators(MixinMeta):
                 # if char.isalnum() or char in string.punctuation or char in string.whitespace:
                 if self.char_in_font(char, check_font):
                     draw.text((write_pos, y), "{}".format(char), font=font, fill=fill)
-                    write_pos += font.getsize(char)[0]
+                    write_pos += self._get_character_pixel_width(font, char)
                 else:
                     draw.text((write_pos, y), "{}".format(char), font=unicode_font, fill=fill)
-                    write_pos += unicode_font.getsize(char)[0]
+                    write_pos += self._get_character_pixel_width(unicode_font, char)
             check_font.close()
 
         # set canvas
@@ -96,7 +101,7 @@ class ImageGenerators(MixinMeta):
         info_section_process = Image.new("RGBA", (bg_width, height), bg_color)
         # puts in background
         temp = bg_image
-        bg_image = bg_image.resize((width, height), Image.ANTIALIAS)
+        bg_image = bg_image.resize((width, height), LANCZOS)
         temp.close()
         temp = bg_image
         bg_image = bg_image.crop((0, 0, width, height))
@@ -151,9 +156,9 @@ class ImageGenerators(MixinMeta):
         draw_lvl_circle.ellipse([0, 0, raw_length, raw_length], fill=(250, 250, 250, 250))
         # put on profile circle background
         temp = lvl_circle
-        lvl_circle = lvl_circle.resize((lvl_circle_dia, lvl_circle_dia), Image.ANTIALIAS)
+        lvl_circle = lvl_circle.resize((lvl_circle_dia, lvl_circle_dia), LANCZOS)
         temp.close()
-        lvl_bar_mask = mask.resize((lvl_circle_dia, lvl_circle_dia), Image.ANTIALIAS)
+        lvl_bar_mask = mask.resize((lvl_circle_dia, lvl_circle_dia), LANCZOS)
         process.paste(lvl_circle, (circle_left, circle_top), lvl_bar_mask)
         lvl_bar_mask.close()
 
@@ -165,13 +170,13 @@ class ImageGenerators(MixinMeta):
         # put in profile picture
         output = ImageOps.fit(profile_image, (raw_length, raw_length), centering=(0.5, 0.5))
         temp = output
-        output.resize((profile_size, profile_size), Image.ANTIALIAS)
+        output.resize((profile_size, profile_size), LANCZOS)
         temp.close()
         temp = mask
-        mask = mask.resize((profile_size, profile_size), Image.ANTIALIAS)
+        mask = mask.resize((profile_size, profile_size), LANCZOS)
         temp.close()
         temp = profile_image
-        profile_image = profile_image.resize((profile_size, profile_size), Image.ANTIALIAS)
+        profile_image = profile_image.resize((profile_size, profile_size), LANCZOS)
         temp.close()
         process.paste(profile_image, (circle_left + border, circle_top + border), mask)
 
@@ -310,7 +315,7 @@ class ImageGenerators(MixinMeta):
 
         # puts in background
         temp = bg_image
-        bg_image = bg_image.resize((width, height), Image.ANTIALIAS)
+        bg_image = bg_image.resize((width, height), LANCZOS)
         temp.close()
         temp = bg_image
         bg_image = bg_image.crop((0, 0, width, height))
@@ -358,9 +363,9 @@ class ImageGenerators(MixinMeta):
         draw_lvl_circle = ImageDraw.Draw(lvl_circle)
         draw_lvl_circle.ellipse([0, 0, raw_length, raw_length], fill=(250, 250, 250, 180))
         temp = lvl_circle
-        lvl_circle = lvl_circle.resize((lvl_circle_dia, lvl_circle_dia), Image.ANTIALIAS)
+        lvl_circle = lvl_circle.resize((lvl_circle_dia, lvl_circle_dia), LANCZOS)
         temp.close()
-        lvl_bar_mask = mask.resize((lvl_circle_dia, lvl_circle_dia), Image.ANTIALIAS)
+        lvl_bar_mask = mask.resize((lvl_circle_dia, lvl_circle_dia), LANCZOS)
         process.paste(lvl_circle, (circle_left, circle_top), lvl_bar_mask)
         lvl_bar_mask.close()
 
@@ -369,13 +374,13 @@ class ImageGenerators(MixinMeta):
         # put in profile picture
         output = ImageOps.fit(profile_image, (raw_length, raw_length), centering=(0.5, 0.5))
         temp = output
-        output.resize((profile_size, profile_size), Image.ANTIALIAS)
+        output.resize((profile_size, profile_size), LANCZOS)
         temp.close()
         temp = mask
-        mask = mask.resize((profile_size, profile_size), Image.ANTIALIAS)
+        mask = mask.resize((profile_size, profile_size), LANCZOS)
         temp.close()
         temp = profile_image
-        profile_image = profile_image.resize((profile_size, profile_size), Image.ANTIALIAS)
+        profile_image = profile_image.resize((profile_size, profile_size), LANCZOS)
         temp.close()
         process.paste(profile_image, (circle_left + border, circle_top + border), mask)
 
@@ -449,10 +454,10 @@ class ImageGenerators(MixinMeta):
                 # if char.isalnum() or char in string.punctuation or char in string.whitespace:
                 if self.char_in_font(char, check_font):
                     draw.text((write_pos, y), "{}".format(char), font=font, fill=fill)
-                    write_pos += font.getsize(char)[0]
+                    write_pos += self._get_character_pixel_width(font, char)
                 else:
                     draw.text((write_pos, y), "{}".format(char), font=unicode_font, fill=fill)
-                    write_pos += unicode_font.getsize(char)[0]
+                    write_pos += self._get_character_pixel_width(unicode_font, char)
             check_font.close()
 
         # COLORS
@@ -499,7 +504,7 @@ class ImageGenerators(MixinMeta):
 
         # puts in background
         temp = bg_image
-        bg_image = bg_image.resize((340, 340), Image.ANTIALIAS)
+        bg_image = bg_image.resize((340, 340), LANCZOS)
         temp.close()
         temp = bg_image
         bg_image = bg_image.crop((0, 0, 340, 305))
@@ -532,9 +537,9 @@ class ImageGenerators(MixinMeta):
         )
         # put border
         temp = lvl_circle
-        lvl_circle = lvl_circle.resize((lvl_circle_dia, lvl_circle_dia), Image.ANTIALIAS)
+        lvl_circle = lvl_circle.resize((lvl_circle_dia, lvl_circle_dia), LANCZOS)
         temp.close()
-        lvl_bar_mask = mask.resize((lvl_circle_dia, lvl_circle_dia), Image.ANTIALIAS)
+        lvl_bar_mask = mask.resize((lvl_circle_dia, lvl_circle_dia), LANCZOS)
         process.paste(lvl_circle, (circle_left, circle_top), lvl_bar_mask)
         lvl_bar_mask.close()
 
@@ -543,10 +548,10 @@ class ImageGenerators(MixinMeta):
         border = int(total_gap / 2)
         profile_size = lvl_circle_dia - total_gap
         temp = mask
-        mask = mask.resize((profile_size, profile_size), Image.ANTIALIAS)
+        mask = mask.resize((profile_size, profile_size), LANCZOS)
         temp.close()
         temp = profile_image
-        profile_image = profile_image.resize((profile_size, profile_size), Image.ANTIALIAS)
+        profile_image = profile_image.resize((profile_size, profile_size), LANCZOS)
         temp.close()
         process.paste(profile_image, (circle_left + border, circle_top + border), mask)
 
@@ -731,7 +736,7 @@ class ImageGenerators(MixinMeta):
                 badge_image = badge_image_original.convert("RGBA")
                 badges_images[num].close()
                 badge_image_original.close()
-                badge_image_resized = badge_image.resize((raw_length, raw_length), Image.ANTIALIAS)
+                badge_image_resized = badge_image.resize((raw_length, raw_length), LANCZOS)
                 badge_image.close()
 
                 # structured like this because if border = 0, still leaves outline.
@@ -740,9 +745,9 @@ class ImageGenerators(MixinMeta):
                     # put border on ellipse/circle
                     output = ImageOps.fit(square, (raw_length, raw_length), centering=(0.5, 0.5))
                     temp = output
-                    output = output.resize((size, size), Image.ANTIALIAS)
+                    output = output.resize((size, size), LANCZOS)
                     temp.close()
-                    outer_mask = mask.resize((size, size), Image.ANTIALIAS)
+                    outer_mask = mask.resize((size, size), LANCZOS)
                     process.paste(output, coord, outer_mask)
                     outer_mask.close()
 
@@ -753,9 +758,9 @@ class ImageGenerators(MixinMeta):
                         centering=(0.5, 0.5),
                     )
                     temp = output
-                    output = output.resize((size - total_gap, size - total_gap), Image.ANTIALIAS)
+                    output = output.resize((size - total_gap, size - total_gap), LANCZOS)
                     temp.close()
-                    inner_mask = mask.resize((size - total_gap, size - total_gap), Image.ANTIALIAS)
+                    inner_mask = mask.resize((size - total_gap, size - total_gap), LANCZOS)
                     process.paste(
                         output,
                         (coord[0] + border_width, coord[1] + border_width),
@@ -771,9 +776,9 @@ class ImageGenerators(MixinMeta):
                         centering=(0.5, 0.5),
                     )
                     temp = output
-                    output = output.resize((size, size), Image.ANTIALIAS)
+                    output = output.resize((size, size), LANCZOS)
                     temp.close()
-                    outer_mask = mask.resize((size, size), Image.ANTIALIAS)
+                    outer_mask = mask.resize((size, size), LANCZOS)
                     process.paste(output, coord, outer_mask)
                     outer_mask.close()
                 badge_image_resized.close()
@@ -808,9 +813,9 @@ class ImageGenerators(MixinMeta):
                 # put border on ellipse/circle
                 output = ImageOps.fit(plus_square, (raw_length, raw_length), centering=(0.5, 0.5))
                 temp = output
-                output = output.resize((size, size), Image.ANTIALIAS)
+                output = output.resize((size, size), LANCZOS)
                 temp.close()
-                outer_mask = mask.resize((size, size), Image.ANTIALIAS)
+                outer_mask = mask.resize((size, size), LANCZOS)
                 process.paste(output, coord, outer_mask)
                 outer_mask.close()
                 plus_square.close()

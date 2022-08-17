@@ -9,6 +9,16 @@ from redbot.core.utils.predicates import MessagePredicate
 
 from .abc import MixinMeta
 
+try:
+    from PIL import ImageFont
+except Exception as e:
+    raise CogLoadError(
+        f"Can't load pillow: {e}\n"
+        "Please follow next steps on wiki: "
+        "https://github.com/fixator10/Fixator10-Cogs/wiki/"
+        "Installing-Leveler#my-bot-throws-error-on-load-something-related-to-pillow."
+    )
+
 
 class Utils(MixinMeta):
     """Utility methods"""
@@ -84,3 +94,12 @@ class Utils(MixinMeta):
         if len(text) > max_length:
             return text[: max_length - 1] + "…"
         return text
+
+    @staticmethod
+    def _get_character_pixel_width(font: ImageFont.FreeTypeFont, char: str) -> int:
+        """Use getlength over using getsize for character pixel width, if available in PIL."""
+        try:
+            write_pos = int(font.getlength(char))
+        except AttributeError:
+            write_pos = font.getsize(char)[0]
+        return write_pos
