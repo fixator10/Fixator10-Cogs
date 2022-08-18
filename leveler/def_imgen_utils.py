@@ -20,7 +20,9 @@ except Exception as e:
     )
 
 try:
-    from PIL.Image.Resampling import LANCZOS
+    from PIL import Image
+
+    LANCZOS = Image.Resampling.LANCZOS
 except ModuleNotFoundError:
     from PIL.Image import LANCZOS
 
