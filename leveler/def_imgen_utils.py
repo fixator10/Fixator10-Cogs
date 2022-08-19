@@ -23,7 +23,7 @@ try:
     from PIL import Image
 
     LANCZOS = Image.Resampling.LANCZOS
-except ModuleNotFoundError:
+except AttributeError:
     from PIL.Image import LANCZOS
 
 try:
