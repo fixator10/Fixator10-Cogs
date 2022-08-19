@@ -189,7 +189,7 @@ class Profile(MixinMeta):
         user = ctx.author
         max_char = 20
 
-        if title == None:
+        if not title:
             await self.db.users.update_one({"user_id": str(user.id)}, {"$set": {"title": ""}})
             msg = (
                 "Your title has been successfully cleared! "
