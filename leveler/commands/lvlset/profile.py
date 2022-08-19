@@ -25,7 +25,7 @@ class Profile(MixinMeta):
         """Set profile color.
 
         For section, you can choose: `exp`, `rep`, `badge`, `info` or `all`.
-        For color, you can use: 
+        For color, you can use:
         a color name like `blurple`, a hex code (`#000000`), `auto` for auto-color
         or reset the values to their defaults with `reset`.
         e.g: `[p]lvlset profile color all #eb4034`"""
