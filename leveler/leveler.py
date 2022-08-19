@@ -29,7 +29,7 @@ class Leveler(
 ):
     """A level up thing with image generation!"""
 
-    __version__ = "3.0.7"
+    __version__ = "3.0.8"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot: Red):
