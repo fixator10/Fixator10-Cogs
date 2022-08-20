@@ -63,7 +63,7 @@ class Settings(MixinMeta):
     @commands.is_owner()
     @lvladmin.command()
     async def resetrep(self, ctx):
-        """Resets all reputation points from MonogoDB"""
+        """Resets all reputation points from MongoDB."""
         async with ctx.typing():
             await self.db.users.update_many({}, {"$set": {"rep": 0}})
             await ctx.send("All reputation points have been removed.")
@@ -194,7 +194,7 @@ class Settings(MixinMeta):
     @lvladmin.command(name="globaltop")
     @commands.is_owner()
     async def allow_global_top(self, ctx):
-        """Allow usage of `--global` argument in `[p]top` command"""
+        """Allow usage of `--global` argument in `[p]top` command."""
         # Reason: https://support-dev.discord.com/hc/en-us/articles/360043053492
         server = ctx.guild
         if await self.config.allow_global_top():
