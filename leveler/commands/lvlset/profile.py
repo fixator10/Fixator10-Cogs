@@ -180,14 +180,23 @@ class Profile(MixinMeta):
 
     @profileset.command()
     @commands.guild_only()
-    async def title(self, ctx, *, title):
-        """Set your title."""
+    async def title(self, ctx, *, title=None):
+        """
+        Set your title.
+
+        Use this command with no title given to clear your title.
+        """
         user = ctx.author
-        userinfo = await self.db.users.find_one({"user_id": str(user.id)})
         max_char = 20
 
-        if len(title) < max_char:
-            userinfo["title"] = title
+        if not title:
+            await self.db.users.update_one({"user_id": str(user.id)}, {"$set": {"title": ""}})
+            msg = (
+                "Your title has been successfully cleared! "
+                "Use this command with a title if you'd like to set one."
+            )
+            await ctx.send(msg)
+        elif len(title) < max_char:
             await self.db.users.update_one({"user_id": str(user.id)}, {"$set": {"title": title}})
             await ctx.send("Your title has been succesfully set!")
         else:
