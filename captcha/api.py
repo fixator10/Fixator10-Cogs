@@ -28,13 +28,18 @@ class Challenge:
         self.guild: discord.Guild = member.guild
         self.config: dict = data  # Will contain the config of the guild.
 
+        self.channel: Union[discord.TextChannel, discord.DMChannel]
         if not self.config["channel"]:
             raise MissingRequiredValueError("Missing channel for verification.")
-        self.channel: Union[discord.TextChannel, discord.DMChannel] = (
-            bot.get_channel(self.config["channel"])
-            if self.config.get("channel") != "dm"
-            else self.member.dm_channel
-        )
+        if self.config.get("channel") == "dm":
+            if not self.member.dm_channel:
+                self.channel = await self.member.create_dm()
+            else:
+                self.channel = self.member.dm_channel()
+        else:
+            self.channel = bot.get_channel(self.config["channel"])
+        if not self.channel:
+            raise MissingRequiredValueError("Missing channel for verification.")
 
         self.type: str = self.config["type"]
 
