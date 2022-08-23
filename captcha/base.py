@@ -145,11 +145,19 @@ class Captcha(
 
     async def create_challenge_for(self, member: discord.Member) -> Challenge:
         """
-        Create a Challenge class for an user and append it to the running challenges.
+        Create a Challenge class for a user and append it to the running challenges.
         """
         if member.id in self.running:
             raise AlreadyHaveCaptchaError("The user already have a captcha object running.")
-        captcha = Challenge(self.bot, member, await self.data.guild(member.guild).all())
+        config = await self.data.guild(member.guild).all()
+        channel = config["channel"]
+        if not channel:
+            raise MissingRequiredValueError("Missing channel for verification.")
+        if channel == "dm":
+            channel = member.dm_channel or await member.create_dm()
+        else:
+            channel = self.bot.get_channel(channel)
+        captcha = Challenge(self.bot, member, channel, config)
         self.running[member.id] = captcha
         return captcha
 

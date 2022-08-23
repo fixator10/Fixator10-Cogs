@@ -19,25 +19,22 @@ def ok_check(msg: str):
 
 
 class Challenge:
-    """Representation of a challenge an user is doing."""
+    """Representation of a challenge a user is doing."""
 
-    def __init__(self, bot: Red, member: discord.Member, data: dict):
+    def __init__(
+        self,
+        bot: Red,
+        member: discord.Member,
+        channel: Union[discord.TextChannel, discord.DMChannel],
+        config: dict,
+    ):
         self.bot: Red = bot
 
         self.member: discord.Member = member
         self.guild: discord.Guild = member.guild
-        self.config: dict = data  # Will contain the config of the guild.
+        self.config: dict = config  # Will contain the config of the guild.
 
-        self.channel: Union[discord.TextChannel, discord.DMChannel]
-        if not self.config["channel"]:
-            raise MissingRequiredValueError("Missing channel for verification.")
-        if self.config.get("channel") == "dm":
-            if not self.member.dm_channel:
-                self.channel = await self.member.create_dm()
-            else:
-                self.channel = self.member.dm_channel()
-        else:
-            self.channel = bot.get_channel(self.config["channel"])
+        self.channel = channel
         if not self.channel:
             raise MissingRequiredValueError("Missing channel for verification.")
 
