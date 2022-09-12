@@ -8,7 +8,7 @@ import aiohttp
 import discord
 import tabulate
 from babel.dates import format_datetime
-from mcstatus import MinecraftServer
+from mcstatus import JavaServer as MinecraftServer
 from redbot.core import commands
 from redbot.core.i18n import Translator, cog_i18n, get_babel_regional_format
 from redbot.core.utils import chat_formatting as chat
