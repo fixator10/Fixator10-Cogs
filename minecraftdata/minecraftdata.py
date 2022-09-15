@@ -1,18 +1,15 @@
 import base64
 import re
 from asyncio import TimeoutError as AsyncTimeoutError
-from datetime import datetime, timezone
 from io import BytesIO
+from typing import Optional
 
 import aiohttp
 import discord
-import tabulate
-from babel.dates import format_datetime
-from mcstatus import MinecraftServer
+from mcstatus import BedrockServer, JavaServer
 from redbot.core import commands
-from redbot.core.i18n import Translator, cog_i18n, get_babel_regional_format
+from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils import chat_formatting as chat
-from redbot.core.utils.menus import DEFAULT_CONTROLS, menu
 
 from .minecraftplayer import MCPlayer
 
@@ -38,7 +35,7 @@ _ = T_
 class MinecraftData(commands.Cog):
     """Minecraft-Related data"""
 
-    __version__ = "2.0.13"
+    __version__ = "2.1.0"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -269,14 +266,18 @@ class MinecraftData(commands.Cog):
         await ctx.send(file=file)
         cape.close()
 
-    @minecraft.command(usage="<server IP>[:port]")
+    @minecraft.group()
     @commands.bot_has_permissions(embed_links=True)
+    async def server(self, ctx):
+        pass
+
+    @server.command(usage="[query] <server IP>[:port]")
     @commands.cooldown(1, 30, commands.BucketType.user)
-    async def server(self, ctx, server_ip: str):
+    async def java(self, ctx, query_data: Optional[bool], server_ip: str):
         """Get info about server"""
         try:
-            server: MinecraftServer = await self.bot.loop.run_in_executor(
-                None, MinecraftServer.lookup, server_ip
+            server: JavaServer = await self.bot.loop.run_in_executor(
+                None, JavaServer.lookup, server_ip
             )
         except Exception as e:
             await ctx.send(chat.error(_("Unable to resolve IP: {}").format(e)))
@@ -300,7 +301,7 @@ class MinecraftData(commands.Cog):
             else None
         )
         embed = discord.Embed(
-            title=f"{server.host}:{server.port}",
+            title=f"{server.address.host}:{server.address.port}",
             description=chat.box(await self.clear_mcformatting(status.description)),
             color=await ctx.embed_color(),
         )
@@ -329,64 +330,63 @@ class MinecraftData(commands.Cog):
             name=_("Version"),
             value=_("{}\nProtocol: {}").format(status.version.name, status.version.protocol),
         )
-        await ctx.send(file=icon, embed=embed)
+        msg = await ctx.send(file=icon, embed=embed)
         if icon_file:
             icon_file.close()
-        # TODO: for some reason, producing `OSError: [WinError 10038]` on current version of lib
-        # not tested further
-        # if query_data:  # Optional[bool]
-        #     try:
-        #         query = await server.async_query()
-        #     except OSError as e:
-        #         embed.set_footer(text=chat.error(_("Unable to get query data: {}").format(e)))
-        #         await msg.edit(embed=embed)
-        #         return
-        #     except AsyncTimeoutError:
-        #         embed.set_footer(text=chat.error(_("Unable to get query data: Timed out.")))
-        #         await msg.edit(embed=embed)
-        #         return
-        #     embed.add_field(name=_("World"), value=f"{query.map}")
-        #     embed.add_field(
-        #         name=_("Software"),
-        #         value=_("{}\nVersion: {}").format(query.software.brand, query.software.version)
-        #         # f"Plugins: {query.software.plugins}"
-        #     )
-        #     await msg.edit(embed=embed)
+        if query_data:
+            try:
+                query = await server.async_query()
+            except OSError as e:
+                embed.set_footer(text=chat.error(_("Unable to get query data: {}").format(e)))
+                await msg.edit(embed=embed)
+                return
+            except AsyncTimeoutError:
+                embed.set_footer(text=chat.error(_("Unable to get query data: Timed out.")))
+                await msg.edit(embed=embed)
+                return
+            embed.add_field(name=_("World"), value=f"{query.map}")
+            embed.add_field(
+                name=_("Software"),
+                value=_("{}\nVersion: {}").format(query.software.brand, query.software.version)
+                + "\n"
+                + _("Plugins: {}").format(", ".join(query.software.plugins)),
+            )
+            await msg.edit(embed=embed)
 
-    @minecraft.command(aliases=["nicknames", "nickhistory", "names"])
-    async def nicks(self, ctx, current_nick: MCPlayer):
-        """Check history of player's nicks"""
-        uuid = current_nick.uuid
-        try:
-            async with self.session.get(
-                "https://api.mojang.com/user/profiles/{}/names".format(uuid)
-            ) as data:
-                data_history = await data.json(loads=json.loads)
-            for nick in data_history:
-                try:
-                    nick["changedToAt"] = format_datetime(
-                        datetime.fromtimestamp(nick["changedToAt"] / 1000, timezone.utc),
-                        locale=get_babel_regional_format(),
-                    )
-                except KeyError:
-                    nick["changedToAt"] = _("Initial")
-            table = tabulate.tabulate(
-                data_history,
-                headers={
-                    "name": _("Nickname"),
-                    "changedToAt": _("Changed to at... (UTC)"),
-                },
-                tablefmt="orgtbl",
-            )
-            pages = [chat.box(page) for page in list(chat.pagify(table))]
-            await menu(ctx, pages, DEFAULT_CONTROLS)
-        except Exception as e:
-            await ctx.send(
-                chat.error(
-                    _("Unable to check name history.\nAn error has been occurred: ")
-                    + chat.inline(str(e))
-                )
-            )
+    # @minecraft.command(aliases=["nicknames", "nickhistory", "names"])
+    # async def nicks(self, ctx, current_nick: MCPlayer):
+    #     """Check history of player's nicks"""
+    #     uuid = current_nick.uuid
+    #     try:
+    #         async with self.session.get(
+    #             "https://api.mojang.com/user/profiles/{}/names".format(uuid)
+    #         ) as data:
+    #             data_history = await data.json(loads=json.loads)
+    #         for nick in data_history:
+    #             try:
+    #                 nick["changedToAt"] = format_datetime(
+    #                     datetime.fromtimestamp(nick["changedToAt"] / 1000, timezone.utc),
+    #                     locale=get_babel_regional_format(),
+    #                 )
+    #             except KeyError:
+    #                 nick["changedToAt"] = _("Initial")
+    #         table = tabulate.tabulate(
+    #             data_history,
+    #             headers={
+    #                 "name": _("Nickname"),
+    #                 "changedToAt": _("Changed to at... (UTC)"),
+    #             },
+    #             tablefmt="orgtbl",
+    #         )
+    #         pages = [chat.box(page) for page in list(chat.pagify(table))]
+    #         await menu(ctx, pages, DEFAULT_CONTROLS)
+    #     except Exception as e:
+    #         await ctx.send(
+    #             chat.error(
+    #                 _("Unable to check name history.\nAn error has been occurred: ")
+    #                 + chat.inline(str(e))
+    #             )
+    #         )
 
     async def clear_mcformatting(self, formatted_str) -> str:
         """Remove Minecraft-formatting"""
