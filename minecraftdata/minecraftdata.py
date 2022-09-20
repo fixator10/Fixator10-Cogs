@@ -29,7 +29,7 @@ _ = T_
 class MinecraftData(commands.Cog):
     """Minecraft-Related data"""
 
-    __version__ = "2.2.0"
+    __version__ = "2.2.1"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -343,7 +343,9 @@ class MinecraftData(commands.Cog):
             embed.add_field(name=_("World"), value=f"{query.map}")
             embed.add_field(
                 name=_("Software"),
-                value=_("{}\nVersion: {}").format(query.software.brand, query.software.version)
+                value=f"{query.software.brand}"
+                + "\n"
+                + _("Version: {}").format(query.software.version)
                 + "\n"
                 + _("Plugins: {}").format(", ".join(query.software.plugins)),
             )
@@ -378,7 +380,7 @@ class MinecraftData(commands.Cog):
         embed.add_field(name=_("Players"), value=f"{status.players_online}/{status.players_max}"),
         embed.add_field(
             name=_("Version"),
-            value=("{}" + "\n" + _("Protocol: {}" + "\n" + _("Brand: {}"))).format(
+            value=("{}" + "\n" + _("Protocol: {}") + "\n" + _("Brand: {}")).format(
                 status.version.version, status.version.protocol, status.version.brand
             ),
         )

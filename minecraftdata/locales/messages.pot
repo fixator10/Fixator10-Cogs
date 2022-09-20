@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2022-09-20 18:39+0400\n"
+"POT-Creation-Date: 2022-09-20 18:47+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,7 +23,7 @@ msgstr ""
 
 #: minecraftdata\minecraftdata.py:57
 #, docstring
-msgid "Get minecraft skin by nickname"
+msgid "Get minecraft Java Edition skin by nickname"
 msgstr ""
 
 #: minecraftdata\minecraftdata.py:89
@@ -113,31 +113,31 @@ msgstr ""
 msgid "Get info about Minecraft Java Edition server"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:277 minecraftdata\minecraftdata.py:361
+#: minecraftdata\minecraftdata.py:277 minecraftdata\minecraftdata.py:363
 msgid "Unable to resolve IP: {}"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:283 minecraftdata\minecraftdata.py:367
+#: minecraftdata\minecraftdata.py:283 minecraftdata\minecraftdata.py:369
 msgid "Unable to get server's status: {}"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:286 minecraftdata\minecraftdata.py:370
+#: minecraftdata\minecraftdata.py:286 minecraftdata\minecraftdata.py:372
 msgid "Unable to get server's status: Timed out"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:304 minecraftdata\minecraftdata.py:377
+#: minecraftdata\minecraftdata.py:304 minecraftdata\minecraftdata.py:379
 msgid "Latency"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:306 minecraftdata\minecraftdata.py:378
+#: minecraftdata\minecraftdata.py:306 minecraftdata\minecraftdata.py:380
 msgid "Players"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:324 minecraftdata\minecraftdata.py:380
+#: minecraftdata\minecraftdata.py:324 minecraftdata\minecraftdata.py:382
 msgid "Version"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:325
+#: minecraftdata\minecraftdata.py:325 minecraftdata\minecraftdata.py:383
 msgid "Protocol: {}"
 msgstr ""
 
@@ -157,30 +157,28 @@ msgstr ""
 msgid "Software"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:346
-msgid ""
-"{}\n"
-"Version: {}"
+#: minecraftdata\minecraftdata.py:348
+msgid "Version: {}"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:348
+#: minecraftdata\minecraftdata.py:350
 msgid "Plugins: {}"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:355
+#: minecraftdata\minecraftdata.py:357
 #, docstring
 msgid "Get info about Minecraft Bedrock server"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:381
+#: minecraftdata\minecraftdata.py:383
 msgid "Brand: {}"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:385
+#: minecraftdata\minecraftdata.py:387
 msgid "Map"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:386
+#: minecraftdata\minecraftdata.py:388
 msgid "Gamemode"
 msgstr ""
 
