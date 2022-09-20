@@ -22,12 +22,6 @@ except ImportError:
 T_ = Translator("MinecraftData", __file__)
 _ = lambda s: s
 
-SERVICE_STATUS = {
-    "red": _("💔 **UNAVAILABLE**"),
-    "yellow": _("💛 **SOME ISSUES**"),
-    "green": _("💚 **OK**"),
-}
-
 _ = T_
 
 
@@ -35,7 +29,7 @@ _ = T_
 class MinecraftData(commands.Cog):
     """Minecraft-Related data"""
 
-    __version__ = "2.1.0"
+    __version__ = "2.2.0"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -60,7 +54,7 @@ class MinecraftData(commands.Cog):
     @minecraft.command(usage="<player> [overlay layer=True]")
     @commands.bot_has_permissions(embed_links=True)
     async def skin(self, ctx, player: MCPlayer, overlay: bool = True):
-        """Get minecraft skin by nickname"""
+        """Get minecraft Java Edition skin by nickname"""
         uuid = player.uuid
         stripname = player.name.strip("_")
         files = []
@@ -271,10 +265,10 @@ class MinecraftData(commands.Cog):
     async def server(self, ctx):
         pass
 
-    @server.command(usage="[query] <server IP>[:port]")
+    @server.command(usage="[query=False] <server IP>[:port]")
     @commands.cooldown(1, 30, commands.BucketType.user)
     async def java(self, ctx, query_data: Optional[bool], server_ip: str):
-        """Get info about server"""
+        """Get info about Minecraft Java Edition server"""
         try:
             server: JavaServer = await self.bot.loop.run_in_executor(
                 None, JavaServer.lookup, server_ip
@@ -328,7 +322,9 @@ class MinecraftData(commands.Cog):
         )
         embed.add_field(
             name=_("Version"),
-            value=_("{}\nProtocol: {}").format(status.version.name, status.version.protocol),
+            value=("{}" + "\n" + _("Protocol: {}")).format(
+                status.version.name, status.version.protocol
+            ),
         )
         msg = await ctx.send(file=icon, embed=embed)
         if icon_file:
@@ -352,6 +348,43 @@ class MinecraftData(commands.Cog):
                 + _("Plugins: {}").format(", ".join(query.software.plugins)),
             )
             await msg.edit(embed=embed)
+
+    @server.command(usage="<server IP>[:port]")
+    @commands.cooldown(1, 30, commands.BucketType.user)
+    async def bedrock(self, ctx, server_ip: str):
+        """Get info about Minecraft Bedrock server"""
+        try:
+            server: BedrockServer = await self.bot.loop.run_in_executor(
+                None, BedrockServer.lookup, server_ip
+            )
+        except Exception as e:
+            await ctx.send(chat.error(_("Unable to resolve IP: {}").format(e)))
+            return
+        async with ctx.channel.typing():
+            try:
+                status = await server.async_status()
+            except OSError as e:
+                await ctx.send(chat.error(_("Unable to get server's status: {}").format(e)))
+                return
+            except AsyncTimeoutError:
+                await ctx.send(chat.error(_("Unable to get server's status: Timed out")))
+                return
+        embed = discord.Embed(
+            title=f"{server.address.host}:{server.address.port}",
+            description=chat.box(await self.clear_mcformatting(status.motd)),
+            color=await ctx.embed_color(),
+        )
+        embed.add_field(name=_("Latency"), value=f"{status.latency:.2f} ms")
+        embed.add_field(name=_("Players"), value=f"{status.players_online}/{status.players_max}"),
+        embed.add_field(
+            name=_("Version"),
+            value=("{}" + "\n" + _("Protocol: {}" + "\n" + _("Brand: {}"))).format(
+                status.version.version, status.version.protocol, status.version.brand
+            ),
+        )
+        embed.add_field(name=_("Map"), value=status.map)
+        embed.add_field(name=_("Gamemode"), value=status.gamemode)
+        await ctx.send(embed=embed)
 
     # @minecraft.command(aliases=["nicknames", "nickhistory", "names"])
     # async def nicks(self, ctx, current_nick: MCPlayer):
