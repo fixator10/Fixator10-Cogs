@@ -18,8 +18,8 @@ jobs:
           fail-on-scopes: unknown, runtime, development
           #
           # Possible values: Any available git ref
-          # base-ref: ${{ github.event.pull_request.base.ref }}
-          # head-ref: ${{ github.event.pull_request.head.ref }}
+          base-ref: ${{ github.event.pull_request.base.ref || github.event.workflow_dispatch.ref }}
+          head-ref: ${{ github.event.pull_request.head.ref || github.event.workflow_dispatch.ref }}
           #
           # You can only include one of these two options: `allow-licenses` and `deny-licenses`. These options are not supported on Enterprise Server.
           #
