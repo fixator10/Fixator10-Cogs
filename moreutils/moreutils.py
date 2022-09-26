@@ -1,6 +1,7 @@
 ﻿import colorsys
 import datetime
 import random
+import math
 
 import aiohttp
 import discord
@@ -113,8 +114,9 @@ class MoreUtils(commands.Cog):
 
     @commands.command(name="thetime")
     async def _thetime(self, ctx):
-        """Displays the current time of the server."""
-        await ctx.send(datetime.datetime.now().strftime(SM_DATETIME_FORMAT))
+        """Displays the current time."""
+        unix_timestamp = math.floor(datetime.datetime.timestamp(datetime.datetime.now()))
+        await ctx.send("<t:{}:f>".format(unix_timestamp))
 
     @commands.command(aliases=["HEX", "hex", "colour"])
     @commands.bot_has_permissions(embed_links=True)
