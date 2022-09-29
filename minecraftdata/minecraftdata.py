@@ -29,7 +29,7 @@ _ = T_
 class MinecraftData(commands.Cog):
     """Minecraft-Related data"""
 
-    __version__ = "2.2.1"
+    __version__ = "2.2.2"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
@@ -263,6 +263,7 @@ class MinecraftData(commands.Cog):
     @minecraft.group()
     @commands.bot_has_permissions(embed_links=True)
     async def server(self, ctx):
+        """Get info about Minecraft server"""
         pass
 
     @server.command(usage="[query=False] <server IP>[:port]")
