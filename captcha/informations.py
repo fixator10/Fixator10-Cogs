@@ -47,7 +47,7 @@ __OLD_PATCHNOTES__ = {
         "Oh yeah, super thing I'm proud of, there's now 3 types of Captcha, image, wheezy and plain."
         "They're super cool, plain is using plain text, and have a little security to avoid copy and "
         "paste. There's also wheezy, an easier to read captcha, with less drawing. This new and "
-        "amazing functionallity goes back to calebj, creator of the Captcha cog for Red V2, which "
+        "amazing functionality goes back to calebj, creator of the Captcha cog for Red V2, which "
         "had the same thing, I got inspired of it and copied some code. Thank you!\n\n"
         "AH yes, cog's stability, it is now WAY more stable than before, and way more efficient and "
         "easier to maintain. \N{UPSIDE-DOWN FACE}\n\n"

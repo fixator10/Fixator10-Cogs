@@ -86,7 +86,7 @@ class Levelup(MixinMeta):
                     {"user_id": str(user.id)},
                     {"$set": {"levelup_background": backgrounds["levelup"][image_name]}},
                 )
-                await ctx.send("Your new level-up background has been succesfully set!")
+                await ctx.send("Your new level-up background has been successfully set!")
         else:
             await ctx.send(
                 f"That is not a valid background. See available backgrounds at `{ctx.clean_prefix}backgrounds levelup`."
