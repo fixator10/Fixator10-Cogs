@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fixator10-cogs\n"
-"POT-Creation-Date: 2022-09-20 18:47+0400\n"
+"POT-Creation-Date: 2022-09-29 21:09+0400\n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
@@ -112,77 +112,82 @@ msgstr "Получить анимированный плащ 5zig по никн�
 msgid "{} doesn't have animated 5zig cape"
 msgstr "{} не имеет анимированного плаща 5zig"
 
-#: minecraftdata\minecraftdata.py:271
+#: minecraftdata\minecraftdata.py:266
+#, docstring
+msgid "Get info about Minecraft server"
+msgstr "Получить информацию о сервере Minecraft"
+
+#: minecraftdata\minecraftdata.py:272
 #, docstring
 msgid "Get info about Minecraft Java Edition server"
 msgstr "Получить информацию о сервере Minecraft Java Edition"
 
-#: minecraftdata\minecraftdata.py:277 minecraftdata\minecraftdata.py:363
+#: minecraftdata\minecraftdata.py:278 minecraftdata\minecraftdata.py:364
 msgid "Unable to resolve IP: {}"
 msgstr "Невозможно преобразовать IP адрес: {}"
 
-#: minecraftdata\minecraftdata.py:283 minecraftdata\minecraftdata.py:369
+#: minecraftdata\minecraftdata.py:284 minecraftdata\minecraftdata.py:370
 msgid "Unable to get server's status: {}"
 msgstr "Невозможно получить информацию о состоянии сервера: {}"
 
-#: minecraftdata\minecraftdata.py:286 minecraftdata\minecraftdata.py:372
+#: minecraftdata\minecraftdata.py:287 minecraftdata\minecraftdata.py:373
 msgid "Unable to get server's status: Timed out"
 msgstr "Невозможно получить информацию о состоянии сервера: Время ожидания истекло"
 
-#: minecraftdata\minecraftdata.py:304 minecraftdata\minecraftdata.py:379
+#: minecraftdata\minecraftdata.py:305 minecraftdata\minecraftdata.py:380
 msgid "Latency"
 msgstr "Задержка"
 
-#: minecraftdata\minecraftdata.py:306 minecraftdata\minecraftdata.py:380
+#: minecraftdata\minecraftdata.py:307 minecraftdata\minecraftdata.py:381
 msgid "Players"
 msgstr "Игроков"
 
-#: minecraftdata\minecraftdata.py:324 minecraftdata\minecraftdata.py:382
+#: minecraftdata\minecraftdata.py:325 minecraftdata\minecraftdata.py:383
 msgid "Version"
 msgstr "Версия"
 
-#: minecraftdata\minecraftdata.py:325 minecraftdata\minecraftdata.py:383
+#: minecraftdata\minecraftdata.py:326 minecraftdata\minecraftdata.py:384
 msgid "Protocol: {}"
 msgstr "Протокол: {}"
 
-#: minecraftdata\minecraftdata.py:336
+#: minecraftdata\minecraftdata.py:337
 msgid "Unable to get query data: {}"
 msgstr "Невозможно получить дополнительную информацию: {}"
 
-#: minecraftdata\minecraftdata.py:340
+#: minecraftdata\minecraftdata.py:341
 msgid "Unable to get query data: Timed out."
 msgstr "Невозможно получить дополнительную информацию: Время истекло."
 
-#: minecraftdata\minecraftdata.py:343
+#: minecraftdata\minecraftdata.py:344
 msgid "World"
 msgstr "Мир"
 
-#: minecraftdata\minecraftdata.py:345
+#: minecraftdata\minecraftdata.py:346
 msgid "Software"
 msgstr "ПО"
 
-#: minecraftdata\minecraftdata.py:348
+#: minecraftdata\minecraftdata.py:349
 msgid "Version: {}"
 msgstr "Версия: {}"
 
-#: minecraftdata\minecraftdata.py:350
+#: minecraftdata\minecraftdata.py:351
 msgid "Plugins: {}"
 msgstr "Плагины: {}"
 
-#: minecraftdata\minecraftdata.py:357
+#: minecraftdata\minecraftdata.py:358
 #, docstring
 msgid "Get info about Minecraft Bedrock server"
 msgstr "Получить информацию о сервере Minecraft Bedrock"
 
-#: minecraftdata\minecraftdata.py:383
+#: minecraftdata\minecraftdata.py:384
 msgid "Brand: {}"
 msgstr "Маркировка сервера: {}"
 
-#: minecraftdata\minecraftdata.py:387
+#: minecraftdata\minecraftdata.py:388
 msgid "Map"
 msgstr "Карта"
 
-#: minecraftdata\minecraftdata.py:388
+#: minecraftdata\minecraftdata.py:389
 msgid "Gamemode"
 msgstr "Игровой режим"
 
