@@ -210,7 +210,7 @@ class AdminUtils(commands.Cog):
         except discord.InvalidArgument:
             await ctx.send(chat.error(_("This image type is unsupported, or link is incorrect")))
         except discord.HTTPException as e:
-            await ctx.send(chat.error(_("An error occured on adding an emoji: {}").format(e)))
+            await ctx.send(chat.error(_("An error occurred on adding an emoji: {}").format(e)))
         else:
             await ctx.tick()
 

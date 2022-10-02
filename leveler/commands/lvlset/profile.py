@@ -172,7 +172,7 @@ class Profile(MixinMeta):
                     {"user_id": str(user.id)},
                     {"$set": {"profile_background": backgrounds["profile"][image_name]}},
                 )
-                await ctx.send("Your new profile background has been succesfully set!")
+                await ctx.send("Your new profile background has been successfully set!")
         else:
             await ctx.send(
                 f"That is not a valid background. See available backgrounds at `{ctx.clean_prefix}backgrounds profile`."
@@ -198,7 +198,7 @@ class Profile(MixinMeta):
             await ctx.send(msg)
         elif len(title) < max_char:
             await self.db.users.update_one({"user_id": str(user.id)}, {"$set": {"title": title}})
-            await ctx.send("Your title has been succesfully set!")
+            await ctx.send("Your title has been successfully set!")
         else:
             await ctx.send(
                 "Your title has too many characters! Must be {} or less.".format(max_char)
@@ -213,7 +213,7 @@ class Profile(MixinMeta):
 
         if len(info) < max_char:
             await self.db.users.update_one({"user_id": str(user.id)}, {"$set": {"info": info}})
-            await ctx.send("Your info section has been succesfully set!")
+            await ctx.send("Your info section has been successfully set!")
         else:
             await ctx.send(
                 "Your description has too many characters! Must be {} or less.".format(max_char)
