@@ -19,17 +19,14 @@ except ImportError:
     import json
 
 
-T_ = Translator("MinecraftData", __file__)
-_ = lambda s: s
-
-_ = T_
+_ = Translator("MinecraftData", __file__)
 
 
 @cog_i18n(_)
 class MinecraftData(commands.Cog):
     """Minecraft-Related data"""
 
-    __version__ = "2.2.2"
+    __version__ = "2.2.2+code_opt"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
