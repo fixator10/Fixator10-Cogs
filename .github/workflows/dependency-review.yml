@@ -9,7 +9,7 @@ jobs:
       - name: 'Checkout Repository'
         uses: actions/checkout@v3
       - name: 'Dependency Review'
-        uses: actions/dependency-review-action@v2
+        uses: actions/dependency-review-action@v3
         with:
           # Possible values: "critical", "high", "moderate", "low"
           # fail-on-severity: critical
