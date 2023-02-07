@@ -211,7 +211,8 @@ class Settings(MixinMeta):
     async def globallevels(self, ctx):
         """Show levels in global leaderboard.
 
-        This may significantly increase leaderboard loading times and the bot's CPU and RAM usage."""
+        This may significantly increase leaderboard loading times and the bot's CPU and RAM usage.
+        """
         server = ctx.guild
         if await self.config.global_levels():
             await self.config.global_levels.set(False)

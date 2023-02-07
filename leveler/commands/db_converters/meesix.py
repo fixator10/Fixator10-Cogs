@@ -45,7 +45,6 @@ class MeeSix(MixinMeta):
                 async with self.session.get(
                     f"https://mee6.xyz/api/plugins/levels/leaderboard/{ctx.guild.id}?page={i}&limit=999"
                 ) as r:
-
                     if r.status == 200:
                         data = await r.json()
                     else:
