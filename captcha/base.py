@@ -401,7 +401,6 @@ class Captcha(
         async with notice.get_users_lock():
             old_patchnote_version: str = await notice.user(self.bot.user).version()
             if old_patchnote_version != __patchnote_version__:
-
                 # Determine if this is the first time the user is using the cog (Not a change
                 # of repo, see https://github.com/fixator10/Fixator10-Cogs/pull/163)
                 if __patchnote_version__ == "2" and (not await self.data.was_loaded_once()):
