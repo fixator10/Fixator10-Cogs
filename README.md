@@ -14,11 +14,11 @@
     </a>
     <a href="https://github.com/ambv/black">
         <img alt="GitHub Workflow Status: Black" 
-        src="https://img.shields.io/github/workflow/status/fixator10/Fixator10-Cogs/black/V3?label=Black&style=for-the-badge&labelColor=000">
+        src="https://img.shields.io/github/actions/workflow/status/fixator10/Fixator10-Cogs/black.yml?branch=V3&label=Black&style=for-the-badge&labelColor=000">
     </a>
     <a href="https://github.com/timothycrosley/isort">
         <img alt="GitHub Workflow Status: Isort" 
-        src="https://img.shields.io/github/workflow/status/fixator10/Fixator10-Cogs/isort/V3?label=Isort&style=for-the-badge&labelColor=ef8336">
+        src="https://img.shields.io/github/actions/workflow/status/fixator10/Fixator10-Cogs/isort.yml?branch=V3&label=Isort&style=for-the-badge&labelColor=ef8336">
     </a>
     <br>
     <a href="https://i18n.fixator10.ru/project/fixator10-cogs">
