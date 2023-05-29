@@ -34,7 +34,6 @@ class Captcha(
             actual_patch_note_version: str = await notice.user(self.bot.user).version()  # type: ignore
 
             if actual_patch_note_version != __patch_note_version__:
-
                 # P.N. 2
                 # Determine if this is the first time the user is using the cog (Not a change
                 # of repo, see https://github.com/fixator10/Fixator10-Cogs/pull/163)
