@@ -145,11 +145,19 @@ class Captcha(
 
     async def create_challenge_for(self, member: discord.Member) -> Challenge:
         """
-        Create a Challenge class for an user and append it to the running challenges.
+        Create a Challenge class for a user and append it to the running challenges.
         """
         if member.id in self.running:
             raise AlreadyHaveCaptchaError("The user already have a captcha object running.")
-        captcha = Challenge(self.bot, member, await self.data.guild(member.guild).all())
+        config = await self.data.guild(member.guild).all()
+        channel = config["channel"]
+        if not channel:
+            raise MissingRequiredValueError("Missing channel for verification.")
+        if channel == "dm":
+            channel = member.dm_channel or await member.create_dm()
+        else:
+            channel = self.bot.get_channel(channel)
+        captcha = Challenge(self.bot, member, channel, config)
         self.running[member.id] = captcha
         return captcha
 
@@ -393,7 +401,6 @@ class Captcha(
         async with notice.get_users_lock():
             old_patchnote_version: str = await notice.user(self.bot.user).version()
             if old_patchnote_version != __patchnote_version__:
-
                 # Determine if this is the first time the user is using the cog (Not a change
                 # of repo, see https://github.com/fixator10/Fixator10-Cogs/pull/163)
                 if __patchnote_version__ == "2" and (not await self.data.was_loaded_once()):

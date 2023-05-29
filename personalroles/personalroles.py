@@ -26,11 +26,15 @@ _ = Translator("PersonalRoles", __file__)
 
 async def has_assigned_role(ctx):
     """Check if user has assigned role"""
+    if not ctx.guild:
+        return False
     return ctx.guild.get_role(await ctx.cog.config.member(ctx.author).role())
 
 
 async def role_icons_feature(ctx):
     """Check for ROLE_ICONS feature"""
+    if not ctx.guild:
+        return False
     return "ROLE_ICONS" in ctx.guild.features
 
 
@@ -38,7 +42,7 @@ async def role_icons_feature(ctx):
 class PersonalRoles(commands.Cog):
     """Assign and edit personal roles"""
 
-    __version__ = "2.2.4"
+    __version__ = "2.2.5"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):

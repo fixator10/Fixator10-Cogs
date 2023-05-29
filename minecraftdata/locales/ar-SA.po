@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fixator10-cogs\n"
-"POT-Creation-Date: 2022-01-12 18:25+0400\n"
+"POT-Creation-Date: 2022-09-29 21:09+0400\n"
 "Last-Translator: \n"
 "Language-Team: Arabic\n"
 "MIME-Version: 1.0\n"
@@ -15,169 +15,180 @@ msgstr ""
 "X-Crowdin-File-ID: 65\n"
 "Language: ar_SA\n"
 
-#: minecraftdata\minecraftdata.py:29
-msgid "💔 **UNAVAILABLE**"
-msgstr ""
-
 #: minecraftdata\minecraftdata.py:30
-msgid "💛 **SOME ISSUES**"
-msgstr ""
-
-#: minecraftdata\minecraftdata.py:31
-msgid "💚 **OK**"
-msgstr ""
-
-#: minecraftdata\minecraftdata.py:39
 #, docstring
 msgid "Minecraft-Related data"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:56
+#: minecraftdata\minecraftdata.py:51
 #, docstring
 msgid "Get Minecraft-Related data"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:62
+#: minecraftdata\minecraftdata.py:57
 #, docstring
-msgid "Get minecraft skin by nickname"
+msgid "Get minecraft Java Edition skin by nickname"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:94
+#: minecraftdata\minecraftdata.py:89
 msgid "Unable to get data from Crafatar: {}"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:105
+#: minecraftdata\minecraftdata.py:100
 msgid "Provided by Crafatar"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:114
+#: minecraftdata\minecraftdata.py:109
 #, docstring
 msgid "Get Minecraft capes by nickname"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:121
+#: minecraftdata\minecraftdata.py:116
 msgid "{} doesn't have cape"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:123
+#: minecraftdata\minecraftdata.py:118
 msgid "Unable to get cape: {}"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:132
+#: minecraftdata\minecraftdata.py:127
 #, docstring
 msgid "Get OptiFine cape by nickname"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:139
+#: minecraftdata\minecraftdata.py:134
 msgid "{} doesn't have OptiFine cape"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:143
+#: minecraftdata\minecraftdata.py:138
 msgid "Unable to get {player}'s OptiFine cape: {message}"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:156
+#: minecraftdata\minecraftdata.py:151
 #, docstring
 msgid "Get LabyMod cape by nickname"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:165
+#: minecraftdata\minecraftdata.py:160
 msgid "{} doesn't have LabyMod cape"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:169
+#: minecraftdata\minecraftdata.py:164
 msgid "Unable to get data: {message} ({status})"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:182
+#: minecraftdata\minecraftdata.py:177
 #, docstring
 msgid "Get MinecraftCapes.co.uk cape by nickname"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:191
+#: minecraftdata\minecraftdata.py:186
 msgid "{} doesn't have MinecraftCapes cape"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:196
+#: minecraftdata\minecraftdata.py:191
 msgid "Unable to get {player}'s MinecraftCapes cape: {message}"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:211
+#: minecraftdata\minecraftdata.py:206
 #, docstring
 msgid "Get 5zig cape by nickname"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:221 minecraftdata\minecraftdata.py:253
+#: minecraftdata\minecraftdata.py:216 minecraftdata\minecraftdata.py:248
 msgid "{} doesn't have 5zig cape"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:225 minecraftdata\minecraftdata.py:257
+#: minecraftdata\minecraftdata.py:220 minecraftdata\minecraftdata.py:252
 msgid "Unable to get {player}'s 5zig cape: {message}"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:238
+#: minecraftdata\minecraftdata.py:233
 #, docstring
 msgid "Get 5zig animated cape by nickname"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:247
+#: minecraftdata\minecraftdata.py:242
 msgid "{} doesn't have animated 5zig cape"
+msgstr ""
+
+#: minecraftdata\minecraftdata.py:266
+#, docstring
+msgid "Get info about Minecraft server"
 msgstr ""
 
 #: minecraftdata\minecraftdata.py:272
 #, docstring
-msgid "Get info about server"
+msgid "Get info about Minecraft Java Edition server"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:278
+#: minecraftdata\minecraftdata.py:278 minecraftdata\minecraftdata.py:364
 msgid "Unable to resolve IP: {}"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:284
+#: minecraftdata\minecraftdata.py:284 minecraftdata\minecraftdata.py:370
 msgid "Unable to get server's status: {}"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:287
+#: minecraftdata\minecraftdata.py:287 minecraftdata\minecraftdata.py:373
 msgid "Unable to get server's status: Timed out"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:305
+#: minecraftdata\minecraftdata.py:305 minecraftdata\minecraftdata.py:380
 msgid "Latency"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:307
+#: minecraftdata\minecraftdata.py:307 minecraftdata\minecraftdata.py:381
 msgid "Players"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:325
+#: minecraftdata\minecraftdata.py:325 minecraftdata\minecraftdata.py:383
 msgid "Version"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:326
-msgid "{}\n"
-"Protocol: {}"
+#: minecraftdata\minecraftdata.py:326 minecraftdata\minecraftdata.py:384
+msgid "Protocol: {}"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:354
+#: minecraftdata\minecraftdata.py:337
+msgid "Unable to get query data: {}"
+msgstr ""
+
+#: minecraftdata\minecraftdata.py:341
+msgid "Unable to get query data: Timed out."
+msgstr ""
+
+#: minecraftdata\minecraftdata.py:344
+msgid "World"
+msgstr ""
+
+#: minecraftdata\minecraftdata.py:346
+msgid "Software"
+msgstr ""
+
+#: minecraftdata\minecraftdata.py:349
+msgid "Version: {}"
+msgstr ""
+
+#: minecraftdata\minecraftdata.py:351
+msgid "Plugins: {}"
+msgstr ""
+
+#: minecraftdata\minecraftdata.py:358
 #, docstring
-msgid "Check history of player's nicks"
+msgid "Get info about Minecraft Bedrock server"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:368
-msgid "Initial"
+#: minecraftdata\minecraftdata.py:384
+msgid "Brand: {}"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:372
-msgid "Nickname"
+#: minecraftdata\minecraftdata.py:388
+msgid "Map"
 msgstr ""
 
-#: minecraftdata\minecraftdata.py:373
-msgid "Changed to at... (UTC)"
-msgstr ""
-
-#: minecraftdata\minecraftdata.py:382
-msgid "Unable to check name history.\n"
-"An error has been occurred: "
+#: minecraftdata\minecraftdata.py:389
+msgid "Gamemode"
 msgstr ""
 
 #: minecraftdata\minecraftplayer.py:35

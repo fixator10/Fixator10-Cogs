@@ -1,4 +1,7 @@
+from asyncio import TimeoutError as AsyncTimeoutError
+
 from redbot.core import commands
+from redbot.core.utils.predicates import MessagePredicate
 
 from leveler.abc import MixinMeta
 
@@ -14,7 +17,7 @@ class Backgrounds(MixinMeta):
     @commands.is_owner()
     @commands.guild_only()
     async def lvladminbg(self, ctx):
-        """Admin background configuration"""
+        """Backgrounds configuration."""
         pass
 
     @lvladminbg.command()
@@ -22,45 +25,87 @@ class Backgrounds(MixinMeta):
         """Add a profile background.
 
         The proportions must be 290px x 290px."""
-        backgrounds = await self.config.backgrounds()
-        if name in backgrounds["profile"].keys():
-            await ctx.send("That profile background name already exists!")
-        elif not await self._valid_image_url(url):
+        if not await self._valid_image_url(url):
             await ctx.send("That is not a valid image URL!")
-        else:
-            async with self.config.backgrounds() as backgrounds:
-                backgrounds["profile"][name] = url
-            await ctx.send("New profile background (`{}`) added.".format(name))
+            return
+        async with self.config.backgrounds() as backgrounds:
+            if name in backgrounds["profile"].keys():
+                pred = MessagePredicate.yes_or_no(ctx)
+                if not ctx.assume_yes:
+                    await ctx.send(
+                        (
+                            "This will replace already existing background `{name}` "
+                            "for future users of this background. Do you want to proceed?\n"
+                            'To agree, type "yes"'
+                        ).format(name=name)
+                    )
+                    try:
+                        await self.bot.wait_for("message", check=pred, timeout=30)
+                    except AsyncTimeoutError:
+                        pass
+                if not (ctx.assume_yes or pred.result):
+                    await ctx.send("Aborting.")
+                    return
+            backgrounds["profile"][name] = url
+        await ctx.send("New profile background (`{}`) added.".format(name))
 
     @lvladminbg.command()
     async def addrankbg(self, ctx, name: str, url: str):
         """Add a rank background.
 
         The proportions must be 360px x 100px."""
-        backgrounds = await self.config.backgrounds()
-        if name in backgrounds["profile"].keys():
-            await ctx.send("That rank background name already exists!")
-        elif not await self._valid_image_url(url):
+        if not await self._valid_image_url(url):
             await ctx.send("That is not a valid image URL!")
-        else:
-            async with self.config.backgrounds() as backgrounds:
-                backgrounds["rank"][name] = url
-            await ctx.send("New rank background (`{}`) added.".format(name))
+            return
+        async with self.config.backgrounds() as backgrounds:
+            if name in backgrounds["rank"].keys():
+                pred = MessagePredicate.yes_or_no(ctx)
+                if not ctx.assume_yes:
+                    await ctx.send(
+                        (
+                            "This will replace already existing background `{name}` "
+                            "for future users of this background. Do you want to proceed?\n"
+                            'To agree, type "yes"'
+                        ).format(name=name)
+                    )
+                    try:
+                        await self.bot.wait_for("message", check=pred, timeout=30)
+                    except AsyncTimeoutError:
+                        pass
+                if not (ctx.assume_yes or pred.result):
+                    await ctx.send("Aborting.")
+                    return
+            backgrounds["rank"][name] = url
+        await ctx.send("New rank background (`{}`) added.".format(name))
 
     @lvladminbg.command()
     async def addlevelbg(self, ctx, name: str, url: str):
         """Add a level-up background.
 
         The proportions must be 175px x 65px."""
-        backgrounds = await self.config.backgrounds()
-        if name in backgrounds["levelup"].keys():
-            await ctx.send("That level-up background name already exists!")
-        elif not await self._valid_image_url(url):
+        if not await self._valid_image_url(url):
             await ctx.send("That is not a valid image URL!")
-        else:
-            async with self.config.backgrounds() as backgrounds:
-                backgrounds["levelup"][name] = url
-            await ctx.send("New level-up background (`{}`) added.".format(name))
+            return
+        async with self.config.backgrounds() as backgrounds:
+            if name in backgrounds["levelup"].keys():
+                pred = MessagePredicate.yes_or_no(ctx)
+                if not ctx.assume_yes:
+                    await ctx.send(
+                        (
+                            "This will replace already existing background `{name}` "
+                            "for future users of this background. Do you want to proceed?\n"
+                            'To agree, type "yes"'
+                        ).format(name=name)
+                    )
+                    try:
+                        await self.bot.wait_for("message", check=pred, timeout=30)
+                    except AsyncTimeoutError:
+                        pass
+                if not (ctx.assume_yes or pred.result):
+                    await ctx.send("Aborting.")
+                    return
+            backgrounds["levelup"][name] = url
+        await ctx.send("New level-up background (`{}`) added.".format(name))
 
     @lvladminbg.command()
     async def setcustombg(self, ctx, bg_type: str, user_id: str, img_url: str):

@@ -34,6 +34,14 @@ class Debugging(MixinMeta):
             dns_version = None
         except Exception as e:
             dns_version = e.__class__.__qualname__
+        # tkinter already failed once due to incorrect installation (?)
+        pil_features = []
+        for feature in pilfeatures.get_supported():
+            try:
+                feature = (feature, pilfeatures.version(feature) or "N/A")
+            except Exception as e:
+                feature = (feature, type(e))
+            pil_features.append(feature)
         # noinspection PyProtectedMember
         await ctx.send(
             chat.box(
@@ -56,13 +64,7 @@ class Debugging(MixinMeta):
                         ("PIL version", pilfeatures.version("pil")),
                         (
                             "PIL features",
-                            tabulate(
-                                [
-                                    (feature, pilfeatures.version(feature) or "N/A")
-                                    for feature in pilfeatures.get_supported()
-                                ],
-                                tablefmt="psql",
-                            ),
+                            tabulate(pil_features, tablefmt="psql"),
                         ),
                     ],
                     tablefmt="psql",

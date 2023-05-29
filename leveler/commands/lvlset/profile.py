@@ -25,7 +25,9 @@ class Profile(MixinMeta):
         """Set profile color.
 
         For section, you can choose: `exp`, `rep`, `badge`, `info` or `all`.
-        For color, you can use: `default`, `white`, `HEX code` (#000000) or `auto`.
+        For color, you can use:
+        a color name like `blurple`, a hex code (`#000000`), `auto` for auto-color
+        or reset the values to their defaults with `reset`.
         e.g: `[p]lvlset profile color all #eb4034`"""
         user = ctx.author
         userinfo = await self.db.users.find_one({"user_id": str(user.id)})
@@ -82,7 +84,7 @@ class Profile(MixinMeta):
                 set_color = [await self._hex_to_rgb(color, default_a) for color in hex_colors]
             else:
                 set_color = hex_colors[0]
-        elif color == "default":
+        elif color == "reset":
             if section == "exp":
                 set_color = default_exp
             elif section == "rep":
@@ -101,7 +103,12 @@ class Profile(MixinMeta):
         elif isinstance(color, discord.Color):
             set_color = (color.r, color.g, color.b, default_a)
         else:
-            await ctx.send("Not a valid color. Must be `default`, `HEX color` or `auto`.")
+            msg = (
+                "Not a valid color. "
+                "Must be a color name like `blurple`, a hex code formatted like `#000000`, "
+                "`auto` for auto-color or `reset` to reset to the default colors."
+            )
+            await ctx.send(msg)
             return
 
         if section == "all":
@@ -117,7 +124,7 @@ class Profile(MixinMeta):
                         }
                     },
                 )
-            elif color == "default":
+            elif color == "reset":
                 await self.db.users.update_one(
                     {"user_id": str(user.id)},
                     {
@@ -165,7 +172,7 @@ class Profile(MixinMeta):
                     {"user_id": str(user.id)},
                     {"$set": {"profile_background": backgrounds["profile"][image_name]}},
                 )
-                await ctx.send("Your new profile background has been succesfully set!")
+                await ctx.send("Your new profile background has been successfully set!")
         else:
             await ctx.send(
                 f"That is not a valid background. See available backgrounds at `{ctx.clean_prefix}backgrounds profile`."
@@ -173,16 +180,25 @@ class Profile(MixinMeta):
 
     @profileset.command()
     @commands.guild_only()
-    async def title(self, ctx, *, title):
-        """Set your title."""
+    async def title(self, ctx, *, title=None):
+        """
+        Set your title.
+
+        Use this command with no title given to clear your title.
+        """
         user = ctx.author
-        userinfo = await self.db.users.find_one({"user_id": str(user.id)})
         max_char = 20
 
-        if len(title) < max_char:
-            userinfo["title"] = title
+        if not title:
+            await self.db.users.update_one({"user_id": str(user.id)}, {"$set": {"title": ""}})
+            msg = (
+                "Your title has been successfully cleared! "
+                "Use this command with a title if you'd like to set one."
+            )
+            await ctx.send(msg)
+        elif len(title) < max_char:
             await self.db.users.update_one({"user_id": str(user.id)}, {"$set": {"title": title}})
-            await ctx.send("Your title has been succesfully set!")
+            await ctx.send("Your title has been successfully set!")
         else:
             await ctx.send(
                 "Your title has too many characters! Must be {} or less.".format(max_char)
@@ -197,7 +213,7 @@ class Profile(MixinMeta):
 
         if len(info) < max_char:
             await self.db.users.update_one({"user_id": str(user.id)}, {"$set": {"info": info}})
-            await ctx.send("Your info section has been succesfully set!")
+            await ctx.send("Your info section has been successfully set!")
         else:
             await ctx.send(
                 "Your description has too many characters! Must be {} or less.".format(max_char)

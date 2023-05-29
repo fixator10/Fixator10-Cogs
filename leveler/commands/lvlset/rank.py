@@ -145,7 +145,7 @@ class Rank(MixinMeta):
                     {"user_id": str(user.id)},
                     {"$set": {"rank_background": backgrounds["rank"][image_name]}},
                 )
-                await ctx.send("Your new rank background has been succesfully set!")
+                await ctx.send("Your new rank background has been successfully set!")
         else:
             await ctx.send(
                 f"That is not a valid background. See available backgrounds at `{ctx.clean_prefix}backgrounds rank`."
