@@ -6,13 +6,14 @@
   "short": "Get steamcommunity data",
   "description": "Get steamcommunity data for steam users",
   "min_bot_version": "3.2.1",
+  "max_bot_version": "3.4.99",
   "tags": [
     "steam",
     "steamcommunity"
   ],
   "requirements": [
     "python-valve",
-    "git+https://github.com/fixator10/F10-Cogs-Utils"
+    "git+https://github.com/fixator10/F10-Cogs-Utils.git@pre-3.5"
   ],
   "end_user_data_statement": "This cog does not persistently store data or metadata about users."
 }

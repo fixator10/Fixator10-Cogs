@@ -14,13 +14,14 @@
     "mongodb"
   ],
   "min_bot_version": "3.4.6",
+  "max_bot_version": "3.4.99",
   "requirements": [
     "pymongo>=3.10,<3.12.3",
     "motor>=2.5,<3.0",
     "fonttools",
     "pillow>=6.2.1",
     "tabulate",
-    "git+https://github.com/fixator10/F10-Cogs-Utils"
+    "git+https://github.com/fixator10/F10-Cogs-Utils.git@pre-3.5"
   ],
   "end_user_data_statement": "This cog persistently stores next data about user:\n    Discord user ID\n    Current username\n    Per-server XP data (current XP and current level)\n    Total count of XP on all servers\n    URLs to profile/rank/levelup backgrounds\n    User-set title & info\n    User's \"reputation\" points count\n    Data about user's badges\n    Data about user's profile/rank/levelup colors\n    Timestamp of latest message and reputation\n    Last message MD5 hash (for comparison)\nThis cog supports data removal requests."
 }

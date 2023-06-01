@@ -10,6 +10,7 @@
     "short": "Captcha defensive system  - originally by Predeactor.",
     "install_msg": "Thanks for installing Captcha, have fun.",
     "min_bot_version": "3.4.0",
+    "max_bot_version": "3.4.99",
     "tags": [
         "security",
         "protection",

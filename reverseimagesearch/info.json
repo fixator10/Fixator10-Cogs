@@ -6,6 +6,7 @@
   "short": "This cog allows users to reverse search images",
   "description": "This cog allows users to reverse search images",
   "min_bot_version": "3.2.1",
+  "max_bot_version": "3.4.99",
   "tags": [
     "reverse",
     "image",

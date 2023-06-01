@@ -6,7 +6,7 @@ Red-DiscordBot
 beautifulsoup4
 discapty==0.4
 fonttools
-git+https://github.com/fixator10/F10-Cogs-Utils
+git+https://github.com/fixator10/F10-Cogs-Utils.git@pre-3.5
 mcstatus>=5.1.1
 motor>=2.5,<3.0
 pillow>=6
