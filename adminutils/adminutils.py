@@ -2,7 +2,7 @@ import contextlib
 import re
 from asyncio import TimeoutError as AsyncTimeoutError
 from random import choice
-from typing import Literal, Optional, Union
+from typing import Optional, Union
 
 import aiohttp
 import discord
