@@ -846,7 +846,7 @@ class ImageGenerators(MixinMeta):
         rank_background = BytesIO(image)
         rank_avatar = BytesIO()
         try:
-            await user.avatar_url_as(format=AVATAR_FORMAT).save(rank_avatar)
+            await user.display_avatar.replace(format=AVATAR_FORMAT).save(rank_avatar)
         except discord.HTTPException:
             rank_avatar = f"{bundled_data_path(self)}/defaultavatar.png"
 
@@ -875,7 +875,7 @@ class ImageGenerators(MixinMeta):
         level_background = BytesIO(image)
         level_avatar = BytesIO()
         try:
-            await user.avatar_url_as(format=AVATAR_FORMAT).save(level_avatar)
+            await user.display_avatar.replace(format=AVATAR_FORMAT).save(level_avatar)
         except discord.HTTPException:
             level_avatar = f"{bundled_data_path(self)}/defaultavatar.png"
 
@@ -895,7 +895,7 @@ class ImageGenerators(MixinMeta):
             profile_background = BytesIO(image)
         profile_avatar = BytesIO()
         try:
-            await user.avatar_url_as(format=AVATAR_FORMAT).save(profile_avatar)
+            await user.display_avatar.replace(format=AVATAR_FORMAT).save(profile_avatar)
         except discord.HTTPException:
             profile_avatar.close()
             profile_avatar = f"{bundled_data_path(self)}/defaultavatar.png"

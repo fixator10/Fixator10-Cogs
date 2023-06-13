@@ -137,7 +137,7 @@ class OwnBadgePager(menus.ListPageSource):
             description=page["description"],
             color=int(page["border_color"][1:], base=16),
         )
-        em.set_author(name=self.user.display_name, icon_url=self.user.avatar_url)
+        em.set_author(name=self.user.display_name, icon_url=self.user.display_avatar)
         em.set_thumbnail(url=page["bg_img"])
         em.set_footer(
             text=f"Server: {page['server_name']} • Badge {menu.current_page+1}/{self.get_max_pages()}"

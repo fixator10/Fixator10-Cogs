@@ -357,7 +357,7 @@ class Badge(MixinMeta):
             em = discord.Embed(description=page, colour=await ctx.embed_color())
             em.set_author(
                 name="Current Badge - Level Links for {}".format(server.name),
-                icon_url=server.icon_url,
+                icon_url=server.icon,
             )
             em.set_footer(text=f"Page {i}/{len(pages)}")
             embeds.append(em)
