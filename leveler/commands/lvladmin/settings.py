@@ -30,7 +30,9 @@ class Settings(MixinMeta):
             "Level messages are private": bool_emojify(
                 await self.config.guild(ctx.guild).private_lvl_message()
             ),
-            "Automatic Role Fixes enabled": bool_emojify(await self.config.guild(ctx.guild).fix_roles())
+            "Automatic Role Fixes enabled": bool_emojify(
+                await self.config.guild(ctx.guild).fix_roles()
+            ),
         }
         owner_settings = {}
         if is_owner:
@@ -212,7 +214,8 @@ class Settings(MixinMeta):
     async def globallevels(self, ctx):
         """Show levels in global leaderboard.
 
-        This may significantly increase leaderboard loading times and the bot's CPU and RAM usage."""
+        This may significantly increase leaderboard loading times and the bot's CPU and RAM usage.
+        """
         server = ctx.guild
         if await self.config.global_levels():
             await self.config.global_levels.set(False)
