@@ -1,11 +1,11 @@
 from asyncio import TimeoutError as AsyncTimeoutError
 from textwrap import shorten
-from typing import Literal, Union, Dict, Optional, List, Literal
+from typing import Dict, List, Literal, Optional, Union
 
 import aiohttp
 import discord
-from redbot.core.bot import Red
 from redbot.core import commands
+from redbot.core.bot import Red
 from redbot.core.config import Config
 from redbot.core.i18n import Translator, cog_i18n, set_contextual_locales_from_guild
 from redbot.core.utils import AsyncIter
@@ -41,7 +41,7 @@ def role_icons_feature():
         if not ctx.guild:
             return False
         return "ROLE_ICONS" in ctx.guild.features
-    
+
     return commands.check(_predicate)
 
 
@@ -62,7 +62,7 @@ class PersonalRoles(commands.Cog):
         }
         default_guild: Dict[str, Union[List[int], bool]] = {
             "blacklist": [],
-            "role_persistence": True
+            "role_persistence": True,
         }
         self.config.register_member(**default_member)
         self.config.register_guild(**default_guild)
@@ -105,7 +105,9 @@ class PersonalRoles(commands.Cog):
 
     @myrole.command()
     @commands.admin_or_permissions(manage_roles=True)
-    async def unassign(self, ctx: commands.Context, *, user: Union[discord.Member, discord.User, int]):
+    async def unassign(
+        self, ctx: commands.Context, *, user: Union[discord.Member, discord.User, int]
+    ):
         """Unassign personal role from someone"""
         if isinstance(user, discord.Member):
             await self.config.member(user).clear()
@@ -161,12 +163,17 @@ class PersonalRoles(commands.Cog):
                 )
             )
         )
-        
+
     @myrole.command(name="limit")
     @commands.admin_or_permissions(manage_roles=True)
-    async def mr_limit(self, ctx: commands.Context, user: discord.Member, amount: commands.Range[int, 1, 30] = None):
+    async def mr_limit(
+        self,
+        ctx: commands.Context,
+        user: discord.Member,
+        amount: commands.Range[int, 1, 30] = None,
+    ):
         """Give users permissions on how many users they can share their personal role with.
-        
+
         Run this command without the `amount` argument to clear the limit config.
         """
         if amount is None:
@@ -174,7 +181,9 @@ class PersonalRoles(commands.Cog):
             await ctx.send(f"Cleared the limit config for {user.display_name}.")
             return
         await self.config.member(user).limit.set(int(amount))
-        await ctx.send(f"{user.display_name} can now share their personal role with {int(amount)} friends.")
+        await ctx.send(
+            f"{user.display_name} can now share their personal role with {int(amount)} friends."
+        )
 
     @myrole.group(name="blocklist", aliases=["blacklist"])
     @commands.admin_or_permissions(manage_roles=True)
@@ -224,7 +233,9 @@ class PersonalRoles(commands.Cog):
     @commands.cooldown(1, 30, commands.BucketType.member)
     @myrole.command(aliases=["color"])
     @commands.bot_has_permissions(manage_roles=True)
-    async def colour(self, ctx: commands.Context, *, colour: discord.Colour = discord.Colour.default()):
+    async def colour(
+        self, ctx: commands.Context, *, colour: discord.Colour = discord.Colour.default()
+    ):
         """Change color of personal role"""
         role = await self.config.member(ctx.author).role()
         role = ctx.guild.get_role(role)
@@ -354,8 +365,7 @@ class PersonalRoles(commands.Cog):
                 return
         try:
             await role.edit(
-                display_icon=image,
-                reason=get_audit_reason(ctx.author, _("Personal Role"))
+                display_icon=image, reason=get_audit_reason(ctx.author, _("Personal Role"))
             )
         except discord.Forbidden:
             ctx.command.reset_cooldown(ctx)
@@ -379,8 +389,7 @@ class PersonalRoles(commands.Cog):
         role = ctx.guild.get_role(role)
         try:
             await role.edit(
-                display_icon=None,
-                reason=get_audit_reason(ctx.author, _("Personal Role"))
+                display_icon=None, reason=get_audit_reason(ctx.author, _("Personal Role"))
             )
             await ctx.send(
                 _("Removed icon of {user}'s personal role").format(user=ctx.message.author.name)
@@ -417,9 +426,7 @@ class PersonalRoles(commands.Cog):
         limit = await self.config.member(ctx.author).limit()
 
         if add_or_remove.lower() == "add" and limit is None:
-            await ctx.send(
-                "You're not allowed to add you personal role to your friends."
-            )
+            await ctx.send("You're not allowed to add you personal role to your friends.")
             ctx.command.reset_cooldown(ctx)
             return
 
@@ -439,11 +446,15 @@ class PersonalRoles(commands.Cog):
                     return
                 else:
                     try:
-                        await user.add_roles(role, reason=get_audit_reason(ctx.author, _("Personal Role")))
+                        await user.add_roles(
+                            role, reason=get_audit_reason(ctx.author, _("Personal Role"))
+                        )
                     except discord.Forbidden:
                         ctx.command.reset_cooldown(ctx)
                         await ctx.send(
-                            chat.error(_("Unable to edit role.\nRole must be lower than my top role"))
+                            chat.error(
+                                _("Unable to edit role.\nRole must be lower than my top role")
+                            )
                         )
                     except discord.HTTPException as e:
                         ctx.command.reset_cooldown(ctx)
@@ -454,11 +465,15 @@ class PersonalRoles(commands.Cog):
                     return
                 else:
                     try:
-                        await user.remove_roles(role, reason=get_audit_reason(ctx.author, _("Personal Role")))
+                        await user.remove_roles(
+                            role, reason=get_audit_reason(ctx.author, _("Personal Role"))
+                        )
                     except discord.Forbidden:
                         ctx.command.reset_cooldown(ctx)
                         await ctx.send(
-                            chat.error(_("Unable to edit role.\nRole must be lower than my top role"))
+                            chat.error(
+                                _("Unable to edit role.\nRole must be lower than my top role")
+                            )
                         )
                     except discord.HTTPException as e:
                         ctx.command.reset_cooldown(ctx)
@@ -466,7 +481,7 @@ class PersonalRoles(commands.Cog):
             else:
                 await ctx.send("Not a valid `add_or_remove` option.")
                 return
-                        
+
         await ctx.send(
             f"Successfully  {'added' if add_or_remove.lower() == 'add' else 'removed'} "
             f"your role {'to' if add_or_remove.lower() == 'add' else 'from'} {user.display_name}."
