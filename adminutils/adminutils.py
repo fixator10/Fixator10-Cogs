@@ -1,3 +1,4 @@
+import contextlib
 import re
 from asyncio import TimeoutError as AsyncTimeoutError
 from random import choice
@@ -5,35 +6,55 @@ from typing import Optional, Union
 
 import aiohttp
 import discord
+from red_commons.logging import getLogger
 from redbot.core import commands
 from redbot.core.i18n import Translator, cog_i18n
 from redbot.core.utils import chat_formatting as chat
 from redbot.core.utils.mod import get_audit_reason
 from redbot.core.utils.predicates import MessagePredicate
 
-try:
-    from redbot import json  # support of Draper's branch
-except ImportError:
-    import json
-
 _ = Translator("AdminUtils", __file__)
 
 EMOJI_RE = re.compile(r"(<(a)?:[a-zA-Z0-9_]+:([0-9]+)>)")
+
+CHANNEL_REASONS = {
+    discord.CategoryChannel: _("You are not allowed to edit this category."),
+    discord.TextChannel: _("You are not allowed to edit this channel."),
+    discord.VoiceChannel: _("You are not allowed to edit this channel."),
+    discord.StageChannel: _("You are not allowed to edit this channel."),
+}
+
+
+async def check_regions(ctx):
+    """Check if regions list is populated"""
+    return ctx.cog.regions
 
 
 @cog_i18n(_)
 class AdminUtils(commands.Cog):
     """Useful commands for server administrators."""
 
-    __version__ = "2.5.11"
+    __version__ = "3.0.0"
 
     # noinspection PyMissingConstructor
     def __init__(self, bot):
         self.bot = bot
-        self.session = aiohttp.ClientSession(json_serialize=json.dumps)
+        self.session = aiohttp.ClientSession()
+        self.log = getLogger("red.fixator10-cogs.adminutils")
+        self.regions = []
 
-    def cog_unload(self):
-        self.bot.loop.create_task(self.session.close())
+    async def cog_load(self):
+        try:
+            regions = await self.bot.http.request(discord.http.Route("GET", "/voice/regions"))
+            self.regions = [region["id"] for region in regions]
+        except Exception as e:
+            self.log.warning(
+                "Unable to get list of rtc_regions. [p]restartvoice command will be unavailable",
+                exc_info=e,
+            )
+
+    async def cog_unload(self):
+        await self.session.close()
 
     def format_help_for_context(self, ctx: commands.Context) -> str:  # Thanks Sinbad!
         pre_processed = super().format_help_for_context(ctx)
@@ -45,20 +66,19 @@ class AdminUtils(commands.Cog):
     @staticmethod
     def check_channel_permission(
         ctx: commands.Context,
-        channel_or_category: Union[discord.TextChannel, discord.CategoryChannel],
+        channel_or_category: Union[
+            discord.TextChannel,
+            discord.CategoryChannel,
+            discord.VoiceChannel,
+            discord.StageChannel,
+        ],
     ) -> bool:
         """
         Check user's permission in a channel, to be sure he can edit it.
         """
-        mc = channel_or_category.permissions_for(ctx.author).manage_channels
-        if mc:
+        if channel_or_category.permissions_for(ctx.author).manage_channels:
             return True
-        reason = (
-            _("You are not allowed to edit this channel.")
-            if not isinstance(channel_or_category, discord.CategoryChannel)
-            else _("You are not allowed to edit in this category.")
-        )
-        raise commands.UserFeedbackCheckFailure(reason)
+        raise commands.UserFeedbackCheckFailure(CHANNEL_REASONS.get(type(channel_or_category)))
 
     @commands.command(name="prune")
     @commands.guild_only()
@@ -92,10 +112,8 @@ class AdminUtils(commands.Cog):
                     ).format(to_kick=to_kick, days=days, roles=roles_text if roles else "")
                 )
             )
-            try:
+            with contextlib.suppress(AsyncTimeoutError):
                 await self.bot.wait_for("message", check=pred, timeout=30)
-            except AsyncTimeoutError:
-                pass
         if ctx.assume_yes or pred.result:
             cleanup = await ctx.guild.prune_members(
                 days=days, reason=get_audit_reason(ctx.author), roles=roles or None
@@ -113,23 +131,20 @@ class AdminUtils(commands.Cog):
 
     @commands.command()
     @commands.guild_only()
-    @commands.admin_or_permissions(manage_guild=True)
-    @commands.bot_has_permissions(manage_guild=True)
-    async def restartvoice(self, ctx: commands.Context):
-        """Change server's voice region to random and back
+    @commands.check(check_regions)
+    @commands.admin_or_permissions(manage_channels=True)
+    @commands.bot_has_permissions(manage_channels=True)
+    async def restartvoice(
+        self, ctx: commands.Context, channel: Union[discord.VoiceChannel, discord.StageChannel]
+    ):
+        """Change voice channel's region to random and back
 
         Useful to reinitate all voice connections"""
-        current_region = ctx.guild.region
-        random_region = choice(
-            [
-                r
-                for r in discord.VoiceRegion
-                if not r.value.startswith("vip") and current_region != r
-            ]
-        )
-        await ctx.guild.edit(region=random_region)
-        await ctx.guild.edit(
-            region=current_region,
+        current_region = channel.rtc_region
+        random_region = choice([r for r in self.regions if current_region != r])
+        await channel.edit(rtc_region=random_region)
+        await channel.edit(
+            rtc_region=current_region,
             reason=get_audit_reason(ctx.author, _("Voice restart")),
         )
         await ctx.tick()
@@ -142,8 +157,8 @@ class AdminUtils(commands.Cog):
     async def massmove(
         self,
         ctx: commands.Context,
-        from_channel: discord.VoiceChannel,
-        to_channel: discord.VoiceChannel = None,
+        from_channel: Union[discord.VoiceChannel, discord.StageChannel],
+        to_channel: Union[discord.VoiceChannel, discord.StageChannel] = None,
     ):
         """Move all members from one voice channel to another
 
@@ -171,6 +186,7 @@ class AdminUtils(commands.Cog):
                     continue
         await ctx.send(_("Finished moving users. {} members could not be moved.").format(fails))
 
+    # TODO: Stickers?
     @commands.group()
     @commands.guild_only()
     @commands.admin_or_permissions(manage_emojis=True)
@@ -207,8 +223,6 @@ class AdminUtils(commands.Cog):
                     else None,
                 ),
             )
-        except discord.InvalidArgument:
-            await ctx.send(chat.error(_("This image type is unsupported, or link is incorrect")))
         except discord.HTTPException as e:
             await ctx.send(chat.error(_("An error occurred on adding an emoji: {}").format(e)))
         else:
@@ -251,13 +265,6 @@ class AdminUtils(commands.Cog):
                 ),
             )
             await ctx.tick()
-        except discord.InvalidArgument:
-            await ctx.send(
-                _(
-                    "This image type is not supported anymore or Discord returned incorrect data. Try again later."
-                )
-            )
-            return
         except discord.HTTPException as e:
             await ctx.send(chat.error(_("An error occurred on adding an emoji: {}").format(e)))
 
@@ -301,6 +308,7 @@ class AdminUtils(commands.Cog):
         await emoji.delete(reason=get_audit_reason(ctx.author))
         await ctx.tick()
 
+    # TODO: Threads?
     @commands.group()
     @commands.guild_only()
     @commands.admin_or_permissions(manage_channels=True)
@@ -360,8 +368,8 @@ class AdminUtils(commands.Cog):
         Use double quotes if category has spaces
 
         Examples:
-            `[p]channel add voice "The Zoo" Awesome Channel` will create under the "The Zoo" category.
-            `[p]channel add voice Awesome Channel` will create under no category, at the top.
+            `[p]channel add voice "The Zoo" Awesome Channel` will create voice channel under the "The Zoo" category.
+            `[p]channel add voice Awesome Channel` will create stage channel under no category, at the top.
         """
         if category:
             self.check_channel_permission(ctx, category)
@@ -376,11 +384,41 @@ class AdminUtils(commands.Cog):
         else:
             await ctx.tick()
 
+    @channel_create.command(name="stage")
+    async def channel_create_stage(
+        self,
+        ctx: commands.Context,
+        category: Optional[discord.CategoryChannel] = None,
+        *,
+        name: str,
+    ):
+        """Create a stage channel
+
+        You can create the channel under a category if passed, else it is created under no category
+        Use double quotes if category has spaces
+
+        Examples:
+            `[p]channel add voice "The Zoo" Awesome Channel` will create voice channel under the "The Zoo" category.
+            `[p]channel add voice Awesome Channel` will create stage channel under no category, at the top.
+        """
+        if category:
+            self.check_channel_permission(ctx, category)
+        try:
+            await ctx.guild.create_stage_channel(
+                name, category=category, reason=get_audit_reason(ctx.author)
+            )
+        except discord.Forbidden:
+            await ctx.send(chat.error(_("I can't create channel in this category")))
+        except discord.HTTPException as e:
+            await ctx.send(chat.error(_("I am unable to create a channel: {}").format(e)))
+        else:
+            await ctx.tick()
+
     @channel.command(name="rename")
     async def channel_rename(
         self,
         ctx: commands.Context,
-        channel: Union[discord.TextChannel, discord.VoiceChannel],
+        channel: Union[discord.TextChannel, discord.VoiceChannel, discord.StageChannel],
         *,
         name: str,
     ):
@@ -403,7 +441,10 @@ class AdminUtils(commands.Cog):
 
     @channel.command(name="delete", aliases=["remove"])
     async def channel_delete(
-        self, ctx: commands.Context, *, channel: Union[discord.TextChannel, discord.VoiceChannel]
+        self,
+        ctx: commands.Context,
+        *,
+        channel: Union[discord.TextChannel, discord.VoiceChannel, discord.StageChannel],
     ):
         """Remove a channel from server
 
@@ -421,10 +462,8 @@ class AdminUtils(commands.Cog):
                     ).format(channel=channel.mention)
                 )
             )
-            try:
+            with contextlib.suppress(AsyncTimeoutError):
                 await self.bot.wait_for("message", check=pred, timeout=30)
-            except AsyncTimeoutError:
-                pass
         if ctx.assume_yes or pred.result:
             try:
                 await channel.delete(reason=get_audit_reason(ctx.author))
