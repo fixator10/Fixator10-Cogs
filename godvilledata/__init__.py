@@ -6,5 +6,6 @@ __red_end_user_data_statement__ = (
 )
 
 
-def setup(bot):
-    bot.add_cog(GodvilleData(bot))
+async def setup(bot):
+    cog = GodvilleData(bot)
+    await bot.add_cog(cog)

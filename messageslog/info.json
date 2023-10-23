@@ -6,7 +6,7 @@
   "short": "Log deleted and edited messages to a specified channel",
   "description": "Log deleted and edited messages to a specified channel",
   "min_bot_version": "3.4.0",
-  "max_bot_version": "3.4.99",
+  "max_bot_version": "3.5.99",
   "tags": [
     "messages",
     "logs"
