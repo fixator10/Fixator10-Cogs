@@ -21,4 +21,4 @@ async def setup_after_ready(bot):
 
 
 async def setup(bot):
-    await create_task(setup_after_ready(bot))
+    create_task(setup_after_ready(bot))
