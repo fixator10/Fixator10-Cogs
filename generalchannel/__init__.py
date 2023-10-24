@@ -6,5 +6,4 @@ __red_end_user_data_statement__ = (
 
 
 async def setup(bot):
-    cog = GeneralChannel(bot)
-    await bot.add_cog(cog)
+    await bot.add_cog(GeneralChannel(bot))
