@@ -1,292 +1,392 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: fixator10-cogs\n"
-"POT-Creation-Date: 2022-10-01 20:26+0400\n"
+"POT-Creation-Date: 2023-06-01 17:37+0400\n"
+"PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: Russian\n"
+"Language: ru_RU\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 "
+"&& n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 "
+"&& n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "Generated-By: redgettext 3.3\n"
-"Plural-Forms: nplurals=4; plural=((n%10==1 && n%100!=11) ? 0 : ((n%10 >= 2 && n%10 <=4 && (n%100 < 12 || n%100 > 14)) ? 1 : ((n%10 == 0 || (n%10 >= 5 && n%10 <=9)) || (n%100 >= 11 && n%100 <= 14)) ? 2 : 3));\n"
 "X-Crowdin-Project: fixator10-cogs\n"
 "X-Crowdin-Project-ID: 387695\n"
 "X-Crowdin-Language: ru\n"
 "X-Crowdin-File-ID: 57\n"
-"Language: ru_RU\n"
+"X-Generator: Poedit 3.2.2\n"
 
-#: adminutils\adminutils.py:26
-#, docstring
-msgid "Useful commands for server administrators."
-msgstr "Полезные команды для администраторов серверов."
+#: adminutils\adminutils.py:21
+msgid "You are not allowed to edit this category."
+msgstr "Вы не можете редактировать эту категорию."
 
-#: adminutils\adminutils.py:57
+#: adminutils\adminutils.py:22 adminutils\adminutils.py:23
+#: adminutils\adminutils.py:24
 msgid "You are not allowed to edit this channel."
 msgstr "Вы не можете редактировать этот канал."
 
-#: adminutils\adminutils.py:59
-msgid "You are not allowed to edit in this category."
-msgstr "Вы не можете редактировать каналы в этой категории."
+#: adminutils\adminutils.py:35
+msgid "Useful commands for server administrators."
+msgstr "Полезные команды для администраторов серверов."
 
-#: adminutils\adminutils.py:68
-#, docstring
+#: adminutils\adminutils.py:88
 msgid "Cleanup inactive server members"
 msgstr "Чистка неактивных участников сервера"
 
-#: adminutils\adminutils.py:72
-msgid "Due to Discord Restrictions, you cannot use more than 30 days for that cmd."
-msgstr "В связи с ограничениями Discord, вы не можете использовать более 30 дней для этой команды."
+#: adminutils\adminutils.py:92
+msgid ""
+"Due to Discord Restrictions, you cannot use more than 30 days for that cmd."
+msgstr ""
+"В связи с ограничениями Discord, вы не можете использовать более 30 дней для "
+"этой команды."
 
-#: adminutils\adminutils.py:79
+#: adminutils\adminutils.py:99
 msgid "\"days\" arg cannot be less than 1..."
 msgstr "Аргумент \"days\" не может быть меньше 1..."
 
-#: adminutils\adminutils.py:84
-msgid "\n"
+#: adminutils\adminutils.py:104
+msgid ""
+"\n"
 "Including members in roles: {}\n"
-msgstr "\n"
+msgstr ""
+"\n"
 "Включая участников в ролях: {}\n"
 
-#: adminutils\adminutils.py:89
-msgid "You are about to kick **{to_kick}** inactive for **{days}** days members from this server. {roles}Are you sure?\n"
+#: adminutils\adminutils.py:109
+msgid ""
+"You are about to kick **{to_kick}** inactive for **{days}** days members "
+"from this server. {roles}Are you sure?\n"
 "To agree, type \"yes\""
-msgstr "Вы собираетесь выгнать **{to_kick}** пользователей, бывших неактивными **{days}** дней с этого сервера. {roles}Вы уверены в этом?\n"
+msgstr ""
+"Вы собираетесь выгнать **{to_kick}** пользователей, бывших неактивными "
+"**{days}** дней с этого сервера. {roles}Вы уверены в этом?\n"
 "Для продолжения напишите \"yes\""
 
-#: adminutils\adminutils.py:105
-msgid "**{removed}**/**{all}** inactive members removed.\n"
+#: adminutils\adminutils.py:123
+msgid ""
+"**{removed}**/**{all}** inactive members removed.\n"
 "(They were inactive for **{days}** days)"
-msgstr "**{removed}**/**{all}** неактивных участников удалено.\n"
+msgstr ""
+"**{removed}**/**{all}** неактивных участников удалено.\n"
 "(Они были неактивны **{days}** дней)"
 
-#: adminutils\adminutils.py:112
+#: adminutils\adminutils.py:130
 msgid "Inactive members cleanup canceled."
 msgstr "Очистка неактивных участников отменена."
 
-#: adminutils\adminutils.py:119
-#, docstring
-msgid "Change server's voice region to random and back\n\n"
+#: adminutils\adminutils.py:140
+msgid ""
+"Change voice channel's region to random and back\n"
+"\n"
 "        Useful to reinitate all voice connections"
-msgstr "Изменить голосовой регион сервера на случайный и обратно\n\n"
+msgstr ""
+"Изменить голосовой регион канала на случайный и обратно\n"
+"\n"
 "        Полезно для восстановления всех голосовых подключений"
 
-#: adminutils\adminutils.py:133
+#: adminutils\adminutils.py:148
 msgid "Voice restart"
 msgstr "Перезапуск голосового чата"
 
-#: adminutils\adminutils.py:148
-#, docstring
-msgid "Move all members from one voice channel to another\n\n"
+#: adminutils\adminutils.py:163
+msgid ""
+"Move all members from one voice channel to another\n"
+"\n"
 "        Use double quotes if channel name has spaces"
-msgstr "Переместить всех участников с одного голосового канала в другой\n\n"
+msgstr ""
+"Переместить всех участников с одного голосового канала в другой\n"
+"\n"
 "        Используйте двойные кавычки, если название канала содержит пробелы"
 
-#: adminutils\adminutils.py:154
+#: adminutils\adminutils.py:169
 msgid "There is no users in channel {}."
 msgstr "Нет пользователей в канале {}."
 
-#: adminutils\adminutils.py:158
+#: adminutils\adminutils.py:173
 msgid "I cant move users from that channel"
 msgstr "Я не могу двигать пользователей из этого канала"
 
-#: adminutils\adminutils.py:161
+#: adminutils\adminutils.py:176
 msgid "I cant move users to that channel"
 msgstr "Я не могу двигать пользователей в этот канал"
 
-#: adminutils\adminutils.py:167
+#: adminutils\adminutils.py:182
 msgid "Massmove"
 msgstr "Массовое перемещение"
 
-#: adminutils\adminutils.py:172
+#: adminutils\adminutils.py:187
 msgid "Finished moving users. {} members could not be moved."
-msgstr "Перемещение пользователей завершено. {} участников не удалось переместить."
+msgstr ""
+"Перемещение пользователей завершено. {} участников не удалось переместить."
 
-#: adminutils\adminutils.py:179
-#, docstring
+#: adminutils\adminutils.py:195
 msgid "Manage emoji"
 msgstr "Управление эмодзи"
 
-#: adminutils\adminutils.py:184
-#, docstring
-msgid "Create custom emoji\n\n"
-"        Use double quotes if role name has spaces\n\n"
+#: adminutils\adminutils.py:200
+msgid ""
+"Create custom emoji\n"
+"\n"
+"        Use double quotes if role name has spaces\n"
+"\n"
 "        Examples:\n"
 "            `[p]emoji add Example https://example.com/image.png`\n"
-"            `[p]emoji add RoleBased https://example.com/image.png EmojiRole \"Test image\"`\n"
+"            `[p]emoji add RoleBased https://example.com/image.png EmojiRole "
+"\"Test image\"`\n"
 "        "
-msgstr "Создать собственное эмодзи\n\n"
-"        Используйте двойные кавычки, если название роли содержит пробелы\n\n"
+msgstr ""
+"Создать собственное эмодзи\n"
+"\n"
+"        Используйте двойные кавычки, если название роли содержит пробелы\n"
+"\n"
 "        Примеры:\n"
 "            `[p]emoji add Example https://example.com/image.png`\n"
-"            `[p]emoji add RoleBased https://example.com/image.png РольДляЭмодзи \"Тестовое изображение\"`\n"
+"            `[p]emoji add RoleBased https://example.com/image.png "
+"РольДляЭмодзи \"Тестовое изображение\"`\n"
 "        "
 
-#: adminutils\adminutils.py:196
+#: adminutils\adminutils.py:212
 msgid "Unable to get emoji from provided url: {}"
 msgstr "Невозможно получить эмодзи по предоставленному адресу: {}"
 
-#: adminutils\adminutils.py:205 adminutils\adminutils.py:248
+#: adminutils\adminutils.py:221 adminutils\adminutils.py:262
 msgid "Restricted to roles: {}"
 msgstr "Ограничено для ролей: {}"
 
-#: adminutils\adminutils.py:211
-msgid "This image type is unsupported, or link is incorrect"
-msgstr "Данный тип изображений не поддерживается, или указана неверная ссылка"
-
-#: adminutils\adminutils.py:213 adminutils\adminutils.py:262
+#: adminutils\adminutils.py:227 adminutils\adminutils.py:269
 msgid "An error occurred on adding an emoji: {}"
 msgstr "Произошла ошибка при добавлении эмодзи: {}"
 
-#: adminutils\adminutils.py:221
-#, docstring
-msgid "\n"
+#: adminutils\adminutils.py:235
+msgid ""
+"\n"
 "        Add an emoji from a specified message\n"
-"        Use double quotes if role name has spaces\n\n"
+"        Use double quotes if role name has spaces\n"
+"\n"
 "        Examples:\n"
 "            `[p]emoji message Example 162379234070467641`\n"
 "            `[p]emoji message RoleBased 162379234070467641 EmojiRole`\n"
 "        "
-msgstr "\n"
+msgstr ""
+"\n"
 "        Добавить эмодзи из указанного сообщения\n"
-"        Используйте двойные кавычки, если название роли содержит пробелы\n\n"
+"        Используйте двойные кавычки, если название роли содержит пробелы\n"
+"\n"
 "        Примеры:\n"
 "            `[p]emoji message Example 162379234070467641`\n"
 "            `[p]emoji message RoleBased 162379234070467641 РольДляЭмодзи`\n"
 "        "
 
-#: adminutils\adminutils.py:233
+#: adminutils\adminutils.py:247
 msgid "No emojis found specified message."
 msgstr "В указанном сообщении не найдено эмодзи."
 
-#: adminutils\adminutils.py:256
-msgid "This image type is not supported anymore or Discord returned incorrect data. Try again later."
-msgstr "Данный тип изображения больше не поддерживается, или Discord вернул неверную информацию. Попробуйте позже."
-
-#: adminutils\adminutils.py:268
-#, docstring
-msgid "Rename emoji and restrict to certain roles\n"
-"        Only this roles will be able to use this emoji\n\n"
-"        Use double quotes if role name has spaces\n\n"
+#: adminutils\adminutils.py:275
+msgid ""
+"Rename emoji and restrict to certain roles\n"
+"        Only this roles will be able to use this emoji\n"
+"\n"
+"        Use double quotes if role name has spaces\n"
+"\n"
 "        Examples:\n"
 "            `[p]emoji rename emoji NewEmojiName`\n"
-"            `[p]emoji rename emoji NewEmojiName Administrator \"Allowed role\"`\n"
+"            `[p]emoji rename emoji NewEmojiName Administrator \"Allowed "
+"role\"`\n"
 "        "
-msgstr "Переименовать эмодзи и ограничить использование для определённых ролей\n"
-"        Только выбранные роли смогу использовать это эмодзи\n\n"
-"        Используйте двойные ковычки если название роли содержит пробелы\n\n"
+msgstr ""
+"Переименовать эмодзи и ограничить использование для определённых ролей\n"
+"        Только выбранные роли смогу использовать это эмодзи\n"
+"\n"
+"        Используйте двойные ковычки если название роли содержит пробелы\n"
+"\n"
 "        Examples:\n"
 "            `[p]emoji rename emoji NewEmojiName`\n"
-"            `[p]emoji rename emoji NewEmojiName Администратор \"Допустимая роль\"`\n"
+"            `[p]emoji rename emoji NewEmojiName Администратор \"Допустимая "
+"роль\"`\n"
 "        "
 
-#: adminutils\adminutils.py:286
+#: adminutils\adminutils.py:293
 msgid "Restricted to roles: "
 msgstr "Ограничено для ролей: "
 
-#: adminutils\adminutils.py:292
+#: adminutils\adminutils.py:299
 msgid "I can't edit this emoji"
 msgstr "Я не могу изменить эту эмодзи"
 
-#: adminutils\adminutils.py:297
-#, docstring
+#: adminutils\adminutils.py:304
 msgid "Remove emoji from server"
 msgstr "Удалить эмодзи с сервера"
 
-#: adminutils\adminutils.py:309
-#, docstring
+#: adminutils\adminutils.py:317
 msgid "Manage channels"
 msgstr "Управление каналами"
 
-#: adminutils\adminutils.py:317
-#, docstring
+#: adminutils\adminutils.py:325
 msgid "Create a channel"
 msgstr "Создать канал"
 
-#: adminutils\adminutils.py:327
-#, docstring
-msgid "Create a text channel\n\n"
-"        You can create the channel under a category if passed, else it is created under no category\n"
-"        Use double quotes if category has spaces\n\n"
+#: adminutils\adminutils.py:335
+msgid ""
+"Create a text channel\n"
+"\n"
+"        You can create the channel under a category if passed, else it is "
+"created under no category\n"
+"        Use double quotes if category has spaces\n"
+"\n"
 "        Examples:\n"
-"            `[p]channel add text \"The Zoo\" awesome-channel` will create under the \"The Zoo\" category.\n"
-"            `[p]channel add text awesome-channel` will create under no category, at the top.\n"
+"            `[p]channel add text \"The Zoo\" awesome-channel` will create "
+"under the \"The Zoo\" category.\n"
+"            `[p]channel add text awesome-channel` will create under no "
+"category, at the top.\n"
 "        "
-msgstr "Создать текстовый канал\n\n"
-"        Вы можете создать канал в категории, если укажете её, в противном случае он будет создан вне категории\n"
-"        Используйте двойные кавычки, если категория содержит пробелы\n\n"
+msgstr ""
+"Создать текстовый канал\n"
+"\n"
+"        Вы можете создать канал в категории, если укажете её, в противном "
+"случае он будет создан вне категории\n"
+"        Используйте двойные кавычки, если категория содержит пробелы\n"
+"\n"
 "        Примеры:\n"
-"            `[p]channel add text \"Зоопарк\" отличный-канал` создаст канал в категории \"Зоопарк\".\n"
-"            `[p]channel add text отличный-канал` создаст канал вне категории, сверху.\n"
+"            `[p]channel add text \"Зоопарк\" отличный-канал` создаст канал в "
+"категории \"Зоопарк\".\n"
+"            `[p]channel add text отличный-канал` создаст канал вне "
+"категории, сверху.\n"
 "        "
 
-#: adminutils\adminutils.py:343 adminutils\adminutils.py:373
+#: adminutils\adminutils.py:351 adminutils\adminutils.py:381
+#: adminutils\adminutils.py:411
 msgid "I can't create channel in this category"
 msgstr "Я не могу создать канал в этой категории"
 
-#: adminutils\adminutils.py:345 adminutils\adminutils.py:375
+#: adminutils\adminutils.py:353 adminutils\adminutils.py:383
+#: adminutils\adminutils.py:413
 msgid "I am unable to create a channel: {}"
 msgstr "Невозможно создать канал: {}"
 
-#: adminutils\adminutils.py:357
-#, docstring
-msgid "Create a voice channel\n\n"
-"        You can create the channel under a category if passed, else it is created under no category\n"
-"        Use double quotes if category has spaces\n\n"
+#: adminutils\adminutils.py:365
+msgid ""
+"Create a voice channel\n"
+"\n"
+"        You can create the channel under a category if passed, else it is "
+"created under no category\n"
+"        Use double quotes if category has spaces\n"
+"\n"
 "        Examples:\n"
-"            `[p]channel add voice \"The Zoo\" Awesome Channel` will create under the \"The Zoo\" category.\n"
-"            `[p]channel add voice Awesome Channel` will create under no category, at the top.\n"
+"            `[p]channel add voice \"The Zoo\" Awesome Channel` will create "
+"voice channel under the \"The Zoo\" category.\n"
+"            `[p]channel add voice Awesome Channel` will create stage channel "
+"under no category, at the top.\n"
 "        "
-msgstr "Создать голосовой канал\n\n"
-"        Вы можете создать канал в категории, если укажете её, в противном случае он будет создан вне категории\n"
-"        Используйте двойные кавычки, если категория содержит пробелы\n\n"
+msgstr ""
+"Создать голосовой канал\n"
+"\n"
+"        Вы можете создать канал в категории, если укажете её, в противном "
+"случае он будет создан вне категории\n"
+"        Используйте двойные кавычки, если категория содержит пробелы\n"
+"\n"
 "        Примеры:\n"
-"            `[p]channel add text \"Зоопарк\" Отличный канал` создаст канал в категории \"Зоопарк\".\n"
-"            `[p]channel add text Отличный канал` создаст канал вне категории, сверху.\n"
+"            `[p]channel add text \"Зоо парк\" Отличный канал` создаст канал "
+"в категории \"Зоо парк\".\n"
+"            `[p]channel add text Отличный канал` создаст канал вне "
+"категории, сверху.\n"
 "        "
 
-#: adminutils\adminutils.py:387
-#, docstring
-msgid "Rename a channel\n\n"
-"        Use double quotes if channel has spaces\n\n"
+#: adminutils\adminutils.py:395
+msgid ""
+"Create a stage channel\n"
+"\n"
+"        You can create the channel under a category if passed, else it is "
+"created under no category\n"
+"        Use double quotes if category has spaces\n"
+"\n"
+"        Examples:\n"
+"            `[p]channel add voice \"The Zoo\" Awesome Channel` will create "
+"voice channel under the \"The Zoo\" category.\n"
+"            `[p]channel add voice Awesome Channel` will create stage channel "
+"under no category, at the top.\n"
+"        "
+msgstr ""
+"Создать канал-сцену\n"
+"\n"
+"        Вы можете создать канал в категории, если укажете её, в противном "
+"случае он будет создан вне категории\n"
+"        Используйте двойные кавычки, если категория содержит пробелы\n"
+"\n"
+"        Примеры:\n"
+"            `[p]channel add text \"Зоо парк\" Отличный канал` создаст канал "
+"в категории \"Зоо парк\".\n"
+"            `[p]channel add text Отличный канал` создаст канал вне "
+"категории, сверху.\n"
+"        "
+
+#: adminutils\adminutils.py:425
+msgid ""
+"Rename a channel\n"
+"\n"
+"        Use double quotes if channel has spaces\n"
+"\n"
 "        Examples:\n"
 "            `[p]channel rename channel new-channel-name`\n"
 "        "
-msgstr "Переименовать канал\n\n"
-"        Используйте двойные кавычки, если название канала содержит пробелы\n\n"
+msgstr ""
+"Переименовать канал\n"
+"\n"
+"        Используйте двойные кавычки, если название канала содержит пробелы\n"
+"\n"
 "        Примеры:\n"
 "            `[p]channel rename канал новое-название-канала`\n"
 "        "
 
-#: adminutils\adminutils.py:398
+#: adminutils\adminutils.py:436
 msgid "I can't rename this channel"
 msgstr "Я не могу переименовать этот канал"
 
-#: adminutils\adminutils.py:400
+#: adminutils\adminutils.py:438
 msgid "I am unable to rename this channel: {}"
 msgstr "Невозможно переименовать канал: {}"
 
-#: adminutils\adminutils.py:408
-#, docstring
-msgid "Remove a channel from server\n\n"
+#: adminutils\adminutils.py:449
+msgid ""
+"Remove a channel from server\n"
+"\n"
 "        Example:\n"
 "            `[p]channel delete channel`\n"
 "        "
-msgstr "Удалить канал с сервера\n\n"
+msgstr ""
+"Удалить канал с сервера\n"
+"\n"
 "        Пример:\n"
 "            `[p]channel delete канал`\n"
 "        "
 
-#: adminutils\adminutils.py:418
-msgid "You are about to delete channel {channel}. This cannot be undone. Are you sure?\n"
+#: adminutils\adminutils.py:459
+msgid ""
+"You are about to delete channel {channel}. This cannot be undone. Are you "
+"sure?\n"
 "To agree, type \"yes\""
-msgstr "Вы собираетесь удалить канал {channel}. Это действие не может быть отменено. Вы уверены в этом?\n"
+msgstr ""
+"Вы собираетесь удалить канал {channel}. Это действие не может быть отменено. "
+"Вы уверены в этом?\n"
 "Для продолжения напишите \"yes\""
 
-#: adminutils\adminutils.py:432
+#: adminutils\adminutils.py:471
 msgid "I can't delete this channel"
 msgstr "Я не могу удалить этот канал"
 
-#: adminutils\adminutils.py:434
+#: adminutils\adminutils.py:473
 msgid "I am unable to delete a channel: {}"
 msgstr "Невозможно удалить канал: {}"
 
+#~ msgid "This image type is unsupported, or link is incorrect"
+#~ msgstr ""
+#~ "Данный тип изображений не поддерживается, или указана неверная ссылка"
+
+#~ msgid ""
+#~ "This image type is not supported anymore or Discord returned incorrect "
+#~ "data. Try again later."
+#~ msgstr ""
+#~ "Данный тип изображения больше не поддерживается, или Discord вернул "
+#~ "неверную информацию. Попробуйте позже."
