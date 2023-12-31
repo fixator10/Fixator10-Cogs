@@ -15,10 +15,10 @@ jobs:
     steps:
 
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Update translations
-      uses: crowdin/github-action@v1.8.1
+      uses: crowdin/github-action@v1.13.1
       with:
         download_translations: true
         commit_message: '[automated] update translations from Crowdin'

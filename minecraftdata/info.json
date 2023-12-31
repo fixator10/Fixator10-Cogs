@@ -10,7 +10,7 @@
     "game"
   ],
   "min_python_version": [3, 8, 0],
-  "max_bot_version": "3.4.99",
+  "max_bot_version": "3.5.99",
   "requirements": [
     "tabulate",
     "wcwidth",

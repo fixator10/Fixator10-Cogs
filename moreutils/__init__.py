@@ -17,8 +17,8 @@ async def setup_after_ready(bot):
             for alias in command.aliases:
                 if bot.get_command(alias):
                     command.aliases[command.aliases.index(alias)] = f"mu{alias}"
-    bot.add_cog(cog)
+    await bot.add_cog(cog)
 
 
-def setup(bot):
+async def setup(bot):
     create_task(setup_after_ready(bot))
