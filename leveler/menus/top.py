@@ -115,9 +115,11 @@ class TopPager(menus.ListPageSource):
     async def format_page(self, menu: TopMenu, entries):
         table = tabulate(
             entries,
-            headers=["#", self.board_type, "Level", "Username"]
-            if self.is_level
-            else ["#", self.board_type, "Username"],
+            headers=(
+                ["#", self.board_type, "Level", "Username"]
+                if self.is_level
+                else ["#", self.board_type, "Username"]
+            ),
             tablefmt="rst",
         )
         table_width = len(table.splitlines()[0])

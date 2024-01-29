@@ -123,9 +123,9 @@ class Badge(MixinMeta):
                     badge_name = "{}_{}".format(name, serverid)
                     if badge_name in userbadges.keys():
                         user_priority_num = userbadges[badge_name]["priority_num"]
-                        new_badge[
-                            "priority_num"
-                        ] = user_priority_num  # maintain old priority number set by user
+                        new_badge["priority_num"] = (
+                            user_priority_num  # maintain old priority number set by user
+                        )
                         userbadges[badge_name] = new_badge
                         await self.db.users.update_one(
                             {"user_id": user["user_id"]},
