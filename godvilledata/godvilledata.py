@@ -95,9 +95,11 @@ class GodvilleData(commands.Cog):
         text_header = "{} и его {}\n{}\n".format(
             chat.bold(profile.god),
             chat.bold(profile.name),
-            chat.italics(chat.escape(profile.motto.strip(), formatting=True))
-            if profile.motto
-            else chat.inline("Здесь ничего нет"),
+            (
+                chat.italics(chat.escape(profile.motto.strip(), formatting=True))
+                if profile.motto
+                else chat.inline("Здесь ничего нет")
+            ),
         )
         if profile.arena_is_in_fight:
             text_header += "В сражении: {}\n".format(profile.fight_type_rus)
@@ -212,9 +214,11 @@ class GodvilleData(commands.Cog):
         text_header = "{} and his {}\n{}\n".format(
             chat.bold(profile.god),
             chat.bold(profile.name),
-            chat.italics(chat.escape(profile.motto.strip(), formatting=True))
-            if profile.motto
-            else chat.inline("Nothing here"),
+            (
+                chat.italics(chat.escape(profile.motto.strip(), formatting=True))
+                if profile.motto
+                else chat.inline("Nothing here")
+            ),
         )
         if profile.arena_is_in_fight:
             text_header += "In fight: {}\n".format(profile.fight_type_rus)

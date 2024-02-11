@@ -168,9 +168,9 @@ class ChannelsPager(menus.ListPageSource):
     async def format_page(self, menu: ChannelsMenu, entries):
         e = discord.Embed(
             title="{}:".format(_(KNOWN_CHANNEL_TYPES[menu.channel_type][1])),
-            description=chat.box("\n".join(c.name for c in entries))
-            if entries
-            else _("No channels"),
+            description=(
+                chat.box("\n".join(c.name for c in entries)) if entries else _("No channels")
+            ),
         )
         e.set_footer(
             text=_("Page {}/{} • {}: {} • Total channels: {}").format(

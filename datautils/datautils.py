@@ -127,8 +127,12 @@ class DataUtils(commands.Cog):
                 em.add_field(
                     name=_("Features"),
                     value="\n".join(_(GUILD_FEATURES.get(f, f)) for f in guild.features).format(
-                        banner=guild.banner and f" [🔗]({guild.banner_url_as(format='png')})" or "",
-                        splash=guild.splash and f" [🔗]({guild.splash_url_as(format='png')})" or "",
+                        banner=guild.banner
+                        and f" [🔗]({guild.banner_url_as(format='png')})"
+                        or "",
+                        splash=guild.splash
+                        and f" [🔗]({guild.splash_url_as(format='png')})"
+                        or "",
                         discovery=getattr(guild, "discovery_splash", None)
                         and f" [🔗]({guild.discovery_splash_url_as(format='png')})"
                         or "",
@@ -263,35 +267,55 @@ class DataUtils(commands.Cog):
         )
         em.add_field(
             name=_("Verification level"),
-            value=_("None")
-            if server.verification_level == discord.VerificationLevel.none
-            else _("Low")
-            if server.verification_level == discord.VerificationLevel.low
-            else _("Medium")
-            if server.verification_level == discord.VerificationLevel.medium
-            else _("High")
-            if server.verification_level == discord.VerificationLevel.high
-            else _("Highest")
-            if server.verification_level == discord.VerificationLevel.extreme
-            else _("Unknown"),
+            value=(
+                _("None")
+                if server.verification_level == discord.VerificationLevel.none
+                else (
+                    _("Low")
+                    if server.verification_level == discord.VerificationLevel.low
+                    else (
+                        _("Medium")
+                        if server.verification_level == discord.VerificationLevel.medium
+                        else (
+                            _("High")
+                            if server.verification_level == discord.VerificationLevel.high
+                            else (
+                                _("Highest")
+                                if server.verification_level == discord.VerificationLevel.extreme
+                                else _("Unknown")
+                            )
+                        )
+                    )
+                )
+            ),
         )
         em.add_field(
             name=_("Explicit content filter"),
-            value=_("Don't scan any messages.")
-            if server.explicit_content_filter == discord.ContentFilter.disabled
-            else _("Scan messages from members without a role.")
-            if server.explicit_content_filter == discord.ContentFilter.no_role
-            else _("Scan messages sent by all members.")
-            if server.explicit_content_filter == discord.ContentFilter.all_members
-            else _("Unknown"),
+            value=(
+                _("Don't scan any messages.")
+                if server.explicit_content_filter == discord.ContentFilter.disabled
+                else (
+                    _("Scan messages from members without a role.")
+                    if server.explicit_content_filter == discord.ContentFilter.no_role
+                    else (
+                        _("Scan messages sent by all members.")
+                        if server.explicit_content_filter == discord.ContentFilter.all_members
+                        else _("Unknown")
+                    )
+                )
+            ),
         )
         em.add_field(
             name=_("Default notifications"),
-            value=_("All messages")
-            if server.default_notifications == discord.NotificationLevel.all_messages
-            else _("Only @mentions")
-            if server.default_notifications == discord.NotificationLevel.only_mentions
-            else _("Unknown"),
+            value=(
+                _("All messages")
+                if server.default_notifications == discord.NotificationLevel.all_messages
+                else (
+                    _("Only @mentions")
+                    if server.default_notifications == discord.NotificationLevel.only_mentions
+                    else _("Unknown")
+                )
+            ),
         )
         em.add_field(name=_("2FA admins"), value=bool_emojify(server.mfa_level))
         if server.rules_channel:
@@ -432,15 +456,19 @@ class DataUtils(commands.Cog):
         changed_roles = sorted(channel.changed_roles, key=lambda r: r.position, reverse=True)
         em = discord.Embed(
             title=chat.escape(str(channel.name), formatting=True),
-            description=topic
-            if (topic := getattr(channel, "topic", None))
-            else "\N{SPEECH BALLOON}: {} | \N{SPEAKER}: {} | \N{SATELLITE ANTENNA}: {}".format(
-                len(channel.text_channels),
-                len(channel.voice_channels),
-                len(channel.stage_channels),
-            )
-            if isinstance(channel, discord.CategoryChannel)
-            else discord.Embed.Empty,
+            description=(
+                topic
+                if (topic := getattr(channel, "topic", None))
+                else (
+                    "\N{SPEECH BALLOON}: {} | \N{SPEAKER}: {} | \N{SATELLITE ANTENNA}: {}".format(
+                        len(channel.text_channels),
+                        len(channel.voice_channels),
+                        len(channel.stage_channels),
+                    )
+                    if isinstance(channel, discord.CategoryChannel)
+                    else discord.Embed.Empty
+                )
+            ),
             color=await ctx.embed_color(),
         )
         em.add_field(name=_("ID"), value=channel.id)

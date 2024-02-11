@@ -308,14 +308,14 @@ class Settings(MixinMeta, metaclass=ABCMeta):
         for role in roles:
             async with self.data.guild(ctx.guild).autoroles() as roles_list:
                 if role.position >= ctx.me.top_role.position:
-                    error[
-                        role.name
-                    ] = "This role is higher than my highest role in the role hierarchy."
+                    error[role.name] = (
+                        "This role is higher than my highest role in the role hierarchy."
+                    )
                     continue
                 if role.position >= ctx.author.top_role.position:
-                    error[
-                        role.name
-                    ] = "This role is higher than your own in the discord hierarchy."
+                    error[role.name] = (
+                        "This role is higher than your own in the discord hierarchy."
+                    )
                     continue
                 if role.id not in roles_list:
                     roles_list.append(role.id)
@@ -356,9 +356,9 @@ class Settings(MixinMeta, metaclass=ABCMeta):
         async with self.data.guild(ctx.guild).autoroles() as roles_list:
             for role in roles:
                 if role.position >= ctx.author.top_role.position:
-                    error[
-                        role.name
-                    ] = "This role is higher than your own in the discord hierarchy."
+                    error[role.name] = (
+                        "This role is higher than your own in the discord hierarchy."
+                    )
                     continue
                 if role.id in roles_list:
                     roles_list.remove(role.id)

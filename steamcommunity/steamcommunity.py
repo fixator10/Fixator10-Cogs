@@ -136,9 +136,11 @@ class SteamCommunity(commands.Cog):
             title=profile.personaname,
             description=profile.personastate(),
             url=profile.profileurl,
-            timestamp=datetime.utcfromtimestamp(profile.lastlogoff)
-            if profile.lastlogoff
-            else discord.Embed.Empty,
+            timestamp=(
+                datetime.utcfromtimestamp(profile.lastlogoff)
+                if profile.lastlogoff
+                else discord.Embed.Empty
+            ),
             color=profile.personastatecolor,
         )
         if profile.gameid:

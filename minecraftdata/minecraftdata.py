@@ -304,18 +304,20 @@ class MinecraftData(commands.Cog):
             name=_("Players"),
             value="{0.players.online}/{0.players.max}\n{1}".format(
                 status,
-                chat.box(
-                    list(
-                        chat.pagify(
-                            await self.clear_mcformatting(
-                                "\n".join([p.name for p in status.players.sample])
-                            ),
-                            page_length=992,
-                        )
-                    )[0]
-                )
-                if status.players.sample
-                else "",
+                (
+                    chat.box(
+                        list(
+                            chat.pagify(
+                                await self.clear_mcformatting(
+                                    "\n".join([p.name for p in status.players.sample])
+                                ),
+                                page_length=992,
+                            )
+                        )[0]
+                    )
+                    if status.players.sample
+                    else ""
+                ),
             ),
         )
         embed.add_field(

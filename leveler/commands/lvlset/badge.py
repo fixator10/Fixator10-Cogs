@@ -112,9 +112,9 @@ class Badge(MixinMeta, ABC):
                             return
                         if badge_info["price"] <= await bank.get_balance(user):
                             await bank.withdraw_credits(user, badge_info["price"])
-                            userinfo["badges"][
-                                "{}_{}".format(name, str(serverid))
-                            ] = server_badges[name]
+                            userinfo["badges"]["{}_{}".format(name, str(serverid))] = (
+                                server_badges[name]
+                            )
                             await self.db.users.update_one(
                                 {"user_id": userinfo["user_id"]},
                                 {"$set": {"badges": userinfo["badges"]}},
