@@ -185,6 +185,7 @@ angular.module('permissionsCalc', ['themes'])
                     { active: false, id: 'use_soundboard',          name: 'Use Soundboard',          value: 0x40000000000,   auto: true }, // 1 << 42
                     { active: false, id: 'use_external_sounds',     name: 'Use External Sounds',     value: 0x200000000000,  auto: true }, // 1 << 45
                     { active: false, id: 'send_voice_messages',     name: 'Send Voice Messages',     value: 0x400000000000,  auto: true }, // 1 << 46
+                    { active: false, id: 'set_voice_channel_status',name: 'Set Voice Channel Status',value: 0x1000000000000, auto: true }, // 1 << 48
                 ]
             }
         ];
