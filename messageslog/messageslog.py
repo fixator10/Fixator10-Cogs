@@ -272,7 +272,7 @@ class MessagesLog(commands.Cog):
                     for a in message.attachments
                 ),
             )
-        embed.set_author(name=message.author, icon_url=message.author.avatar_url)
+        embed.set_author(name=message.author, icon_url=message.author.display_avatar)
         embed.set_footer(text=_("ID: {} • Sent at").format(message.id))
         embed.add_field(name=_("Channel"), value=message.channel.mention)
         try:
@@ -426,7 +426,7 @@ class MessagesLog(commands.Cog):
                     for a in before.attachments
                 ),
             )
-        embed.set_author(name=before.author, icon_url=before.author.avatar_url)
+        embed.set_author(name=before.author, icon_url=before.author.display_avatar)
         embed.set_footer(text=_("ID: {} • Sent at").format(before.id))
         try:
             await logchannel.send(embed=embed)
