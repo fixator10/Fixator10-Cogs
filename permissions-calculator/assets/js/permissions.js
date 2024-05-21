@@ -144,28 +144,29 @@ angular.module('permissionsCalc', ['themes'])
                     { active: false, id: 'create_events',                      name: 'Create Events',                      value: 0x100000000000,auto: true  }, // 1 << 44
                     { active: false, id: 'moderate_members',                   name: 'Moderate Members',                   value: 0x10000000000, auto: false }, // 1 << 40
                     { active: false, id: 'view_guild_insights',                name: 'View Server Insights',               value: 0x80000,       auto: true  }, // 1 << 19
-                    { active: false, id: 'view_creator_monetization_insights', name: 'View Creator Monetization Insights', value: 0x20000000000, auto: false }, // 1 << 41
+                    { active: false, id: 'view_creator_monetization_analytics',name: 'View Server Subscription Insights',  value: 0x20000000000, auto: false }, // 1 << 41
                 ]
             },
             {
                 name: 'Text',
                 active: false,
                 permissions: [
-                    { active: false, id: 'send_messages',            name: 'Send Messages',             value: 0x800,        auto: true  }, // 1 << 11
-                    { active: false, id: 'create_public_threads',    name: 'Create Public Threads',     value: 0x800000000,  auto: true  }, // 1 << 35
-                    { active: false, id: 'create_private_threads',   name: 'Create Private Threads',    value: 0x1000000000, auto: true  }, // 1 << 36
-                    { active: false, id: 'send_messages_in_threads', name: 'Send Messages in Threads',  value: 0x4000000000, auto: true  }, // 1 << 38
-                    { active: false, id: 'send_tts_messages',        name: 'Send TTS Messages',         value: 0x1000,       auto: true  }, // 1 << 12
-                    { active: false, id: 'manage_messaes',           name: 'Manage Messages',           value: 0x2000,       auto: false }, // 1 << 13
-                    { active: false, id: 'manage_threads',           name: 'Manage Threads',            value: 0x400000000,  auto: false }, // 1 << 34
-                    { active: false, id: 'embed_links',              name: 'Embed Links',               value: 0x4000,       auto: true  }, // 1 << 14
-                    { active: false, id: 'attach_files',             name: 'Attach Files',              value: 0x8000,       auto: true  }, // 1 << 15
-                    { active: false, id: 'read_message_history',     name: 'Read Message History',      value: 0x10000,      auto: true  }, // 1 << 16
-                    { active: false, id: 'mention_everyone',         name: 'Mention Everyone',          value: 0x20000,      auto: true  }, // 1 << 17
-                    { active: false, id: 'use_external_emojis',      name: 'Use External Emojis',       value: 0x40000,      auto: true  }, // 1 << 18
-                    { active: false, id: 'use_external_stickers',    name: 'Use External Stickers',     value: 0x2000000000, auto: true  }, // 1 << 37
-                    { active: false, id: 'add_reactions',            name: 'Add Reactions',             value: 0x40,         auto: true  }, // 1 << 6
-                    { active: false, id: 'use_application_commands', name: 'Use Application Commands',  value: 0x80000000,   auto: true  }, // 1 << 31
+                    { active: false, id: 'send_messages',            name: 'Send Messages',             value: 0x800,           auto: true  }, // 1 << 11
+                    { active: false, id: 'create_public_threads',    name: 'Create Public Threads',     value: 0x800000000,     auto: true  }, // 1 << 35
+                    { active: false, id: 'create_private_threads',   name: 'Create Private Threads',    value: 0x1000000000,    auto: true  }, // 1 << 36
+                    { active: false, id: 'send_messages_in_threads', name: 'Send Messages in Threads',  value: 0x4000000000,    auto: true  }, // 1 << 38
+                    { active: false, id: 'send_tts_messages',        name: 'Send TTS Messages',         value: 0x1000,          auto: true  }, // 1 << 12
+                    { active: false, id: 'manage_messaes',           name: 'Manage Messages',           value: 0x2000,          auto: false }, // 1 << 13
+                    { active: false, id: 'manage_threads',           name: 'Manage Threads',            value: 0x400000000,     auto: false }, // 1 << 34
+                    { active: false, id: 'embed_links',              name: 'Embed Links',               value: 0x4000,          auto: true  }, // 1 << 14
+                    { active: false, id: 'attach_files',             name: 'Attach Files',              value: 0x8000,          auto: true  }, // 1 << 15
+                    { active: false, id: 'read_message_history',     name: 'Read Message History',      value: 0x10000,         auto: true  }, // 1 << 16
+                    { active: false, id: 'mention_everyone',         name: 'Mention Everyone',          value: 0x20000,         auto: true  }, // 1 << 17
+                    { active: false, id: 'use_external_emojis',      name: 'Use External Emojis',       value: 0x40000,         auto: true  }, // 1 << 18
+                    { active: false, id: 'use_external_stickers',    name: 'Use External Stickers',     value: 0x2000000000,    auto: true  }, // 1 << 37
+                    { active: false, id: 'add_reactions',            name: 'Add Reactions',             value: 0x40,            auto: true  }, // 1 << 6
+                    { active: false, id: 'use_application_commands', name: 'Use Application Commands',  value: 0x80000000,      auto: true  }, // 1 << 31
+                    { active: false, id: 'send_polls',               name: 'Create Polls',              value: 0x2000000000000, auto: true  }, // 1 << 49
                 ]
             },
             {
