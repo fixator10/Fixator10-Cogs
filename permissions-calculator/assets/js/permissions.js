@@ -167,6 +167,7 @@ angular.module('permissionsCalc', ['themes'])
                     { active: false, id: 'add_reactions',            name: 'Add Reactions',             value: 0x40,            auto: true  }, // 1 << 6
                     { active: false, id: 'use_application_commands', name: 'Use Application Commands',  value: 0x80000000,      auto: true  }, // 1 << 31
                     { active: false, id: 'send_polls',               name: 'Create Polls',              value: 0x2000000000000, auto: true  }, // 1 << 49
+                    { active: false, id: 'use_external_apps',        name: 'Use External Apps',         value: 0x4000000000000, auto: true  }, // 1 << 50
                 ]
             },
             {
