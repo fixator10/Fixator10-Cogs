@@ -13,7 +13,7 @@ except ImportError:
 _ = Translator("SMMData", __file__)
 
 BOOKMARKS_ICON_URL = f"{SMMB_BASE_URL}/assets/favicon/icon76-08f927f066250b84f628e92e0b94f58d.png"
-EMBED_EMPTY_VALUE = "\N{Invisible Separator}"
+EMBED_EMPTY_VALUE = "\N{INVISIBLE SEPARATOR}"
 
 
 @cog_i18n(_)
@@ -54,8 +54,8 @@ class SMMData(commands.Cog):
             url=lvl.url,
         )
         embed.add_field(name=_("Game Style"), value=lvl.gameskin, inline=False)
-        embed.add_field(name="\N{White Medium Star} " + _("Stars"), value=lvl.stars)
-        embed.add_field(name="\N{Footprints} " + _("Unique Players"), value=lvl.players)
+        embed.add_field(name="\N{WHITE MEDIUM STAR} " + _("Stars"), value=lvl.stars)
+        embed.add_field(name="\N{FOOTPRINTS} " + _("Unique Players"), value=lvl.players)
         embed.add_field(name=_("Share count"), value=lvl.shares)
         embed.add_field(name=_("Clears"), value=f"{lvl.clears}/{lvl.attempts} ({lvl.clear_rate}%)")
         if lvl.first_clear_name:
