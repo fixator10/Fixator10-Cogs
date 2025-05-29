@@ -75,20 +75,20 @@ FORECASTIO_SUPPORTED_LANGS = [
 ]
 
 WEATHER_STATES = {
-    "clear-day": "\N{Black Sun with Rays}",
-    "clear-night": "\N{Night with Stars}",
-    "rain": "\N{Cloud with Rain}",
-    "snow": "\N{Cloud with Snow}",
-    "sleet": "\N{Snowflake}",
-    "wind": "\N{Wind Blowing Face}",
-    "fog": "\N{Foggy}",
-    "cloudy": "\N{White Sun Behind Cloud}",
-    "partly-cloudy-day": "\N{White Sun with Small Cloud}",
-    "partly-cloudy-night": "\N{Night with Stars}",
+    "clear-day": "\N{BLACK SUN WITH RAYS}",
+    "clear-night": "\N{NIGHT WITH STARS}",
+    "rain": "\N{CLOUD WITH RAIN}",
+    "snow": "\N{CLOUD WITH SNOW}",
+    "sleet": "\N{SNOWFLAKE}",
+    "wind": "\N{WIND BLOWING FACE}",
+    "fog": "\N{FOGGY}",
+    "cloudy": "\N{WHITE SUN BEHIND CLOUD}",
+    "partly-cloudy-day": "\N{WHITE SUN WITH SMALL CLOUD}",
+    "partly-cloudy-night": "\N{NIGHT WITH STARS}",
 }
 
 # Emoji that will be used for "unknown" strings
-UNKNOWN_EMOJI = "\N{White Question Mark Ornament}"
+UNKNOWN_EMOJI = "\N{WHITE QUESTION MARK ORNAMENT}"
 
 T_ = Translator("Weather", __file__)
 _ = lambda s: s
@@ -587,21 +587,21 @@ class Weather(commands.Cog):
     async def num_to_moon(self, moonphase: float) -> str:
         """Converts lunation number to lunar phase emoji"""
         if moonphase == 0:
-            return "\N{New Moon Symbol}"
+            return "\N{NEW MOON SYMBOL}"
         if 0 < moonphase < 0.25:
-            return "\N{Waxing Crescent Moon Symbol}"
+            return "\N{WAXING CRESCENT MOON SYMBOL}"
         if moonphase == 0.25:
-            return "\N{First Quarter Moon Symbol}"
+            return "\N{FIRST QUARTER MOON SYMBOL}"
         if 0.25 < moonphase < 0.5:
-            return "\N{Waxing Gibbous Moon Symbol}"
+            return "\N{WAXING GIBBOUS MOON SYMBOL}"
         if moonphase == 0.5:
-            return "\N{First Quarter Moon Symbol}"
+            return "\N{FIRST QUARTER MOON SYMBOL}"
         if 0.5 < moonphase < 0.75:
-            return "\N{Waning Gibbous Moon Symbol}"
+            return "\N{WANING GIBBOUS MOON SYMBOL}"
         if moonphase == 0.75:
-            return "\N{Last Quarter Moon Symbol}"
+            return "\N{LAST QUARTER MOON SYMBOL}"
         if 0.75 < moonphase < 1:
-            return "\N{Waning Crescent Moon Symbol}"
+            return "\N{WANING CRESCENT MOON SYMBOL}"
         if moonphase == 1:
-            return "\N{Full Moon Symbol}"
+            return "\N{FULL MOON SYMBOL}"
         return str(moonphase)
