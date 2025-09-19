@@ -157,6 +157,7 @@ angular.module('permissionsCalc', ['themes'])
                     { active: false, id: 'send_messages_in_threads', name: 'Send Messages in Threads',  value: 0x4000000000,    auto: true  }, // 1 << 38
                     { active: false, id: 'send_tts_messages',        name: 'Send TTS Messages',         value: 0x1000,          auto: true  }, // 1 << 12
                     { active: false, id: 'manage_messaes',           name: 'Manage Messages',           value: 0x2000,          auto: false }, // 1 << 13
+                    { active: false, id: 'pin_messages',             name: 'Pin Messages',              value: 0x8000000000000, auto: true  }, // 1 << 51
                     { active: false, id: 'manage_threads',           name: 'Manage Threads',            value: 0x400000000,     auto: false }, // 1 << 34
                     { active: false, id: 'embed_links',              name: 'Embed Links',               value: 0x4000,          auto: true  }, // 1 << 14
                     { active: false, id: 'attach_files',             name: 'Attach Files',              value: 0x8000,          auto: true  }, // 1 << 15
@@ -168,6 +169,9 @@ angular.module('permissionsCalc', ['themes'])
                     { active: false, id: 'use_application_commands', name: 'Use Application Commands',  value: 0x80000000,      auto: true  }, // 1 << 31
                     { active: false, id: 'send_polls',               name: 'Create Polls',              value: 0x2000000000000, auto: true  }, // 1 << 49
                     { active: false, id: 'use_external_apps',        name: 'Use External Apps',         value: 0x4000000000000, auto: true  }, // 1 << 50
+                    { active: false, id: 'bypass_slowmode',          name: 'Bypass Slowmode',           value: 0x4000000000000, auto: true  }, // 1 << 52
+                    // this is no longer available in client, do we keep this or remove?
+                    // { active: false, id: 'user_clyde_ai',            name: 'Use Clyde AI',              value: 0x800000000000,  auto: true  }, // 1 << 47
                 ]
             },
             {
