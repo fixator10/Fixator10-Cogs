@@ -1,16 +1,22 @@
 import operator
+import os
 import random
 import traceback
 import warnings
 from io import BytesIO
+from logging import getLogger
 from math import floor, log
+from pathlib import Path
+from typing import Literal, Optional, Union
 
+from redbot.core.data_manager import cog_data_path
 from redbot.core.errors import CogLoadError
 
 from .abc import MixinMeta
 
 try:
     from PIL import Image, ImageDraw
+    from PIL import features as pil_features
 except Exception as e:
     raise CogLoadError(
         f"Can't load pillow: {e}\n"
@@ -37,19 +43,67 @@ except Exception as e:
     )
 
 
+logger = getLogger("red.fixator10-cogs.leveler")
+SAVE_FORMAT = "webp" if pil_features.check("webp") else "png"
+
+
 class DefaultImageGeneratorsUtils(MixinMeta):
     """Utils for default image generators"""
 
-    async def _valid_image_url(self, url):
+    async def _check_image_exists(
+        self, image_name: str, *, guild_id: Optional[Union[Literal["global"], int]] = None
+    ) -> Optional[Path]:
+        ret = None
+        if guild_id is not None:
+            path = cog_data_path(self).joinpath(str(guild_id))
+            if not path.is_dir():
+                path.mkdir(exist_ok=True, parents=True)
+            path = path.joinpath(image_name)
+            if os.path.isfile(path) and os.path.getsize(path) != 0:
+                ret = path
+
+        global_path = cog_data_path(self).joinpath("global")
+        if not global_path.is_dir():
+            global_path.mkdir(exist_ok=True, parents=True)
+        global_path = global_path.joinpath(image_name)
+
+        if os.path.isfile(global_path) and os.path.getsize(global_path) != 0:
+            ret = global_path
+        return ret
+
+    async def _download_image(
+        self, url: str, *, guild_id: Optional[Union[Literal["global"], int]] = None
+    ) -> BytesIO:
+        filename = url.split("/")[-1]
+        path = await self._check_image_exists(filename, guild_id=guild_id)
+        if path is not None:
+            logger.debug("Image %s exists, returning saved version", filename)
+            with path.open("rb") as infile:
+                image = BytesIO(infile.read())
+            return image
+        async with self.session.get(url) as r:
+            logger.debug("Image %s missing, downloading now", filename)
+            image = BytesIO(await r.content.read())
+            try:
+                im = Image.open(image).convert("RGBA")
+            except IOError:
+                raise TypeError("The url provided is not a valid image")
+            guild_path = "global" if guild_id is None else str(guild_id)
+            path = cog_data_path(self).joinpath(guild_path)
+            if not path.is_dir():
+                path.mkdir(exist_ok=True, parents=True)
+            path = path.joinpath(filename)
+            with path.open("wb") as outfile:
+                im.save(outfile, format=SAVE_FORMAT)
+        return image
+
+    async def _valid_image_url(
+        self, url: str, *, guild_id: Optional[Union[Literal["global"], int]] = None
+    ):
         try:
-            async with self.session.get(url) as r:
-                image = await r.content.read()
-            image = BytesIO(image)
-            await self.asyncify((im := await self.asyncify(Image.open, image)).convert, "RGBA")
-            im.close()
-            image.close()
+            await self._download_image(url, guild_id=guild_id)
             return True
-        except IOError:
+        except TypeError:
             return False
 
     # uses k-means algorithm to find color from bg, rank is abundance of color, descending
@@ -58,9 +112,10 @@ class DefaultImageGeneratorsUtils(MixinMeta):
         await ctx.send("{}".format(random.choice(phrases)))
         clusters = 10
 
-        async with self.session.get(url) as r:
-            image = await r.content.read()
-        image = BytesIO(image)
+        try:
+            image = await self._download_image(url, guild_id=ctx.guild.id)
+        except TypeError:
+            raise
 
         im = Image.open(image).convert("RGBA")
         im = im.resize((290, 290))  # resized to reduce time

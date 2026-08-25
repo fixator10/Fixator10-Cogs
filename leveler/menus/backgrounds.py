@@ -1,8 +1,32 @@
+from typing import Dict
+
 import discord
 from redbot.vendored.discord.ext import menus
 
+from .base import BaseView
 
-class BackgroundMenu(menus.MenuPages, inherit_buttons=False):
+
+class ChangeSourceButton(discord.ui.Button):
+    def __init__(self, label: str, source: menus.PageSource):
+        super().__init__(style=discord.ButtonStyle.grey, label=label)
+        self.source = source
+
+    async def callback(self, interaction: discord.Interaction):
+        kwargs = await self.view.change_source(self.source)
+        await interaction.response.edit_message(**kwargs)
+
+
+class BackgroundMenu(BaseView):
+    def __init__(self, sources: Dict[str, menus.PageSource], style: str):
+        self.sources = sources
+        self.bg_type = style
+        super().__init__(source=self.sources[style])
+        for key, value in self.sources.items():
+            nb = ChangeSourceButton(key, value)
+            self.add_item(nb)
+
+
+class BackgroundMenu_old(menus.MenuPages, inherit_buttons=False):
     def __init__(
         self,
         sources: dict,
@@ -91,6 +115,10 @@ class BackgroundMenu(menus.MenuPages, inherit_buttons=False):
 class BackgroundPager(menus.ListPageSource):
     def __init__(self, entries):
         super().__init__(entries, per_page=1)
+        self.select_options = [
+            discord.SelectOption(label=x[0], description=f"Page {num+1}", value=str(num))
+            for num, x in enumerate(entries)
+        ]
 
     async def format_page(self, menu: BackgroundMenu, page):
         name, url = page

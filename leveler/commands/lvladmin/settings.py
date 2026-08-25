@@ -30,6 +30,9 @@ class Settings(MixinMeta):
             "Level messages are private": bool_emojify(
                 await self.config.guild(ctx.guild).private_lvl_message()
             ),
+            "Automatic Role Fixes enabled": bool_emojify(
+                await self.config.guild(ctx.guild).fix_roles()
+            ),
         }
         owner_settings = {}
         if is_owner:
@@ -56,7 +59,7 @@ class Settings(MixinMeta):
             chat.box(tabulate_settings(owner_settings.items())) if owner_settings else ""
         )
         em.set_author(
-            name="Settings Overview for {}".format(ctx.guild.name), icon_url=ctx.guild.icon_url
+            name="Settings Overview for {}".format(ctx.guild.name), icon_url=ctx.guild.icon
         )
         await ctx.send(embed=em)
 
@@ -240,3 +243,24 @@ class Settings(MixinMeta):
         else:
             await self.config.guild(server).lvl_msg_lock.set(channel.id)
             await ctx.send("Level-up messages locked to `#{}`".format(channel.name))
+
+    @lvladmin.command(name="fixroles")
+    @commands.guild_only()
+    async def fixroles(self, ctx):
+        """Automatically fix roles for users on every exp gain.
+
+        This will have the bot check every exp gain what roles the user
+        has and fix them according to the assigned roles.
+
+        Note: This can be relatively expensive to do."""
+        server = ctx.guild
+
+        if await self.config.guild(server).fix_roles():
+            await self.config.guild(server).lvl_msg_lock.clear()
+            await ctx.send(
+                "Automatic role fixing is disabled. "
+                "Users will only have their roles changed on levelup with the required level."
+            )
+        else:
+            await self.config.guild(server).lvl_msg_lock.set(True)
+            await ctx.send("Automatic role fixing is enabled.")

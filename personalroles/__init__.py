@@ -1,3 +1,5 @@
+from redbot.core.bot import Red
+
 from .personalroles import PersonalRoles
 
 __red_end_user_data_statement__ = (
@@ -6,5 +8,6 @@ __red_end_user_data_statement__ = (
 )
 
 
-def setup(bot):
-    bot.add_cog(PersonalRoles(bot))
+async def setup(bot: Red):
+    cog = PersonalRoles(bot)
+    await bot.add_cog(cog)

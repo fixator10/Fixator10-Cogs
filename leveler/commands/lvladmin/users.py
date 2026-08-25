@@ -1,3 +1,4 @@
+import asyncio
 import time
 from typing import Union
 
@@ -40,6 +41,49 @@ class Users(MixinMeta):
             await ctx.send("Unable to add chat block: {}".format(exc))
         else:
             await ctx.tick()
+
+    @commands.admin_or_permissions(manage_guild=True)
+    @lvladmin.command()
+    @commands.guild_only()
+    async def resetranks(self, ctx: commands.Context):
+        """
+        Reset everyone's xp and level to zero.
+
+        Roles will be fixed when the user next would earn exp.
+        """
+        main_msg = "Fixing members {current}/{total}"
+        msg = await ctx.send(main_msg.format(current=0, total=len(ctx.guild.members)))
+        current = 0
+        async with ctx.typing():
+            for member in ctx.guild.members:
+                if member.bot:
+                    continue
+                userinfo = await self.db.users.find_one({"user_id": str(member.id)})
+                if userinfo is None:
+                    # no point fixing users who have not been created yet, they might never speak!
+                    continue
+                total_exp = userinfo["total_exp"] - userinfo.get(str(ctx.guild.id), {}).get(
+                    "current_exp", 0
+                )
+                await self.db.users.update_one(
+                    {"user_id": str(member.id)},
+                    {
+                        "$set": {
+                            "servers.{}.level".format(ctx.guild.id): 0,
+                            "servers.{}.current_exp".format(ctx.guild.id): 0,
+                            "total_exp": total_exp,
+                        }
+                    },
+                )
+                current += 1
+                if current % 100 == 0:
+                    await msg.edit(
+                        content=main_msg.format(current=0, total=len(ctx.guild.members))
+                    )
+                    await asyncio.sleep(5)
+        await ctx.send(
+            "Finished resetting everyone's experience and levels. Roles will be reset automatically the next time they would earn exp."
+        )
 
     @commands.is_owner()
     @lvladmin.command()

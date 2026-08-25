@@ -5,7 +5,7 @@
   "install_msg": "Thanks for install.\n`[p]godville` shows info about russian version of game (godville.net)\n`[p]godvillegame` shows info about \"global\" version of game (godvillegame.com)",
   "short": "Get data about Godville profiles",
   "description": "Get data about godville.net (russian) and godvillegame.com profiles",
-  "max_bot_version": "3.4.99",
+  "min_bot_version": "3.5.0",
   "tags": [
     "godville",
     "ZPG"

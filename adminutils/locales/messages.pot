@@ -2,77 +2,78 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2022-10-01 20:26+0400\n"
+"POT-Creation-Date: 2023-06-01 17:37+0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: redgettext 3.3\n"
+"Generated-By: redgettext 3.4.2\n"
 
-#: adminutils\adminutils.py:26
+#: adminutils\adminutils.py:21
+msgid "You are not allowed to edit this category."
+msgstr ""
+
+#: adminutils\adminutils.py:22 adminutils\adminutils.py:23
+#: adminutils\adminutils.py:24
+msgid "You are not allowed to edit this channel."
+msgstr ""
+
+#: adminutils\adminutils.py:35
 #, docstring
 msgid "Useful commands for server administrators."
 msgstr ""
 
-#: adminutils\adminutils.py:57
-msgid "You are not allowed to edit this channel."
-msgstr ""
-
-#: adminutils\adminutils.py:59
-msgid "You are not allowed to edit in this category."
-msgstr ""
-
-#: adminutils\adminutils.py:68
+#: adminutils\adminutils.py:88
 #, docstring
 msgid "Cleanup inactive server members"
 msgstr ""
 
-#: adminutils\adminutils.py:72
+#: adminutils\adminutils.py:92
 msgid ""
 "Due to Discord Restrictions, you cannot use more than 30 days for that cmd."
 msgstr ""
 
-#: adminutils\adminutils.py:79
+#: adminutils\adminutils.py:99
 msgid "\"days\" arg cannot be less than 1..."
 msgstr ""
 
-#: adminutils\adminutils.py:84
+#: adminutils\adminutils.py:104
 msgid ""
 "\n"
 "Including members in roles: {}\n"
 msgstr ""
 
-#: adminutils\adminutils.py:89
+#: adminutils\adminutils.py:109
 msgid ""
 "You are about to kick **{to_kick}** inactive for **{days}** days members from this server. {roles}Are you sure?\n"
 "To agree, type \"yes\""
 msgstr ""
 
-#: adminutils\adminutils.py:105
+#: adminutils\adminutils.py:123
 msgid ""
 "**{removed}**/**{all}** inactive members removed.\n"
 "(They were inactive for **{days}** days)"
 msgstr ""
 
-#: adminutils\adminutils.py:112
+#: adminutils\adminutils.py:130
 msgid "Inactive members cleanup canceled."
 msgstr ""
 
-#: adminutils\adminutils.py:119
+#: adminutils\adminutils.py:140
 #, docstring
 msgid ""
-"Change server's voice region to random and back\n"
+"Change voice channel's region to random and back\n"
 "\n"
 "        Useful to reinitate all voice connections"
 msgstr ""
 
-#: adminutils\adminutils.py:133
+#: adminutils\adminutils.py:148
 msgid "Voice restart"
 msgstr ""
 
-#: adminutils\adminutils.py:148
+#: adminutils\adminutils.py:163
 #, docstring
 msgid ""
 "Move all members from one voice channel to another\n"
@@ -80,32 +81,32 @@ msgid ""
 "        Use double quotes if channel name has spaces"
 msgstr ""
 
-#: adminutils\adminutils.py:154
+#: adminutils\adminutils.py:169
 msgid "There is no users in channel {}."
 msgstr ""
 
-#: adminutils\adminutils.py:158
+#: adminutils\adminutils.py:173
 msgid "I cant move users from that channel"
 msgstr ""
 
-#: adminutils\adminutils.py:161
+#: adminutils\adminutils.py:176
 msgid "I cant move users to that channel"
 msgstr ""
 
-#: adminutils\adminutils.py:167
+#: adminutils\adminutils.py:182
 msgid "Massmove"
 msgstr ""
 
-#: adminutils\adminutils.py:172
+#: adminutils\adminutils.py:187
 msgid "Finished moving users. {} members could not be moved."
 msgstr ""
 
-#: adminutils\adminutils.py:179
+#: adminutils\adminutils.py:195
 #, docstring
 msgid "Manage emoji"
 msgstr ""
 
-#: adminutils\adminutils.py:184
+#: adminutils\adminutils.py:200
 #, docstring
 msgid ""
 "Create custom emoji\n"
@@ -118,23 +119,19 @@ msgid ""
 "        "
 msgstr ""
 
-#: adminutils\adminutils.py:196
+#: adminutils\adminutils.py:212
 msgid "Unable to get emoji from provided url: {}"
 msgstr ""
 
-#: adminutils\adminutils.py:205 adminutils\adminutils.py:248
+#: adminutils\adminutils.py:221 adminutils\adminutils.py:262
 msgid "Restricted to roles: {}"
 msgstr ""
 
-#: adminutils\adminutils.py:211
-msgid "This image type is unsupported, or link is incorrect"
-msgstr ""
-
-#: adminutils\adminutils.py:213 adminutils\adminutils.py:262
+#: adminutils\adminutils.py:227 adminutils\adminutils.py:269
 msgid "An error occurred on adding an emoji: {}"
 msgstr ""
 
-#: adminutils\adminutils.py:221
+#: adminutils\adminutils.py:235
 #, docstring
 msgid ""
 "\n"
@@ -147,17 +144,11 @@ msgid ""
 "        "
 msgstr ""
 
-#: adminutils\adminutils.py:233
+#: adminutils\adminutils.py:247
 msgid "No emojis found specified message."
 msgstr ""
 
-#: adminutils\adminutils.py:256
-msgid ""
-"This image type is not supported anymore or Discord returned incorrect data."
-" Try again later."
-msgstr ""
-
-#: adminutils\adminutils.py:268
+#: adminutils\adminutils.py:275
 #, docstring
 msgid ""
 "Rename emoji and restrict to certain roles\n"
@@ -171,30 +162,30 @@ msgid ""
 "        "
 msgstr ""
 
-#: adminutils\adminutils.py:286
+#: adminutils\adminutils.py:293
 msgid "Restricted to roles: "
 msgstr ""
 
-#: adminutils\adminutils.py:292
+#: adminutils\adminutils.py:299
 msgid "I can't edit this emoji"
 msgstr ""
 
-#: adminutils\adminutils.py:297
+#: adminutils\adminutils.py:304
 #, docstring
 msgid "Remove emoji from server"
 msgstr ""
 
-#: adminutils\adminutils.py:309
+#: adminutils\adminutils.py:317
 #, docstring
 msgid "Manage channels"
 msgstr ""
 
-#: adminutils\adminutils.py:317
+#: adminutils\adminutils.py:325
 #, docstring
 msgid "Create a channel"
 msgstr ""
 
-#: adminutils\adminutils.py:327
+#: adminutils\adminutils.py:335
 #, docstring
 msgid ""
 "Create a text channel\n"
@@ -208,15 +199,17 @@ msgid ""
 "        "
 msgstr ""
 
-#: adminutils\adminutils.py:343 adminutils\adminutils.py:373
+#: adminutils\adminutils.py:351 adminutils\adminutils.py:381
+#: adminutils\adminutils.py:411
 msgid "I can't create channel in this category"
 msgstr ""
 
-#: adminutils\adminutils.py:345 adminutils\adminutils.py:375
+#: adminutils\adminutils.py:353 adminutils\adminutils.py:383
+#: adminutils\adminutils.py:413
 msgid "I am unable to create a channel: {}"
 msgstr ""
 
-#: adminutils\adminutils.py:357
+#: adminutils\adminutils.py:365
 #, docstring
 msgid ""
 "Create a voice channel\n"
@@ -225,12 +218,26 @@ msgid ""
 "        Use double quotes if category has spaces\n"
 "\n"
 "        Examples:\n"
-"            `[p]channel add voice \"The Zoo\" Awesome Channel` will create under the \"The Zoo\" category.\n"
-"            `[p]channel add voice Awesome Channel` will create under no category, at the top.\n"
+"            `[p]channel add voice \"The Zoo\" Awesome Channel` will create voice channel under the \"The Zoo\" category.\n"
+"            `[p]channel add voice Awesome Channel` will create stage channel under no category, at the top.\n"
 "        "
 msgstr ""
 
-#: adminutils\adminutils.py:387
+#: adminutils\adminutils.py:395
+#, docstring
+msgid ""
+"Create a stage channel\n"
+"\n"
+"        You can create the channel under a category if passed, else it is created under no category\n"
+"        Use double quotes if category has spaces\n"
+"\n"
+"        Examples:\n"
+"            `[p]channel add voice \"The Zoo\" Awesome Channel` will create voice channel under the \"The Zoo\" category.\n"
+"            `[p]channel add voice Awesome Channel` will create stage channel under no category, at the top.\n"
+"        "
+msgstr ""
+
+#: adminutils\adminutils.py:425
 #, docstring
 msgid ""
 "Rename a channel\n"
@@ -242,15 +249,15 @@ msgid ""
 "        "
 msgstr ""
 
-#: adminutils\adminutils.py:398
+#: adminutils\adminutils.py:436
 msgid "I can't rename this channel"
 msgstr ""
 
-#: adminutils\adminutils.py:400
+#: adminutils\adminutils.py:438
 msgid "I am unable to rename this channel: {}"
 msgstr ""
 
-#: adminutils\adminutils.py:408
+#: adminutils\adminutils.py:449
 #, docstring
 msgid ""
 "Remove a channel from server\n"
@@ -260,16 +267,16 @@ msgid ""
 "        "
 msgstr ""
 
-#: adminutils\adminutils.py:418
+#: adminutils\adminutils.py:459
 msgid ""
 "You are about to delete channel {channel}. This cannot be undone. Are you sure?\n"
 "To agree, type \"yes\""
 msgstr ""
 
-#: adminutils\adminutils.py:432
+#: adminutils\adminutils.py:471
 msgid "I can't delete this channel"
 msgstr ""
 
-#: adminutils\adminutils.py:434
+#: adminutils\adminutils.py:473
 msgid "I am unable to delete a channel: {}"
 msgstr ""

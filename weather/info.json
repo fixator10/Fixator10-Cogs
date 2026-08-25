@@ -6,8 +6,7 @@
   "install_msg": "Thanks for install.\nDon't forget to set api key (`[p]forecastapi`)\nIf you don't have registered DarkSky API key, this cog will be useless to you.\nDarkSky API closing at end of ~~2021~~ 2022 and im aware of this.",
   "short": "Weather forecast",
   "description": "Weather forecast. Requires \"semi-private\" DarkSky API key. For more info: https://blog.darksky.net",
-  "min_bot_version": "3.2.1",
-  "max_bot_version": "3.4.99",
+  "min_bot_version": "3.5.0",
   "tags": [
     "weather",
     "forecast"

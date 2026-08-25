@@ -1,5 +1,6 @@
 from asyncio import TimeoutError as AsyncTimeoutError
 
+import discord
 from redbot.core import commands
 from redbot.core.utils.predicates import MessagePredicate
 
@@ -25,7 +26,7 @@ class Backgrounds(MixinMeta):
         """Add a profile background.
 
         The proportions must be 290px x 290px."""
-        if not await self._valid_image_url(url):
+        if not await self._valid_image_url(url, guild_id=ctx.guild.id):
             await ctx.send("That is not a valid image URL!")
             return
         async with self.config.backgrounds() as backgrounds:
@@ -54,7 +55,7 @@ class Backgrounds(MixinMeta):
         """Add a rank background.
 
         The proportions must be 360px x 100px."""
-        if not await self._valid_image_url(url):
+        if not await self._valid_image_url(url, guild_id=ctx.guild.id):
             await ctx.send("That is not a valid image URL!")
             return
         async with self.config.backgrounds() as backgrounds:
@@ -83,7 +84,7 @@ class Backgrounds(MixinMeta):
         """Add a level-up background.
 
         The proportions must be 175px x 65px."""
-        if not await self._valid_image_url(url):
+        if not await self._valid_image_url(url, guild_id=ctx.guild.id):
             await ctx.send("That is not a valid image URL!")
             return
         async with self.config.backgrounds() as backgrounds:
@@ -108,7 +109,7 @@ class Backgrounds(MixinMeta):
         await ctx.send("New level-up background (`{}`) added.".format(name))
 
     @lvladminbg.command()
-    async def setcustombg(self, ctx, bg_type: str, user_id: str, img_url: str):
+    async def setcustombg(self, ctx, bg_type: str, user: discord.User, img_url: str):
         """Set one-time custom background
 
         bg_type can be: `profile`, `rank` or `levelup`."""
@@ -120,20 +121,20 @@ class Backgrounds(MixinMeta):
             return
 
         # test if valid user_id
-        userinfo = await self.db.users.find_one({"user_id": str(user_id)})
+        userinfo = await self.db.users.find_one({"user_id": str(user.id)})
         if not userinfo:
             await ctx.send("That is not a valid user id!")
             return
 
-        if not await self._valid_image_url(img_url):
+        if not await self._valid_image_url(img_url, guild_id=user.id):
             await ctx.send("That is not a valid image URL!")
             return
 
         await self.db.users.update_one(
-            {"user_id": str(user_id)},
+            {"user_id": str(user.id)},
             {"$set": {"{}_background".format(type_input): img_url}},
         )
-        await ctx.send("User {} custom {} background set.".format(user_id, bg_type))
+        await ctx.send("User {} custom {} background set.".format(user.id, bg_type))
 
     @lvladminbg.command()
     async def delprofilebg(self, ctx, name: str):
