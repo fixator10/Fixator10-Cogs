@@ -7,8 +7,15 @@ from redbot.core.utils.predicates import MessagePredicate
 from redbot.vendored.discord.ext import menus
 from tabulate import tabulate
 
+from .base import BaseView
 
-class TopMenu(menus.MenuPages, inherit_buttons=False):
+
+class TopMenu(BaseView):
+    def __init__(self, source: menus.PageSource, timeout: int = 180):
+        super().__init__(source, timeout=timeout)
+
+
+class TopMenu_old(menus.MenuPages, inherit_buttons=False):
     def __init__(
         self,
         source: menus.PageSource,
@@ -111,6 +118,12 @@ class TopPager(menus.ListPageSource):
         self.user = user_stats
         self.icon_url = icon_url
         self.title = title
+        pages, left_over = divmod(len(entries), self.per_page)
+        if left_over:
+            pages += 1
+        self.select_options = [
+            discord.SelectOption(label=f"Page {num+1}", value=str(num)) for num in range(0, pages)
+        ]
 
     async def format_page(self, menu: TopMenu, entries):
         table = tabulate(

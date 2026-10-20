@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from asyncio import Lock
 from io import BytesIO
 from logging import Logger
-from typing import List
+from typing import List, Literal, Optional, Union
 
 from aiohttp import ClientSession
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
@@ -124,7 +124,21 @@ class MixinMeta(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    async def _valid_image_url(self, url):
+    async def _valid_image_url(
+        self, url: str, *, guild_id: Optional[Union[Literal["global"], int]] = None
+    ):
+        raise NotImplementedError
+
+    @abstractmethod
+    async def _download_image(
+        self, url: str, *, guild_id: Optional[Union[Literal["global"], int]] = None
+    ):
+        raise NotImplementedError
+
+    @abstractmethod
+    async def _check_image_exists(
+        self, image_name: str, *, guild_id: Optional[Union[Literal["global"], int]] = None
+    ):
         raise NotImplementedError
 
     @abstractmethod

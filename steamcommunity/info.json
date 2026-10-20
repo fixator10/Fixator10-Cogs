@@ -5,8 +5,7 @@
   "install_msg": "Thanks for install.\nRemember to set api key (`[p]sc apikey`)",
   "short": "Get steamcommunity data",
   "description": "Get steamcommunity data for steam users",
-  "min_bot_version": "3.2.1",
-  "max_bot_version": "3.4.99",
+  "min_bot_version": "3.5.0",
   "tags": [
     "steam",
     "steamcommunity"

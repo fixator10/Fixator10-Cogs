@@ -109,6 +109,47 @@ class XP(MixinMeta):
                 },
             )
         self.bot.dispatch("leveler_process_exp", message, exp)
+        if await self.config.guild(server).fix_roles():
+            await self._handle_role_fixes(user, userinfo, server)
+            # check fixes for roles after we've already potentially added the roles from levelup
+            # so the message still gets sent.
+
+    async def _handle_role_fixes(
+        self, user: discord.Member, userinfo: dict, server: discord.Guild
+    ):
+        # This is meant to silently fix roles from leveler
+        new_level = str(userinfo["servers"][str(server.id)]["level"])
+        # add to appropriate role if necessary
+        # try:
+        server_roles = await self.db.roles.find_one({"server_id": str(server.id)})
+        removed_roles = set()
+        added_roles = set()
+        user_roles = {r for r in user.roles}
+        if server_roles is not None:
+            for role in server_roles["roles"].keys():
+                if int(server_roles["roles"][role]["level"]) > int(new_level):
+                    continue
+                add_role = discord.utils.get(server.roles, name=role)
+                if add_role is not None:
+                    added_roles.add(add_role)
+                remove_role = discord.utils.get(
+                    server.roles, name=server_roles["roles"][role]["remove_role"]
+                )
+                if remove_role is not None:
+                    removed_roles.add(remove_role)
+
+        added = removed_roles.symmetric_difference(added_roles) - user_roles
+        removed = user_roles.intersection(removed_roles)
+        if added:
+            try:
+                await user.add_roles(*added, reason="Levelup")
+            except (discord.Forbidden, discord.HTTPException):
+                pass
+        if removed:
+            try:
+                await user.remove_roles(*removed, reason="Levelup")
+            except (discord.Forbidden, discord.HTTPException):
+                pass
 
     async def _handle_levelup(self, user, userinfo, server, channel):
         # channel lock implementation
@@ -130,7 +171,7 @@ class XP(MixinMeta):
         server_roles = await self.db.roles.find_one({"server_id": str(server.id)})
         if server_roles is not None:
             for role in server_roles["roles"].keys():
-                if int(server_roles["roles"][role]["level"]) == int(new_level):
+                if int(new_level) == int(server_roles["roles"][role]["level"]):
                     add_role = discord.utils.get(server.roles, name=role)
                     if add_role is not None:
                         try:
@@ -153,7 +194,7 @@ class XP(MixinMeta):
             server_linked_badges = await self.db.badgelinks.find_one({"server_id": str(server.id)})
             if server_linked_badges is not None:
                 for badge_name in server_linked_badges["badges"]:
-                    if int(server_linked_badges["badges"][badge_name]) == int(new_level):
+                    if int(new_level) >= int(server_linked_badges["badges"][badge_name]):
                         server_badges = await self.db.badges.find_one(
                             {"server_id": str(server.id)}
                         )

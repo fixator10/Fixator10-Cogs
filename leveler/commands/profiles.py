@@ -64,8 +64,8 @@ class Profiles(MixinMeta, metaclass=CompositeMetaClass):
             name="Badges:",
             value=(", ".join(userinfo["badges"]).replace("_", " ") or None),
         )
-        em.set_author(name="Profile for {}".format(user.name), url=user.avatar_url)
-        em.set_thumbnail(url=user.avatar_url)
+        em.set_author(name="Profile for {}".format(user.name), url=user.display_avatar)
+        em.set_thumbnail(url=user.display_avatar)
         return em
 
     @commands.cooldown(1, 10, commands.BucketType.user)
@@ -110,8 +110,8 @@ class Profiles(MixinMeta, metaclass=CompositeMetaClass):
         em.add_field(name="Reps", value=userinfo["rep"])
         em.add_field(name="Server Level", value=userinfo["servers"][str(server.id)]["level"])
         em.add_field(name="Server Exp", value=await self._find_server_exp(user, server))
-        em.set_author(name="Rank & Statistics for {}".format(user.name), url=user.avatar_url)
-        em.set_thumbnail(url=user.avatar_url)
+        em.set_author(name="Rank & Statistics for {}".format(user.name), url=user.display_avatar)
+        em.set_thumbnail(url=user.display_avatar)
         return em
 
     @commands.command()
@@ -153,6 +153,6 @@ class Profiles(MixinMeta, metaclass=CompositeMetaClass):
         em = discord.Embed(description=chat.box(tabulate(data.items())), colour=user.colour)
         em.set_author(
             name="Profile Information for {}".format(user.name),
-            icon_url=user.avatar_url,
+            icon_url=user.display_avatar,
         )
         await ctx.send(embed=em)

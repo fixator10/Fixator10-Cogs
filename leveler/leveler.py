@@ -84,6 +84,7 @@ class Leveler(
             "lvl_msg_lock": None,
             "msg_credits": 0,
             "ignored_channels": [],
+            "fix_roles": False,
         }
         self.config.init_custom("MONGODB", -1)
         self.config.register_custom("MONGODB", **default_mongodb)

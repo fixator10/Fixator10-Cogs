@@ -5,8 +5,7 @@
   "install_msg": "Thanks for install.",
   "short": "Log deleted and edited messages to a specified channel",
   "description": "Log deleted and edited messages to a specified channel",
-  "min_bot_version": "3.4.0",
-  "max_bot_version": "3.4.99",
+  "min_bot_version": "3.5.0",
   "tags": [
     "messages",
     "logs"
