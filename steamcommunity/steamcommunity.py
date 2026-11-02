@@ -20,8 +20,11 @@ from redbot.core.utils import chat_formatting as chat
 from valve.steam.api import interface
 
 with suppress(Exception):
-    from matplotlib import pyplot, units as munits, dates as mdates, use as mpluse
     import numpy as np
+    from matplotlib import dates as mdates
+    from matplotlib import pyplot
+    from matplotlib import units as munits
+    from matplotlib import use as mpluse
 
 from .steamuser import SteamUser
 
