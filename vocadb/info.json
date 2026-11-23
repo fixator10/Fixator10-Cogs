@@ -11,8 +11,7 @@
     "required_cogs": {},
     "requirements": [],
     "tags": ["vocadb", "vocaloid"],
-    "min_bot_version": "3.4.12",
-    "max_bot_version": "3.4.99",
+    "min_bot_version": "3.5.0",
     "hidden": false,
     "disabled": false,
     "type": "COG"

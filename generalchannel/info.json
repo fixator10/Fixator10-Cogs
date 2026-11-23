@@ -5,7 +5,7 @@
   "install_msg": "Thanks for install.",
   "short": "Allow users to manage #general channel's name and topic",
   "description": "Allow users to manage #general channel's name and topic",
-  "max_bot_version": "3.4.99",
+  "min_bot_version": "3.5.0",
   "tags": [
     "#general",
     "channel",

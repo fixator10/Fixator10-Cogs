@@ -4,7 +4,7 @@
   ],
   "install_msg": "Thanks for install.",
   "short": "This cog shows SMM-related data",
-  "max_bot_version": "3.4.99",
+  "min_bot_version": "3.5.0",
   "description": "This cog shows Super Mario Maker-related data. You can check levels and level designers",
   "tags": [
     "mario",

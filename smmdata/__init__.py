@@ -5,5 +5,5 @@ __red_end_user_data_statement__ = (
 )
 
 
-def setup(bot):
-    bot.add_cog(SMMData(bot))
+async def setup(bot):
+    await bot.add_cog(SMMData(bot))

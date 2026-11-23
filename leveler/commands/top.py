@@ -60,7 +60,7 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
                     await sleep(0)
 
                 board_type = "Rep"
-                icon_url = self.bot.user.avatar_url
+                icon_url = self.bot.user.display_avatar
             elif options.global_top and owner:
                 is_level = True if await self.config.global_levels() else False
                 title = "Global Exp Leaderboard for {}\n".format(self.bot.user.name)
@@ -106,7 +106,7 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
                     await sleep(0)
 
                 board_type = "Points"
-                icon_url = self.bot.user.avatar_url
+                icon_url = self.bot.user.display_avatar
             elif options.rep:
                 title = "Rep Leaderboard for {}\n".format(server.name)
                 async for userinfo in (
@@ -135,7 +135,7 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
                     await sleep(0)
 
                 board_type = "Rep"
-                icon_url = server.icon_url
+                icon_url = server.icon
             else:
                 is_level = True
                 title = "Exp Leaderboard for {}\n".format(server.name)
@@ -177,14 +177,8 @@ class Top(MixinMeta, metaclass=CompositeMetaClass):
                         )
                     await sleep(0)
                 board_type = "Points"
-                icon_url = server.icon_url
+                icon_url = server.icon
 
             pages = TopPager(users, board_type, is_level, user_stat, icon_url, title)
             menu = TopMenu(pages)
             await menu.start(ctx)
-            page = options.page
-            if page > pages.get_max_pages():
-                page = pages.get_max_pages()
-            if page < 1:
-                page = 1
-            await menu.show_page(page - 1)

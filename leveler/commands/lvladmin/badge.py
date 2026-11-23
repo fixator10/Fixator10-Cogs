@@ -72,7 +72,7 @@ class Badge(MixinMeta):
             await ctx.send("Name cannot contain `.`")
             return
 
-        if not await self._valid_image_url(bg_img):
+        if not await self._valid_image_url(bg_img, guild_id=serverid):
             await ctx.send("Background is not valid. Enter HEX color or image URL!")
             return
 
@@ -357,7 +357,7 @@ class Badge(MixinMeta):
             em = discord.Embed(description=page, colour=await ctx.embed_color())
             em.set_author(
                 name="Current Badge - Level Links for {}".format(server.name),
-                icon_url=server.icon_url,
+                icon_url=server.icon,
             )
             em.set_footer(text=f"Page {i}/{len(pages)}")
             embeds.append(em)

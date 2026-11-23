@@ -6,8 +6,7 @@
   "short": "⚠Cog for doing things in bulk.⚠",
   "description": "⚠Cog for doing things in bulk.⚠\n⚠️ This cog may contain commands that may (or may not) be against Discord API terms. Use this at your own risk, cog author is not responsible for anything that happens during usage of this cog.",
   "tags": [],
-  "min_bot_version": "3.0.0",
-  "max_bot_version": "3.4.99",
+  "min_bot_version": "3.5.0",
   "requirements": ["tabulate"],
   "end_user_data_statement": "This cog does not persistently store data or metadata about users.",
   "hidden": true

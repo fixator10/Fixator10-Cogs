@@ -14,8 +14,7 @@
     "server",
     "permissions"
   ],
-  "min_bot_version": "3.4.8",
-  "max_bot_version": "3.4.99",
+  "min_bot_version": "3.5.0",
   "requirements": [
     "tabulate",
     "wcwidth",

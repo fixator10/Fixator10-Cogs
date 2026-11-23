@@ -29,11 +29,11 @@ class Badge(MixinMeta, ABC):
         server = ctx.guild
         if global_badges:
             servername = "Global"
-            icon_url = self.bot.user.avatar_url
+            icon_url = self.bot.user.display_avatar
             serverid = "global"
         else:
             servername = server.name
-            icon_url = server.icon_url
+            icon_url = server.icon
             serverid = server.id
         server_badges = await self.db.badges.find_one({"server_id": str(serverid)})
         if server_badges and (server_badges := server_badges["badges"]):
